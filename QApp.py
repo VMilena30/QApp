@@ -671,8 +671,8 @@ def mostrar_otim(textos_otim):
             st.markdown(textos_otim['inicializacoes_descricao'])
         
 def mostrar_ml(textos):
-    with st.sidebar.expander(textos["pagina_ml"]):
-        st.markdown(f"#### {textos_ml["metodos"]})
+    with st.sidebar.expander(textos['pagina_ml']):
+        st.markdown(f"#### {textos_ml['metodos']})
         st.markdown(f"**Angle Encoding:** {textos_ml['desc_angle']})
         st.markdown(f"**Amplitude Encoding:** {textos_ml['desc_ampli']})
         st.markdown(f"**Pauli Feature Map:** {textos_ml['desc_pauli']})
