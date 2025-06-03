@@ -1632,7 +1632,7 @@ def main():
         
             st.write(textos_ml['acc'] acc)
         
-        
+            st.write("Arthur")
         
         if st.button(textos_ml['exec_2']):
             executar_teste()
