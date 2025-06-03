@@ -1301,14 +1301,85 @@ def main():
         st.subheader(textos["pagina_ml"])
         
         # Agora usa os textos com a função
-        st.write(textos_ml["select_dataset"])
-        dataset = st.selectbox(textos_ml["select_dataset"], ["CWRU", "JMU"])
+        col1, col2 = st.columns(2)
+
+        with col1:
+            st.markdown(textos_ml["dataset_opcao"])
+            dataset_opcao = st.selectbox(textos_ml["selecione_base"], [" - ", "CWRU", "JNU"])
         
-        uploaded_file = st.file_uploader(textos_ml["upload_file_types"])
+        with col2:
+            st.markdown(textos_ml["upload_dados"])
+            uploaded_file = st.file_uploader(textos_ml["upload_label"], type=["csv", "xlsx", "parquet"])
         
-        if uploaded_file is not None:
-            st.success(textos_ml["upload_success"])
-            st.write(textos_ml["dataset_preview"])
+            if uploaded_file is not None:
+                if uploaded_file.name.endswith('.csv'):
+                    df = pd.read_csv(uploaded_file)
+                elif uploaded_file.name.endswith('.xlsx'):
+                    df = pd.read_excel(uploaded_file)
+                elif uploaded_file.name.endswith('.parquet'):
+                    df = pd.read_parquet(uploaded_file)
+                else:
+                    st.error("Unsupported file format.")
+                    df = None
+        
+                if df is not None:
+                    st.success(textos_ml["upload_sucesso"])
+                    st.write(textos_ml["preview"])
+                    st.dataframe(df.head())
+            else:
+                st.info(textos_ml["upload_info"])
+        
+        st.divider()
+        
+        # === FEATURES ===
+        st.markdown(textos_ml["selecione_features"])
+        features = [
+            " - ", "Média", "Variância", "Desvio-padrão", "RMS", "Kurtosis",
+            "Peak to peak", "Max Amplitude", "Min Amplitude", "Skewness",
+            "CrestFactor", "Mediana", "Energia", "Entropia"
+        ]
+        selected_features = st.multiselect(textos_ml["label_features"], options=features)
+        
+        st.divider()
+        
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            st.markdown(textos_ml["encoding_title"])
+            encoding_method = st.selectbox(textos_ml["encoding_label"], [
+                " - ", "Angle encoding", "Amplitude encoding",
+                "ZFeaturemap", "XFeaturemap", "YFeaturemap", "ZZFeaturemap"
+            ])
+        
+            st.markdown(textos_ml["euler_title"])
+            rot = st.selectbox(textos_ml["euler_label"], [" - ", "1", "2", "3"])
+        
+            if rot == "1":
+                eixos = [st.selectbox(f"**{textos_ml['euler_eixo1']}**", [" - ", "X", "Y", "Z"])]
+            elif rot == "2":
+                eixos = [
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"])
+                ]
+            elif rot == "3":
+                eixos = [
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=3)}**", [" - ", "X", "Y", "Z"])
+                ]
+            else:
+                eixos = []
+        
+        with col2:
+            if encoding_method.strip() != " - ":
+                st.markdown(f"**{textos_ml['entanglement_title']}**")
+                entanglement_method = st.selectbox(" ", [" - ", "CZ", "iSWAP", "Real Amplitudes", "QCNN"])
+        
+            st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
+            st.number_input(textos_ml["epocas"], min_value=1, max_value=500, value=1, step=1)
+        
+        st.divider()
+
         
         with st.sidebar:
             if st.button(textos["ini"]):
