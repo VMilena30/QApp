@@ -1630,9 +1630,8 @@ def main():
             y_pred = clf.predict(X_test)
             acc = accuracy_score(y_test, y_pred)
         
-            st.write(textos_ml['acc'] acc)
-        
-            st.write("Arthur")
+            st.write(textos_ml['acc'])
+    
         
         if st.button(textos_ml['exec_2']):
             executar_teste()
