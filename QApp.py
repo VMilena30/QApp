@@ -1298,6 +1298,15 @@ def main():
 
     elif st.session_state['pagina'] == 'ml':
             st.subheader(textos["pagina_ml"])
+            # Agora usa os textos com a função
+            st.write(textos_ml("select_dataset"))
+            dataset = st.selectbox(textos_ml("select_dataset"), ["Dataset 1", "Dataset 2"])
+            
+            uploaded_file = st.file_uploader(textos_ml("upload_file_types"))
+            
+            if uploaded_file is not None:
+                st.success(textos_ml("upload_success"))
+                st.write(textos_ml("dataset_preview"))
 
         with st.sidebar:
             if st.button(textos["ini"]):
