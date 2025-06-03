@@ -100,7 +100,7 @@ TEXTOS = {
         "intro": "Este aplicativo foi criado para incentivar o uso da computação quântica em três áreas distintas, apresentadas a seguir.\nEscolha a área que deseja explorar e descubra as possibilidades oferecidas por essa tecnologia inovadora.",
         "pagina_otimizacao": "Otimização Quântica",
         "pagina_inferencia": "Inferência Quântica",
-        "pagina_ml": "Aprendizagem de Máquina Quântico",
+        "pagina_ml": "Aprendizagem de Máquina Quântica",
         "instancia_input": "Digite alguma coisa para testar a instância:",
         "instancia_recebida": "Instância recebida:",
         "idioma": "Escolha o idioma:", 
