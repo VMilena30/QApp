@@ -350,6 +350,69 @@ TEXTOS_OPT = {
 }
 
 
+TEXTOS_ML = {
+    "pt": {
+        "menu": "Menu",
+        "select_dataset": "Escolha entre dados já existentes de vibração (rolamentos):",
+        "select_dataset_button": "Selecione a base",
+        "upload_title": "Importe dados próprios:",
+        "upload_subtitle": "Faça upload da sua base de dados",
+        "unsupported_file": "Formato de arquivo não suportado.",
+        "upload_success": "Base de dados carregada com sucesso!",
+        "dataset_preview": "Visualização da base de dados:",
+        "select_features": "Selecione as features a serem extraídas da base (caso deseje)",
+        "select_features_button": "Selecione as features:",
+        "select_encoding": "Escolha a codificação quântica.",
+        "select_encoding_method": "Escolha um método de codificação",
+        "pqc_euler_rotations": "PQC: escolha a quantidade de rotações de Euler:",
+        "select_quantity": "Selecione a quantidade",
+        "choose_rotation_axis": "Escolha o eixo da rotação",
+        "choose_first_axis": "Escolha o eixo da primeira rotação",
+        "choose_second_axis": "Escolha o eixo da segunda rotação",
+        "choose_third_axis": "Escolha o eixo da terceira rotação",
+        "pqc_entanglement_gate": "PQC: escolha a porta de emaranhamento",
+        "enter_patience": "Insira o valor da paciência:",
+        "enter_epochs": "Insira o número de épocas:",
+        "error_select_dataset": "Por favor, selecione um dataset.",
+        "error_select_feature": "Por favor, selecione ao menos uma feature.",
+        "error_select_encoding": "Por favor, selecione um método de codificação.",
+        "error_select_axes": "Por favor, selecione os eixos das rotações para Angle encoding.",
+        "error_loading_dataset": "Erro ao carregar o dataset.",
+        "execution_started": "Execução iniciada!",
+        "upload_file_types": "Por favor, envie um arquivo CSV, Excel ou Parquet."
+    },
+    "en": {
+        "menu": "Menu",
+        "select_dataset": "Choose from existing vibration data (bearings):",
+        "select_dataset_button": "Select the dataset",
+        "upload_title": "Upload your own data:",
+        "upload_subtitle": "Upload your dataset",
+        "unsupported_file": "Unsupported file format.",
+        "upload_success": "Dataset loaded successfully!",
+        "dataset_preview": "Dataset preview:",
+        "select_features": "Select features to extract from the dataset (optional)",
+        "select_features_button": "Select features:",
+        "select_encoding": "Choose the quantum encoding.",
+        "select_encoding_method": "Select an encoding method",
+        "pqc_euler_rotations": "PQC: choose the number of Euler rotations:",
+        "select_quantity": "Select quantity",
+        "choose_rotation_axis": "Choose rotation axis",
+        "choose_first_axis": "Choose first rotation axis",
+        "choose_second_axis": "Choose second rotation axis",
+        "choose_third_axis": "Choose third rotation axis",
+        "pqc_entanglement_gate": "PQC: choose the entanglement gate",
+        "enter_patience": "Enter patience value:",
+        "enter_epochs": "Enter number of epochs:",
+        "error_select_dataset": "Please select a dataset.",
+        "error_select_feature": "Please select at least one feature.",
+        "error_select_encoding": "Please select an encoding method.",
+        "error_select_axes": "Please select rotation axes for Angle encoding.",
+        "error_loading_dataset": "Error loading dataset.",
+        "execution_started": "Execution started!",
+        "upload_file_types": "Please upload a CSV, Excel, or Parquet file."
+    }
+}
+
 
 def aplicar_css_botoes():
     st.markdown(
