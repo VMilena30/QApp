@@ -1380,6 +1380,7 @@ def main():
         
         st.divider()
 
+        st.write("Arthur")
         
         with st.sidebar:
             if st.button(textos["ini"]):
