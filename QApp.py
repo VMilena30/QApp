@@ -378,7 +378,14 @@ TEXTOS_ML = {
         "erro_5": "Erro ao carregar o dataset.",
         "exec_1": "Execução iniciada!",
         "acc": "Acurácia do modelo:",
-        "exec_2": "Executar modelo"
+        "exec_2": "Executar modelo",
+        "metodos": "Métodos de codificação quântica disponíveis:",
+        "angle": "Angle encoding",
+        "desc_angle": "Codifica os dados clássicos como ângulos de rotação aplicados a portas quânticas (como RX, RY, RZ). Cada valor de uma feature é mapeado diretamente para uma rotação em um qubit.",
+        "ampli": "Amplitude encoding",
+        "desc_ampli": "Codifica os dados nos amplitudes do estado quântico, normalizando o vetor de entrada para representar diretamente o estado do sistema.",
+        "pauli": "Pauli Feature Map",
+        "desc_pauli": "Codificações que usam portas baseadas nos operadores de Pauli para mapear dados em circuitos quânticos (X, Y, Z e ZZFeaturemap)"
     },
     "en": {
         "idioma_label": "Idioma / Language",
@@ -407,7 +414,14 @@ TEXTOS_ML = {
         "erro_5": "Error loading the dataset.",
         "exec_1": "Execution started!",
         "acc": "Model accuracy:",
-        "exec_2": "Run model"
+        "exec_2": "Run model",
+        "metodos": "Available quantum encoding methods:",
+        "angle": "Angle encoding",
+        "desc_angle": "Encodes classical data as rotation angles applied to quantum gates (such as RX, RY, RZ). Each feature value is directly mapped to a qubit rotation.",
+        "ampli": "Amplitude encoding",
+        "desc_ampli": "Encodes data into the amplitudes of the quantum state, normalizing the input vector to directly represent the system state.",
+        "pauli": "Pauli Feature Map",
+        "desc_pauli": "Encodings that use gates based on Pauli operators to map data into quantum circuits (X, Y, Z, and ZZFeatureMap)."
     }
 }
 
@@ -658,9 +672,10 @@ def mostrar_otim(textos_otim):
         
 def mostrar_ml(textos):
     with st.sidebar.expander(textos["pagina_ml"]):
-        st.markdown(f"#### {'Coisas de Arthur'}")
-        st.markdown(f"{textos['info_ml']}")
-
+        st.markdown(f"#### {textos_ml["metodos"]}")
+        st.markdown(f"**Angle Encoding:** {textos_ml['desc_angle']}")
+        st.markdown(f"**Amplitude Encoding:** {textos_ml['desc_ampli']}")
+        st.markdown(f"**Pauli Feature Map:** {textos_ml['desc_pauli']}")
 def mostrar_inf(textos):
     with st.sidebar.expander(textos["pagina_inferencia"]):
         st.markdown(f"#### {'Coisas de Lavínia'}")
