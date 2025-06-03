@@ -352,6 +352,7 @@ TEXTOS_OPT = {
 
 TEXTOS_ML = {
     "pt": {
+        "pagina_ml": "Aprendizagem de Máquina Quântica",
         "idioma_label": "Idioma / Language",
         "dataset_opcao": "Escolha entre dados já existentes de vibração (rolamentos):",
         "selecione_base": "Selecione a base",
@@ -393,6 +394,7 @@ TEXTOS_ML = {
         "selecione_base": "Select the dataset",
         "upload_dados": "Upload your own data:",
         "upload_label": "Upload your dataset",
+        "pagina_ml": "Quantum Machine Learning",
         "upload_info": "Please upload a CSV, Excel, or Parquet file.",
         "upload_sucesso": "Dataset loaded successfully!",
         "preview": "Dataset preview:",
@@ -670,8 +672,8 @@ def mostrar_otim(textos_otim):
             st.markdown(f"#### {textos_otim['inicializacoes_titulo']}")
             st.markdown(textos_otim['inicializacoes_descricao'])
         
-def mostrar_ml(textos):
-    with st.sidebar.expander(textos['pagina_ml']):
+def mostrar_ml(textos_ml):
+    with st.sidebar.expander(textos_ml['pagina_ml']):
         st.markdown(f"#### {textos_ml['metodos']}")
         st.markdown(f"**Angle Encoding:** {textos_ml['desc_angle']}")
         st.markdown(f"**Amplitude Encoding:** {textos_ml['desc_ampli']}")
@@ -791,7 +793,7 @@ def main():
         
     # Ajuda
     mostrar_otim(textos_otim)
-    mostrar_ml(textos)
+    mostrar_ml(textos_ml)
     mostrar_inf(textos)
 
     if 'pagina' not in st.session_state:
