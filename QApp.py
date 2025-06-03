@@ -370,7 +370,15 @@ TEXTOS_ML = {
         "euler_eixo_n": "Escolha o eixo da {n}ª rotação",
         "entanglement_title": "PQC: escolha a porta de emaranhamento",
         "paciencia": "Insira o valor da paciência:",
-        "epocas": "Insira o número de épocas:"
+        "epocas": "Insira o número de épocas:",
+        "erro_1": "Por favor, selecione um dataset.",
+        "erro_2": "Por favor, selecione ao menos uma característica.",
+        "erro_3": "Por favor, selecione um método de codificação.",
+        "erro_4": "Por favor, selecione os eixos das rotações.",
+        "erro_5": "Erro ao carregar o dataset.",
+        "exec_1": "Execução iniciada!",
+        "acc": "Acurácia do modelo:",
+        "exec_2": "Executar modelo"
     },
     "en": {
         "idioma_label": "Idioma / Language",
@@ -391,7 +399,15 @@ TEXTOS_ML = {
         "euler_eixo_n": "Choose the {n}st rotation axis",
         "entanglement_title": "PQC: choose the entanglement gate",
         "paciencia": "Enter the patience value:",
-        "epocas": "Enter the number of epochs:"
+        "epocas": "Enter the number of epochs:",
+        "erro_1": "Please select a dataset.",
+        "erro_2": "Please select at least one feature.",
+        "erro_3": "Please select an encoding method.",
+        "erro_4": "Please select the rotation axes.",
+        "erro_5": "Error loading the dataset.",
+        "exec_1": "Execution started!",
+        "acc": "Model accuracy:",
+        "exec_2": "Run model"
     }
 }
 
@@ -1361,7 +1377,267 @@ def main():
         
         st.divider()
 
-        st.write("Arthur")
+        import pennylane as qml
+        from pennylane import numpy as np
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.model_selection import train_test_split
+        from sklearn.svm import SVC
+        from sklearn.metrics import accuracy_score
+        from sklearn.decomposition import PCA
+        from scipy.stats import kurtosis, skew
+        import scipy
+        import os
+        
+        # ==== FUNÇÕES DE EXTRAÇÃO DE FEATURES ====
+        def extrair_features_amostra(amostra):
+            features_calculadas = {}
+            features_calculadas["Média"] = np.mean(amostra)
+            features_calculadas["Variância"] = np.var(amostra)
+            features_calculadas["Desvio-padrão"] = np.std(amostra)
+            features_calculadas["RMS"] = np.sqrt(np.mean(np.square(amostra)))
+            features_calculadas["Kurtosis"] = kurtosis(amostra)
+            features_calculadas["Peak to peak"] = np.ptp(amostra)
+            features_calculadas["Max Amplitude"] = np.max(amostra)
+            features_calculadas["Min Amplitude"] = np.min(amostra)
+            features_calculadas["Skewness"] = skew(amostra)
+            features_calculadas["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
+            features_calculadas["Mediana"] = np.median(amostra)
+            features_calculadas["Energia"] = np.sum(amostra ** 2)
+            prob, _ = np.histogram(amostra, bins=30, density=True)
+            prob = prob[prob > 0]
+            features_calculadas["Entropia"] = -np.sum(prob * np.log(prob))
+            return features_calculadas
+        
+        def extrair_features_dataset(dataset_bruto, selected_features):
+            lista_dicts = []
+            for amostra in dataset_bruto:
+                f = extrair_features_amostra(amostra)
+                f_sel = {key: f[key] for key in selected_features}
+                lista_dicts.append(f_sel)
+            return pd.DataFrame(lista_dicts)
+        
+        
+        
+        # ==== FUNÇÃO PARA CARREGAR DADOS BRUTOS ====
+        def carregar_dados_brutos(nome):
+            # Para usar bases reais, substitua essa parte pelo carregamento real.
+            if nome == "CWRU":
+                df = pd.DataFrame(columns=['DE_data', 'fault'])
+        
+                for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
+                    for file_name in files:
+                        path = os.path.join(root, file_name)
+        
+                        mat = scipy.io.loadmat(path)
+        
+                        key_name = list(mat.keys())[3]
+                        DE_data = mat.get(key_name)
+                        fault = np.full((len(DE_data), 1), file_name[:-4])
+        
+                        df_temp = pd.DataFrame(
+                            {'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
+        
+                        df = pd.concat([df, df_temp], axis=0)
+                        # print(df['fault'].unique())
+        
+        
+                df.to_csv(r'todas_faltas.csv', index=False)
+        
+                df = pd.read_csv('todas_faltas.csv')
+        
+                win_len = 1000
+                stride = 900
+        
+                x = []
+                y = []
+        
+        
+                for k in df['fault'].unique():
+        
+                    df_temp_2 = df[df['fault'] == k]
+        
+                    for i in np.arange(0, len(df_temp_2)-(win_len), stride):
+                        temp = df_temp_2.iloc[i:i+win_len, :-1].values
+                        temp = temp.reshape((1, -1))
+                        x.append(temp)
+                        y.append(df_temp_2.iloc[i+win_len, -1])
+        
+                x = np.array(x)
+                x = x.reshape((x.shape[0], win_len))
+                y = np.array(y)
+        
+                return x, y
+            
+            elif nome == "JNU":
+                dataset = np.load(r"C:\\Arthur\\JNU_quantum_8.npz")
+                X = dataset['data']
+                y = dataset['label']
+        
+                return X, y
+            else:
+                return None, None
+        
+        def selecionar_features(X, features, selecionadas):
+            indices = [features.index(f) for f in selecionadas]
+            return X[:, indices]
+        
+        
+        
+        # --- CIRCUITOS DE ENCODING ---
+        def angle_encoding(x, wires, eixos):
+            # Aplica rotações baseadas nos eixos fornecidos
+            for i, wire in enumerate(wires):
+                for eixo in eixos:
+                    if eixo == "X":
+                        qml.RX(x[i], wires=wire)
+                    elif eixo == "Y":
+                        qml.RY(x[i], wires=wire)
+                    elif eixo == "Z":
+                        qml.RZ(x[i], wires=wire)
+        
+        def amplitude_encoding(x, wires):
+            qml.AmplitudeEmbedding(features=x, wires=wires, normalize=True)
+        
+        def z_featuremap(x, wires):
+            for i, wire in enumerate(wires):
+                qml.RZ(x[i], wires=wire)
+        
+        def x_featuremap(x, wires):
+            for i, wire in enumerate(wires):
+                qml.RX(x[i], wires=wire)
+        
+        def y_featuremap(x, wires):
+            for i, wire in enumerate(wires):
+                qml.RY(x[i], wires=wire)
+        
+        def zz_featuremap(x, wires):
+            for i, wire in enumerate(wires):
+                qml.RZ(x[i], wires=wire)
+            for i in range(len(wires) - 1):
+                qml.CNOT(wires=[wires[i], wires[i+1]])
+        
+        
+        
+        # --- CRIAÇÃO DO CIRCUITO PQC ---
+        def criar_circuito(encoding_method, eixos, entanglement_gate, n_qubits):
+            dev = qml.device("default.qubit", wires=n_qubits)
+        
+            @qml.qnode(dev)
+            def circuit(x, weights):
+                # Encoding
+                if encoding_method == "Angle encoding":
+                    angle_encoding(x, wires=range(n_qubits), eixos=eixos)
+                elif encoding_method == "Amplitude encoding":
+                    amplitude_encoding(x, wires=range(n_qubits))
+                elif encoding_method == "ZFeaturemap":
+                    z_featuremap(x, wires=range(n_qubits))
+                elif encoding_method == "XFeaturemap":
+                    x_featuremap(x, wires=range(n_qubits))
+                elif encoding_method == "YFeaturemap":
+                    y_featuremap(x, wires=range(n_qubits))
+                elif encoding_method == "ZZFeaturemap":
+                    zz_featuremap(x, wires=range(n_qubits))
+                else:
+                    pass  # Nenhuma codificação
+                
+                # Camada parametrizada - camada simples com RX, RY, RZ com pesos
+                for i in range(n_qubits):
+                    qml.RX(weights[i, 0], wires=i)
+                    qml.RY(weights[i, 1], wires=i)
+                    qml.RZ(weights[i, 2], wires=i)
+        
+                # Emaranhamento (exemplo simples)
+                if entanglement_gate == "CZ":
+                    for i in range(n_qubits - 1):
+                        qml.CZ(wires=[i, i+1])
+                elif entanglement_gate == "iSWAP":
+                    for i in range(n_qubits - 1):
+                        qml.ISWAP(wires=[i, i+1])
+                elif entanglement_gate == "Real Amplitudes":
+                    qml.templates.layers.RealAmplitudes(weights, wires=range(n_qubits))
+                elif entanglement_gate == "QCNN":
+                    # Coloque aqui o seu template QCNN se quiser
+                    pass
+                
+                # Medição
+                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
+        
+            return circuit
+
+        # --- EXECUÇÃO DO MODELO ---
+        def executar_teste():
+        
+            if dataset_opcao == " - " and uploaded_file is None:
+                st.error(textos_ml['erro_1'])
+                return
+            if len(selected_features) == 0:
+                st.error(textos_ml['erro_2'])
+                return
+            if encoding_method == " - ":
+                st.error(textos_ml['erro_3'])
+                return
+            if len(eixos) == 0:
+                st.error(textos_ml['erro_4'])
+                return
+        
+            # Carrega dados
+            if dataset_opcao != " - ":
+                # Ajeitar o local dos dados
+                # X, y = carregar_dados_brutos(dataset_opcao)
+                if X is None or y is None:
+                    st.error(textos_ml['erro_5'])
+                    return
+            
+            else:
+                X = df.drop(columns='label').values
+                y = df['label'].values
+        
+            st.success(textos_ml['exec_1'])
+            # Seleciona features
+            X_sel = extrair_features_dataset(X, selected_features)
+            
+            x_train, x_test, y_train, y_test = train_test_split(X_sel, y, test_size=0.2, random_state=1)
+        
+            # Pré-processa (normalização)
+            scaler = StandardScaler()
+            x_train = scaler.fit_transform(x_train)
+            x_test = scaler.transform(x_test)
+            x_train = np.array([x / np.linalg.norm(x) for x in x_train])
+            x_test = np.array([x / np.linalg.norm(x) for x in x_test])
+        
+            # Define número de qubits como o número de features selecionadas
+            n_qubits = x_train.shape[1]
+            
+            # Pesos aleatórios para camada parametrizada
+            weights = np.random.uniform(low=0, high=2 * np.pi, size=(n_qubits, 3), requires_grad=True)
+        
+            # Porta de emaranhamento escolhida (default CZ)
+            entanglement_gate = entanglement_method
+        
+            # Cria circuito
+            circuit = criar_circuito(encoding_method, eixos, entanglement_gate, n_qubits)
+        
+            # Executa circuito para todo dataset (exemplo: só execução direta, sem treino)
+            resultados = np.array([circuit(x, weights) for x in x_train])
+        
+            # Como exemplo simples, usa saída quântica para treino SVM
+            X_features = resultados
+            X_train, X_test, y_train, y_test = train_test_split(X_features, y, test_size=0.2, random_state=42)
+        
+        
+            clf = SVC()
+            clf.fit(X_train, y_train)
+            y_pred = clf.predict(X_test)
+            acc = accuracy_score(y_test, y_pred)
+        
+            st.write(textos_ml['acc'] acc)
+        
+        
+        
+        if st.button(textos_ml['exec_2']):
+            executar_teste()
+
+
         
         with st.sidebar:
             if st.button(textos["ini"]):
