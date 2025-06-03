@@ -769,6 +769,7 @@ def main():
     lang = st.session_state.lang
     textos = TEXTOS[lang]
     textos_otim = TEXTOS_OPT[lang]
+    textos_ml = TEXTOS_ML[lang]
 
     # 4 - referências em expander
 
