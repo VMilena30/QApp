@@ -737,7 +737,7 @@ def main():
     idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
     idioma_selecionado = st.sidebar.selectbox(
         "Language / Idioma:",
-        ("🇺🇸 English (UK)", "🇧🇷 Português (BR)"),
+        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
         index=0 if idioma_atual == "English"  else 1
     )
 
