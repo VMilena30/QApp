@@ -676,6 +676,7 @@ def mostrar_ml(textos):
         st.markdown(f"**Angle Encoding:** {textos_ml['desc_angle']}")
         st.markdown(f"**Amplitude Encoding:** {textos_ml['desc_ampli']}")
         st.markdown(f"**Pauli Feature Map:** {textos_ml['desc_pauli']}")
+        st.write("Arthur")
 def mostrar_inf(textos):
     with st.sidebar.expander(textos["pagina_inferencia"]):
         st.markdown(f"#### {'Coisas de Lavínia'}")
