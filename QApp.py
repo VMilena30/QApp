@@ -1369,7 +1369,7 @@ def main():
         
         with col2:
             if encoding_method.strip() != " - ":
-                st.markdown(f"**{textos_ml['entanglement_title']}**")
+                st.markdown(textos_ml['entanglement_title'])
                 entanglement_method = st.selectbox(" ", [" - ", "CZ", "iSWAP", "Real Amplitudes", "QCNN"])
         
             st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
