@@ -418,7 +418,14 @@ TEXTOS_ML = {
         "ampli": "Amplitude encoding",
         "desc_ampli": "Codifica os dados nos amplitudes do estado quântico, normalizando o vetor de entrada para representar diretamente o estado do sistema.",
         "pauli": "Pauli Feature Map",
-        "desc_pauli": "Codificações que usam portas baseadas nos operadores de Pauli para mapear dados em circuitos quânticos (X, Y, Z e ZZFeaturemap)"
+        "desc_pauli": "Codificações que usam portas baseadas nos operadores de Pauli para mapear dados em circuitos quânticos (X, Y, Z e ZZFeaturemap)",
+        "help_1": "Escolha uma base de dados pré-carregada com sinais de vibração.",
+        "help_2": "Nessa opção você pode realizar o upload de dados próprios em formato csv, xlsx ou parquet.",
+        "help_3": "Nessa opção você pode selecionar a quantidade de características que quiser extrair do dataset original, selecionado acima.",
+        "help_4": "Selecione o método que realizará a codificação dos dados clássicos em quânticos.",
+        "help_5": "Selecione quantas rotações de euler ocorrerão no seu circuito quântico.",
+        "help_6": "Selecione as rotações correspondentes a quantidade que você escolheu.",
+        "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito."
     },
     "en": {
         "idioma_label": "Idioma / Language",
@@ -455,7 +462,14 @@ TEXTOS_ML = {
         "ampli": "Amplitude encoding",
         "desc_ampli": "Encodes data into the amplitudes of the quantum state, normalizing the input vector to directly represent the system state.",
         "pauli": "Pauli Feature Map",
-        "desc_pauli": "Encodings that use gates based on Pauli operators to map data into quantum circuits (X, Y, Z, and ZZFeatureMap)."
+        "desc_pauli": "Encodings that use gates based on Pauli operators to map data into quantum circuits (X, Y, Z, and ZZFeatureMap).",
+        "help_1": "Choose a pre-loaded database with vibration signals.",
+        "help_2": "In this option, you can upload your own data in csv, xlsx, or parquet format.",
+        "help_3": "In this option, you can select the number of characteristics you want to extract from the original dataset selected above.",
+        "help_4": "Select the method that will perform the encoding of classical data into quantum.",
+        "help_5": "Select how many Euler rotations will occur in your quantum circuit.",
+        "help_6": "Select the rotations corresponding to the quantity you chose.",
+        "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit."
     }
 }
 
@@ -1332,11 +1346,12 @@ def main():
 
         with col1:
             st.markdown(textos_ml["dataset_opcao"])
-            dataset_opcao = st.selectbox(textos_ml["selecione_base"], [" - ", "CWRU", "JNU"])
+            dataset_opcao = st.selectbox(textos_ml["selecione_base"], [" - ", "CWRU", "JNU"], help=textos_ml["help_1"])
         
         with col2:
             st.markdown(textos_ml["upload_dados"])
-            uploaded_file = st.file_uploader(textos_ml["upload_label"], type=["csv", "xlsx", "parquet"])
+            uploaded_file = st.file_uploader(textos_ml["upload_label"], type=["csv", "xlsx", "parquet"], help=textos_ml["help_2"])
+            
         
             if uploaded_file is not None:
                 if uploaded_file.name.endswith('.csv'):
@@ -1365,7 +1380,7 @@ def main():
             "Peak to peak", "Max Amplitude", "Min Amplitude", "Skewness",
             "CrestFactor", "Mediana", "Energia", "Entropia"
         ]
-        selected_features = st.multiselect(textos_ml["label_features"], options=features)
+        selected_features = st.multiselect(textos_ml["label_features"], options=features, help=textos_ml["help_3"])
         
         st.divider()
         
@@ -1376,23 +1391,23 @@ def main():
             encoding_method = st.selectbox(textos_ml["encoding_label"], [
                 " - ", "Angle encoding", "Amplitude encoding",
                 "ZFeaturemap", "XFeaturemap", "YFeaturemap", "ZZFeaturemap"
-            ])
+            ], help=textos_ml["help_4"])
         
             st.markdown(textos_ml["euler_title"])
-            rot = st.selectbox(textos_ml["euler_label"], [" - ", "1", "2", "3"])
+            rot = st.selectbox(textos_ml["euler_label"], [" - ", "1", "2", "3"], help=textos_ml["help_5"])
         
             if rot == "1":
-                eixos = [st.selectbox(f"**{textos_ml['euler_eixo1']}**", [" - ", "X", "Y", "Z"])]
+                eixos = [st.selectbox(f"**{textos_ml['euler_eixo1']}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])]
             elif rot == "2":
                 eixos = [
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"])
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])
                 ]
             elif rot == "3":
                 eixos = [
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=3)}**", [" - ", "X", "Y", "Z"])
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
+                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=3)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])
                 ]
             else:
                 eixos = []
@@ -1400,7 +1415,7 @@ def main():
         with col2:
             if encoding_method.strip() != " - ":
                 st.markdown(textos_ml['entanglement_title'])
-                entanglement_method = st.selectbox(" ", [" - ", "CZ", "iSWAP", "Real Amplitudes", "QCNN"])
+                entanglement_method = st.selectbox(" ", [" - ", "CZ", "iSWAP", "Real Amplitudes", "QCNN"], help=textos_ml["help_7"])
         
             st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
             st.number_input(textos_ml["epocas"], min_value=1, max_value=500, value=1, step=1)
