@@ -1369,7 +1369,7 @@ def main():
                     st.write(textos_ml["preview"])
                     st.dataframe(df.head())
             else:
-                st.info(textos_ml["upload_info"])
+                # st.info(textos_ml["upload_info"])
         
         st.divider()
         
