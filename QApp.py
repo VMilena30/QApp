@@ -172,15 +172,6 @@ TEXTOS_OPT = {
             <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
             <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (<code>.txt</code>), onde cada linha representa uma instância, com o seguinte formato:</p>
             <p style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;">[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</p>
-            <ul style="padding-left: 20px; margin: 4px 0; list-style-type: disc;">
-                <li style="margin: 2px 0;"><strong>s</strong>: Número de subsistemas</li>
-                <li style="margin: 2px 0;"><strong>nj_max</strong>: Valor máximo dos componentes</li>
-                <li style="margin: 2px 0;"><strong>nj_min</strong>: Valor mínimo dos componentes</li>
-                <li style="margin: 2px 0;"><strong>ctj_of</strong>: Número de elementos em Rjk_of e cjk_of</li>
-                <li style="margin: 2px 0;"><strong>Rjk_of</strong>: Lista de valores de confiabilidade dos componentes</li>
-                <li style="margin: 2px 0;"><strong>cjk_of</strong>: Lista de valores de custos dos componentes</li>
-                <li style="margin: 2px 0;"><strong>C_of</strong>: Limite de custo total</li>
-            </ul>
             <p style="margin: 4px 0;">Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.</p>
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado.</p>
         </div>
