@@ -168,10 +168,11 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "Upload de arquivo (arquivo .txt)",
         "ajuda_upload_botao": "Mostrar ajuda para upload",
         "ajuda_upload_texto": """
+        "ajuda_upload_texto": """
         <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
             <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
-            <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (<code>.txt</code>), onde cada linha representa uma instância, com o seguinte formato:</p>
-            <p style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;">[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</p>
+            <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (.txt), onde cada linha representa uma instância, com o seguinte formato:</p>
+            <p style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;"><code>[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
             <p style="margin: 4px 0;">Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.</p>
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado.</p>
         </div>
