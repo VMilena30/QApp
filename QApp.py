@@ -237,20 +237,20 @@ TEXTOS_OPT = {
         "Baixar": "Baixar arquivo",
         "download_text": "Caso deseje, faça o download do arquivo de teste exemplificado para usar ou visualizar.", 
         "rap_descricao": (
-            "**Problema de Alocação de Redundâncias (RAP)**\n\n"
+            "#####**Problema de Alocação de Redundâncias (RAP)**\n\n"
             "O Problema de Alocação de Redundâncias é um problema clássico da engenharia de confiabilidade que consiste em determinar "
             "quantos componentes redundantes alocar em cada subsistema para maximizar a confiabilidade do sistema total, respeitando restrições de custo.\n\n"
 
-            "#### Formulação Matemática\n\n"
+            "##### Formulação Matemática\n\n"
             "Seja um sistema com \\( s \\) subsistemas, o objetivo é maximizar a confiabilidade total \\( R(x) \\):\n\n"
             "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
 
-            "#### Restrições:\n\n"
+            "##### Restrições:\n\n"
             "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
             "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
             "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
 
-            "#### Termos Utilizados\n\n"
+            "##### Termos Utilizados\n\n"
             "- \\( x_i \\): número de componentes redundantes no subsistema \\( i \\)\n"
             "- \\( R_i \\): confiabilidade de um componente do subsistema \\( i \\)\n"
             "- \\( R(x) \\): confiabilidade global do sistema\n"
@@ -260,11 +260,11 @@ TEXTOS_OPT = {
 
             "A confiabilidade total considera subsistemas em paralelo, que falham somente se todos os componentes falharem.\n\n"
 
-            "#### Aplicações\n\n"
+            "##### Aplicações\n\n"
             "- Sistemas críticos (aeronaves, satélites, equipamentos médicos)\n"
             "- Sistemas industriais e de telecomunicações\n\n"
 
-            "### RAP e Computação Quântica\n\n"
+            "#### RAP e Computação Quântica\n\n"
             "O RAP pode ser convertido em um modelo QUBO, permitindo o uso de técnicas quânticas para resolver problemas maiores e mais complexos."
 
             "---\n\n"
