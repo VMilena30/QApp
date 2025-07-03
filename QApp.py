@@ -111,7 +111,6 @@ TEXTOS = {
         "info_inf": "Seção para descrever as técnicas de Inferância Quântica usadas.",
         "titulo": "Seja bem-vindo ao <span style='color:#0d4376;'>QXplore</span>!",
         "corpo": (
-            "Bem-vindo ao QXplore!\n\n"
             "O QXplore é um aplicativo focado em apoiar o estudo e a experimentação com computação quântica aplicada a problemas comuns da engenharia da confiabilidade.\n\n"
             "Ele oferece três áreas principais onde você pode explorar como métodos quânticos podem ser usados para modelar e analisar desafios em sistemas e processos de confiabilidade.\n\n"
             "Embora a tecnologia quântica ainda esteja em desenvolvimento, este aplicativo traz ferramentas e exemplos que ajudam a entender seu funcionamento e seu potencial, mesmo que ainda de forma exploratória, para problemas de engenharia.\n\n"
