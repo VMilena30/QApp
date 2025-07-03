@@ -250,6 +250,7 @@ TEXTOS_OPT = {
             "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites inferior e superior para redundâncias  \n"
 
         ),
+        "aplicacao": "Aplicação",
     },
     "en": {
         "idioma": "Language",
@@ -370,6 +371,8 @@ TEXTOS_OPT = {
         "- $C$: total budget available  \n"
         "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: lower and upper bounds for redundancy allocation  \n"
     ),
+        "aplicacao": "Application",
+
     }
 }
 
@@ -832,6 +835,8 @@ def main():
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
+
+        st.subheader(textos_otim["aplicacao"])
         
         # Aplica estilos personalizados
         st.markdown("""
