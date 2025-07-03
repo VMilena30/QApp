@@ -185,6 +185,7 @@ TEXTOS_OPT = {
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado:</p>
         </div>
         """,
+
         "botao_mostrar_instancia": "Mostrar instância",
         "selecionar_algoritmo": "Selecione o algoritmo quântico:",
         "tipo_inicializacao": "Selecione o método de inicialização dos parâmetros:",
