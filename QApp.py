@@ -99,6 +99,7 @@ TEXTOS = {
     "pt": {
         "intro": "Este aplicativo foi criado para incentivar o uso da computação quântica em três áreas distintas, apresentadas a seguir.\nEscolha a área que deseja explorar e descubra as possibilidades oferecidas por essa tecnologia inovadora.",
         "pagina_otimizacao": "Otimização Quântica",
+        "pagina_otimizacao2": "Otimização Quântica em Problemas de Alocação de Redundâncias",
         "pagina_inferencia": "Inferência Quântica",
         "pagina_ml": "Aprendizagem de Máquina Quântica",
         "instancia_input": "Digite alguma coisa para testar a instância:",
@@ -119,6 +120,7 @@ TEXTOS = {
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
         "pagina_otimizacao": "Quantum Optimization",
+        "pagina_otimizacao2": "Quantum Optimization in Redundancy Allocation Problems",
         "pagina_inferencia": "Quantum Inference",
         "pagina_ml": "Quantum Machine Learning",
         "instancia_input": "Type something to test the instance:",
