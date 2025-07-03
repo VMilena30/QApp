@@ -168,7 +168,6 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "Upload de arquivo (arquivo .txt)",
         "ajuda_upload_botao": "Mostrar ajuda para upload",
         "ajuda_upload_texto": """
-        "ajuda_upload_texto": """
         <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
             <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
             <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (.txt), onde cada linha representa uma instância, com o seguinte formato:</p>
@@ -206,13 +205,13 @@ TEXTOS_OPT = {
         "de": "de",
         "pagina_otimizacao": "Otimização Quântica",
         "s": "Número de subsistemas (s)",
-        "nj_max": "Valor máximo dos componentes por subsistema (nj_max)",
-        "nj_min": "Valor mínimo dos componentes por subsistema (nj_min)",
-        "ctj_of": "Quantidade de tipos de componentes disponíveis (ctj_of)",
-        "lista_componentes": "Informe a confiabilidade (Rjk_of) e o custo (cjk_of) de cada componente:",
-        "confiabilidade": "Confiabilidade do componente (Rjk_of)",
-        "custo": "Custo do componente (cjk_of)",
-        "custo_total_limite": "Limite máximo de custo (C_of)",
+        "nj_max": "Valor máximo dos componentes por subsistema",
+        "nj_min": "Valor mínimo dos componentes por subsistema",
+        "ctj_of": "Quantidade de tipos de componentes disponíveis",
+        "lista_componentes": "Informe a confiabilidade e o custo de cada componente:",
+        "confiabilidade": "Confiabilidade do componente",
+        "custo": "Custo do componente",
+        "custo_total_limite": "Limite máximo de custo",
         "selecionar_tipo_circuito": "Selecione o tipo de circuito VQE:",
         "real_amplitudes": "Real Amplitudes",
         "two_local": "Two Local",
