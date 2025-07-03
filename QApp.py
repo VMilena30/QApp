@@ -1368,10 +1368,7 @@ def main():
                     st.success(textos_ml["upload_sucesso"])
                     st.write(textos_ml["preview"])
                     st.dataframe(df.head())
-            '''
-            else:
-                st.info(textos_ml["upload_info"])
-            '''
+            
         st.divider()
         
         # === FEATURES ===
