@@ -251,23 +251,15 @@ TEXTOS_OPT = {
             "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
 
             "##### Termos Utilizados\n\n"
-            "- \\( x_i \\): número de componentes redundantes no subsistema \\( i \\)\n"
-            "- \\( R_i \\): confiabilidade de um componente do subsistema \\( i \\)\n"
-            "- \\( R(x) \\): confiabilidade global do sistema\n"
-            "- \\( c_i \\): custo de adicionar um componente no subsistema \\( i \\)\n"
-            "- \\( C \\): orçamento máximo\n"
-            "- \\( n_{\\text{min}}, n_{\\text{max}} \\): limites inferior e superior para redundâncias\n\n"
+            "1. \\( x_i \\): número de componentes redundantes no subsistema \\( i \\)  \n"
+            "2. \\( R_i \\): confiabilidade de um componente do subsistema \\( i \\)  \n"
+            "3. \\( R(x) \\): confiabilidade global do sistema  \n"
+            "4. \\( c_i \\): custo de adicionar um componente no subsistema \\( i \\)  \n"
+            "5. \\( C \\): orçamento máximo  \n"
+            "6. \\( n_{\\text{min}}, n_{\\text{max}} \\): limites inferior e superior para redundâncias  \n\n"
+
 
             "A confiabilidade total considera subsistemas em paralelo, que falham somente se todos os componentes falharem.\n\n"
-
-            "##### Aplicações\n\n"
-            "- Sistemas críticos (aeronaves, satélites, equipamentos médicos)\n"
-            "- Sistemas industriais e de telecomunicações\n\n"
-
-            "#### RAP e Computação Quântica\n\n"
-            "O RAP pode ser convertido em um modelo QUBO, permitindo o uso de técnicas quânticas para resolver problemas maiores e mais complexos."
-
-            "---\n\n"
         ),
     },
     "en": {
