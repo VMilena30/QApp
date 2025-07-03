@@ -237,7 +237,7 @@ TEXTOS_OPT = {
         "Baixar": "Baixar arquivo",
         "download_text": "Caso deseje, faça o download do arquivo de teste exemplificado para usar ou visualizar.", 
         "rap_descricao": (
-            "#####**Problema de Alocação de Redundâncias (RAP)**\n\n"
+            "#### Problema de Alocação de Redundâncias (RAP)\n\n"
             "O Problema de Alocação de Redundâncias é um problema clássico da engenharia de confiabilidade que consiste em determinar "
             "quantos componentes redundantes alocar em cada subsistema para maximizar a confiabilidade do sistema total, respeitando restrições de custo.\n\n"
 
