@@ -365,37 +365,29 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "File upload (.txt file)",
         "Baixar": "Download file",
         "download_text": "If you wish, download the sample test file to use or visualize.",
-         "rap_descricao": (
-            "**Redundancy Allocation Problem (RAP)**\n\n"
-            "The Redundancy Allocation Problem is a classic reliability engineering problem that involves determining "
-            "how many redundant components to allocate in each subsystem to maximize the total system reliability, subject to cost constraints.\n\n"
+        "rap_descricao": (
+        "#### Redundancy Allocation Problem (RAP)\n\n"
+        "The Redundancy Allocation Problem is a classic issue in reliability engineering. "
+        "It involves determining how many redundant components to allocate to each subsystem in order to maximize the overall system reliability, "
+        "while respecting cost constraints.\n\n"
 
-            "## Mathematical Formulation\n\n"
-            "Consider a system with \\( s \\) subsystems, aiming to maximize the total reliability \\( R(x) \\):\n\n"
-            "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
+        "##### Mathematical Formulation\n\n"
+        "Consider a system with \\( s \\) subsystems. The objective is to maximize the total system reliability \\( R(x) \\):\n\n"
+        "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
 
-            "### Constraints:\n\n"
-            "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
-            "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
-            "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
+        "##### Constraints:\n\n"
+        "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
+        "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
+        "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
 
-            "## Terms Used\n\n"
-            "- \\( x_i \\): number of redundant components in subsystem \\( i \\)\n"
-            "- \\( R_i \\): reliability of a component in subsystem \\( i \\)\n"
-            "- \\( R(x) \\): overall system reliability\n"
-            "- \\( c_i \\): cost to add a component in subsystem \\( i \\)\n"
-            "- \\( C \\): maximum budget\n"
-            "- \\( n_{\\text{min}}, n_{\\text{max}} \\): lower and upper bounds for redundancy\n\n"
-
-            "Total reliability assumes parallel subsystems, which fail only if all components fail.\n\n"
-
-            "## Applications\n\n"
-            "- Critical systems (aircraft, satellites, medical equipment)\n"
-            "- Industrial and telecommunication systems\n\n"
-
-            "## RAP and Quantum Computing\n\n"
-            "RAP can be transformed into a QUBO model, enabling quantum techniques to solve larger and more complex problems."
-        ),
+        "##### Terms Used\n\n"
+        "- $x_i$: number of redundant components in subsystem $i$  \n"
+        "- $R_i$: reliability of a component in subsystem $i$  \n"
+        "- $R(x)$: overall system reliability  \n"
+        "- $c_i$: cost of adding a component to subsystem $i$  \n"
+        "- $C$: total budget available  \n"
+        "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: lower and upper bounds for redundancy allocation  \n"
+    ),
     }
 }
 
