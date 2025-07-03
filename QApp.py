@@ -168,18 +168,18 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "Upload de arquivo (arquivo .txt)",
         "ajuda_upload_botao": "Mostrar ajuda para upload",
         "ajuda_upload_texto": """
-        <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.5;">
-            <h4 style="color: #333; font-size: 16px; margin: 10px 0;">Instruções para Upload</h4>
+        <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
+            <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
             <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (<code>.txt</code>), onde cada linha representa uma instância, com o seguinte formato:</p>
             <pre style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;">[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</pre>
-            <ul style="padding-left: 20px; margin: 4px 0;">
-                <li><code>s</code>: Número de subsistemas;</li>
-                <li><code>nj_max</code>: Valor máximo dos componentes;</li>
-                <li><code>nj_min</code>: Valor mínimo dos componentes;</li>
-                <li><code>ctj_of</code>: Número de elementos em <code>Rjk_of</code> e <code>cjk_of</code>;</li>
-                <li><code>Rjk_of</code>: Lista de valores de confiabilidade dos componentes;</li>
-                <li><code>cjk_of</code>: Lista de valores de custos dos componentes;</li>
-                <li><code>C_of</code>: Limite de custo total;</li>
+            <ul style="padding-left: 20px; margin: 4px 0; list-style-type: disc;">
+                <li style="margin: 2px 0;"><code>s</code>: Número de subsistemas</li>
+                <li style="margin: 2px 0;"><code>nj_max</code>: Valor máximo dos componentes</li>
+                <li style="margin: 2px 0;"><code>nj_min</code>: Valor mínimo dos componentes</li>
+                <li style="margin: 2px 0;"><code>ctj_of</code>: Número de elementos em <code>Rjk_of</code> e <code>cjk_of</code></li>
+                <li style="margin: 2px 0;"><code>Rjk_of</code>: Lista de valores de confiabilidade dos componentes</li>
+                <li style="margin: 2px 0;"><code>cjk_of</code>: Lista de valores de custos dos componentes</li>
+                <li style="margin: 2px 0;"><code>C_of</code>: Limite de custo total</li>
             </ul>
             <p style="margin: 4px 0;">Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.</p>
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado:</p>
@@ -1151,7 +1151,7 @@ def main():
                         componentes_otimos.append(qaoa_result.x)
                         st.write(qaoa_result)
                         
-                        if i == (rodadas - 1):
+                        """if i == (rodadas - 1):
                             st.subheader(textos_otim["circuito_quantico"])
                             qaoa_circuit = mes.ansatz
                         
@@ -1175,7 +1175,7 @@ def main():
                                 </div>
                                 """,
                                 unsafe_allow_html=True
-                            )
+                            )"""
 
                 energia_otimizada = min(energias)
                 confiabilidade = 1 - math.exp(energia_otimizada)
