@@ -866,7 +866,9 @@ def main():
         mostrar_cartoes_de_area(textos)
 
     elif st.session_state['pagina'] == 'otimizacao':
-        st.subheader(textos["pagina_otimizacao"])
+        st.subheader(textos["pagina_otimizacao2"])
+
+        st.markdown(textos_otim["rap_descricao"])
         
         # Aplica estilos personalizados
         st.markdown("""
