@@ -204,7 +204,7 @@ TEXTOS_OPT = {
         "executando_vqe": "Executando VQE, por favor, aguarde...",
         "de": "de",
         "pagina_otimizacao": "Otimização Quântica",
-        "s": "Número de subsistemas (s)",
+        "s": "Número de subsistema",
         "nj_max": "Valor máximo dos componentes por subsistema",
         "nj_min": "Valor mínimo dos componentes por subsistema",
         "ctj_of": "Quantidade de tipos de componentes disponíveis",
@@ -275,21 +275,12 @@ TEXTOS_OPT = {
         "vqe_desc": "Variational Quantum Eigensolver is a hybrid quantum-classical algorithm that uses a variational quantum circuit to find the lowest energy state of a Hamiltonian, but it requires more parameters and may take longer computational time compared to QAOA.",
         "ajuda_upload_botao": "Show upload help",
         "ajuda_upload_texto": """
-        <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.5;">
-            <h4 style="color: #333; font-size: 16px; margin: 10px 0;">Upload Instructions</h4>
-            <p style="margin: 4px 0;">The input file must be a plain text file (<code>.txt</code>), where each line represents an instance, in the following format:</p>
-            <pre style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;">[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</pre>
-            <ul style="padding-left: 20px; margin: 4px 0;">
-                <li><code>s</code>: Number of subsystems;</li>
-                <li><code>nj_max</code>: Maximum number of components;</li>
-                <li><code>nj_min</code>: Minimum number of components;</li>
-                <li><code>ctj_of</code>: Number of elements in <code>Rjk_of</code> and <code>cjk_of</code>;</li>
-                <li><code>Rjk_of</code>: List of component reliability values;</li>
-                <li><code>cjk_of</code>: List of component cost values;</li>
-                <li><code>C_of</code>: Total cost limit;</li>
-            </ul>
-            <p style="margin: 4px 0;">Make sure the file strictly follows this format so the data can be read correctly.</p>
-            <p style="margin: 4px 0;">Click the button below to download a sample formatted file:</p>
+        <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
+            <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Upload Instructions</h4>
+            <p style="margin: 4px 0;">The input file must be a plain text file (.txt), where each line represents one instance in the following format:</p>
+            <p style="background-color: #eee; padding: 6px; border-radius: 2px; font-size: 10px; margin: 2px 0;"><code>[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
+            <p style="margin: 4px 0;">Ensure that the file strictly follows this format so that the data can be read correctly.</p>
+            <p style="margin: 4px 0;">Click the button below to download a pre-formatted test file.</p>
         </div>
         """,
         "botao_mostrar_instancia": "Show instance",
@@ -322,14 +313,14 @@ TEXTOS_OPT = {
         "executando_vqe": "Running VQE, please wait...",
         "de": "of",
         "pagina_otimizacao": "Quantum Optimization",
-        "s": "Number of subsystems (s)",
-        "nj_max": "Maximum number of components per subsystem (nj_max)",
-        "nj_min": "Minimum number of components per subsystem (nj_min)",
-        "ctj_of": "Number of available component types (ctj_of)",
-        "lista_componentes": "Enter the reliability (Rjk_of) and cost (cjk_of) for each component type:",
-        "confiabilidade": "Reliability of component (Rjk_of)",
-        "custo": "Cost of component (cjk_of)",
-        "custo_total_limite": "Maximum total cost limit (C_of)",
+        "s": "Number of subsystems",
+        "nj_max": "Maximum number of components per subsystem",
+        "nj_min": "Minimum number of components per subsystem",
+        "ctj_of": "Number of available component types",
+        "lista_componentes": "Enter the reliability and cost for each component type:",
+        "confiabilidade": "Reliability of component ",
+        "custo": "Cost of component",
+        "custo_total_limite": "Maximum total cost limit",
         "inicializacoes_titulo": "Initialization Methods",
         "inicializacoes_descricao": (
             "**Clustering:** parameters based on centers of optimal clusters.\n\n"
