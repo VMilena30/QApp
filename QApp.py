@@ -168,24 +168,24 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "Upload de arquivo (arquivo .txt)",
         "ajuda_upload_botao": "Mostrar ajuda para upload",
         "ajuda_upload_texto": """
-        #### Instruções para Upload
-        
-        O arquivo de entrada deve ser um arquivo de texto (`.txt`), onde cada linha representa uma instância, com o seguinte formato:
-        
-        `[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]`
-        
-        - **s**: Número de subsistemas
-        - **nj_max**: Valor máximo dos componentes
-        - **nj_min**: Valor mínimo dos componentes
-        - **ctj_of**: Número de elementos em Rjk_of e cjk_of
-        - **Rjk_of**: Lista de valores de confiabilidade dos componentes
-        - **cjk_of**: Lista de valores de custos dos componentes
-        - **C_of**: Limite de custo total
-        
-        Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.
-        
-        Clique no botão abaixo para baixar um arquivo de teste já formatado.
+        <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
+            <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
+            <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (<code>.txt</code>), onde cada linha representa uma instância, com o seguinte formato:</p>
+            <p style="background-color: #eee; padding: 8px; border-radius: 5px; font-size: 14px; margin: 4px 0;">[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</p>
+            <ul style="padding-left: 20px; margin: 4px 0; list-style-type: disc;">
+                <li style="margin: 2px 0;"><strong>s</strong>: Número de subsistemas</li>
+                <li style="margin: 2px 0;"><strong>nj_max</strong>: Valor máximo dos componentes</li>
+                <li style="margin: 2px 0;"><strong>nj_min</strong>: Valor mínimo dos componentes</li>
+                <li style="margin: 2px 0;"><strong>ctj_of</strong>: Número de elementos em Rjk_of e cjk_of</li>
+                <li style="margin: 2px 0;"><strong>Rjk_of</strong>: Lista de valores de confiabilidade dos componentes</li>
+                <li style="margin: 2px 0;"><strong>cjk_of</strong>: Lista de valores de custos dos componentes</li>
+                <li style="margin: 2px 0;"><strong>C_of</strong>: Limite de custo total</li>
+            </ul>
+            <p style="margin: 4px 0;">Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.</p>
+            <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado.</p>
+        </div>
         """,
+
         "botao_mostrar_instancia": "Mostrar instância",
         "selecionar_algoritmo": "Selecione o algoritmo quântico:",
         "tipo_inicializacao": "Selecione o método de inicialização dos parâmetros:",
