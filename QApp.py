@@ -405,8 +405,6 @@ TEXTOS_OPT = {
 
             "## RAP and Quantum Computing\n\n"
             "RAP can be transformed into a QUBO model, enabling quantum techniques to solve larger and more complex problems."
-
-            "---\n\n"
         ),
     }
 }
@@ -869,6 +867,7 @@ def main():
         st.subheader(textos["pagina_otimizacao2"])
 
         st.markdown(textos_otim["rap_descricao"])
+        st.divider()
         
         # Aplica estilos personalizados
         st.markdown("""
