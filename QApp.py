@@ -110,10 +110,13 @@ TEXTOS = {
         "info_ml": "Seção para descrever as técnicas de Machine Learning Quântico usadas.",
         "info_inf": "Seção para descrever as técnicas de Inferância Quântica usadas.",
         "titulo": "Seja bem-vindo ao <span style='color:#0d4376;'>QXplore</span>!",
-         "corpo": (
-             "Este aplicativo foi feito para ajudar você a conhecer e usar computação quântica em três áreas importantes.\n\n"
-             "Escolha uma dessas áreas para explorar e veja como essa tecnologia pode ajudar a resolver problemas do dia a dia."
-            ),
+        "corpo": (
+            "Bem-vindo ao QXplore!\n\n"
+            "O QXplore é um aplicativo focado em apoiar o estudo e a experimentação com computação quântica aplicada a problemas comuns da engenharia da confiabilidade.\n\n"
+            "Ele oferece três áreas principais onde você pode explorar como métodos quânticos podem ser usados para modelar e analisar desafios em sistemas e processos de confiabilidade.\n\n"
+            "Embora a tecnologia quântica ainda esteja em desenvolvimento, este aplicativo traz ferramentas e exemplos que ajudam a entender seu funcionamento e seu potencial, mesmo que ainda de forma exploratória, para problemas de engenharia.\n\n"
+            "Explore as áreas disponíveis para conhecer melhor essa tecnologia e como ela pode ser aplicada a casos reais."
+        ),
         "ini": "Página incial", 
         "pagina_referencias": "Referências"
     },
@@ -131,10 +134,13 @@ TEXTOS = {
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
         "info_inf": "Section describing the Quantum Inference techniques used.",
         "titulo": "Welcome to <span style='color:#0d4376;'>QXplore</span>!",
-            "corpo": (
-                "This application was created to help you learn and use quantum computing in three key areas.\n\n"
-                "Choose one of these areas to explore and see how this technology can help solve everyday problems."
-            ),
+        "corpo": (
+            "Welcome to QXplore!\n\n"
+            "QXplore is an application focused on supporting the study and experimentation of quantum computing applied to common problems in reliability engineering.\n\n"
+            "It offers three main areas where you can explore how quantum methods can be used to model and analyze challenges in system and process reliability.\n\n"
+            "Although quantum technology is still under development, this app provides tools and examples to help you understand its operation and potential, even if exploratory, in engineering problems.\n\n"
+            "Explore the available areas to better understand this technology and how it can be applied to real cases."
+        ),
         "ini": "Homepage",
         "pagina_referencias": "References"
     }
