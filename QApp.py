@@ -235,7 +235,40 @@ TEXTOS_OPT = {
         "area_de_aplicacao": "Áreas de Aplicação:",
         "circuito_quantico": "Circuito Quântico",
         "Baixar": "Baixar arquivo",
-        "download_text": "Caso deseje, faça o download do arquivo de teste exemplificado para usar ou visualizar."
+        "download_text": "Caso deseje, faça o download do arquivo de teste exemplificado para usar ou visualizar.", 
+        "rap_descricao": (
+            "**Problema de Alocação de Redundâncias (RAP)**\n\n"
+            "O Problema de Alocação de Redundâncias é um problema clássico da engenharia de confiabilidade que consiste em determinar "
+            "quantos componentes redundantes alocar em cada subsistema para maximizar a confiabilidade do sistema total, respeitando restrições de custo.\n\n"
+
+            "## Formulação Matemática\n\n"
+            "Seja um sistema com \\( s \\) subsistemas, o objetivo é maximizar a confiabilidade total \\( R(x) \\):\n\n"
+            "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
+
+            "### Restrições:\n\n"
+            "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
+            "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
+            "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
+
+            "## Termos Utilizados\n\n"
+            "- \\( x_i \\): número de componentes redundantes no subsistema \\( i \\)\n"
+            "- \\( R_i \\): confiabilidade de um componente do subsistema \\( i \\)\n"
+            "- \\( R(x) \\): confiabilidade global do sistema\n"
+            "- \\( c_i \\): custo de adicionar um componente no subsistema \\( i \\)\n"
+            "- \\( C \\): orçamento máximo\n"
+            "- \\( n_{\\text{min}}, n_{\\text{max}} \\): limites inferior e superior para redundâncias\n\n"
+
+            "A confiabilidade total considera subsistemas em paralelo, que falham somente se todos os componentes falharem.\n\n"
+
+            "## Aplicações\n\n"
+            "- Sistemas críticos (aeronaves, satélites, equipamentos médicos)\n"
+            "- Sistemas industriais e de telecomunicações\n\n"
+
+            "## RAP e Computação Quântica\n\n"
+            "O RAP pode ser convertido em um modelo QUBO, permitindo o uso de técnicas quânticas para resolver problemas maiores e mais complexos."
+
+            "---\n\n"
+        ),
     },
     "en": {
         "idioma": "Language",
@@ -342,6 +375,39 @@ TEXTOS_OPT = {
         "modo_leitura_upload": "File upload (.txt file)",
         "Baixar": "Download file",
         "download_text": "If you wish, download the sample test file to use or visualize.",
+         "rap_descricao": (
+            "**Redundancy Allocation Problem (RAP)**\n\n"
+            "The Redundancy Allocation Problem is a classic reliability engineering problem that involves determining "
+            "how many redundant components to allocate in each subsystem to maximize the total system reliability, subject to cost constraints.\n\n"
+
+            "## Mathematical Formulation\n\n"
+            "Consider a system with \\( s \\) subsystems, aiming to maximize the total reliability \\( R(x) \\):\n\n"
+            "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
+
+            "### Constraints:\n\n"
+            "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
+            "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
+            "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
+
+            "## Terms Used\n\n"
+            "- \\( x_i \\): number of redundant components in subsystem \\( i \\)\n"
+            "- \\( R_i \\): reliability of a component in subsystem \\( i \\)\n"
+            "- \\( R(x) \\): overall system reliability\n"
+            "- \\( c_i \\): cost to add a component in subsystem \\( i \\)\n"
+            "- \\( C \\): maximum budget\n"
+            "- \\( n_{\\text{min}}, n_{\\text{max}} \\): lower and upper bounds for redundancy\n\n"
+
+            "Total reliability assumes parallel subsystems, which fail only if all components fail.\n\n"
+
+            "## Applications\n\n"
+            "- Critical systems (aircraft, satellites, medical equipment)\n"
+            "- Industrial and telecommunication systems\n\n"
+
+            "## RAP and Quantum Computing\n\n"
+            "RAP can be transformed into a QUBO model, enabling quantum techniques to solve larger and more complex problems."
+
+            "---\n\n"
+        ),
     }
 }
 
