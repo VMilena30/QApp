@@ -923,41 +923,32 @@ def main():
         st.divider()
         st.subheader(textos_otim["aplicacao"])
         
-        # Lê os parâmetros da URL corretamente
-        params = st.query_params
-        pagina = params.get("pagina", ["principal"])[0]
-    
-        # Corrige a atribuição da página
-        st.session_state["pagina"] = "otimizacao"
-    
-        # CSS + botão fixo de ajuda no canto superior direito
+        # CSS para fixar o botão no topo direito
         st.markdown("""
             <style>
-                #ajuda-btn {
+                .fixed-help-button {
                     position: fixed;
-                    top: 50px;
-                    right: 30px;
+                    top: 15px;
+                    right: 15px;
                     z-index: 9999;
-                    background-color: #f9f9f9;
-                    color: #333;
-                    border: 1px solid #ccc;
+                }
+                .fixed-help-button button {
                     border-radius: 50%;
+                    font-size: 20px;
                     width: 40px;
                     height: 40px;
-                    font-size: 22px;
-                    font-weight: bold;
-                    text-align: center;
-                    line-height: 38px;
-                    text-decoration: none;
-                    box-shadow: 1px 1px 6px rgba(0,0,0,0.1);
-                }
-                #ajuda-btn:hover {
-                    background-color: #e0e0e0;
+                    padding: 0;
                 }
             </style>
-            <a id="ajuda-btn" href="/?pagina=explicacao_otimizacao">?</a>
         """, unsafe_allow_html=True)
-
+        
+        # Criação do botão fixo com st.button (sem redirecionamento)
+        help_button_placeholder = st.empty()
+        with help_button_placeholder.container():
+            st.markdown('<div class="fixed-help-button">', unsafe_allow_html=True)
+            if st.button("?", key="ajuda"):
+                st.session_state["pagina"] = "explicacao_otimizacao"
+            st.markdown('</div>', unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
