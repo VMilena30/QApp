@@ -120,7 +120,8 @@ TEXTOS = {
         ),
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
-        "pagina_info": "Informação"
+        "pagina_info": "Ajuda", 
+        "pagina_info2": "Informação sobre conceitos nas três áreas"
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -146,7 +147,8 @@ TEXTOS = {
         ),
         "ini": "Homepage",
         "pagina_referencias": "References",
-        "pagina_info": "Information"
+        "pagina_info": "Help",
+        "pagina_info2": "Information about concepts in the three areas"
     }
 }
 
@@ -1771,7 +1773,18 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'info':
+        st.subheader(textos["pagina_info"])
         mostrar_cartoes_de_info(textos)
+
+        if st.session_state['pagina'] = 'otimizacao_info':
+            st.subheader(textos["pagina_info"])
+
+        elif st.subheader(textos["ml_info"]):
+            st.subheader(textos["pagina_info"])
+
+        elif st.subheader(textos["pagina_info"]):
+            st.session_state['pagina'] = 'inferencia_info'
+
 
         with st.sidebar:
             if st.button(textos["ini"]):
