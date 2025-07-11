@@ -1776,14 +1776,14 @@ def main():
         st.subheader(textos["pagina_info"])
         mostrar_cartoes_de_info(textos)
 
-        if st.session_state['pagina'] = 'otimizacao_info':
+        if st.session_state['pagina'] == 'otimizacao_info':
             st.subheader(textos["pagina_info"])
 
-        elif st.subheader(textos["ml_info"]):
+        elif st.session_state['pagina'] == 'ml_info':
             st.subheader(textos["pagina_info"])
 
-        elif st.subheader(textos["pagina_info"]):
-            st.session_state['pagina'] = 'inferencia_info'
+        elif st.session_state['pagina'] == 'inferencia_info':
+            st.subheader(textos["pagina_info"])
 
 
         with st.sidebar:
