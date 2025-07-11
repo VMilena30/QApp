@@ -282,7 +282,7 @@ TEXTOS_OPT = {
             "- Confiabilidade e custo de cada componente.\n"
             "- Limite máximo de custo: valor total disponível para uso na alocação."
         ),
-        "info2.1": (
+        "info21": (
             "1.2 Upload de Arquivo (.txt)\n"
             "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma. "
             "Essa opção é indicada para casos com grande volume de dados ou reuso de configurações anteriores."
@@ -1619,7 +1619,7 @@ def main():
         
         st.header(textos_otim["info2_titulo"])
         st.write(textos_otim["info2"])
-        st.write(textos_otim["info2.1"])
+        st.write(textos_otim["info21"])
         
         st.header(textos_otim["info3_titulo"])
         st.write(textos_otim["info3"])
@@ -1627,7 +1627,7 @@ def main():
         st.header(textos_otim["info4_titulo"])
         st.write(textos_otim["info4"])
         
-        if st.button("Voltar para Aplicação"):
+        if st.button("Aplicação"):
             st.session_state['pagina'] = 'otimizacao'
 
     elif st.session_state['pagina'] == 'ml':
