@@ -857,33 +857,35 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
+    
+        st.markdown("""
+            <style>
+                #botao-ajuda {
+                    position: fixed;
+                    bottom: 100px;  /* Distância do rodapé */
+                    right: 20px;
+                    z-index: 9999;
+                    background-color: #0e1117;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+                }
+                #botao-ajuda:hover {
+                    background-color: #262730;
+                }
+            </style>
+            <a href="#ajuda">
+                <button id="botao-ajuda">?</button>
+            </a>
+        """, unsafe_allow_html=True)
 
-    st.markdown("""
-        <style>
-            #botao-ajuda {
-                position: fixed;
-                bottom: 100px;  /* Distância do rodapé */
-                right: 20px;
-                z-index: 9999;
-                background-color: #0e1117;
-                color: white;
-                border: none;
-                border-radius: 50%;
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
-                cursor: pointer;
-                box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            }
-            #botao-ajuda:hover {
-                background-color: #262730;
-            }
-        </style>
-        <a href="#ajuda">
-            <button id="botao-ajuda">?</button>
-        </a>
-    """, unsafe_allow_html=True)
-
+        if st.button("🔍", key="botao_ajuda_oculto"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
         
         # Aplica estilos personalizados
         st.markdown("""
