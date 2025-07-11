@@ -907,6 +907,10 @@ def main():
         if st.button("🔍", key="botao_ajuda_oculto"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
 
+        # Botão de interrogação fixo no topo
+        if st.button("?", key="ajuda_fixa"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+
 
         
         # Aplica estilos personalizados
