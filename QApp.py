@@ -1120,15 +1120,15 @@ def main():
             /* Pega o botão pelo atributo title (o único botão com interrogação) */
             div[data-testid="stButton"] button:has-text("?") {
                 background-color: transparent;
-                border: 2px solid #03518C;
+                border: 1px solid #03518C;
                 border-radius: 50%;
-                width: 30px;
-                height: 30px;
+                width: 10px;
+                height: 10px;
                 font-size: 14px;
                 font-weight: bold;
                 color: #03518C;
                 padding: 0;
-                margin-top: 8px;
+                margin-top: 2px;
                 cursor: pointer;
             }
         
