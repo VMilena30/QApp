@@ -851,13 +851,7 @@ def main():
         mostrar_cartoes_de_area(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
-        col1, col2 = st.columns([0.9, 0.1])
-    
-        with col1:
-            st.subheader(textos["pagina_otimizacao2"])
-        with col2:
-            if st.button("❓"):
-                st.session_state['pagina'] = 'explicacao_otimizacao'
+        st.subheader(textos["pagina_otimizacao2"])
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -903,31 +897,33 @@ def main():
         
             <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
         """, unsafe_allow_html=True)
-        # Botão de interrogação fixo no topo
-        if st.button("?", key="ajuda_fixa"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # CSS para fixar o botão no canto superior direito
-        st.markdown("""
-            <style>
-                button[kind="secondary"] {
-                    position: fixed !important;
-                    top: 20px;
-                    right: 20px;
-                    z-index: 9999;
-                    border-radius: 50%;
-                    width: 48px;
-                    height: 48px;
-                    font-size: 24px;
-                    background-color: #0e1117;
-                    color: white;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-                }
-                button[kind="secondary"]:hover {
-                    background-color: #262730;
-                }
-            </style>
-        """, unsafe_allow_html=True)
+     # Espaço reservado pro botão (sem quebrar layout)
+    espaco_botao = st.empty()
+    if espaco_botao.button("?", key="ajuda_fixa"):
+        st.session_state['pagina'] = 'explicacao_otimizacao'
+    
+    # CSS fixando o botão no topo direito
+    st.markdown("""
+        <style>
+            button[kind="secondary"] {
+                position: fixed !important;
+                top: 20px;
+                right: 20px;
+                z-index: 9999;
+                border-radius: 50%;
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                background-color: #0e1117;
+                color: white;
+                box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            }
+            button[kind="secondary"]:hover {
+                background-color: #262730;
+            }
+        </style>
+    """, unsafe_allow_html=True)
 
 
         
