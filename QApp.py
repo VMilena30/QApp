@@ -332,11 +332,11 @@ TEXTOS_OPT = {
             "- Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
         "help1": "Como você prefere informar os dados do seu sistema para a ferramenta?",
-        "help2": , 
-        "help3": , 
-        "help4": ,
-        "help5": ,
-        "help6": ,
+        "help2": "OI", 
+        "help3": "OI", 
+        "help4": "OI",
+        "help5": "OI",
+        "help6": "OI",
 
         
     },
@@ -528,11 +528,11 @@ TEXTOS_OPT = {
             "and increase if needed for better convergence."
         ), 
         "help1": "How would you like to provide your system data to the tool?",
-        "help2": , 
-        "help3": , 
-        "help4": ,
-        "help5": ,
-        "help6": ,
+        "help2": "OI", 
+        "help3": "OI", 
+        "help4": "OI",
+        "help5": "OI",
+        "help6": "OI",
         
 
     }
