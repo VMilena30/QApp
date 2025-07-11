@@ -777,7 +777,7 @@ def mostrar_cartoes_de_info(textos):
         st.write("")
     with col2:
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
-            st.session_state['pagina'] = 'otimizacao_info'
+            st.session_state['pagina'] = 'explicacao_otimizacao'
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
@@ -1092,7 +1092,7 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-        col1, col2 = st.columns([10, 1])
+        col1, col2 = st.columns([7, 3])
         
         with col1:
             st.subheader("Aplicação")
@@ -1619,7 +1619,7 @@ def main():
         
         st.header(textos_otim["info2_titulo"])
         st.write(textos_otim["info2"])
-        st.write(textos__otim["info2.1"])
+        st.write(textos_otim["info2.1"])
         
         st.header(textos_otim["info3_titulo"])
         st.write(textos_otim["info3"])
