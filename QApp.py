@@ -611,6 +611,8 @@ def mostrar_cartoes_de_info(textos):
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
+            st.title(textos_ml["info1_titulo"])
+            st.header(textos_ml["info1"])
             
     with col4:
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
