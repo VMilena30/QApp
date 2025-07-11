@@ -956,13 +956,13 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-        params = st.experimental_get_query_params()
-        if params.get("ajuda_click") == ["1"]:
+        # Detecta o clique via query param (ex: ?ajuda=1)
+        if st.query_params.get("ajuda") == "1":
             st.session_state["pagina"] = "explicacao_otimizacao"
-            st.experimental_set_query_params()  # limpa a URL após o clique
-            st.rerun() 
+            st.query_params.clear()  # limpa a URL depois do clique
+            st.rerun()
         
-        # Interface: título + botão ajuda
+        # Interface: título e botão bonito
         col1, col2 = st.columns([10, 1])
         
         with col1:
@@ -993,9 +993,9 @@ def main():
                     }
                 </style>
         
-                <div class="ajuda-bolinha" onclick="window.location.search='?ajuda_click=1';">?</div>
+                <div class="ajuda-bolinha" onclick="window.location.search='?ajuda=1';">?</div>
             """, unsafe_allow_html=True)
-        
+    
         # Aplica estilos personalizados
         st.markdown("""
             <style>
