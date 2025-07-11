@@ -858,27 +858,27 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
+        # Cria um botão invisível de Streamlit com ID próprio (em container com estilo invisível)
+        placeholder = st.empty()
+        with placeholder.container():
+            # Este botão estará visível para o DOM mas invisível para o usuário
+            clicked = st.button("🔍", key="btn_explicacao")
         
-        # Botão escondido com ID específico
-        with st.container():
-            st.markdown("""
-                <div id="botao_ajuda_container">
-                    <button id="botao_ajuda_streamlit">🔍</button>
-                </div>
-                <style>
-                    #botao_ajuda_container {
-                        display: none;
-                    }
-                </style>
-            """, unsafe_allow_html=True)
-        
-        # Botão verdadeiro do Streamlit (precisa estar no DOM para ser clicado pelo JS)
-        clicked = st.button("🔍", key="btn_explicacao")
-        
+        # Lógica: se clicado, mudar a página
         if clicked:
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # Botão flutuante estilizado com HTML e JS
+        # CSS para esconder APENAS o botão "🔍" (sem afetar outros)
+        st.markdown("""
+            <style>
+                button[title="btn_explicacao"] {
+                    position: absolute;
+                    left: -9999px;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+        
+        # Botão flutuante fixo no canto superior direito
         st.markdown("""
             <style>
                 #ajuda-fixa {
@@ -916,7 +916,8 @@ def main():
             </script>
         
             <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
-        """, unsafe_allow_html=True)
+        """, unsafe_allow_html=True)        
+
         
         # Aplica estilos personalizados
         st.markdown("""
