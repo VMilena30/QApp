@@ -834,6 +834,31 @@ def main():
     textos_ml = TEXTOS_ML[lang]
 
     # 4 - referências em expander
+    st.markdown("""
+        <style>
+            #botao-ajuda {
+                position: fixed;
+                bottom: 20px;
+                right: 20px;
+                z-index: 9999;
+                background-color: #0e1117;
+                color: white;
+                border: none;
+                border-radius: 50%;
+                width: 48px;
+                height: 48px;
+                font-size: 24px;
+                cursor: pointer;
+                box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+            }
+            #botao-ajuda:hover {
+                background-color: #262730;
+            }
+        </style>
+        <a href="#ajuda">
+            <button id="botao-ajuda">?</button>
+        </a>
+    """, unsafe_allow_html=True)
 
     mostrar_logo_topo()
     
@@ -858,7 +883,6 @@ def main():
         with col2:
             if st.button("❓"):
                 st.session_state['pagina'] = 'explicacao_otimizacao'
-                st.experimental_rerun()  # Atualiza a interface imediatamente
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -918,7 +942,7 @@ def main():
         modo_leitura = st.radio(
             textos_otim["modo_leitura_label"],
             (textos_otim["modo_leitura_manual"], textos_otim["modo_leitura_upload"]),
-            key=f"modo_leitura_{lang}"
+            key=f"modo_leitura_{lang}", help= "OI"
         )
         
         dados = []
@@ -1360,7 +1384,6 @@ def main():
         """)
         if st.button("⬅️ Voltar para Otimização"):
             st.session_state['pagina'] = 'otimizacao'
-            st.experimental_rerun()
 
     elif st.session_state['pagina'] == 'ml':
         st.subheader(textos["pagina_ml"])
