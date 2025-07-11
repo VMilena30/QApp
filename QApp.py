@@ -1855,7 +1855,7 @@ def main():
 
     elif st.session_state['pagina'] == 'ml_info':
         st.title(textos_ml["info1_titulo"])
-        st.header(textos_ml["info1"])
+        st.write(textos_ml["info1"])
 
         st.subheader(textos_ml["info2_titulo"])
         st.write(textos_ml["info2"])
