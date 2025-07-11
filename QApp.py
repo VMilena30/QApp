@@ -858,12 +858,13 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
 
-        if st.button("?", key="ajuda_fixa"):
+        if st.button("?", key="botao_duvida"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
+
         
         st.markdown("""
             <style>
-                button[kind="secondary"] {
+                button[data-testid="stButton-botao_duvida"] {
                     position: fixed !important;
                     top: 60px;
                     right: 60px;
@@ -877,11 +878,12 @@ def main():
                     cursor: pointer;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                button[kind="secondary"]:hover {
+                button[data-testid="stButton-botao_duvida"]:hover {
                     background-color: #262730;
                 }
             </style>
         """, unsafe_allow_html=True)
+
         
         # Aplica estilos personalizados
         st.markdown("""
@@ -1359,7 +1361,13 @@ def main():
                 st.subheader(textos_otim['medidas_energia'])
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
-                
+
+
+        
+            with st.sidebar:
+                if st.button(textos["ini"]):
+                    st.session_state['pagina'] = 'inicio'
+                    
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
         st.title("📘 Explicação sobre Otimização")
