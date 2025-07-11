@@ -962,7 +962,7 @@ def main():
             st.subheader("Aplicação")
         
        with col2:
-            # Cria botão de ajuda com estilo exclusivo
+               # Cria botão de ajuda com estilo exclusivo
             components.html("""
                 <div style="display: flex; justify-content: flex-end;">
                     <form action="#" onsubmit="handleClick(); return false;">
@@ -997,6 +997,7 @@ def main():
                     }
                 </style>
             """, height=50)
+
         
         # Captura do clique usando JS → Streamlit
         st.markdown("""
