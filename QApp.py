@@ -750,6 +750,44 @@ def mostrar_ml(textos_ml):
         st.markdown(f"**Angle Encoding:** {textos_ml['desc_angle']}")
         st.markdown(f"**Amplitude Encoding:** {textos_ml['desc_ampli']}")
         st.markdown(f"**Pauli Feature Map:** {textos_ml['desc_pauli']}")
+
+def mostrar_ml_info(textos, textos_ml):
+    st.title(textos.get("pagina_referencias_titulo", "Referências"))
+
+    st.header(textos_ml["pagina_ml"])
+    st.markdown("""
+    - **Araújo, L. M. M., Lins, I., Aichele, D., Maior, C., Moura, M., & Droguett, E. (2022).**  
+      *Review of Quantum(-Inspired) Optimization Methods for System Reliability Problems.*  
+      16th International Probabilistic Safety Assessment and Management Conference - PSAM 16.
+    
+    - **Araújo, L. M. M., Lins, I., Maior, C., Aichele, D., & Droguett, E. (2022).**  
+      *A Quantum Optimization Modeling for Redundancy Allocation Problems.*  
+      32nd European Safety and Reliability (ESREL) Conference.
+    
+    - **Araújo, L. M. M., Lins, I., Maior, C. S., Moura, M., & Droguett, E. (2023b).**  
+      *A Linearization Proposal for the Redundancy Allocation Problem.*  
+      INFORMS Annual Meeting.
+    
+    - **Araújo, L. M. M., Raupp, L., Lins, I., & Moura, M. (2024).**  
+      *Quantum Approaches for Reliability Estimation: A Systematic Literature Review.*  
+      34th European Safety and Reliability (ESREL) Conference.
+    
+    - **Bezerra, V., Araújo, L., Lins, I., Maior, C., & Moura, M. (2024a).**  
+      *Exploring initialization strategies for quantum optimization algorithms to solve the redundancy allocation problem.*  
+      34th European Safety and Reliability (ESREL) Conference.
+    
+    - **Bezerra, V., Araújo, L., Lins, I., Maior, C., & Moura, M. (2024b).**  
+      *Quantum optimization applied to the allocation of redundancies in systems in the Oil & Gas industry.*  
+      Anais do LVI Simpósio Brasileiro de Pesquisa Operacional.
+    
+    - **Bezerra, V. M. A., Araújo, L. M. M., Lins, I. D., Maior, C. B. S., & Moura, M. J. D. C. (2024).**  
+      *Optimization of system reliability based on quantum algorithms considering the redundancy allocation problem.*  
+      [DOI: 10.48072/2525-7579.roge.2024.3481](https://doi.org/10.48072/2525-7579.roge.2024.3481)
+    
+    - **Lins, I., Araújo, L., Maior, C., Teixeira, E., Bezerra, P., Moura, M., & Droguett, E. (2023).**  
+      *Quantum Optimization for Redundancy Allocation Problem Considering Various Subsystems.*  
+      33th European Safety and Reliability (ESREL) Conference.
+        """)
         
 def mostrar_inf(textos):
     with st.sidebar.expander(textos["pagina_inferencia"]):
@@ -1778,7 +1816,7 @@ def main():
             st.header(textos_otim["pagina_otimizacao"])
 
         elif st.session_state['pagina'] == 'ml_info':
-            st.subheader(textos["pagina_info"])
+            mostrar_ml_info(textos, textos_ml)
 
         elif st.session_state['pagina'] == 'inferencia_info':
             st.subheader(textos["pagina_info"])
