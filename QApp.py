@@ -602,16 +602,13 @@ def mostrar_cartoes_de_info(textos):
     with col1:
         st.write("")
     with col2:
-        st.image("opt3.png", width=150)
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao_info'
     with col3:
-        st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
             
     with col4:
-        st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia_info'
     with col5:
