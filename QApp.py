@@ -919,19 +919,18 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
         st.subheader(textos["pagina_otimizacao2"])
-
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
-
         st.subheader(textos_otim["aplicacao"])
         
-        params = st.experimental_get_query_params()
+        # Lê os parâmetros da URL corretamente
+        params = st.query_params
         pagina = params.get("pagina", ["principal"])[0]
-        
-        # Atualiza o estado de sessão
-        st.session_state["pagina"] = otimizacao
-        
-        # CSS + HTML para botão fixo de ajuda no canto superior direito
+    
+        # Corrige a atribuição da página
+        st.session_state["pagina"] = "otimizacao"
+    
+        # CSS + botão fixo de ajuda no canto superior direito
         st.markdown("""
             <style>
                 #ajuda-btn {
