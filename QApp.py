@@ -842,8 +842,7 @@ def main():
     mostrar_ml(textos_ml)
     mostrar_inf(textos)
 
-    if 'pagina' not in st.session_state:
-        st.session_state['pagina'] = 'inicio'
+    if st.session_state['pagina'] == 'inicio':
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
         
