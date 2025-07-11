@@ -943,8 +943,8 @@ def main():
             <style>
                 #botao-topo-fixo {
                     position: fixed;
-                    top: 15px;
-                    right: 20px;
+                    top: 50px;
+                    right: 30px;
                     z-index: 10000;
                     background-color: #0e1117;
                     color: white;
