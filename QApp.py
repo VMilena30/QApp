@@ -958,28 +958,39 @@ def main():
         
         col1, col2 = st.columns([10, 1])  # col1 = texto, col2 = botão pequeno
         
-        with col1:
-            st.subheader("Aplicação")
-    
-        with col2:
-            st.markdown("""
-                <style>
-                    .circle-button button {
-                        border-radius: 50%;
-                        font-size: 16px;
-                        width: 30px;
-                        height: 30px;
-                        padding: 0;
-                        margin-top: 10px;
-                    }
-                </style>
-            """, unsafe_allow_html=True)
-            with st.container():
-                st.markdown('<div class="circle-button">', unsafe_allow_html=True)
-                if st.button("?", key="ajuda_aplicacao"):
-                    st.session_state["pagina"] = "explicacao_otimizacao"
-                st.markdown('</div>', unsafe_allow_html=True)
-
+        # Linha com 'Aplicação' + botão de ajuda discreto na mesma linha
+            col1, col2 = st.columns([10, 1])  # col1: título, col2: botão
+        
+            with col1:
+                st.subheader("Aplicação")
+        
+            with col2:
+                # Estilo de botão bolinha minimalista
+                st.markdown("""
+                    <style>
+                        .tiny-circle-button button {
+                            background-color: #eee;
+                            border: none;
+                            border-radius: 50%;
+                            width: 22px;
+                            height: 22px;
+                            font-size: 14px;
+                            color: #444;
+                            padding: 0;
+                            line-height: 0;
+                        }
+                        .tiny-circle-button button:hover {
+                            background-color: #ddd;
+                            color: black;
+                        }
+                    </style>
+                """, unsafe_allow_html=True)
+        
+                with st.container():
+                    st.markdown('<div class="tiny-circle-button">', unsafe_allow_html=True)
+                    if st.button("?", key="ajuda_aplicacao"):
+                        st.session_state["pagina"] = "explicacao_otimizacao"
+                    st.markdown('</div>', unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
