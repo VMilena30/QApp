@@ -925,56 +925,25 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Botão invisível do Streamlit, que será acionado via JS
-        if st.button("explicacao_trigger", key="explicacao_btn", type="tertiary"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
+        # Container fixo no topo com botão real
+        top_button = st.empty()
         
-        # Esconde o botão "terciary" com texto neutro
+        # Aplica o CSS para fixar esse container no topo
         st.markdown("""
             <style>
-                button[kind="tertiary"] {
-                    display: none !important;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-        
-        # HTML + JS do botão fixo no topo direito
-        st.markdown("""
-            <style>
-                #botao-topo-fixo {
-                    position: fixed;
-                    top: 50px;
-                    right: 30px;
+                .element-container:has(> div[data-testid="stVerticalBlock"] > div > div:has(button)) {
+                    position: fixed !important;
+                    top: 10px;
+                    right: 10px;
                     z-index: 10000;
-                    background-color: #0e1117;
-                    color: white;
-                    padding: 10px 16px;
-                    border: none;
-                    border-radius: 8px;
-                    font-size: 14px;
-                    cursor: pointer;
-                    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
-                }
-                #botao-topo-fixo:hover {
-                    background-color: #262730;
                 }
             </style>
-        
-            <script>
-                function irParaExplicacao() {
-                    const botoes = window.parent.document.querySelectorAll('button[kind="tertiary"]');
-                    for (let botao of botoes) {
-                        if (botao.innerText.includes("explicacao_trigger")) {
-                            botao.click();
-                            break;
-                        }
-                    }
-                }
-            </script>
-        
-            <button id="botao-topo-fixo" onclick="irParaExplicacao()">Ir para Explicação</button>
         """, unsafe_allow_html=True)
-
+        
+        # Coloca o botão real dentro do container
+        with top_button.container():
+            if st.button("Ir para Explicação"):
+                st.session_state["pagina"] = "explicacao_otimizacao"
         
         # Aplica estilos personalizados
         st.markdown("""
