@@ -956,37 +956,39 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
+        col1, col2 = st.columns([10, 1])
         
-        # Linha com 'Aplicação' + botão de ajuda discreto na mesma linha
-        col1, col2 = st.columns([10, 1])  # col1: título, col2: botão
-    
         with col1:
             st.subheader("Aplicação")
-    
+        
         with col2:
-            # Estilo de botão bolinha minimalista
+            # CSS para botão redondo, pequeno e discreto
             st.markdown("""
                 <style>
-                    .tiny-circle-button button {
-                        background-color: #eee;
+                    .help-button button {
+                        background-color: #e6f0fa;
                         border: none;
                         border-radius: 50%;
-                        width: 22px;
-                        height: 22px;
+                        width: 26px;
+                        height: 26px;
                         font-size: 14px;
-                        color: #444;
+                        font-weight: bold;
+                        color: #003366;
                         padding: 0;
-                        line-height: 0;
+                        text-align: center;
+                        box-shadow: 0 0 2px rgba(0,0,0,0.15);
+                        margin-top: 12px;
                     }
-                    .tiny-circle-button button:hover {
-                        background-color: #ddd;
-                        color: black;
+                    .help-button button:hover {
+                        background-color: #d0e2f2;
+                        color: #001f33;
+                        cursor: pointer;
                     }
                 </style>
             """, unsafe_allow_html=True)
-    
+        
             with st.container():
-                st.markdown('<div class="tiny-circle-button">', unsafe_allow_html=True)
+                st.markdown('<div class="help-button">', unsafe_allow_html=True)
                 if st.button("?", key="ajuda_aplicacao"):
                     st.session_state["pagina"] = "explicacao_otimizacao"
                 st.markdown('</div>', unsafe_allow_html=True)
