@@ -858,10 +858,16 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
 
+        # Cria botão Streamlit real e aplica CSS para deixá-lo fixo e estilizado
+        espaco_botao = st.empty()
+        if espaco_botao.button("?", key="ajuda_fixa"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        # Aplica o estilo fixo no topo direito
         st.markdown("""
             <style>
-                #ajuda-fixa {
-                    position: fixed;
+                button[kind="secondary"] {
+                    position: fixed !important;
                     top: 60px;
                     right: 60px;
                     z-index: 10000;
@@ -872,36 +878,15 @@ def main():
                     width: 60px;
                     height: 60px;
                     font-size: 24px;
-                    text-align: center;
-                    line-height: 48px;
                     cursor: pointer;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                #ajuda-fixa:hover {
+                button[kind="secondary"]:hover {
                     background-color: #262730;
                 }
             </style>
-        
-            <script>
-                // Dispara um clique oculto em botão Streamlit
-                function acionarBotaoAjuda() {
-                    const botoes = window.parent.document.querySelectorAll('button[kind="secondary"]');
-                    for (let botao of botoes) {
-                        if (botao.innerText.includes("🔍")) {
-                            botao.click();
-                            break;
-                        }
-                    }
-                }
-            </script>
-        
-            <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
         """, unsafe_allow_html=True)
-        
-     # Espaço reservado pro botão (sem quebrar layout)
-    espaco_botao = st.empty()
-    if espaco_botao.button("?", key="ajuda_fixa"):
-        st.session_state['pagina'] = 'explicacao_otimizacao'
+
 
         
         # Aplica estilos personalizados
