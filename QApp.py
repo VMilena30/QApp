@@ -857,33 +857,6 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
-
-        # Botão “?” fixo, renderizado no final do script
-        if st.button("?", key="botao_duvida"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-        
-        st.markdown("""
-            <style>
-                button[data-testid="stButton-botao_duvida"] {
-                    position: fixed !important;
-                    top: 60px !important;
-                    right: 60px !important;
-                    z-index: 10000 !important;
-                    background-color: #03518C !important;
-                    color: white !important;
-                    border-radius: 50% !important;
-                    width: 60px !important;
-                    height: 60px !important;
-                    font-size: 24px !important;
-                    cursor: pointer !important;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
-                }
-                button[data-testid="stButton-botao_duvida"]:hover {
-                    background-color: #262730 !important;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-
         
         # Aplica estilos personalizados
         st.markdown("""
@@ -1362,11 +1335,38 @@ def main():
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
 
+        if st.button("?", key="botao_duvida"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        st.markdown("""
+            <style>
+                button[data-testid="stButton-botao_duvida"] {
+                    position: fixed !important;
+                    top: 20px !important;
+                    right: 20px !important;
+                    z-index: 10000 !important;
+                    background-color: #03518C !important;
+                    color: white !important;
+                    border-radius: 50% !important;
+                    width: 50px !important;
+                    height: 50px !important;
+                    font-size: 28px !important;
+                    line-height: 50px !important;
+                    text-align: center !important;
+                    cursor: pointer !important;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
+                    padding: 0 !important;
+                    border: none !important;
+                }
+                button[data-testid="stButton-botao_duvida"]:hover {
+                    background-color: #262730 !important;
+                }
+            </style>
+        """, unsafe_allow_html=True)
 
         
-            with st.sidebar:
-                if st.button(textos["ini"]):
-                    st.session_state['pagina'] = 'inicio'
+        with st.sidebar:
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
                     
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
