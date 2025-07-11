@@ -103,6 +103,7 @@ TEXTOS = {
         "pagina_otimizacao2": "Otimização Quântica em Problemas de Alocação de Redundâncias",
         "pagina_inferencia": "Inferência Quântica",
         "pagina_ml": "Aprendizagem de Máquina Quântica",
+        "pagina_ml2": "Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas",
         "instancia_input": "Digite alguma coisa para testar a instância:",
         "instancia_recebida": "Instância recebida:",
         "idioma": "Escolha o idioma:", 
@@ -126,6 +127,7 @@ TEXTOS = {
         "pagina_otimizacao2": "Quantum Optimization in Redundancy Allocation Problems",
         "pagina_inferencia": "Quantum Inference",
         "pagina_ml": "Quantum Machine Learning",
+        "pagina_ml2": "Quantum Machine Learning in classification problems and failure prediction",
         "instancia_input": "Type something to test the instance:",
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
@@ -385,7 +387,7 @@ TEXTOS_OPT = {
 
 TEXTOS_ML = {
     "pt": {
-        "pagina_ml": "Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas",
+        "pagina_ml": "Aprendizagem de Máquina Quântica",
         "idioma_label": "Idioma / Language",
         "dataset_opcao": "Escolha entre dados já existentes de vibração (rolamentos):",
         "selecione_base": "Selecione a base",
@@ -429,7 +431,7 @@ TEXTOS_ML = {
         "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito."
     },
     "en": {
-        "pagina_ml": "Quantum Machine Learning in classification problems and failure prediction",
+        "pagina_ml": "Quantum Machine Learning",
         "idioma_label": "Idioma / Language",
         "dataset_opcao": "Choose from existing vibration data (bearings):",
         "selecione_base": "Select the dataset",
@@ -1391,7 +1393,7 @@ def main():
             st.session_state['pagina'] = 'otimizacao'
 
     elif st.session_state['pagina'] == 'ml':
-        st.subheader(textos["pagina_ml"])
+        st.subheader(textos["pagina_ml2"])
         
         # Agora usa os textos com a função
         col1, col2 = st.columns(2)
