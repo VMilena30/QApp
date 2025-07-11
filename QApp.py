@@ -962,33 +962,32 @@ def main():
             st.subheader("Aplicação")
         
         with col2:
-            ajuda = st.button("?", key="botao_ajuda")
-        
-        st.markdown("""
-            <style>
-            /* Aplica apenas ao botão de ajuda baseado na ordem de criação */
-            div.stButton > button {
-                background-color: transparent !important;
-                border: 2px solid #03518C !important;
-                border-radius: 50% !important;
-                width: 30px !important;
-                height: 30px !important;
-                font-size: 14px !important;
-                font-weight: bold !important;
-                color: #03518C !important;
-                padding: 0 !important;
-                margin-top: 8px !important;
-                margin-right: 4px !important;
-            }
-        
-            div.stButton > button:hover {
-                background-color: #e6f0fa !important;
-                color: #02416B !important;
-                border-color: #02416B !important;
-                cursor: pointer;
-            }
-            </style>
-        """, unsafe_allow_html=True)
+            with st.container():
+                ajuda = st.button("?", key="botao_ajuda")
+                # Aplica CSS diretamente após o botão
+                st.markdown("""
+                    <style>
+                    /* Botão de ajuda (último botão criado dentro da coluna col2) */
+                    div[data-testid="column"] button {
+                        background-color: transparent !important;
+                        border: 2px solid #03518C !important;
+                        border-radius: 50% !important;
+                        width: 30px !important;
+                        height: 30px !important;
+                        font-size: 14px !important;
+                        font-weight: bold !important;
+                        color: #03518C !important;
+                        padding: 0 !important;
+                        margin-top: 8px !important;
+                    }
+                    div[data-testid="column"] button:hover {
+                        background-color: #e6f0fa !important;
+                        color: #02416B !important;
+                        border-color: #02416B !important;
+                        cursor: pointer;
+                    }
+                    </style>
+                """, unsafe_allow_html=True)
 
 
         
