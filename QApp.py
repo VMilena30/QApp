@@ -859,7 +859,7 @@ def main():
         with col2:
             if st.button("❓"):
                 st.session_state['pagina'] = 'explicacao_otimizacao'
-                rerun()  # Atualiza a interface imediatamente
+                st.experimental_rerun()  # Atualiza a interface imediatamente
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
