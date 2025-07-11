@@ -859,7 +859,8 @@ def main():
         st.subheader(textos_otim["aplicacao"])
 
         # Cria botão Streamlit real e aplica CSS para deixá-lo fixo e estilizado
-        if espaco_botao.button("?", key="ajuda_fixa"):
+        espaco_botao2 = st.empty()
+        if espaco_botao2.button("?", key="ajuda_fixa"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
         # Aplica o estilo fixo no topo direito
