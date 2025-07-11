@@ -18,7 +18,6 @@ from sklearn.cluster import KMeans
 import io
 import matplotlib.pyplot as plt
 import base64
-from streamlit.runtime.scriptrunner import rerun
 
 
 
