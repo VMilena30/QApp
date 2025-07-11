@@ -962,38 +962,62 @@ def main():
             st.subheader("Aplicação")
         
         with col2:
-            with st.container():
-                ajuda = st.button("?", key="botao_ajuda")
-                # Aplica CSS diretamente após o botão
-                st.markdown("""
-                    <style>
-                    /* Botão de ajuda (último botão criado dentro da coluna col2) */
-                    div[data-testid="column"] button {
-                        background-color: transparent !important;
-                        border: 2px solid #03518C !important;
-                        border-radius: 50% !important;
-                        width: 30px !important;
-                        height: 30px !important;
-                        font-size: 14px !important;
-                        font-weight: bold !important;
-                        color: #03518C !important;
-                        padding: 0 !important;
-                        margin-top: 8px !important;
+            # Cria espaço onde vamos injetar botão com HTML e estilo próprio
+            ajuda_clicked = components.html("""
+                <div style="display: flex; justify-content: flex-end;">
+                    <form action="#" onsubmit="handleClick(); return false;">
+                        <button id="botao_ajuda" type="submit">?</button>
+                    </form>
+                </div>
+                <script>
+                    const streamlitEvent = new Event("botaoAjudaClicado");
+                    function handleClick() {
+                        window.parent.postMessage({isStreamlitMessage: true, type: "botaoAjudaClicado"}, "*");
                     }
-                    div[data-testid="column"] button:hover {
-                        background-color: #e6f0fa !important;
-                        color: #02416B !important;
-                        border-color: #02416B !important;
+                </script>
+                <style>
+                    #botao_ajuda {
+                        background-color: transparent;
+                        border: 2px solid #03518C;
+                        border-radius: 50%;
+                        width: 30px;
+                        height: 30px;
+                        font-size: 14px;
+                        font-weight: bold;
+                        color: #03518C;
+                        padding: 0;
+                        margin-top: 8px;
                         cursor: pointer;
                     }
-                    </style>
-                """, unsafe_allow_html=True)
-
-
         
-        # Se o botão for clicado, muda de página
-        if ajuda:
+                    #botao_ajuda:hover {
+                        background-color: #e6f0fa;
+                        color: #02416B;
+                        border-color: #02416B;
+                    }
+                </style>
+            """, height=50)
+        
+        # Escuta do clique vindo do botão via JavaScript
+        st.markdown("""
+            <script>
+            window.addEventListener("message", (event) => {
+                if (event.data?.type === "botaoAjudaClicado") {
+                    const streamlitEvents = new CustomEvent("streamlit:setComponentValue", {
+                        detail: { key: "botao_ajuda_custom", value: true, dataType: "bool" }
+                    });
+                    window.dispatchEvent(streamlitEvents);
+                }
+            });
+            </script>
+        """, unsafe_allow_html=True)
+        
+        # Valor do clique
+        ajuda_custom = st.session_state.get("botao_ajuda_custom", False)
+        
+        if ajuda_custom:
             st.session_state["pagina"] = "explicacao_otimizacao"
+            st.session_state["botao_ajuda_custom"] = False  # reseta
             st.rerun()
     
         # Aplica estilos personalizados
