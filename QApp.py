@@ -858,11 +858,12 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-# Botão invisível tipo "tertiary"
-        if st.button("🔍", key="btn_explicacao", type="tertiary"):
+        
+        # 2. Botão "terciário" invisível (clicado via JS)
+        if st.button("🔍", key="btn_ajuda", type="tertiary"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # Esconde somente o botão "tertiary"
+        # 3. CSS que esconde apenas o botão terciário
         st.markdown("""
             <style>
                 button[kind="tertiary"] {
@@ -871,7 +872,7 @@ def main():
             </style>
         """, unsafe_allow_html=True)
         
-        # Botão flutuante com estilo
+        # 4. Botão flutuante visível no canto superior direito
         st.markdown("""
             <style>
                 #ajuda-fixa {
