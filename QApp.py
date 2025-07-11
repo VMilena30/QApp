@@ -858,28 +858,27 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        
-        # 2. Botão "terciário" invisível (clicado via JS)
-        if st.button("🔍", key="btn_ajuda", type="tertiary"):
+        # Botão invisível do tipo tertiary
+        if st.button(" ", type="tertiary"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # 3. CSS que esconde apenas o botão terciário
+        # CSS para esconder todos os botões tertiary
         st.markdown("""
             <style>
                 button[kind="tertiary"] {
-                    display: none;
+                    display: none !important;
                 }
             </style>
         """, unsafe_allow_html=True)
         
-        # 4. Botão flutuante visível no canto superior direito
+        # Botão flutuante visível que aciona o botão escondido
         st.markdown("""
             <style>
                 #ajuda-fixa {
                     position: fixed;
                     top: 20px;
                     right: 20px;
-                    z-index: 10000;
+                    z-index: 9999;
                     background-color: #0e1117;
                     color: white;
                     border: none;
@@ -899,12 +898,9 @@ def main():
         
             <script>
                 function acionarBotaoAjuda() {
-                    const botoes = window.parent.document.querySelectorAll('button[kind="tertiary"]');
-                    for (let botao of botoes) {
-                        if (botao.innerText.includes("🔍")) {
-                            botao.click();
-                            break;
-                        }
+                    const btn = window.parent.document.querySelector('button[kind="tertiary"]');
+                    if (btn) {
+                        btn.click();
                     }
                 }
             </script>
