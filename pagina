@@ -858,12 +858,9 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
 
-        # Cria botão Streamlit real e aplica CSS para deixá-lo fixo e estilizado
-        espaco_botao2 = st.empty()
-        if espaco_botao2.button("?", key="ajuda_fixa"):
+        if st.button("?", key="ajuda_fixa"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # Aplica o estilo fixo no topo direito
         st.markdown("""
             <style>
                 button[kind="secondary"] {
@@ -871,18 +868,7 @@ def main():
                     top: 60px;
                     right: 60px;
                     z-index: 10000;
-                    background-color: #03518C;
-                    color: white;
-                    border: none;
-                    border-radius: 50%;
-                    width: 60px;
-                    height: 60px;
-                    font-size: 24px;
-                    cursor: pointer;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-                }
-                button[kind="secondary"]:hover {
-                    background-color: #262730;
+                    /* ... resto do estilo ... */
                 }
             </style>
         """, unsafe_allow_html=True)
