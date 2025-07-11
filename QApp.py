@@ -870,8 +870,8 @@ def main():
             <style>
                 .botao-fixo-topo {
                     position: fixed;
-                    top: 10px;
-                    right: 10px;
+                    top: 60px;
+                    right: 20px;
                     z-index: 9999;
                 }
                 .botao-fixo-topo a {
