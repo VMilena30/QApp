@@ -1342,20 +1342,20 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
-    st.title("📘 Explicação sobre Otimização")
-    st.markdown("""
-    **O que é otimização?**  
-    Otimização é o processo de ajustar variáveis para encontrar a melhor solução possível dentro de um conjunto de restrições...
-
-    ### Exemplos de métodos:
-    - Programação Linear
-    - Algoritmos Genéticos
-    - QUBO / Otimização Quântica
-    - etc.
-    """)
-    if st.button("⬅️ Voltar para Otimização"):
-        st.session_state['pagina'] = 'otimizacao'
-        st.experimental_rerun()
+        st.title("📘 Explicação sobre Otimização")
+        st.markdown("""
+        **O que é otimização?**  
+        Otimização é o processo de ajustar variáveis para encontrar a melhor solução possível dentro de um conjunto de restrições...
+    
+        ### Exemplos de métodos:
+        - Programação Linear
+        - Algoritmos Genéticos
+        - QUBO / Otimização Quântica
+        - etc.
+        """)
+        if st.button("⬅️ Voltar para Otimização"):
+            st.session_state['pagina'] = 'otimizacao'
+            st.experimental_rerun()
 
     elif st.session_state['pagina'] == 'ml':
         st.subheader(textos["pagina_ml"])
