@@ -18,6 +18,8 @@ from sklearn.cluster import KMeans
 import io
 import matplotlib.pyplot as plt
 import base64
+from streamlit.runtime.scriptrunner import rerun
+
 
 
 parametros_treino=[
@@ -857,7 +859,7 @@ def main():
         with col2:
             if st.button("❓"):
                 st.session_state['pagina'] = 'explicacao_otimizacao'
-                st.experimental_rerun()  # Atualiza a interface imediatamente
+                rerun()  # Atualiza a interface imediatamente
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
