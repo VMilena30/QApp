@@ -964,29 +964,32 @@ def main():
         with col2:
             ajuda = st.button("?", key="botao_ajuda")
         
-        # Estilo CSS para o botão de ajuda (último botão da tela, mais seguro)
         st.markdown("""
             <style>
-            /* Seleciona o último botão (assumindo que seja o botão de ajuda) */
-            .stButton button {
-                background-color: #e6f0fa !important;
+            /* Aplica apenas ao botão de ajuda baseado na ordem de criação */
+            div.stButton > button {
+                background-color: transparent !important;
+                border: 2px solid #03518C !important;
                 border-radius: 50% !important;
-                width: 28px !important;
-                height: 28px !important;
+                width: 30px !important;
+                height: 30px !important;
                 font-size: 14px !important;
                 font-weight: bold !important;
-                color: #003366 !important;
-                border: none !important;
+                color: #03518C !important;
                 padding: 0 !important;
-                margin-top: 10px !important;
-                box-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
+                margin-top: 8px !important;
+                margin-right: 4px !important;
             }
-            .stButton button:hover {
-                background-color: #cce0f0 !important;
-                color: #001f33 !important;
+        
+            div.stButton > button:hover {
+                background-color: #e6f0fa !important;
+                color: #02416B !important;
+                border-color: #02416B !important;
+                cursor: pointer;
             }
             </style>
         """, unsafe_allow_html=True)
+
 
         
         # Se o botão for clicado, muda de página
