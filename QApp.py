@@ -862,8 +862,7 @@ def main():
         query_params = st.query_params
         if query_params.get("mudar_pagina") == "1":
             st.session_state['pagina'] = 'explicacao_otimizacao'
-            # Limpa a query para evitar mudança contínua
-            st.query_params.clear()
+
         
         # Estilo do botão fixo no topo
         st.markdown("""
@@ -889,7 +888,7 @@ def main():
                 }
             </style>
             <div class="botao-fixo-topo">
-                <a href="?mudar_pagina=1">Ir para Explicação</a>
+                <a href="?mudar_pagina=1">?</a>
             </div>
         """, unsafe_allow_html=True)
         
