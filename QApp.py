@@ -844,6 +844,8 @@ def main():
 
     if 'pagina' not in st.session_state:
         st.session_state['pagina'] = 'inicio'
+        mostrar_introducao_e_titulo(textos)
+        mostrar_cartoes_de_area(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
         col1, col2 = st.columns([0.9, 0.1])
