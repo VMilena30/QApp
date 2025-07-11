@@ -862,27 +862,27 @@ def main():
         if st.button("?", key="botao_duvida"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-    st.markdown("""
-        <style>
-            button[data-testid="stButton-botao_duvida"] {
-                position: fixed !important;
-                top: 60px !important;
-                right: 60px !important;
-                z-index: 10000 !important;
-                background-color: #03518C !important;
-                color: white !important;
-                border-radius: 50% !important;
-                width: 60px !important;
-                height: 60px !important;
-                font-size: 24px !important;
-                cursor: pointer !important;
-                box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
-            }
-            button[data-testid="stButton-botao_duvida"]:hover {
-                background-color: #262730 !important;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+        st.markdown("""
+            <style>
+                button[data-testid="stButton-botao_duvida"] {
+                    position: fixed !important;
+                    top: 60px !important;
+                    right: 60px !important;
+                    z-index: 10000 !important;
+                    background-color: #03518C !important;
+                    color: white !important;
+                    border-radius: 50% !important;
+                    width: 60px !important;
+                    height: 60px !important;
+                    font-size: 24px !important;
+                    cursor: pointer !important;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
+                }
+                button[data-testid="stButton-botao_duvida"]:hover {
+                    background-color: #262730 !important;
+                }
+            </style>
+        """, unsafe_allow_html=True)
 
         
         # Aplica estilos personalizados
