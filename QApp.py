@@ -331,6 +331,14 @@ TEXTOS_OPT = {
             "- Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito.\n\n"
             "- Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
+        "help1": "Como você prefere informar os dados do seu sistema para a ferramenta?",
+        "help2": , 
+        "help3": , 
+        "help4": ,
+        "help5": ,
+        "help6": ,
+
+        
     },
     "en": {
         "idioma": "Language",
@@ -518,7 +526,13 @@ TEXTOS_OPT = {
             "3.5 Number of Iterations (Rounds):\n"
             "Defines how many times the optimizer will update the circuit parameters. Start with 5 to 10 for initial testing, "
             "and increase if needed for better convergence."
-        )
+        ), 
+        "help1": "How would you like to provide your system data to the tool?",
+        "help2": , 
+        "help3": , 
+        "help4": ,
+        "help5": ,
+        "help6": ,
         
 
     }
@@ -1184,7 +1198,7 @@ def main():
         modo_leitura = st.radio(
             textos_otim["modo_leitura_label"],
             (textos_otim["modo_leitura_manual"], textos_otim["modo_leitura_upload"]),
-            key=f"modo_leitura_{lang}", help= "OI"
+            key=f"modo_leitura_{lang}", help= textos_otim["help1"]
         )
         
         dados = []
@@ -1215,12 +1229,12 @@ def main():
                 col_alg, col_param = st.columns(2)
         
                 with col_alg:
-                    modo_algoritmo = st.radio(textos_otim["selecionar_algoritmo"], ('QAOA', 'VQE'))
+                    modo_algoritmo = st.radio(textos_otim["selecionar_algoritmo"], ('QAOA', 'VQE'), help=textos_otim["help2"])
         
                     if modo_algoritmo == 'VQE':
                         tipo_circuito = st.radio(
                             textos_otim["selecionar_tipo_circuito"], 
-                            (textos_otim["real_amplitudes"], textos_otim["two_local"])
+                            (textos_otim["real_amplitudes"], textos_otim["two_local"]),  help=textos_otim["help3"]
                         )
         
                         if tipo_circuito == textos_otim["two_local"]:
@@ -1228,33 +1242,33 @@ def main():
                             with col_rot:
                                 rotacao_escolhida = st.multiselect(
                                     textos_otim["selecionar_rotacao"],
-                                    textos_otim["opcoes_rotacao"]
+                                    textos_otim["opcoes_rotacao"],  help=textos_otim["help4"]
                                 )
                             with col_ent:
                                 entanglement_escolhido = st.multiselect(
                                     textos_otim["selecionar_emaranhamento"],
-                                    textos_otim["opcoes_emaranhamento"]
+                                    textos_otim["opcoes_emaranhamento"],  help=textos_otim["help5"]
                                 )
         
                         tipo_inicializacao = st.radio(
                             textos_otim["tipo_inicializacao"],
-                            textos_otim["tipos_inicializacao_vqe"]
+                            textos_otim["tipos_inicializacao_vqe"],  help=textos_otim["help6"]
                         )
         
                         if tipo_inicializacao in ['Ponto Fixo', 'Fixed Point']:
                             numero_ponto_fixo = st.number_input(
-                                textos_otim["inserir_ponto_fixo"], step=0.1
+                                textos_otim["inserir_ponto_fixo"], step=0.1, help=textos_otim["help6"]
                             )
         
                     elif modo_algoritmo == 'QAOA':
                         tipo_inicializacao = st.radio(
                             textos_otim["tipo_inicializacao"],
-                            textos_otim["tipos_inicializacao_qaoa"]
+                            textos_otim["tipos_inicializacao_qaoa"],  help=textos_otim["help6"]
                         )
         
                         if tipo_inicializacao in ['Ponto Fixo', 'Fixed Point']:
                             numero_ponto_fixo = st.number_input(
-                                textos_otim["inserir_ponto_fixo"], step=0.1
+                                textos_otim["inserir_ponto_fixo"], step=0.1,  help=textos_otim["help6"]
                             )
         
                 with col_param:
