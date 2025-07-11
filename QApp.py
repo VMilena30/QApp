@@ -18,6 +18,7 @@ from sklearn.cluster import KMeans
 import io
 import matplotlib.pyplot as plt
 import base64
+import streamlit.components.v1 as components
 
 
 
