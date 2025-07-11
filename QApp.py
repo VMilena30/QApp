@@ -274,7 +274,7 @@ TEXTOS_OPT = {
     
         "info2_titulo": "1. Modo de Entrada dos Dados",
         "info2": (
-            "1.1 Inserção Manual\n"
+            "**1.1 Inserção Manual**\n\n"
             "Você pode preencher todos os dados do problema diretamente na tela. Informe:\n"
             "- Número de subsistemas: quantidade de partes no sistema onde você pode alocar redundância.\n"
             "- Valor mínimo e máximo de componentes por subsistema.\n"
@@ -283,18 +283,17 @@ TEXTOS_OPT = {
             "- Limite máximo de custo: valor total disponível para uso na alocação."
         ),
         "info21": (
-            "1.2 Upload de Arquivo (.txt)\n"
-            "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma.\n"
-            "Essa opção é indicada para casos com grande volume de dados ou reuso de configurações anteriores.\n"
+            "**1.2 Upload de Arquivo (.txt)**\n\n"
+            "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma.\n\n"
         ),
     
         "info3_titulo": "2. Algoritmos Quânticos de Otimização",
         "info3": (
             "Você pode escolher entre dois algoritmos quânticos variacionais:\n\n"
-            "2.1 QAOA (Quantum Approximate Optimization Algorithm):\n\n"
+            "**2.1 QAOA (Quantum Approximate Optimization Algorithm):**\n\n"
             "Algoritmo ideal para problemas combinatórios formulados como QUBO. Utiliza camadas parametrizadas compostas por operações que codificam o problema e outras que exploram o espaço de soluções. "
             "Essas camadas são ajustadas por parâmetros numéricos otimizados por algoritmos clássicos.\n\n"
-            "2.2 VQE (Variational Quantum Eigensolver):\n\n"
+            "**2.2 VQE (Variational Quantum Eigensolver):**\n\n"
             "Inicialmente usado na química quântica, também pode ser aplicado a problemas de otimização. Exige a definição de um circuito ansatz — uma estrutura de portas quânticas que representa o espaço de soluções. "
             "O VQE ajusta os parâmetros desse circuito para minimizar o valor esperado da função objetivo.\n\n"
             "Ao utilizar o VQE, você deverá configurar:\n"
@@ -307,28 +306,28 @@ TEXTOS_OPT = {
     
         "info4_titulo": "3. Parâmetros Personalizáveis",
         "info4": (
-            "3.1 Otimizador Clássico:\n"
+            "**3.1 Otimizador Clássico:**\n"
             "- COBYLA (Constrained Optimization By Linear Approximations):\n"
             "  Método que não utiliza derivadas, baseado em aproximações lineares. Funciona bem em problemas de baixa dimensão.\n"
             "- SPSA (Simultaneous Perturbation Stochastic Approximation):\n"
             "  Otimizador robusto contra ruído. Estima gradientes com apenas duas avaliações por iteração, sendo útil em ambientes quânticos.\n\n"
     
-            "3.2 Método de Inicialização:\n"
+            "**3.2 Método de Inicialização:**\n"
             "- Randômica: os parâmetros iniciais são escolhidos aleatoriamente.\n"
             "- LHS (Latin Hypercube Sampling): gera amostras representativas e bem distribuídas do espaço de busca.\n"
             "- Clusterização: usa agrupamento dos dados como ponto de partida mais estruturado.\n"
             "- Ponto Fixo: o usuário informa manualmente os valores iniciais.\n\n"
     
-            "3.3 Número de Shots:\n"
-            "Define quantas vezes o circuito quântico será executado. Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. "
+            "**3.3 Número de Shots:**\n"
+            "Define quantas vezes o circuito quântico será executado. Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. \n\n"
             "Recomenda-se usar valores entre 1000 e 8192.\n\n"
     
-            "3.4 Número de Camadas (Profundidade do Circuito):\n"
+            "**3.4 Número de Camadas (Profundidade do Circuito):**\n"
             "Determina quantas vezes o bloco de operações é repetido no circuito. Aumentar esse número permite capturar padrões mais complexos, "
             "mas também aumenta o tempo de execução e o risco de overfitting.\n\n"
     
-            "3.5 Número de Rodadas (Iterações):\n"
-            "Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito. Para testes rápidos, use entre 5 e 10 rodadas. "
+            "**3.5 Número de Rodadas (Iterações):**\n"
+            "Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito. Para testes rápidos, use entre 5 e 10 rodadas. \n\n"
             "Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
     },
