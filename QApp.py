@@ -1826,8 +1826,8 @@ def main():
     
         if st.button("ML"):
             st.session_state['pagina'] = 'ml_info'
-            st.title(textos.get("pagina_referencias_titulo", "Referências"))
-            st.write(textos_otim["pagina_otimizacao"])
+            st.title(textos_ml["info1_titulo"])
+            st.header(textos_ml["info1"])
 
             st.subheader(textos_ml["info2_titulo"])
             st.write(textos_ml["info2"])
@@ -1857,6 +1857,17 @@ def main():
         st.title(textos_ml["info1_titulo"])
         st.header(textos_ml["info1"])
 
+        st.subheader(textos_ml["info2_titulo"])
+        st.write(textos_ml["info2"])
+        st.write(textos_ml["info2.1"])
+        st.write(textos_ml["info2.2"])
+
+        st.subheader(textos_ml["info3_titulo"])
+        st.write(textos_ml["info3"])
+
+        st.subheader(textos_ml["info4_titulo"])
+        st.write(textos_ml["info4"])
+        
     elif st.session_state['pagina'] == 'inferencia_info':
         st.subheader(textos["pagina_info"])
 
