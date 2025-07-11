@@ -1806,11 +1806,11 @@ def main():
             st.session_state['pagina'] = 'otimizacao_info'
             st.experimental_rerun()
     
-        if st.button(textos_ml["info1_titulo"]):
+        if st.button("ML"):
             st.session_state['pagina'] = 'ml_info'
             st.experimental_rerun()
     
-        if st.button(textos["pagina_info"]):
+        if st.button("inf"):
             st.session_state['pagina'] = 'inferencia_info'
             st.experimental_rerun()
 
