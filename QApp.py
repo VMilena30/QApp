@@ -858,27 +858,24 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Cria um botão invisível de Streamlit com ID próprio (em container com estilo invisível)
-        placeholder = st.empty()
-        with placeholder.container():
-            # Este botão estará visível para o DOM mas invisível para o usuário
-            clicked = st.button("🔍", key="btn_explicacao")
+        # Cria um botão do Streamlit escondido (usaremos JavaScript para acioná-lo)
+        invisible_button = st.button("ir_para_explicacao", key="btn_explicacao")
         
-        # Lógica: se clicado, mudar a página
-        if clicked:
+        # Se ele for clicado, muda a sessão
+        if invisible_button:
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # CSS para esconder APENAS o botão "🔍" (sem afetar outros)
+        # Esconde o botão acima usando CSS baseado no texto do botão
         st.markdown("""
             <style>
-                button[title="btn_explicacao"] {
-                    position: absolute;
-                    left: -9999px;
+                /* Esconde apenas o botão com esse texto específico */
+                button:has(div:contains("ir_para_explicacao")) {
+                    display: none !important;
                 }
             </style>
         """, unsafe_allow_html=True)
         
-        # Botão flutuante fixo no canto superior direito
+        # Botão flutuante com HTML + JS para simular clique no botão acima
         st.markdown("""
             <style>
                 #ajuda-fixa {
@@ -907,7 +904,7 @@ def main():
                 function acionarBotaoAjuda() {
                     const botoes = window.parent.document.querySelectorAll('button');
                     for (let botao of botoes) {
-                        if (botao.innerText.includes("🔍")) {
+                        if (botao.innerText.includes("ir_para_explicacao")) {
                             botao.click();
                             break;
                         }
@@ -916,7 +913,7 @@ def main():
             </script>
         
             <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
-        """, unsafe_allow_html=True)        
+        """, unsafe_allow_html=True)     
 
         
         # Aplica estilos personalizados
