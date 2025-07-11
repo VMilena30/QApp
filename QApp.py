@@ -956,12 +956,12 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-        # Processa clique no botão HTML com callback manual
-        if "ajuda_clicada" in st.session_state and st.session_state["ajuda_clicada"]:
+        params = st.query_params
+        if params.get("ajuda_click") == "1":
             st.session_state["pagina"] = "explicacao_otimizacao"
-            st.session_state["ajuda_clicada"] = False
+            st.experimental_set_query_params()  # Limpa a URL após clicar
         
-        # Interface: título e botão bonito
+        # Interface: título + botão ajuda
         col1, col2 = st.columns([10, 1])
         
         with col1:
@@ -991,16 +991,9 @@ def main():
                         background-color: #cce0f0;
                     }
                 </style>
-                <form action="" method="post">
-                    <button class="ajuda-bolinha" name="ajuda" type="submit">?</button>
-                </form>
-            """, unsafe_allow_html=True)
         
-            # Captura clique via formulário HTML
-            if st.query_params.get("ajuda") is not None or st.session_state.get("ajuda") is True:
-                st.session_state["ajuda_clicada"] = True
-                st.rerun()
-
+                <div class="ajuda-bolinha" onclick="window.location.search='?ajuda_click=1';">?</div>
+            """, unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
