@@ -925,46 +925,56 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-       # Cria um container com botão fixo no topo
+        # Botão invisível do Streamlit, que será acionado via JS
+        if st.button("explicacao_trigger", key="explicacao_btn", type="tertiary"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        # Esconde o botão "terciary" com texto neutro
         st.markdown("""
             <style>
-                div[data-testid="stButton"] > button.botao-fixo-topo {
-                    position: fixed;
-                    top: 10px;
-                    right: 10px;
-                    z-index: 9999;
-                    background-color: #0e1117;
-                    color: white;
-                    padding: 10px 20px;
-                    border-radius: 10px;
-                    font-size: 14px;
-                    cursor: pointer;
-                    border: none;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-                }
-                div[data-testid="stButton"] > button.botao-fixo-topo:hover {
-                    background-color: #262730;
+                button[kind="tertiary"] {
+                    display: none !important;
                 }
             </style>
         """, unsafe_allow_html=True)
         
-        # Botão real do Streamlit, com classe customizada
-        botao_container = st.empty()
-        with botao_container:
-            if st.button("Ir para Explicação", key="botao_explicacao", help="Clique para ir à explicação", type="primary"):
-                st.session_state['pagina'] = 'explicacao_otimizacao'
-        
-        # Aplica a classe de estilo diretamente no botão (via JS + estilo do navegador)
+        # HTML + JS do botão fixo no topo direito
         st.markdown("""
+            <style>
+                #botao-topo-fixo {
+                    position: fixed;
+                    top: 15px;
+                    right: 20px;
+                    z-index: 10000;
+                    background-color: #0e1117;
+                    color: white;
+                    padding: 10px 16px;
+                    border: none;
+                    border-radius: 8px;
+                    font-size: 14px;
+                    cursor: pointer;
+                    box-shadow: 2px 2px 6px rgba(0,0,0,0.3);
+                }
+                #botao-topo-fixo:hover {
+                    background-color: #262730;
+                }
+            </style>
+        
             <script>
-                const btns = window.parent.document.querySelectorAll('button[kind="primary"]');
-                btns.forEach(btn => {
-                    if (btn.innerText.includes("Ir para Explicação")) {
-                        btn.classList.add("botao-fixo-topo");
+                function irParaExplicacao() {
+                    const botoes = window.parent.document.querySelectorAll('button[kind="tertiary"]');
+                    for (let botao of botoes) {
+                        if (botao.innerText.includes("explicacao_trigger")) {
+                            botao.click();
+                            break;
+                        }
                     }
-                });
+                }
             </script>
+        
+            <button id="botao-topo-fixo" onclick="irParaExplicacao()">Ir para Explicação</button>
         """, unsafe_allow_html=True)
+
         
         # Aplica estilos personalizados
         st.markdown("""
