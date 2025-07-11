@@ -956,10 +956,11 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-        params = st.query_params
-        if params.get("ajuda_click") == "1":
+        params = st.experimental_get_query_params()
+        if params.get("ajuda_click") == ["1"]:
             st.session_state["pagina"] = "explicacao_otimizacao"
-            st.experimental_set_query_params()  # Limpa a URL após clicar
+            st.experimental_set_query_params()  # limpa a URL após o clique
+            st.rerun() 
         
         # Interface: título + botão ajuda
         col1, col2 = st.columns([10, 1])
