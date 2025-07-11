@@ -1106,7 +1106,7 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-        col1, col2 = st.columns([7, 3])
+        col1, col2 = st.columns([9, 2])
         
         with col1:
             st.subheader("Aplicação")
