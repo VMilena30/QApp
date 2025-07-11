@@ -858,46 +858,40 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Função para mudar de página
-        def ir_para_explicacao():
+        # Detecta se houve clique no botão fixo pela query string
+        query_params = st.query_params
+        if query_params.get("mudar_pagina") == "1":
             st.session_state['pagina'] = 'explicacao_otimizacao'
+            # Limpa a query para evitar mudança contínua
+            st.query_params.clear()
         
-        # Botão fixo visível no topo direito
+        # Estilo do botão fixo no topo
         st.markdown("""
             <style>
                 .botao-fixo-topo {
                     position: fixed;
-                    top: 106x;
-                    right: 60px;
+                    top: 10px;
+                    right: 10px;
                     z-index: 9999;
+                }
+                .botao-fixo-topo a {
+                    display: inline-block;
                     background-color: #0e1117;
                     color: white;
                     padding: 10px 20px;
-                    border: none;
                     border-radius: 10px;
+                    text-decoration: none;
                     font-size: 14px;
-                    cursor: pointer;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                .botao-fixo-topo:hover {
+                .botao-fixo-topo a:hover {
                     background-color: #262730;
                 }
             </style>
-        """, unsafe_allow_html=True)
-        
-        # Este botão usa o método Streamlit padrão, mas colocado em um container HTML fixo
-        st.markdown("""
             <div class="botao-fixo-topo">
-                <form action="" method="post">
-                    <input type="submit" name="mudar_pagina" value="?" style="all: unset; color: white; cursor: pointer;" />
-                </form>
+                <a href="?mudar_pagina=1">Ir para Explicação</a>
             </div>
         """, unsafe_allow_html=True)
-        
-        # Detecta clique e atualiza a sessão
-        if st.session_state.get('pagina') != 'explicacao_otimizacao' and st.experimental_get_query_params().get('mudar_pagina'):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-
         
         # Aplica estilos personalizados
         st.markdown("""
