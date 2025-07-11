@@ -857,8 +857,6 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
-
-
         
         # Aplica estilos personalizados
         st.markdown("""
