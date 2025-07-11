@@ -925,38 +925,45 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Detecta se houve clique no botão fixo pela query string
-        query_params = st.query_params
-        if query_params.get("mudar_pagina") == "1":
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-
-        
-        # Estilo do botão fixo no topo
+       # Cria um container com botão fixo no topo
         st.markdown("""
             <style>
-                .botao-fixo-topo {
+                div[data-testid="stButton"] > button.botao-fixo-topo {
                     position: fixed;
-                    top: 60px;
-                    right: 20px;
+                    top: 10px;
+                    right: 10px;
                     z-index: 9999;
-                }
-                .botao-fixo-topo a {
-                    display: inline-block;
                     background-color: #0e1117;
                     color: white;
                     padding: 10px 20px;
                     border-radius: 10px;
-                    text-decoration: none;
                     font-size: 14px;
+                    cursor: pointer;
+                    border: none;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                .botao-fixo-topo a:hover {
+                div[data-testid="stButton"] > button.botao-fixo-topo:hover {
                     background-color: #262730;
                 }
             </style>
-            <div class="botao-fixo-topo">
-                <a href="?mudar_pagina=1">?</a>
-            </div>
+        """, unsafe_allow_html=True)
+        
+        # Botão real do Streamlit, com classe customizada
+        botao_container = st.empty()
+        with botao_container:
+            if st.button("Ir para Explicação", key="botao_explicacao", help="Clique para ir à explicação", type="primary"):
+                st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        # Aplica a classe de estilo diretamente no botão (via JS + estilo do navegador)
+        st.markdown("""
+            <script>
+                const btns = window.parent.document.querySelectorAll('button[kind="primary"]');
+                btns.forEach(btn => {
+                    if (btn.innerText.includes("Ir para Explicação")) {
+                        btn.classList.add("botao-fixo-topo");
+                    }
+                });
+            </script>
         """, unsafe_allow_html=True)
         
         # Aplica estilos personalizados
