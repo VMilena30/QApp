@@ -264,7 +264,7 @@ TEXTOS_OPT = {
 
         ),
         "aplicacao": "Aplicação",
-        "info1_titulo": "Guia de Uso da Aplicação – Otimização Quântica para Alocação de Redundâncias",
+        "info1_titulo": "Guia de Uso – Otimização Quântica para Alocação de Redundâncias",
         "info1": (
             "Este guia tem como objetivo orientar você a preencher corretamente todos os campos da plataforma de otimização quântica, "
             "aplicada ao problema de alocação de redundâncias em sistemas com múltiplos subsistemas, respeitando restrições de custo e confiabilidade. "
