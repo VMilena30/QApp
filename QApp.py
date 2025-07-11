@@ -1619,7 +1619,7 @@ def main():
         
         st.header(textos_otim["info2_titulo"])
         st.write(textos_otim["info2"])
-        st.write(textos["info2.1"])
+        st.write(textos__otim["info2.1"])
         
         st.header(textos_otim["info3_titulo"])
         st.write(textos_otim["info3"])
@@ -1988,32 +1988,6 @@ def main():
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
         mostrar_cartoes_de_info(textos)
-
-        # Botões para trocar de página
-        if st.button(textos_otim["pagina_otimizacao"]):
-            st.session_state['pagina'] = 'otimizacao_info'
-            st.experimental_rerun()
-    
-        if st.button("ML"):
-            st.session_state['pagina'] = 'ml_info'
-            st.title(textos_ml["info1_titulo"])
-            st.header(textos_ml["info1"])
-
-            st.subheader(textos_ml["info2_titulo"])
-            st.write(textos_ml["info2"])
-            st.write(textos_ml["info2.1"])
-            st.write(textos_ml["info2.2"])
-
-            st.subheader(textos_ml["info3_titulo"])
-            st.write(textos_ml["info3"])
-
-            st.subheader(textos_ml["info4_titulo"])
-            st.write(textos_ml["info4"])
-            st.experimental_rerun()
-    
-        if st.button("inf"):
-            st.session_state['pagina'] = 'inferencia_info'
-            st.experimental_rerun()
 
         with st.sidebar:
             if st.button(textos["ini"]):
