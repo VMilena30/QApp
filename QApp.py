@@ -434,7 +434,15 @@ TEXTOS_ML = {
         "help_6": "Selecione as rotações correspondentes a quantidade que você escolheu.",
         "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito.",
         "info1_titulo": "Guia de Uso",
-        "info1": "Esse guia de uso visa facilitar o uso de técnicas de Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas em equipamentos rotativos, como rolamentos. Mesmo sem conhecimento prévio em computação quântica, você poderá explorar os dados e configurar modelos com apenas alguns cliques. Abaixo, explicamos cada parte da interface."
+        "info1": "Esse guia de uso visa facilitar o uso de técnicas de Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas em equipamentos rotativos, como rolamentos. Mesmo sem conhecimento prévio em computação quântica, você poderá explorar os dados e configurar modelos com apenas alguns cliques. Abaixo, explicamos cada parte da interface.",
+        "info2_titulo": "Escolha ou envio de base de dados",
+        "info2": "Logo na tela inicial, você verá duas opções:",
+        "info2.1": "**Selecionar uma base existente:** Você pode escolher entre bases de dados já conhecidas contendo medições de vibração de rolamentos, como a base da Universidade de CWRU ou da JNU.",
+        "info2.2": "**Importar dados próprios:** Caso possua seus próprios dados (em formato CSV, Excel ou Parquet), é possível fazer o upload diretamente no sistema.",
+        "info3_titulo": "Extração de características",
+        "info3": "Depois de carregar sua base de dados com sinais de vibração, o aplicativo oferece a possibilidade de extrair automaticamente características (features) desses sinais. Essa etapa simplifica os dados e reduz a quantidade de informação a ser processada, tornando o modelo mais eficiente e interpretável.",
+        "info4_titulo": "Codificação quântica",
+        "info4": "Computadores quânticos não processam dados do mesmo modo que os computadores clássicos. Para que os dados possam ser utilizados em um modelo quântico, eles precisam ser convertidos em uma linguagem compreensível para os qubits. Essa conversão é chamada de codificação quântica. Cada método tem suas particularidades e pode influenciar na performance do modelo."
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -481,7 +489,15 @@ TEXTOS_ML = {
         "help_6": "Select the rotations corresponding to the quantity you chose.",
         "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit.",
         "info1_titulo": "Usage Guide",
-        "info1": "This user guide aims to facilitate the use of Quantum Machine Learning techniques in classification problems and failure prediction in rotating equipment, such as bearings. Even without prior knowledge in quantum computing, you will be able to explore the data and set up models with just a few clicks. Below, we explain each part of the interface."
+        "info1": "This user guide aims to facilitate the use of Quantum Machine Learning techniques in classification and failure prediction problems in rotating equipment, such as bearings. Even without prior knowledge of quantum computing, you will be able to explore the data and configure models with just a few clicks. Below, we explain each part of the interface.",
+        "info2_titulo": "Choose or upload a database",
+        "info2": "Right on the initial screen, you will see two options:",
+        "info2.1": "Select an existing database: You can choose from well-known databases containing vibration measurements from bearings, such as the CWRU or JNU database.",
+        "info2.2": "Upload your own data: If you have your own data (in CSV, Excel, or Parquet format), you can upload it directly into the system.",
+        "info3_titulo": "Feature extraction",
+        "info3": "After loading your vibration signal dataset, the application offers the option to automatically extract features from these signals. This step simplifies the data and reduces the amount of information to be processed, making the model more efficient and interpretable.",
+        "info4_titulo": "Quantum encoding",
+        "info4": "Quantum computers do not process data in the same way as classical computers. For data to be used in a quantum model, it must be converted into a language understandable by qubits. This conversion is called quantum encoding. Each method has its particularities and may influence the model’s performance."
     }
 }
 
@@ -1810,6 +1826,19 @@ def main():
     
         if st.button("ML"):
             st.session_state['pagina'] = 'ml_info'
+            st.title(textos.get("pagina_referencias_titulo", "Referências"))
+            st.write(textos_otim["pagina_otimizacao"])
+
+            st.subheader(textos_ml["info2_titulo"])
+            st.write(textos_ml["info2"])
+            st.write(textos_ml["info2.1"])
+            st.write(textos_ml["info2.2"])
+
+            st.subheader(textos_ml["info3_titulo"])
+            st.write(textos_ml["info3"])
+
+            st.subheader(textos_ml["info4_titulo"])
+            st.write(textos_ml["info4"])
             st.experimental_rerun()
     
         if st.button("inf"):
