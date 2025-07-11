@@ -964,28 +964,30 @@ def main():
         with col2:
             ajuda = st.button("?", key="botao_ajuda")
         
-            # Estilo aplicado apenas ao botão com key="botao_ajuda"
-            st.markdown("""
-                <style>
-                    button[data-testid="button-element"][aria-label="botao_ajuda"] {
-                        background-color: #e6f0fa !important;
-                        border-radius: 50% !important;
-                        width: 28px !important;
-                        height: 28px !important;
-                        font-size: 14px !important;
-                        font-weight: bold !important;
-                        color: #003366 !important;
-                        border: none !important;
-                        padding: 0 !important;
-                        margin-top: 8px !important;
-                        box-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
-                    }
-                    button[data-testid="button-element"][aria-label="botao_ajuda"]:hover {
-                        background-color: #cce0f0 !important;
-                        color: #001f33 !important;
-                    }
-                </style>
-            """, unsafe_allow_html=True)
+        # Estilo CSS para o botão de ajuda (último botão da tela, mais seguro)
+        st.markdown("""
+            <style>
+            /* Seleciona o último botão (assumindo que seja o botão de ajuda) */
+            .stButton button {
+                background-color: #e6f0fa !important;
+                border-radius: 50% !important;
+                width: 28px !important;
+                height: 28px !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                color: #003366 !important;
+                border: none !important;
+                padding: 0 !important;
+                margin-top: 10px !important;
+                box-shadow: 0 0 2px rgba(0,0,0,0.2) !important;
+            }
+            .stButton button:hover {
+                background-color: #cce0f0 !important;
+                color: #001f33 !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         
         # Se o botão for clicado, muda de página
         if ajuda:
