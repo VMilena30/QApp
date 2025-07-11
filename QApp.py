@@ -246,7 +246,7 @@ TEXTOS_OPT = {
             "quantos componentes redundantes alocar em cada subsistema para maximizar a confiabilidade do sistema total, respeitando restrições de custo.\n\n"
 
             "##### Formulação Matemática\n\n"
-            "Seja um sistema com \\( s \\) subsistemas, o objetivo é maximizar a confiabilidade total \\( R(x) \\):\n\n"
+            "Seja um sistema com $(s)$ subsistemas, o objetivo é maximizar a confiabilidade total $(R(x))$:\n\n"
             "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
 
             "##### Restrições:\n\n"
