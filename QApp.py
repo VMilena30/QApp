@@ -274,7 +274,7 @@ TEXTOS_OPT = {
     
         "info2_titulo": "1. Modo de Entrada dos Dados",
         "info2": (
-            "**1.1 Inserção Manual**\n\n"
+            "##**1.1 Inserção Manual**\n\n"
             "Você pode preencher todos os dados do problema diretamente na tela. Informe:\n"
             "- Número de subsistemas: quantidade de partes no sistema onde você pode alocar redundância.\n"
             "- Valor mínimo e máximo de componentes por subsistema.\n"
@@ -283,7 +283,7 @@ TEXTOS_OPT = {
             "- Limite máximo de custo: valor total disponível para uso na alocação."
         ),
         "info21": (
-            "**1.2 Upload de Arquivo (.txt)**\n\n"
+            "##**1.2 Upload de Arquivo (.txt)**\n\n"
             "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma.\n\n"
         ),
     
@@ -319,16 +319,17 @@ TEXTOS_OPT = {
             "- Ponto Fixo: o usuário informa manualmente os valores iniciais.\n\n"
     
             "**3.3 Número de Shots:**\n\n"
-            "Define quantas vezes o circuito quântico será executado. Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. \n\n"
-            "Recomenda-se usar valores entre 1000 e 8192.\n\n"
+            "- Define quantas vezes o circuito quântico será executado."
+            "- Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. \n\n"
+            "- Recomenda-se usar valores entre 1000 e 8192.\n\n"
     
             "**3.4 Número de Camadas (Profundidade do Circuito):**\n\n"
-            "Determina quantas vezes o bloco de operações é repetido no circuito. Aumentar esse número permite capturar padrões mais complexos, "
-            "mas também aumenta o tempo de execução e o risco de overfitting.\n\n"
+            "- Determina quantas vezes o bloco de operações é repetido no circuito."
+            "- Aumentar esse número permite capturar padrões mais complexos, mas também aumenta o tempo de execução.\n\n"
     
             "**3.5 Número de Rodadas (Iterações):**\n\n"
-            "Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito. Para testes rápidos, use entre 5 e 10 rodadas. \n\n"
-            "Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
+            "- Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito.\n\n"
+            "- Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
     },
     "en": {
@@ -507,8 +508,8 @@ TEXTOS_OPT = {
             "- Fixed Point: manually set the initial parameter values.\n\n"
     
             "3.3 Number of Shots:\n"
-            "Defines how many times the quantum circuit will be executed. Since quantum circuits are probabilistic, "
-            "more shots yield better statistical estimates. Suggested values: between 1000 and 8192.\n\n"
+            "-Defines how many times the quantum circuit will be executed."
+            "-Since quantum circuits are probabilistic, more shots yield better statistical estimates. Suggested values: between 1000 and 8192.\n\n"
     
             "3.4 Number of Layers (Circuit Depth):\n"
             "Represents how many times the block of operations is repeated in the circuit. More layers allow capturing complex patterns "
