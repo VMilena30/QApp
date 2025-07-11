@@ -925,34 +925,39 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Área reservada para o botão
-        top_button = st.empty()
+        params = st.experimental_get_query_params()
+        pagina = params.get("pagina", ["principal"])[0]
         
-        # CSS para fixar o botão no topo direito com aparência leve
+        # Atualiza o estado de sessão
+        st.session_state["pagina"] = otimizacao
+        
+        # CSS + HTML para botão fixo de ajuda no canto superior direito
         st.markdown("""
             <style>
-                div[data-testid="stButton"] > button.tertiary-help {
+                #ajuda-btn {
                     position: fixed;
-                    top: 10px;
-                    right: 10px;
+                    top: 15px;
+                    right: 15px;
                     z-index: 9999;
+                    background-color: #f9f9f9;
+                    color: #333;
+                    border: 1px solid #ccc;
                     border-radius: 50%;
-                    font-size: 20px;
                     width: 40px;
                     height: 40px;
-                    padding: 0;
-                    background-color: transparent;
-                    color: #444;
-                    border: 1px solid #ccc;
-                    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
+                    font-size: 22px;
+                    font-weight: bold;
+                    text-align: center;
+                    line-height: 38px;
+                    text-decoration: none;
+                    box-shadow: 1px 1px 6px rgba(0,0,0,0.1);
+                }
+                #ajuda-btn:hover {
+                    background-color: #e0e0e0;
                 }
             </style>
+            <a id="ajuda-btn" href="/?pagina=explicacao_otimizacao">?</a>
         """, unsafe_allow_html=True)
-        
-        # Coloca o botão com tipo "tertiary"
-        with top_button.container():
-            if st.button("?", key="help", type="tertiary"):
-                st.session_state["pagina"] = "explicacao_otimizacao"
 
         
         # Aplica estilos personalizados
