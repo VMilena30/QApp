@@ -858,11 +858,25 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Botão escondido do Streamlit que será clicado via JS
-        if st.button("🔍 Ir para Explicação", key="btn_explicacao"):
+        # Cria um botão Streamlit com id único e invisível via CSS
+        placeholder = st.empty()
+        with placeholder:
+            clicked = st.button("🔍", key="btn_explicacao")
+        
+        # Se clicado (via JS ou manual), muda a página
+        if clicked:
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # Botão flutuante com HTML e JS
+        # Esconde o botão com CSS
+        st.markdown("""
+            <style>
+                button[kind="secondary"] {
+                    display: none;
+                }
+            </style>
+        """, unsafe_allow_html=True)
+        
+        # Botão flutuante customizado
         st.markdown("""
             <style>
                 #ajuda-fixa {
