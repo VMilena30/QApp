@@ -858,56 +858,45 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Botão invisível do tipo tertiary
-        if st.button(" ", type="tertiary"):
+        # Função para mudar de página
+        def ir_para_explicacao():
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # CSS para esconder todos os botões tertiary
+        # Botão fixo visível no topo direito
         st.markdown("""
             <style>
-                button[kind="tertiary"] {
-                    display: none !important;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-        
-        # Botão flutuante visível que aciona o botão escondido
-        st.markdown("""
-            <style>
-                #ajuda-fixa {
+                .botao-fixo-topo {
                     position: fixed;
-                    top: 20px;
-                    right: 20px;
+                    top: 10px;
+                    right: 10px;
                     z-index: 9999;
                     background-color: #0e1117;
                     color: white;
+                    padding: 10px 20px;
                     border: none;
-                    border-radius: 50%;
-                    width: 48px;
-                    height: 48px;
-                    font-size: 24px;
-                    text-align: center;
-                    line-height: 48px;
+                    border-radius: 10px;
+                    font-size: 14px;
                     cursor: pointer;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                #ajuda-fixa:hover {
+                .botao-fixo-topo:hover {
                     background-color: #262730;
                 }
             </style>
-        
-            <script>
-                function acionarBotaoAjuda() {
-                    const btn = window.parent.document.querySelector('button[kind="tertiary"]');
-                    if (btn) {
-                        btn.click();
-                    }
-                }
-            </script>
-        
-            <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
         """, unsafe_allow_html=True)
-     
+        
+        # Este botão usa o método Streamlit padrão, mas colocado em um container HTML fixo
+        st.markdown("""
+            <div class="botao-fixo-topo">
+                <form action="" method="post">
+                    <input type="submit" name="mudar_pagina" value="Ir para Explicação" style="all: unset; color: white; cursor: pointer;" />
+                </form>
+            </div>
+        """, unsafe_allow_html=True)
+        
+        # Detecta clique e atualiza a sessão
+        if st.session_state.get('pagina') != 'explicacao_otimizacao' and st.experimental_get_query_params().get('mudar_pagina'):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
 
         
         # Aplica estilos personalizados
