@@ -868,15 +868,15 @@ def main():
             <style>
                 #ajuda-fixa {
                     position: fixed;
-                    top: 20px;
-                    right: 20px;
+                    top: 60px;
+                    right: 60px;
                     z-index: 10000;
-                    background-color: #0e1117;
+                    background-color: #03518C;
                     color: white;
                     border: none;
                     border-radius: 50%;
-                    width: 48px;
-                    height: 48px;
+                    width: 60px;
+                    height: 60px;
                     font-size: 24px;
                     text-align: center;
                     line-height: 48px;
