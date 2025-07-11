@@ -844,13 +844,16 @@ def main():
 
     if 'pagina' not in st.session_state:
         st.session_state['pagina'] = 'inicio'
-
-    if st.session_state['pagina'] == 'inicio':
-        mostrar_introducao_e_titulo(textos)
-        mostrar_cartoes_de_area(textos)
-
+        
     elif st.session_state['pagina'] == 'otimizacao':
-        st.subheader(textos["pagina_otimizacao2"])
+        col1, col2 = st.columns([0.9, 0.1])
+    
+        with col1:
+            st.subheader(textos["pagina_otimizacao2"])
+        with col2:
+            if st.button("❓"):
+                st.session_state['pagina'] = 'explicacao_otimizacao'
+                st.experimental_rerun()  # Atualiza a interface imediatamente
 
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -1337,6 +1340,22 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+
+    elif st.session_state['pagina'] == 'explicacao_otimizacao':
+    st.title("📘 Explicação sobre Otimização")
+    st.markdown("""
+    **O que é otimização?**  
+    Otimização é o processo de ajustar variáveis para encontrar a melhor solução possível dentro de um conjunto de restrições...
+
+    ### Exemplos de métodos:
+    - Programação Linear
+    - Algoritmos Genéticos
+    - QUBO / Otimização Quântica
+    - etc.
+    """)
+    if st.button("⬅️ Voltar para Otimização"):
+        st.session_state['pagina'] = 'otimizacao'
+        st.experimental_rerun()
 
     elif st.session_state['pagina'] == 'ml':
         st.subheader(textos["pagina_ml"])
