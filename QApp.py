@@ -1774,7 +1774,8 @@ def main():
         mostrar_cartoes_de_info(textos)
 
         if st.session_state['pagina'] == 'otimizacao_info':
-            st.subheader(textos["pagina_info"])
+            st.title(textos.get("pagina_referencias_titulo", "Referências"))
+            st.header(textos_otim["pagina_otimizacao"])
 
         elif st.session_state['pagina'] == 'ml_info':
             st.subheader(textos["pagina_info"])
