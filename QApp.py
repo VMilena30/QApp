@@ -1130,9 +1130,6 @@ def main():
                 margin-top: 2px;
                 cursor: pointer;
             }
-            </style>
-        """, unsafe_allow_html=True)
-        
             div[data-testid="stButton"] button:has-text("?"):hover {
                 background-color: #e6f0fa;
                 color: #02416B;
