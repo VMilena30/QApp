@@ -274,7 +274,7 @@ TEXTOS_OPT = {
     
         "info2_titulo": "1. Modo de Entrada dos Dados",
         "info2": (
-            "##**1.1 Inserção Manual**\n\n"
+            "##1.1 Inserção Manual\n\n"
             "Você pode preencher todos os dados do problema diretamente na tela. Informe:\n"
             "- Número de subsistemas: quantidade de partes no sistema onde você pode alocar redundância.\n"
             "- Valor mínimo e máximo de componentes por subsistema.\n"
