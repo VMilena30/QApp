@@ -117,7 +117,7 @@ TEXTOS = {
             "Embora a tecnologia quântica ainda esteja em desenvolvimento, este aplicativo traz ferramentas e exemplos que ajudam a entender seu funcionamento e seu potencial, mesmo que ainda de forma exploratória, para problemas de engenharia.\n\n"
             "Explore as áreas disponíveis para conhecer melhor essa tecnologia e como ela pode ser aplicada a casos reais."
         ),
-        "ini": "Página incial", 
+        "ini": "Página inicial", 
         "pagina_referencias": "Referências"
     },
     "en": {
@@ -385,7 +385,7 @@ TEXTOS_OPT = {
 
 TEXTOS_ML = {
     "pt": {
-        "pagina_ml": "Aprendizagem de Máquina Quântica",
+        "pagina_ml": "Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas",
         "idioma_label": "Idioma / Language",
         "dataset_opcao": "Escolha entre dados já existentes de vibração (rolamentos):",
         "selecione_base": "Selecione a base",
@@ -429,6 +429,7 @@ TEXTOS_ML = {
         "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito."
     },
     "en": {
+        "pagina_ml": "Quantum Machine Learning in classification problems and failure prediction",
         "idioma_label": "Idioma / Language",
         "dataset_opcao": "Choose from existing vibration data (bearings):",
         "selecione_base": "Select the dataset",
