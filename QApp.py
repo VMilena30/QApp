@@ -858,63 +858,6 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Cria um botão Streamlit com id único e invisível via CSS
-        placeholder = st.empty()
-        with placeholder:
-            clicked = st.button("🔍", key="btn_explicacao")
-        
-        # Se clicado (via JS ou manual), muda a página
-        if clicked:
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-        
-        # Esconde o botão com CSS
-        st.markdown("""
-            <style>
-                button[kind="secondary"] {
-                    display: none;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-        
-        # Botão flutuante customizado
-        st.markdown("""
-            <style>
-                #ajuda-fixa {
-                    position: fixed;
-                    top: 20px;
-                    right: 20px;
-                    z-index: 10000;
-                    background-color: #0e1117;
-                    color: white;
-                    border: none;
-                    border-radius: 50%;
-                    width: 48px;
-                    height: 48px;
-                    font-size: 24px;
-                    text-align: center;
-                    line-height: 48px;
-                    cursor: pointer;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-                }
-                #ajuda-fixa:hover {
-                    background-color: #262730;
-                }
-            </style>
-        
-            <script>
-                function acionarBotaoAjuda() {
-                    const botoes = window.parent.document.querySelectorAll('button[kind="secondary"]');
-                    for (let botao of botoes) {
-                        if (botao.innerText.includes("🔍")) {
-                            botao.click();
-                            break;
-                        }
-                    }
-                }
-            </script>
-        
-            <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
-        """, unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
