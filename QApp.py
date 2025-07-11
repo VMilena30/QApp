@@ -432,7 +432,9 @@ TEXTOS_ML = {
         "help_4": "Selecione o método que realizará a codificação dos dados clássicos em quânticos.",
         "help_5": "Selecione quantas rotações de euler ocorrerão no seu circuito quântico.",
         "help_6": "Selecione as rotações correspondentes a quantidade que você escolheu.",
-        "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito."
+        "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito.",
+        "info1_titulo": "Guia de Uso",
+        "info1": "Esse guia de uso visa facilitar o uso de técnicas de Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas em equipamentos rotativos, como rolamentos. Mesmo sem conhecimento prévio em computação quântica, você poderá explorar os dados e configurar modelos com apenas alguns cliques. Abaixo, explicamos cada parte da interface."
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -477,7 +479,9 @@ TEXTOS_ML = {
         "help_4": "Select the method that will perform the encoding of classical data into quantum.",
         "help_5": "Select how many Euler rotations will occur in your quantum circuit.",
         "help_6": "Select the rotations corresponding to the quantity you chose.",
-        "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit."
+        "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit.",
+        "info1_titulo": "Usage Guide",
+        "info1": "This user guide aims to facilitate the use of Quantum Machine Learning techniques in classification problems and failure prediction in rotating equipment, such as bearings. Even without prior knowledge in quantum computing, you will be able to explore the data and set up models with just a few clicks. Below, we explain each part of the interface."
     }
 }
 
@@ -752,8 +756,6 @@ def mostrar_ml(textos_ml):
         st.markdown(f"**Pauli Feature Map:** {textos_ml['desc_pauli']}")
 
 def mostrar_ml_info(textos, textos_ml):
-    st.title(textos.get("pagina_referencias_titulo", "Referências"))
-
     st.header(textos_ml["pagina_ml"])
     st.markdown("""
     - **Araújo, L. M. M., Lins, I., Aichele, D., Maior, C., Moura, M., & Droguett, E. (2022).**  
@@ -1816,7 +1818,8 @@ def main():
             st.header(textos_otim["pagina_otimizacao"])
 
         elif st.session_state['pagina'] == 'ml_info':
-            mostrar_ml_info(textos, textos_ml)
+            st.title(textos_ml["info1_titulo"])
+            st.header(textos_ml["info1"])
 
         elif st.session_state['pagina'] == 'inferencia_info':
             st.subheader(textos["pagina_info"])
