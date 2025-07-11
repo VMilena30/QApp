@@ -961,9 +961,9 @@ def main():
         with col1:
             st.subheader("Aplicação")
         
-        with col2:
-            # Cria espaço onde vamos injetar botão com HTML e estilo próprio
-            ajuda_clicked = components.html("""
+       with col2:
+            # Cria botão de ajuda com estilo exclusivo
+            components.html("""
                 <div style="display: flex; justify-content: flex-end;">
                     <form action="#" onsubmit="handleClick(); return false;">
                         <button id="botao_ajuda" type="submit">?</button>
@@ -998,7 +998,7 @@ def main():
                 </style>
             """, height=50)
         
-        # Escuta do clique vindo do botão via JavaScript
+        # Captura do clique usando JS → Streamlit
         st.markdown("""
             <script>
             window.addEventListener("message", (event) => {
@@ -1012,12 +1012,10 @@ def main():
             </script>
         """, unsafe_allow_html=True)
         
-        # Valor do clique
-        ajuda_custom = st.session_state.get("botao_ajuda_custom", False)
-        
-        if ajuda_custom:
+        # Verifica se clicou no botão
+        if st.session_state.get("botao_ajuda_custom", False):
             st.session_state["pagina"] = "explicacao_otimizacao"
-            st.session_state["botao_ajuda_custom"] = False  # reseta
+            st.session_state["botao_ajuda_custom"] = False
             st.rerun()
     
         # Aplica estilos personalizados
