@@ -1114,16 +1114,15 @@ def main():
             # Botão de ajuda com key única
             ajuda = st.button("?", key="botao_ajuda")
         
-        # Aplica estilo SOMENTE ao botão "botao_ajuda"
         st.markdown("""
             <style>
-            /* Pega o botão pelo atributo title (o único botão com interrogação) */
-            div[data-testid="stButton"] button:has-text("?") {
+            /* Estiliza todos os botões - refine com base na estrutura */
+            div[data-testid="stButton"] button {
                 background-color: transparent;
                 border: 1px solid #03518C;
                 border-radius: 50%;
-                width: 10px;
-                height: 10px;
+                width: 24px;
+                height: 24px;
                 font-size: 14px;
                 font-weight: bold;
                 color: #03518C;
@@ -1131,6 +1130,8 @@ def main():
                 margin-top: 2px;
                 cursor: pointer;
             }
+            </style>
+        """, unsafe_allow_html=True)
         
             div[data-testid="stButton"] button:has-text("?"):hover {
                 background-color: #e6f0fa;
@@ -1274,16 +1275,16 @@ def main():
                 with col_param:
                     otimizador = st.radio(
                         textos_otim["selecionar_otimizador"],
-                        textos_otim["opcoes_otimizadores"]
+                        textos_otim["opcoes_otimizadores"], help=textos_otim["help5"]
                     )
                     camadas = st.number_input(
-                        textos_otim["inserir_camadas"], min_value=1, max_value=3, value=1
+                        textos_otim["inserir_camadas"], min_value=1, max_value=3, value=1, help=textos_otim["help5"]
                     )
                     rodadas = st.number_input(
-                        textos_otim["inserir_rodadas"], min_value=1, value=1
+                        textos_otim["inserir_rodadas"], min_value=1, value=1, help=textos_otim["help5"]
                     )
                     shots = st.number_input(
-                        textos_otim["inserir_shots"], min_value=100, value=1000
+                        textos_otim["inserir_shots"], min_value=100, value=1000, help=textos_otim["help5"]
                     )
                 
         if st.button(textos_otim['executar']):
