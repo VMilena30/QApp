@@ -843,7 +843,7 @@ def main():
     mostrar_inf(textos)
 
     if 'pagina' not in st.session_state:
-    st.session_state['pagina'] = 'inicio'
+        st.session_state['pagina'] = 'inicio'
     
     if st.session_state['pagina'] == 'inicio':
         mostrar_introducao_e_titulo(textos)
