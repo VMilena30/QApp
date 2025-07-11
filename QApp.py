@@ -284,17 +284,17 @@ TEXTOS_OPT = {
         ),
         "info21": (
             "1.2 Upload de Arquivo (.txt)\n"
-            "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma. "
-            "Essa opção é indicada para casos com grande volume de dados ou reuso de configurações anteriores."
+            "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma.\n"
+            "Essa opção é indicada para casos com grande volume de dados ou reuso de configurações anteriores.\n"
         ),
     
         "info3_titulo": "2. Algoritmos Quânticos de Otimização",
         "info3": (
             "Você pode escolher entre dois algoritmos quânticos variacionais:\n\n"
-            "2.1 QAOA (Quantum Approximate Optimization Algorithm):\n"
+            "2.1 QAOA (Quantum Approximate Optimization Algorithm):\n\n"
             "Algoritmo ideal para problemas combinatórios formulados como QUBO. Utiliza camadas parametrizadas compostas por operações que codificam o problema e outras que exploram o espaço de soluções. "
             "Essas camadas são ajustadas por parâmetros numéricos otimizados por algoritmos clássicos.\n\n"
-            "2.2 VQE (Variational Quantum Eigensolver):\n"
+            "2.2 VQE (Variational Quantum Eigensolver):\n\n"
             "Inicialmente usado na química quântica, também pode ser aplicado a problemas de otimização. Exige a definição de um circuito ansatz — uma estrutura de portas quânticas que representa o espaço de soluções. "
             "O VQE ajusta os parâmetros desse circuito para minimizar o valor esperado da função objetivo.\n\n"
             "Ao utilizar o VQE, você deverá configurar:\n"
