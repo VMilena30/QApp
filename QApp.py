@@ -1800,17 +1800,13 @@ def main():
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
         mostrar_cartoes_de_info(textos)
-
-        if st.session_state['pagina'] == 'otimizacao_info':
-            st.title(textos.get("pagina_referencias_titulo", "Referências"))
-            st.header(textos_otim["pagina_otimizacao"])
-
-        elif st.session_state['pagina'] == 'ml_info':
-            st.title(textos_ml["info1_titulo"])
-            st.header(textos_ml["info1"])
-
-        elif st.session_state['pagina'] == 'inferencia_info':
-            st.subheader(textos["pagina_info"])
+    
+        if st.button("Mais sobre Otimização"):
+            st.session_state['pagina'] = 'otimizacao_info'
+        elif st.button("Mais sobre ML"):
+            st.session_state['pagina'] = 'ml_info'
+        elif st.button("Mais sobre Inferência"):
+            st.session_state['pagina'] = 'inferencia_info'
 
 
         with st.sidebar:
