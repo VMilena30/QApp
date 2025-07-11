@@ -846,7 +846,7 @@ def main():
                 border: none;
                 border-radius: 50%;
                 width: 48px;
-                height: 48px;
+                height: 80px;
                 font-size: 24px;
                 cursor: pointer;
                 box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
