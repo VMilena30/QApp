@@ -962,61 +962,38 @@ def main():
         with col1:
             st.subheader("Aplicação")
         with col2:
-               # Cria botão de ajuda com estilo exclusivo
-            components.html("""
-                <div style="display: flex; justify-content: flex-end;">
-                    <form action="#" onsubmit="handleClick(); return false;">
-                        <button id="botao_ajuda" type="submit">?</button>
-                    </form>
-                </div>
-                <script>
-                    const streamlitEvent = new Event("botaoAjudaClicado");
-                    function handleClick() {
-                        window.parent.postMessage({isStreamlitMessage: true, type: "botaoAjudaClicado"}, "*");
-                    }
-                </script>
-                <style>
-                    #botao_ajuda {
-                        background-color: transparent;
-                        border: 2px solid #03518C;
-                        border-radius: 50%;
-                        width: 30px;
-                        height: 30px;
-                        font-size: 14px;
-                        font-weight: bold;
-                        color: #03518C;
-                        padding: 0;
-                        margin-top: 8px;
-                        cursor: pointer;
-                    }
+            # Botão de ajuda com key única
+            ajuda = st.button("?", key="botao_ajuda")
         
-                    #botao_ajuda:hover {
-                        background-color: #e6f0fa;
-                        color: #02416B;
-                        border-color: #02416B;
-                    }
-                </style>
-            """, height=50)
-
-        
-        # Captura do clique usando JS → Streamlit
+        # Aplica estilo SOMENTE ao botão "botao_ajuda"
         st.markdown("""
-            <script>
-            window.addEventListener("message", (event) => {
-                if (event.data?.type === "botaoAjudaClicado") {
-                    const streamlitEvents = new CustomEvent("streamlit:setComponentValue", {
-                        detail: { key: "botao_ajuda_custom", value: true, dataType: "bool" }
-                    });
-                    window.dispatchEvent(streamlitEvents);
-                }
-            });
-            </script>
+            <style>
+            /* Pega o botão pelo atributo title (o único botão com interrogação) */
+            div[data-testid="stButton"] button:has-text("?") {
+                background-color: transparent;
+                border: 2px solid #03518C;
+                border-radius: 50%;
+                width: 30px;
+                height: 30px;
+                font-size: 14px;
+                font-weight: bold;
+                color: #03518C;
+                padding: 0;
+                margin-top: 8px;
+                cursor: pointer;
+            }
+        
+            div[data-testid="stButton"] button:has-text("?"):hover {
+                background-color: #e6f0fa;
+                color: #02416B;
+                border-color: #02416B;
+            }
+            </style>
         """, unsafe_allow_html=True)
         
-        # Verifica se clicou no botão
-        if st.session_state.get("botao_ajuda_custom", False):
+        # Redireciona se clicado
+        if ajuda:
             st.session_state["pagina"] = "explicacao_otimizacao"
-            st.session_state["botao_ajuda_custom"] = False
             st.rerun()
     
         # Aplica estilos personalizados
