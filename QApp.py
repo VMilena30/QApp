@@ -860,11 +860,11 @@ def main():
     
         st.markdown("""
             <style>
-                #botao-ajuda {
+                #ajuda-fixa {
                     position: fixed;
-                    bottom: 100px;  /* Distância do rodapé */
+                    top: 20px;
                     right: 20px;
-                    z-index: 9999;
+                    z-index: 10000;
                     background-color: #0e1117;
                     color: white;
                     border: none;
@@ -872,17 +872,31 @@ def main():
                     width: 48px;
                     height: 48px;
                     font-size: 24px;
+                    text-align: center;
+                    line-height: 48px;
                     cursor: pointer;
                     box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
                 }
-                #botao-ajuda:hover {
+                #ajuda-fixa:hover {
                     background-color: #262730;
                 }
             </style>
-            <a href="#ajuda">
-                <button id="botao-ajuda">?</button>
-            </a>
-        """, unsafe_allow_html=True)
+        
+            <script>
+                // Dispara um clique oculto em botão Streamlit
+                function acionarBotaoAjuda() {
+                    const botoes = window.parent.document.querySelectorAll('button[kind="secondary"]');
+                    for (let botao of botoes) {
+                        if (botao.innerText.includes("🔍")) {
+                            botao.click();
+                            break;
+                        }
+                    }
+                }
+            </script>
+        
+            <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
+        """, unsafe_allow_html=True))
 
         if st.button("🔍", key="botao_ajuda_oculto"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
