@@ -595,6 +595,26 @@ def mostrar_cartoes_de_area(textos):
     with col5:
         st.write("")
 
+def mostrar_cartoes_de_info(textos):
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.write("")
+    with col2:
+        st.image("opt3.png", width=150)
+        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
+            st.session_state['pagina'] = 'otimizacao_info'
+    with col3:
+        st.image("ml3.png", width=150)
+        if st.button(textos["pagina_ml"], key="ml_btn"):
+            st.session_state['pagina'] = 'ml_info'
+            
+    with col4:
+        st.image("infer3.png", width=150)
+        if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
+            st.session_state['pagina'] = 'inferencia_info'
+    with col5:
+        st.write("")
+
 
 
 def ler_manualmente(textos):
@@ -723,6 +743,7 @@ def mostrar_otim(textos_otim):
 
             st.markdown(f"#### {textos_otim['inicializacoes_titulo']}")
             st.markdown(textos_otim['inicializacoes_descricao'])
+            
         
 def mostrar_ml(textos_ml):
     with st.sidebar.expander(textos_ml['pagina_ml']):
@@ -1750,7 +1771,7 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'info':
-        mostrar_otim(textos_otim)
+        mostrar_cartoes_de_info(textos)
 
         with st.sidebar:
             if st.button(textos["ini"]):
