@@ -960,8 +960,7 @@ def main():
         
         with col1:
             st.subheader("Aplicação")
-        
-       with col2:
+        with col2:
                # Cria botão de ajuda com estilo exclusivo
             components.html("""
                 <div style="display: flex; justify-content: flex-end;">
