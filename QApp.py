@@ -859,6 +859,65 @@ def main():
         st.subheader(textos_otim["aplicacao"])
         
         
+        # Botão escondido com ID específico
+        with st.container():
+            st.markdown("""
+                <div id="botao_ajuda_container">
+                    <button id="botao_ajuda_streamlit">🔍</button>
+                </div>
+                <style>
+                    #botao_ajuda_container {
+                        display: none;
+                    }
+                </style>
+            """, unsafe_allow_html=True)
+        
+        # Botão verdadeiro do Streamlit (precisa estar no DOM para ser clicado pelo JS)
+        clicked = st.button("🔍", key="btn_explicacao")
+        
+        if clicked:
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        # Botão flutuante estilizado com HTML e JS
+        st.markdown("""
+            <style>
+                #ajuda-fixa {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 10000;
+                    background-color: #0e1117;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    font-size: 24px;
+                    text-align: center;
+                    line-height: 48px;
+                    cursor: pointer;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+                }
+                #ajuda-fixa:hover {
+                    background-color: #262730;
+                }
+            </style>
+        
+            <script>
+                function acionarBotaoAjuda() {
+                    const botoes = window.parent.document.querySelectorAll('button');
+                    for (let botao of botoes) {
+                        if (botao.innerText.includes("🔍")) {
+                            botao.click();
+                            break;
+                        }
+                    }
+                }
+            </script>
+        
+            <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
+        """, unsafe_allow_html=True)
+        
         # Aplica estilos personalizados
         st.markdown("""
             <style>
