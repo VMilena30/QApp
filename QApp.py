@@ -857,6 +857,31 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
+
+        if st.button("?", key="ajuda_fixa"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        st.markdown("""
+            <style>
+                button[kind="secondary"] {
+                    position: fixed !important;
+                    top: 60px;
+                    right: 60px;
+                    z-index: 10000;
+                    background-color: #03518C;
+                    color: white;
+                    border-radius: 50%;
+                    width: 60px;
+                    height: 60px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+                }
+                button[kind="secondary"]:hover {
+                    background-color: #262730;
+                }
+            </style>
+        """, unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
