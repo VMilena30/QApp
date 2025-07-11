@@ -1773,7 +1773,7 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'info':
-        st.subheader(textos["pagina_info"])
+        st.subheader(textos["pagina_info2"])
         mostrar_cartoes_de_info(textos)
 
         if st.session_state['pagina'] == 'otimizacao_info':
