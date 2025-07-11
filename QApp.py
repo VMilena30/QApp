@@ -1750,7 +1750,7 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'info':
-        mostrar_referencias(textos, textos_otim)
+        mostrar_otim(textos_otim)
 
         with st.sidebar:
             if st.button(textos["ini"]):
