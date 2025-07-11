@@ -1360,9 +1360,6 @@ def main():
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
                 
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
         st.title("📘 Explicação sobre Otimização")
