@@ -435,14 +435,23 @@ TEXTOS_ML = {
         "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito.",
         "info1_titulo": "Guia de Uso",
         "info1": "Esse guia de uso visa facilitar o uso de técnicas de Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas em equipamentos rotativos, como rolamentos. Mesmo sem conhecimento prévio em computação quântica, você poderá explorar os dados e configurar modelos com apenas alguns cliques. Abaixo, explicamos cada parte da interface.",
-        "info2_titulo": "Escolha ou envio de base de dados",
+        "info2_titulo": "1. Escolha ou envio de base de dados",
         "info2": "Logo na tela inicial, você verá duas opções:",
         "info2.1": "**Selecionar uma base existente:** Você pode escolher entre bases de dados já conhecidas contendo medições de vibração de rolamentos, como a base da Universidade de CWRU ou da JNU.",
         "info2.2": "**Importar dados próprios:** Caso possua seus próprios dados (em formato CSV, Excel ou Parquet), é possível fazer o upload diretamente no sistema.",
-        "info3_titulo": "Extração de características",
+        "info3_titulo": "2. Extração de características",
         "info3": "Depois de carregar sua base de dados com sinais de vibração, o aplicativo oferece a possibilidade de extrair automaticamente características (features) desses sinais. Essa etapa simplifica os dados e reduz a quantidade de informação a ser processada, tornando o modelo mais eficiente e interpretável.",
-        "info4_titulo": "Codificação quântica",
-        "info4": "Computadores quânticos não processam dados do mesmo modo que os computadores clássicos. Para que os dados possam ser utilizados em um modelo quântico, eles precisam ser convertidos em uma linguagem compreensível para os qubits. Essa conversão é chamada de codificação quântica. Cada método tem suas particularidades e pode influenciar na performance do modelo."
+        "info4_titulo": "3. Codificação quântica",
+        "info4": "Computadores quânticos não processam dados do mesmo modo que os computadores clássicos. Para que os dados possam ser utilizados em um modelo quântico, eles precisam ser convertidos em uma linguagem compreensível para os qubits. Essa conversão é chamada de codificação quântica. Cada método tem suas particularidades e pode influenciar na performance do modelo.",
+        "info5_titulo": "4. Circuitos Quânticos Parametrizados (PQC)",
+        "info5": "Os circuitos quânticos parametrizados, também chamados de Parametrized Quantum Circuits (PQC), são o núcleo dos modelos de Aprendizagem de Máquina Quântica. Eles funcionam como o “cérebro” do algoritmo, sendo responsáveis por aprender padrões a partir dos dados inseridos. A ideia central é que o circuito possui portas quânticas ajustáveis por parâmetros numéricos, que são modificados durante o treinamento para encontrar as melhores configurações.",
+        "info5.1": "Esses parâmetros são análogos aos “pesos” de uma rede neural clássica. Durante o aprendizado, o modelo ajusta os valores dessas portas para minimizar os erros de classificação ou predição.",
+        "info6_titulo": "4.1. Rotações de Euler",
+        "info6": "Uma parte essencial dos PQCs são as chamadas rotações de Euler, que são operações aplicadas a cada qubit individualmente. Elas alteram o estado do qubit com base em ângulos parametrizáveis (por exemplo: Rx(θ), Ry(θ), Rz(θ)), permitindo que o circuito represente uma ampla gama de transformações.",
+        "info6.1": "Você pode configurar a quantidade de rotações de Euler aplicadas em cada camada do circuito. Aumentar esse número torna o circuito mais expressivo (capaz de representar padrões mais complexos), mas também pode aumentar o tempo de execução e o risco de sobreajuste (overfitting).",
+        "info7_titulo": "4.2. Emaranhamento entre Qubits",
+        "info7": "Além das operações em qubits isolados, é fundamental que o circuito quântico conecte os qubits entre si. Isso é feito por meio de portas de emaranhamento, que criam correlações entre os estados dos qubits. O emaranhamento é uma das propriedades mais poderosas da computação quântica, pois permite representar relações complexas entre os dados.",
+        "info7.1": "Você pode selecionar qual porta deseja usar no seu circuito. O tipo de emaranhamento afeta diretamente a arquitetura do modelo e pode influenciar sua capacidade de generalização."
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -490,14 +499,23 @@ TEXTOS_ML = {
         "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit.",
         "info1_titulo": "Usage Guide",
         "info1": "This user guide aims to facilitate the use of Quantum Machine Learning techniques in classification and failure prediction problems in rotating equipment, such as bearings. Even without prior knowledge of quantum computing, you will be able to explore the data and configure models with just a few clicks. Below, we explain each part of the interface.",
-        "info2_titulo": "Choose or upload a database",
+        "info2_titulo": "1. Choose or upload a database",
         "info2": "Right on the initial screen, you will see two options:",
         "info2.1": "Select an existing database: You can choose from well-known databases containing vibration measurements from bearings, such as the CWRU or JNU database.",
         "info2.2": "Upload your own data: If you have your own data (in CSV, Excel, or Parquet format), you can upload it directly into the system.",
-        "info3_titulo": "Feature extraction",
+        "info3_titulo": "2. Feature extraction",
         "info3": "After loading your vibration signal dataset, the application offers the option to automatically extract features from these signals. This step simplifies the data and reduces the amount of information to be processed, making the model more efficient and interpretable.",
-        "info4_titulo": "Quantum encoding",
-        "info4": "Quantum computers do not process data in the same way as classical computers. For data to be used in a quantum model, it must be converted into a language understandable by qubits. This conversion is called quantum encoding. Each method has its particularities and may influence the model’s performance."
+        "info4_titulo": "3. Quantum encoding",
+        "info4": "Quantum computers do not process data in the same way as classical computers. For data to be used in a quantum model, it must be converted into a language understandable by qubits. This conversion is called quantum encoding. Each method has its particularities and may influence the model’s performance.",
+        "info5_titulo": "4. Parameterized Quantum Circuits (PQC)",
+        "info5": "Parameterized Quantum Circuits, also known as PQCs, are the core of Quantum Machine Learning models. They act as the “brain” of the algorithm, being responsible for learning patterns from the input data. The central idea is that the circuit contains quantum gates adjustable by numerical parameters, which are modified during training to find the best configurations.",
+        "info5.1": "These parameters are analogous to the “weights” of a classical neural network. During learning, the model adjusts the values of these gates to minimize classification or prediction errors.",
+        "info6_titulo": "4.1. Euler Rotations",
+        "info6": "An essential part of PQCs are the so-called Euler rotations, which are operations applied to each qubit individually. They change the state of the qubit based on parameterizable angles (for example: Rx(θ), Ry(θ), Rz(θ)), allowing the circuit to represent a wide range of transformations.",
+        "info6.1": "You can configure the number of Euler rotations applied in each layer of the circuit. Increasing this number makes the circuit more expressive (capable of representing more complex patterns), but it can also increase execution time and the risk of overfitting.",
+        "info7_titulo": "4.2. Qubit Entanglement",
+        "info7": "In addition to operations on individual qubits, it is essential for the quantum circuit to connect the qubits with each other. This is done through entanglement gates, which create correlations between the states of the qubits. Entanglement is one of the most powerful properties of quantum computing, as it allows the representation of complex relationships within the data.",
+        "info7.1": "You can choose which entangling gate to use in your circuit. The type of entanglement directly affects the model’s architecture and can influence its generalization ability."
     }
 }
 
@@ -1867,6 +1885,18 @@ def main():
 
         st.subheader(textos_ml["info4_titulo"])
         st.write(textos_ml["info4"])
+
+        st.subheader(textos_ml["info5_titulo"])
+        st.write(textos_ml["info5"])
+        st.write(textos_ml["info5.1"])
+
+        st.subheader(textos_ml["info6_titulo"])
+        st.write(textos_ml["info6"])
+        st.write(textos_ml["info6.1"])
+
+        st.subheader(textos_ml["info7_titulo"])
+        st.write(textos_ml["info7"])
+        st.write(textos_ml["info7.1"])
         
     elif st.session_state['pagina'] == 'inferencia_info':
         st.subheader(textos["pagina_info"])
