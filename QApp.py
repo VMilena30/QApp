@@ -857,7 +857,12 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
-    
+        
+        # Botão escondido do Streamlit que será clicado via JS
+        if st.button("🔍 Ir para Explicação", key="btn_explicacao"):
+            st.session_state['pagina'] = 'explicacao_otimizacao'
+        
+        # Botão flutuante com HTML e JS
         st.markdown("""
             <style>
                 #ajuda-fixa {
@@ -883,7 +888,6 @@ def main():
             </style>
         
             <script>
-                // Dispara um clique oculto em botão Streamlit
                 function acionarBotaoAjuda() {
                     const botoes = window.parent.document.querySelectorAll('button[kind="secondary"]');
                     for (let botao of botoes) {
@@ -896,10 +900,7 @@ def main():
             </script>
         
             <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
-        """, unsafe_allow_html=True))
-
-        if st.button("🔍", key="botao_ajuda_oculto"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
+        """, unsafe_allow_html=True)
         
         # Aplica estilos personalizados
         st.markdown("""
