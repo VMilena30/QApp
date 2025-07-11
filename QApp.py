@@ -956,42 +956,51 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
+        # Processa clique no botão HTML com callback manual
+        if "ajuda_clicada" in st.session_state and st.session_state["ajuda_clicada"]:
+            st.session_state["pagina"] = "explicacao_otimizacao"
+            st.session_state["ajuda_clicada"] = False
+        
+        # Interface: título e botão bonito
         col1, col2 = st.columns([10, 1])
         
         with col1:
             st.subheader("Aplicação")
         
         with col2:
-            # CSS para botão redondo, pequeno e discreto
             st.markdown("""
                 <style>
-                    .help-button button {
+                    .ajuda-bolinha {
                         background-color: #e6f0fa;
-                        border: none;
                         border-radius: 50%;
                         width: 26px;
                         height: 26px;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
                         font-size: 14px;
                         font-weight: bold;
                         color: #003366;
-                        padding: 0;
-                        text-align: center;
-                        box-shadow: 0 0 2px rgba(0,0,0,0.15);
+                        border: none;
+                        box-shadow: 0 0 2px rgba(0,0,0,0.2);
                         margin-top: 12px;
-                    }
-                    .help-button button:hover {
-                        background-color: #d0e2f2;
-                        color: #001f33;
                         cursor: pointer;
+                        transition: background-color 0.3s ease;
+                    }
+                    .ajuda-bolinha:hover {
+                        background-color: #cce0f0;
                     }
                 </style>
+                <form action="" method="post">
+                    <button class="ajuda-bolinha" name="ajuda" type="submit">?</button>
+                </form>
             """, unsafe_allow_html=True)
         
-            with st.container():
-                st.markdown('<div class="help-button">', unsafe_allow_html=True)
-                if st.button("?", key="ajuda_aplicacao"):
-                    st.session_state["pagina"] = "explicacao_otimizacao"
-                st.markdown('</div>', unsafe_allow_html=True)
+            # Captura clique via formulário HTML
+            if st.query_params.get("ajuda") is not None or st.session_state.get("ajuda") is True:
+                st.session_state["ajuda_clicada"] = True
+                st.rerun()
+
         
         # Aplica estilos personalizados
         st.markdown("""
