@@ -318,15 +318,15 @@ TEXTOS_OPT = {
             "- Clusterização: usa agrupamento dos dados como ponto de partida mais estruturado.\n"
             "- Ponto Fixo: o usuário informa manualmente os valores iniciais.\n\n"
     
-            "**3.3 Número de Shots:**\n"
+            "**3.3 Número de Shots:**\n\n"
             "Define quantas vezes o circuito quântico será executado. Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. \n\n"
             "Recomenda-se usar valores entre 1000 e 8192.\n\n"
     
-            "**3.4 Número de Camadas (Profundidade do Circuito):**\n"
+            "**3.4 Número de Camadas (Profundidade do Circuito):**\n\n"
             "Determina quantas vezes o bloco de operações é repetido no circuito. Aumentar esse número permite capturar padrões mais complexos, "
             "mas também aumenta o tempo de execução e o risco de overfitting.\n\n"
     
-            "**3.5 Número de Rodadas (Iterações):**\n"
+            "**3.5 Número de Rodadas (Iterações):**\n\n"
             "Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito. Para testes rápidos, use entre 5 e 10 rodadas. \n\n"
             "Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
