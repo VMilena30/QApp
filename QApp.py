@@ -935,8 +935,8 @@ def main():
             <style>
                 #ajuda-btn {
                     position: fixed;
-                    top: 15px;
-                    right: 15px;
+                    top: 50px;
+                    right: 30px;
                     z-index: 9999;
                     background-color: #f9f9f9;
                     color: #333;
