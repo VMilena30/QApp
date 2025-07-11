@@ -119,7 +119,8 @@ TEXTOS = {
             "Explore as áreas disponíveis para conhecer melhor essa tecnologia e como ela pode ser aplicada a casos reais."
         ),
         "ini": "Página inicial", 
-        "pagina_referencias": "Referências"
+        "pagina_referencias": "Referências",
+        "pagina_info": "Informação"
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -144,7 +145,8 @@ TEXTOS = {
             "Explore the available areas to better understand this technology and how it can be applied to real cases."
         ),
         "ini": "Homepage",
-        "pagina_referencias": "References"
+        "pagina_referencias": "References",
+        "pagina_info": "Information"
     }
 }
 
@@ -583,8 +585,8 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-        if st.button(textos["pagina_referencias"], key="referencias_btn"):
-            st.session_state['pagina'] = 'referencias'
+        if st.button(textos["pagina_info"], key="referencias_btn"):
+            st.session_state['pagina'] = 'info'
             
     with col4:
         st.image("infer3.png", width=150)
@@ -1747,7 +1749,7 @@ def main():
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
 
-    elif st.session_state['pagina'] == 'referencias':
+    elif st.session_state['pagina'] == 'info':
         mostrar_referencias(textos, textos_otim)
 
         with st.sidebar:
