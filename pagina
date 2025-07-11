@@ -858,21 +858,6 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
 
-        if st.button("?", key="ajuda_fixa"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-        
-        st.markdown("""
-            <style>
-                button[kind="secondary"] {
-                    position: fixed !important;
-                    top: 60px;
-                    right: 60px;
-                    z-index: 10000;
-                    /* ... resto do estilo ... */
-                }
-            </style>
-        """, unsafe_allow_html=True)
-
 
         
         # Aplica estilos personalizados
