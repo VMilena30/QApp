@@ -263,7 +263,7 @@ TEXTOS_OPT = {
             "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites inferior e superior para redundâncias  \n"
 
         ),
-        "aplicacao": "Aplicação",
+        "aplicacao": "\nAplicação",
         "info1_titulo": "Guia de Uso – Otimização Quântica para Alocação de Redundâncias",
         "info1": (
             "Este guia tem como objetivo orientar você a preencher corretamente todos os campos da plataforma de otimização quântica, "
