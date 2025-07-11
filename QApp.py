@@ -858,24 +858,20 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Cria um botão do Streamlit escondido (usaremos JavaScript para acioná-lo)
-        invisible_button = st.button("ir_para_explicacao", key="btn_explicacao")
-        
-        # Se ele for clicado, muda a sessão
-        if invisible_button:
+# Botão invisível tipo "tertiary"
+        if st.button("🔍", key="btn_explicacao", type="tertiary"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
         
-        # Esconde o botão acima usando CSS baseado no texto do botão
+        # Esconde somente o botão "tertiary"
         st.markdown("""
             <style>
-                /* Esconde apenas o botão com esse texto específico */
-                button:has(div:contains("ir_para_explicacao")) {
-                    display: none !important;
+                button[kind="tertiary"] {
+                    display: none;
                 }
             </style>
         """, unsafe_allow_html=True)
         
-        # Botão flutuante com HTML + JS para simular clique no botão acima
+        # Botão flutuante com estilo
         st.markdown("""
             <style>
                 #ajuda-fixa {
@@ -902,9 +898,9 @@ def main():
         
             <script>
                 function acionarBotaoAjuda() {
-                    const botoes = window.parent.document.querySelectorAll('button');
+                    const botoes = window.parent.document.querySelectorAll('button[kind="tertiary"]');
                     for (let botao of botoes) {
-                        if (botao.innerText.includes("ir_para_explicacao")) {
+                        if (botao.innerText.includes("🔍")) {
                             botao.click();
                             break;
                         }
@@ -913,7 +909,8 @@ def main():
             </script>
         
             <button id="ajuda-fixa" onclick="acionarBotaoAjuda()">?</button>
-        """, unsafe_allow_html=True)     
+        """, unsafe_allow_html=True)
+     
 
         
         # Aplica estilos personalizados
