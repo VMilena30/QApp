@@ -956,45 +956,41 @@ def main():
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
-    # Detecta o clique via query param (ex: ?ajuda=1)
-    if st.query_params.get("ajuda") == "1":
-        st.session_state["pagina"] = "explicacao_otimizacao"
-        st.query_params.clear()  # limpa a URL depois do clique
-        st.rerun()
-        
-        # Interface: título e botão bonito
         col1, col2 = st.columns([10, 1])
         
         with col1:
             st.subheader("Aplicação")
         
         with col2:
+            ajuda = st.button("?", key="ajuda_button")
+        
+            # Aplica o CSS para estilizar o botão
             st.markdown("""
                 <style>
-                    .ajuda-bolinha {
+                    div[data-testid="column"]:nth-of-type(2) button {
                         background-color: #e6f0fa;
                         border-radius: 50%;
                         width: 26px;
                         height: 26px;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
                         font-size: 14px;
                         font-weight: bold;
                         color: #003366;
                         border: none;
                         box-shadow: 0 0 2px rgba(0,0,0,0.2);
                         margin-top: 12px;
-                        cursor: pointer;
-                        transition: background-color 0.3s ease;
+                        padding: 0;
                     }
-                    .ajuda-bolinha:hover {
+                    div[data-testid="column"]:nth-of-type(2) button:hover {
                         background-color: #cce0f0;
+                        color: #001f33;
                     }
                 </style>
-        
-                <div class="ajuda-bolinha" onclick="window.location.search='?ajuda=1';">?</div>
             """, unsafe_allow_html=True)
+        
+        # Se o botão for clicado, muda de página
+        if ajuda:
+            st.session_state["pagina"] = "explicacao_otimizacao"
+            st.rerun()
     
         # Aplica estilos personalizados
         st.markdown("""
