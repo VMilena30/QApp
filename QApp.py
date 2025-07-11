@@ -867,8 +867,8 @@ def main():
             <style>
                 .botao-fixo-topo {
                     position: fixed;
-                    top: 10px;
-                    right: 10px;
+                    top: 106x;
+                    right: 60px;
                     z-index: 9999;
                     background-color: #0e1117;
                     color: white;
@@ -889,7 +889,7 @@ def main():
         st.markdown("""
             <div class="botao-fixo-topo">
                 <form action="" method="post">
-                    <input type="submit" name="mudar_pagina" value="Ir para Explicação" style="all: unset; color: white; cursor: pointer;" />
+                    <input type="submit" name="mudar_pagina" value="?" style="all: unset; color: white; cursor: pointer;" />
                 </form>
             </div>
         """, unsafe_allow_html=True)
