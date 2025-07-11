@@ -924,27 +924,27 @@ def main():
         
         col1, col2 = st.columns([10, 1])  # col1 = texto, col2 = botão pequeno
         
-            with col1:
-                st.subheader("Aplicação")
-        
-            with col2:
-                st.markdown("""
-                    <style>
-                        .circle-button button {
-                            border-radius: 50%;
-                            font-size: 16px;
-                            width: 30px;
-                            height: 30px;
-                            padding: 0;
-                            margin-top: 10px;
-                        }
-                    </style>
-                """, unsafe_allow_html=True)
-                with st.container():
-                    st.markdown('<div class="circle-button">', unsafe_allow_html=True)
-                    if st.button("?", key="ajuda_aplicacao"):
-                        st.session_state["pagina"] = "explicacao_otimizacao"
-                    st.markdown('</div>', unsafe_allow_html=True)
+        with col1:
+            st.subheader("Aplicação")
+    
+        with col2:
+            st.markdown("""
+                <style>
+                    .circle-button button {
+                        border-radius: 50%;
+                        font-size: 16px;
+                        width: 30px;
+                        height: 30px;
+                        padding: 0;
+                        margin-top: 10px;
+                    }
+                </style>
+            """, unsafe_allow_html=True)
+            with st.container():
+                st.markdown('<div class="circle-button">', unsafe_allow_html=True)
+                if st.button("?", key="ajuda_aplicacao"):
+                    st.session_state["pagina"] = "explicacao_otimizacao"
+                st.markdown('</div>', unsafe_allow_html=True)
 
         
         # Aplica estilos personalizados
