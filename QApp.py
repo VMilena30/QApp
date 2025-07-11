@@ -903,27 +903,27 @@ def main():
     if espaco_botao.button("?", key="ajuda_fixa"):
         st.session_state['pagina'] = 'explicacao_otimizacao'
     
-    # CSS fixando o botão no topo direito
-    st.markdown("""
-        <style>
-            button[kind="secondary"] {
-                position: fixed !important;
-                top: 20px;
-                right: 20px;
-                z-index: 9999;
-                border-radius: 50%;
-                width: 48px;
-                height: 48px;
-                font-size: 24px;
-                background-color: #0e1117;
-                color: white;
-                box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
-            }
-            button[kind="secondary"]:hover {
-                background-color: #262730;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+        # CSS fixando o botão no topo direito
+        st.markdown("""
+            <style>
+                button[kind="secondary"] {
+                    position: fixed !important;
+                    top: 20px;
+                    right: 20px;
+                    z-index: 9999;
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    font-size: 24px;
+                    background-color: #0e1117;
+                    color: white;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+                }
+                button[kind="secondary"]:hover {
+                    background-color: #262730;
+                }
+            </style>
+        """, unsafe_allow_html=True)
 
 
         
