@@ -857,6 +857,33 @@ def main():
         st.divider()
 
         st.subheader(textos_otim["aplicacao"])
+
+        st.markdown("""
+            <style>
+                #botao-ajuda {
+                    position: fixed;
+                    bottom: 100px;  /* Distância do rodapé */
+                    right: 20px;
+                    z-index: 9999;
+                    background-color: #0e1117;
+                    color: white;
+                    border: none;
+                    border-radius: 50%;
+                    width: 48px;
+                    height: 48px;
+                    font-size: 24px;
+                    cursor: pointer;
+                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3);
+                }
+                #botao-ajuda:hover {
+                    background-color: #262730;
+                }
+            </style>
+            <a href="#ajuda">
+                <button id="botao-ajuda">?</button>
+            </a>
+        """, unsafe_allow_html=True)
+
         
         # Aplica estilos personalizados
         st.markdown("""
@@ -1334,39 +1361,6 @@ def main():
                 st.subheader(textos_otim['medidas_energia'])
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
-
-        if st.button("?", key="botao_duvida"):
-            st.session_state['pagina'] = 'explicacao_otimizacao'
-        # CSS reforçado para botão fixo e redondo
-        st.markdown("""
-            <style>
-                /* Remove qualquer margem ou padding do botão */
-                button[data-testid="stButton-botao_duvida"] {
-                    all: unset;
-                    position: fixed !important;
-                    top: 20px !important;
-                    right: 20px !important;
-                    z-index: 9999 !important;
-                    background-color: #03518C !important;
-                    color: white !important;
-                    border-radius: 50% !important;
-                    width: 50px !important;
-                    height: 50px !important;
-                    font-size: 28px !important;
-                    line-height: 50px !important;
-                    text-align: center !important;
-                    cursor: pointer !important;
-                    box-shadow: 2px 2px 8px rgba(0,0,0,0.3) !important;
-                    display: flex !important;
-                    justify-content: center !important;
-                    align-items: center !important;
-                    border: none !important;
-                }
-                button[data-testid="stButton-botao_duvida"]:hover {
-                    background-color: #262730 !important;
-                }
-            </style>
-        """, unsafe_allow_html=True)
         
         with st.sidebar:
             if st.button(textos["ini"]):
