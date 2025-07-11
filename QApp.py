@@ -925,25 +925,35 @@ def main():
 
         st.subheader(textos_otim["aplicacao"])
         
-        # Container fixo no topo com botão real
+        # Área reservada para o botão
         top_button = st.empty()
         
-        # Aplica o CSS para fixar esse container no topo
+        # CSS para fixar o botão no topo direito com aparência leve
         st.markdown("""
             <style>
-                .element-container:has(> div[data-testid="stVerticalBlock"] > div > div:has(button)) {
-                    position: fixed !important;
+                div[data-testid="stButton"] > button.tertiary-help {
+                    position: fixed;
                     top: 10px;
                     right: 10px;
-                    z-index: 10000;
+                    z-index: 9999;
+                    border-radius: 50%;
+                    font-size: 20px;
+                    width: 40px;
+                    height: 40px;
+                    padding: 0;
+                    background-color: transparent;
+                    color: #444;
+                    border: 1px solid #ccc;
+                    box-shadow: 1px 1px 5px rgba(0,0,0,0.1);
                 }
             </style>
         """, unsafe_allow_html=True)
         
-        # Coloca o botão real dentro do container
+        # Coloca o botão com tipo "tertiary"
         with top_button.container():
-            if st.button("Ir para Explicação"):
+            if st.button("?", key="help", type="tertiary"):
                 st.session_state["pagina"] = "explicacao_otimizacao"
+
         
         # Aplica estilos personalizados
         st.markdown("""
