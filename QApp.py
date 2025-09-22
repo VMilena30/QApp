@@ -987,10 +987,10 @@ def mostrar_ml_info(textos, textos_ml):
         
 def mostrar_inf(textos):
     with st.sidebar.expander(textos["pagina_inferencia"]):
-        st.markdown(f"#### {textos['inf1]}")
-        st.markdown(f"{textos['inf2]}")
-        st.markdown(f"#### {textos['inf3]}")
-        st.markdown(f"{textos['inf4]}")
+        st.markdown(f"#### {textos['inf1']}")
+        st.markdown(f"{textos['inf2']}")
+        st.markdown(f"#### {textos['inf3']}")
+        st.markdown(f"{textos['inf4']}")
 
 def main():
     st.set_page_config(
@@ -2051,4 +2051,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
