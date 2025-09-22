@@ -122,7 +122,11 @@ TEXTOS = {
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
         "pagina_info": "Ajuda", 
-        "pagina_info2": "Informação sobre conceitos nas três áreas"
+        "pagina_info2": "Informação sobre conceitos nas três áreas",
+        "inf1": "Estimação de Confiabilidade com QBN:",
+        "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
+        "inf3": "Método:",
+        "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada com o uso de Quantum Amplitude Estimation (QAE), podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -149,7 +153,11 @@ TEXTOS = {
         "ini": "Homepage",
         "pagina_referencias": "References",
         "pagina_info": "Help",
-        "pagina_info2": "Information about concepts in the three areas"
+        "pagina_info2": "Information about concepts in the three areas",
+        "inf1": "Reliability Assessment with QBN:",
+        "inf2": "Module designed for reliability assessment using Quantum Bayesian Networks (QBNs). It allows the integration of both discrete and continuous variables into a single model, representing events and their probabilistic dependencies in a unified way.",
+        "inf3": "Method:",
+        "inf4": "Probabilistic dependencies between nodes are implemented with controlled quantum gates. Failure probability is estimated using Quantum Amplitude Estimation (QAE) and can be compared with classical methods, such as Monte Carlo simulation.",
     }
 }
 
@@ -979,8 +987,10 @@ def mostrar_ml_info(textos, textos_ml):
         
 def mostrar_inf(textos):
     with st.sidebar.expander(textos["pagina_inferencia"]):
-        st.markdown(f"#### {'Coisas de Lavínia'}")
-        st.markdown(f"{textos['info_inf']}")
+        st.markdown(f"#### {textos['inf1]}")
+        st.markdown(f"{textos['inf2]}")
+        st.markdown(f"#### {textos['inf3]}")
+        st.markdown(f"{textos['inf4]}")
 
 def main():
     st.set_page_config(
@@ -2041,3 +2051,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
