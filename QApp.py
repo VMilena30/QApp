@@ -1056,9 +1056,7 @@ def main():
             unsafe_allow_html=True
         )
     
-        st.markdown('<div class="centered">', unsafe_allow_html=True)
-    
-        mostrar_logo_topo()  
+        st.markdown('<div class="centered">', unsafe_allow_html=True) 
     
         st.markdown(
             """
@@ -2076,6 +2074,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
