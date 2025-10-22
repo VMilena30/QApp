@@ -1001,9 +1001,37 @@ def main():
 
     aplicar_css_botoes()
 
-    # 1 - imagem no topo da sidebar
-    st.sidebar.image("CM.png", use_container_width=True)
-
+    col1, col2, col3 = st.columns([1, 1, 1], gap="large")
+    
+    with col1:
+        st.markdown(
+            """
+            <a href="https://www.ufpe.br/web/prh38.1" target="_blank">
+                <img src="prh.png" width="180" style="border-radius:10px;"/>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    with col2:
+        st.markdown(
+            """
+            <a href="https://qxplore.streamlit.app/" target="_blank">
+                <img src="CM.png" width="180" style="border-radius:10px;"/>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
+    
+    with col3:
+        st.markdown(
+            """
+            <a href="https://ceerma.org/" target="_blank">
+                <img src="ceerma.png" width="180" style="border-radius:10px;"/>
+            </a>
+            """,
+            unsafe_allow_html=True
+        )
     # 2 - escolha de idioma logo abaixo da imagem
     if 'lang' not in st.session_state:
         st.session_state.lang = None
@@ -2048,6 +2076,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
