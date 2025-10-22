@@ -1008,9 +1008,7 @@ def main():
     if 'lang' not in st.session_state:
         st.session_state.lang = None
     
-    # Modal para escolha do idioma na primeira visita
     if st.session_state.lang is None:
-        # Centraliza tudo usando markdown com CSS
         st.markdown(
             """
             <style>
@@ -1032,7 +1030,7 @@ def main():
     
         st.markdown('<div class="centered">', unsafe_allow_html=True)
     
-        mostrar_logo_topo()  # Sua função para exibir a logo
+        mostrar_logo_topo()  
     
         st.markdown(
             """
@@ -1071,7 +1069,6 @@ def main():
             "ℹ️ For a better experience, you can change the language anytime during navigation.\n\n"
             "ℹ️ Para uma melhor experiência, você pode alterar o idioma a qualquer momento durante a navegação."
         )
-
     
         st.stop()
     
@@ -2051,5 +2048,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
