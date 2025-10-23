@@ -830,7 +830,7 @@ def mostrar_logo_topo():
         st.image("qxplore.png", width=600)
         
 def mostrar_logos_parceiros():
-    col1, col2, col3, col4, col5 = st.columns(7)
+    col1, col2, col3, col4, col5, col6, col7  = st.columns(7)
 
     with col1:
             st.write("")
@@ -2085,6 +2085,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
