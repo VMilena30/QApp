@@ -1078,7 +1078,8 @@ def main():
             """
             <div style="text-align: center;">
                 <p style="font-size:36px; margin-bottom: 5px; font-weight: bold;">
-                    Explore Quantum Computing with / Explore a Computação Quântica com <span style="color:#0d4376;">QXplore!</span>
+                    Explore Quantum Computing with / Explore a Computação Quântica com<br>
+                    <span style="color:#0d4376;">QXplore!</span>
                 </p>
                 <p style="font-size:18px; margin-top: 5px;">
                     Select your language to get started / Selecione seu idioma para começar:
@@ -1089,7 +1090,7 @@ def main():
         )
     
         # Botões centralizados horizontalmente
-        col1, col2, col3, col4= st.columns([1.65, 1, 1, 1.5])
+        col1, col2, col3, col4= st.columns([1.75, 1, 1, 1.5])
         with col1:
             st.write("")
         with col2:
@@ -2082,6 +2083,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
