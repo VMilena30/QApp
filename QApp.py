@@ -846,7 +846,7 @@ def mostrar_logos_parceiros():
         st.markdown(
             """
             <a href="https://qxplore.streamlit.app/" target="_blank">
-                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/CM.png" width="180" style="border-radius:10px;"/>
+                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/qx.png" width="180" style="border-radius:10px;"/>
             </a>
             """,
             unsafe_allow_html=True
@@ -2079,6 +2079,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
