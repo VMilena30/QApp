@@ -777,6 +777,7 @@ def mostrar_cartoes_de_area(textos):
         st.image("opt3.png", width=150)
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao'
+            st.rerun()
     with col3:
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
@@ -1095,6 +1096,7 @@ def main():
         with col2:
             if st.button("English"):
                 st.session_state.lang = "en"
+                st.rerun()
 
         with col3:
             st.write("")
@@ -1102,6 +1104,28 @@ def main():
         with col4:
             if st.button("Português"):
                 st.session_state.lang = "pt"
+                    
+        # Botões centralizados horizontalmente
+        col1, col2, col3, col4, col5= st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
+        with col1:
+            st.write("")
+        with col2:
+            if st.button("English"):
+                st.session_state.lang = "en"
+                st.rerun()
+
+        with col3:
+            st.write("")
+        
+        with col4:
+            if st.button("Português"):
+                st.session_state.lang = "pt"
+        
+        with col5:
+            st.write("")
+
+
+        st.markdown("</div>", unsafe_allow_html=True)
         
         with col5:
             st.write("")
@@ -2088,6 +2112,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
