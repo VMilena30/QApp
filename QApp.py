@@ -830,12 +830,15 @@ def mostrar_logo_topo():
         st.image("qxplore.png", width=600)
         
 def mostrar_logos_parceiros():
-    col1, col2, col3, col4, col5 = st.columns(2,1,1,1,2)
+    col1, col2, col3, col4, col5 = st.columns(7)
 
     with col1:
             st.write("")
 
     with col2:
+            st.write("")
+
+    with col3:
         st.markdown(
             """
             <a href="https://www.ufpe.br/web/prh38.1" target="_blank">
@@ -845,7 +848,7 @@ def mostrar_logos_parceiros():
             unsafe_allow_html=True
         )
 
-    with col3:
+    with col4:
         st.markdown(
             """
             <a href="https://qxplore.streamlit.app/" target="_blank">
@@ -855,7 +858,7 @@ def mostrar_logos_parceiros():
             unsafe_allow_html=True
         )
 
-    with col4:
+    with col5:
         st.markdown(
             """
             <a href="https://ceerma.org/" target="_blank">
@@ -865,7 +868,10 @@ def mostrar_logos_parceiros():
             unsafe_allow_html=True
         )
     
-    with col5:
+    with col6:
+            st.write("")
+
+    with col7:
             st.write("")
         
 #Otimização
@@ -2079,6 +2085,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
