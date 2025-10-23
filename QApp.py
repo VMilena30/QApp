@@ -862,7 +862,7 @@ def mostrar_logos_parceiros():
         st.markdown(
             """
             <a href="https://ceerma.org/" target="_blank">
-                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/ceerma2.png" width="180" style="border-radius:10px;"/>
+                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/cer.png" width="180" style="border-radius:10px;"/>
             </a>
             """,
             unsafe_allow_html=True
@@ -1090,7 +1090,7 @@ def main():
         )
     
         # Botões centralizados horizontalmente
-        col1, col2, col3, col4= st.columns([1.75, 1, 1, 1.5])
+        col1, col2, col3, col4= st.columns([1.55, 1, 1, 1.5])
         with col1:
             st.write("")
         with col2:
@@ -2083,6 +2083,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
