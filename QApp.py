@@ -830,9 +830,12 @@ def mostrar_logo_topo():
         st.image("qxplore.png", width=600)
         
 def mostrar_logos_parceiros():
-    col1, col2, col3 = st.columns(3)
+    col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
+            st.write("")
+
+    with col2:
         st.markdown(
             """
             <a href="https://www.ufpe.br/web/prh38.1" target="_blank">
@@ -842,17 +845,17 @@ def mostrar_logos_parceiros():
             unsafe_allow_html=True
         )
 
-    with col2:
+    with col3:
         st.markdown(
             """
             <a href="https://qxplore.streamlit.app/" target="_blank">
-                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/qx.png" width="180" style="border-radius:10px;"/>
+                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/qx2.png" width="180" style="border-radius:10px;"/>
             </a>
             """,
             unsafe_allow_html=True
         )
 
-    with col3:
+    with col4:
         st.markdown(
             """
             <a href="https://ceerma.org/" target="_blank">
@@ -861,7 +864,9 @@ def mostrar_logos_parceiros():
             """,
             unsafe_allow_html=True
         )
-
+    
+    with col5:
+            st.write("")
         
 #Otimização
 
@@ -1122,12 +1127,7 @@ def main():
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
 
-    # 4 - referências em expander
 
-    mostrar_logo_topo()
-    
-        
-    # Ajuda
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
     mostrar_inf(textos)
@@ -2079,6 +2079,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
