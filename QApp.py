@@ -1078,10 +1078,7 @@ def main():
             """
             <div style="text-align: center;">
                 <p style="font-size:36px; margin-bottom: 5px; font-weight: bold;">
-                    Explore Quantum Computing with <span style="color:#0d4376;">QXplore!</span>
-                </p>
-                <p style="font-size:30px; margin-top: 0px; margin-bottom: 5px; font-weight: bold;">
-                    Explore a Computação Quântica com <span style="color:#0d4376;">QXplore!</span>
+                    Explore Quantum Computing with / Explore a Computação Quântica com <span style="color:#0d4376;">QXplore!</span>
                 </p>
                 <p style="font-size:18px; margin-top: 5px;">
                     Select your language to get started / Selecione seu idioma para começar:
@@ -2085,6 +2082,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
