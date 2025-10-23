@@ -830,28 +830,17 @@ def mostrar_logo_topo():
         st.image("qxplore.png", width=600)
 
 def mostrar_logos_parceiros():
-    # Três colunas igualmente espaçadas
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown(
-            """
-            <a href="https://www.ufpe.br/web/prh38.1" target="_blank">
-                <img src="prh.png" width="180" style="border-radius:10px;"/>
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
+        st.markdown("[![prh](prh.png)](https://www.ufpe.br/web/prh38.1)", unsafe_allow_html=True)
 
     with col2:
-        st.markdown(
-            """
-            <a href="https://qxplore.streamlit.app/" target="_blank">
-                <img src="CM.png" width="180" style="border-radius:10px;"/>
-            </a>
-            """,
-            unsafe_allow_html=True
-        )
+        st.markdown("[![cm](CM.png)](https://qxplore.streamlit.app/)", unsafe_allow_html=True)
+
+    with col3:
+        st.markdown("[![ceerma](ceerma.png)](https://ceerma.org/)", unsafe_allow_html=True)
+
 
     with col3:
         st.markdown(
@@ -2079,6 +2068,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
