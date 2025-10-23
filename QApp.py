@@ -1105,35 +1105,29 @@ def main():
             if st.button("Português"):
                 st.session_state.lang = "pt"
                     
-        # Botões centralizados horizontalmente
-        col1, col2, col3, col4, col5= st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
+        col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
+        
         with col1:
             st.write("")
+        
         with col2:
-            if st.button("English"):
+            if st.button("English", key="botao_en"):
                 st.session_state.lang = "en"
                 st.rerun()
-
+        
         with col3:
             st.write("")
         
         with col4:
-            if st.button("Português"):
+            if st.button("Português", key="botao_pt"):
                 st.session_state.lang = "pt"
+                st.rerun()
         
         with col5:
             st.write("")
-
-
-        st.markdown("</div>", unsafe_allow_html=True)
         
-        with col5:
-            st.write("")
-
-
         st.markdown("</div>", unsafe_allow_html=True)
     
-        # Caixa de informação sobre idioma
         st.info(
             "ℹ️ For a better experience, you can change the language anytime during navigation.\n\n"
             "ℹ️ Para uma melhor experiência, você pode alterar o idioma a qualquer momento durante a navegação."
@@ -2112,6 +2106,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
