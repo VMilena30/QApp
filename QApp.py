@@ -862,7 +862,7 @@ def mostrar_logos_parceiros():
         st.markdown(
             """
             <a href="https://ceerma.org/" target="_blank">
-                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/ceerma.png" width="180" style="border-radius:10px;"/>
+                <img src="https://raw.githubusercontent.com/VMilena30/QApp/main/ceerma2.png" width="180" style="border-radius:10px;"/>
             </a>
             """,
             unsafe_allow_html=True
@@ -2085,6 +2085,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
