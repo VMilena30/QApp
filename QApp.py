@@ -144,7 +144,6 @@ TEXTOS = {
         "info_inf": "Section describing the Quantum Inference techniques used.",
         "titulo": "Welcome to <span style='color:#0d4376;'>QXplore</span>!",
         "corpo": (
-            "Welcome to QXplore!\n\n"
             "QXplore is an application focused on supporting the study and experimentation of quantum computing applied to common problems in reliability engineering.\n\n"
             "It offers three main areas where you can explore how quantum methods can be used to model and analyze challenges in system and process reliability.\n\n"
             "Although quantum technology is still under development, this app provides tools and examples to help you understand its operation and potential, even if exploratory, in engineering problems.\n\n"
@@ -2089,6 +2088,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
