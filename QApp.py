@@ -775,9 +775,10 @@ def mostrar_cartoes_de_area(textos):
         st.write("")
     with col2:
         st.image("opt3.png", width=150)
-        if st.(textos["pagina_otimizacao"], key="otimizacao_btn"):
+        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao'
             st.rerun()
+            
     with col3:
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
@@ -2117,6 +2118,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
