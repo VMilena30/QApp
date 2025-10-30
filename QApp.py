@@ -775,21 +775,24 @@ def mostrar_cartoes_de_area(textos):
         st.write("")
     with col2:
         st.image("opt3.png", width=150)
-        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
+        if st.(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao'
             st.rerun()
     with col3:
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
+            st.rerun()
 
         if st.button(textos["pagina_info"], key="referencias_btn"):
             st.session_state['pagina'] = 'info'
+            st.rerun()
             
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia'
+            st.rerun()
     with col5:
         st.write("")
 
@@ -800,15 +803,18 @@ def mostrar_cartoes_de_info(textos):
     with col2:
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
+            st.rerun()
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
             st.title(textos_ml["info1_titulo"])
             st.header(textos_ml["info1"])
+            st.rerun()
             
     with col4:
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia_info'
+            st.rerun()
     with col5:
         st.write("")
 
@@ -1264,6 +1270,7 @@ def main():
                     file_name="testeapp.txt",
                     mime="text/plain"
                 )
+                st.rerun()
             dados = ler_do_drive(textos_otim)
         
         # Verifica se os dados estão válidos
@@ -1673,6 +1680,7 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+                st.rerun()
                     
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
@@ -2050,10 +2058,10 @@ def main():
             st.rerun()
 
 
-        
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+                st.rerun()
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
@@ -2062,6 +2070,7 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+                st.rerun()
 
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
@@ -2070,6 +2079,7 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+                st.rerun()
     
     elif st.session_state['pagina'] == 'otimizacao_info':
         st.title(textos.get("pagina_referencias_titulo", "Referências"))
@@ -2107,6 +2117,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
