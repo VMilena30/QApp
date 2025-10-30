@@ -20,7 +20,11 @@ import matplotlib.pyplot as plt
 import base64
 import streamlit.components.v1 as components
 
-
+st.set_page_config(
+    page_title="QXplore",
+    page_icon="pesq.png",
+    layout="wide"
+)
 
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -1038,11 +1042,6 @@ def mostrar_inf(textos):
         st.markdown(f"{textos['inf4']}")
 
 def main():
-    st.set_page_config(
-    page_title="QXplore",
-    page_icon="pesq.png",
-    layout="wide"
-)
 
     aplicar_css_botoes()
     mostrar_logos_parceiros()
@@ -2107,3 +2106,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
