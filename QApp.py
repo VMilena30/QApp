@@ -1693,345 +1693,361 @@ def main():
             st.session_state['pagina'] = 'otimizacao'
 
     elif st.session_state['pagina'] == 'ml':
+        import pandas as pd
+        import numpy as np
+        import streamlit as st
+        import os
+        import scipy
+        from scipy.stats import kurtosis, skew
+        from sklearn.model_selection import train_test_split
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.svm import SVC
+        from sklearn.metrics import accuracy_score
+    
+        import pennylane as qml
+        from pennylane import numpy as pnp
+    
+        textos_ml = TEXTOS_ML[st.session_state.lang]
+        textos = TEXTOS[st.session_state.lang]
+    
         st.subheader(textos["pagina_ml2"])
-        
-        # Agora usa os textos com a função
-        col1, col2 = st.columns(2)
-
-        with col1:
-            st.markdown(textos_ml["dataset_opcao"])
-            dataset_opcao = st.selectbox(textos_ml["selecione_base"], [" - ", "CWRU", "JNU"], help=textos_ml["help_1"])
-        
-        with col2:
-            st.markdown(textos_ml["upload_dados"])
-            uploaded_file = st.file_uploader(textos_ml["upload_label"], type=["csv", "xlsx", "parquet"], help=textos_ml["help_2"])
-            
-        
-            if uploaded_file is not None:
-                if uploaded_file.name.endswith('.csv'):
-                    df = pd.read_csv(uploaded_file)
-                elif uploaded_file.name.endswith('.xlsx'):
-                    df = pd.read_excel(uploaded_file)
-                elif uploaded_file.name.endswith('.parquet'):
-                    df = pd.read_parquet(uploaded_file)
+    
+        # ========= 1) PERGUNTA INICIAL: usar base do app ou subir arquivo =========
+        modo_dataset = st.radio(
+            "Como deseja fornecer os dados?",
+            ("Usar base de vibração do app", "Enviar minha própria base"),
+            help=textos_ml["help_1"]
+        )
+    
+        df = None
+        y = None
+        nome_base = None
+    
+        # --------- OPÇÃO 1: usar base do app (CWRU / JNU) ----------
+        if modo_dataset == "Usar base de vibração do app":
+            col1, col2 = st.columns(2)
+            with col1:
+                st.markdown(textos_ml["dataset_opcao"])
+                dataset_opcao = st.selectbox(
+                    textos_ml["selecione_base"],
+                    [" - ", "CWRU", "JNU"]
+                )
+            with col2:
+                st.info("Selecione uma das bases internas. Para usar seus próprios dados, escolha a outra opção acima.")
+    
+            def carregar_dados_brutos(nome):
+                if nome == "CWRU":
+                    # mesmo esquema que você tinha
+                    df_raw = pd.DataFrame(columns=['DE_data', 'fault'])
+    
+                    for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
+                        for file_name in files:
+                            path = os.path.join(root, file_name)
+                            mat = scipy.io.loadmat(path)
+                            key_name = list(mat.keys())[3]
+                            DE_data = mat.get(key_name)
+                            fault = np.full((len(DE_data), 1), file_name[:-4])
+                            df_temp = pd.DataFrame({'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
+                            df_raw = pd.concat([df_raw, df_temp], axis=0)
+    
+                    # janela
+                    win_len = 1000
+                    stride = 900
+                    x = []
+                    y = []
+                    for k in df_raw['fault'].unique():
+                        df_temp_2 = df_raw[df_raw['fault'] == k]
+                        for i in np.arange(0, len(df_temp_2) - (win_len), stride):
+                            temp = df_temp_2.iloc[i:i+win_len, :-1].values
+                            temp = temp.reshape((1, -1))
+                            x.append(temp)
+                            y.append(df_temp_2.iloc[i+win_len, -1])
+    
+                    x = np.array(x).reshape((-1, win_len))
+                    y = np.array(y)
+                    return x, y
+    
+                elif nome == "JNU":
+                    dataset = np.load(r"C:\\Arthur\\JNU_quantum_8.npz")
+                    X = dataset['data']
+                    y = dataset['label']
+                    return X, y
                 else:
-                    st.error("Unsupported file format.")
-                    df = None
-        
-                if df is not None:
-                    st.success(textos_ml["upload_sucesso"])
-                    st.write(textos_ml["preview"])
-                    st.dataframe(df.head())
-            
+                    return None, None
+    
+            if dataset_opcao != " - ":
+                X_raw, y = carregar_dados_brutos(dataset_opcao)
+                nome_base = dataset_opcao
+                st.success(textos_ml["upload_sucesso"])
+                st.write("Formato dos dados carregados:", X_raw.shape)
+            else:
+                X_raw, y = None, None
+    
+        # --------- OPÇÃO 2: upload de base própria ----------
+        else:
+            uploaded_file = st.file_uploader(
+                textos_ml["upload_label"],
+                type=["csv", "xlsx", "parquet"],
+                help=textos_ml["help_2"]
+            )
+            if uploaded_file is not None:
+                if uploaded_file.name.endswith(".csv"):
+                    df = pd.read_csv(uploaded_file)
+                elif uploaded_file.name.endswith(".xlsx"):
+                    df = pd.read_excel(uploaded_file)
+                else:
+                    df = pd.read_parquet(uploaded_file)
+    
+                st.success(textos_ml["upload_sucesso"])
+                st.dataframe(df.head())
+                nome_base = uploaded_file.name
+    
+                # aqui supomos que tem uma coluna 'label' ou 'target'
+                possible_labels = [c for c in df.columns if c.lower() in ["label", "target", "class"]]
+                if len(possible_labels) == 0:
+                    st.warning("Não encontrei coluna de rótulo. Vou assumir que a última coluna é o alvo.")
+                    y = df.iloc[:, -1].values
+                    X_raw = df.iloc[:, :-1].values
+                else:
+                    label_col = possible_labels[0]
+                    y = df[label_col].values
+                    X_raw = df.drop(columns=[label_col]).values
+            else:
+                X_raw, y = None, None
+    
         st.divider()
-        
-        # === FEATURES ===
+    
+        # ========= 2) FEATURES (agora OPCIONAL) =========
+    
         st.markdown(textos_ml["selecione_features"])
-        features = [
-            " - ", "Média", "Variância", "Desvio-padrão", "RMS", "Kurtosis",
+        features_disponiveis = [
+            "Média", "Variância", "Desvio-padrão", "RMS", "Kurtosis",
             "Peak to peak", "Max Amplitude", "Min Amplitude", "Skewness",
             "CrestFactor", "Mediana", "Energia", "Entropia"
         ]
-        selected_features = st.multiselect(textos_ml["label_features"], options=features, help=textos_ml["help_3"])
-        
-        st.divider()
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown(textos_ml["encoding_title"])
-            encoding_method = st.selectbox(textos_ml["encoding_label"], [
-                " - ", "Angle encoding", "Amplitude encoding",
-                "ZFeaturemap", "XFeaturemap", "YFeaturemap", "ZZFeaturemap"
-            ], help=textos_ml["help_4"])
-        
-            st.markdown(textos_ml["euler_title"])
-            rot = st.selectbox(textos_ml["euler_label"], [" - ", "1", "2", "3"], help=textos_ml["help_5"])
-        
-            if rot == "1":
-                eixos = [st.selectbox(f"**{textos_ml['euler_eixo1']}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])]
-            elif rot == "2":
-                eixos = [
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])
-                ]
-            elif rot == "3":
-                eixos = [
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=1)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=2)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"]),
-                    st.selectbox(f"**{textos_ml['euler_eixo_n'].format(n=3)}**", [" - ", "X", "Y", "Z"], help=textos_ml["help_6"])
-                ]
-            else:
-                eixos = []
-        
-        with col2:
-            if encoding_method.strip() != " - ":
-                st.markdown(textos_ml['entanglement_title'])
-                entanglement_method = st.selectbox(" ", [" - ", "CZ", "iSWAP", "Real Amplitudes", "QCNN"], help=textos_ml["help_7"])
-        
-            st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
-            st.number_input(textos_ml["epocas"], min_value=1, max_value=500, value=1, step=1)
-        
-        st.divider()
-
-        import pennylane as qml
-        from pennylane import numpy as np
-        from sklearn.preprocessing import StandardScaler
-        from sklearn.model_selection import train_test_split
-        from sklearn.svm import SVC
-        from sklearn.metrics import accuracy_score
-        from sklearn.decomposition import PCA
-        from scipy.stats import kurtosis, skew
-        import scipy
-        import os
-        
-        # ==== FUNÇÕES DE EXTRAÇÃO DE FEATURES ====
+        selected_features = st.multiselect(
+            textos_ml["label_features"],
+            options=features_disponiveis,
+            help="Se não selecionar nada, vou extrair TODAS automaticamente."
+        )
+    
         def extrair_features_amostra(amostra):
-            features_calculadas = {}
-            features_calculadas["Média"] = np.mean(amostra)
-            features_calculadas["Variância"] = np.var(amostra)
-            features_calculadas["Desvio-padrão"] = np.std(amostra)
-            features_calculadas["RMS"] = np.sqrt(np.mean(np.square(amostra)))
-            features_calculadas["Kurtosis"] = kurtosis(amostra)
-            features_calculadas["Peak to peak"] = np.ptp(amostra)
-            features_calculadas["Max Amplitude"] = np.max(amostra)
-            features_calculadas["Min Amplitude"] = np.min(amostra)
-            features_calculadas["Skewness"] = skew(amostra)
-            features_calculadas["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
-            features_calculadas["Mediana"] = np.median(amostra)
-            features_calculadas["Energia"] = np.sum(amostra ** 2)
+            feats = {}
+            feats["Média"] = np.mean(amostra)
+            feats["Variância"] = np.var(amostra)
+            feats["Desvio-padrão"] = np.std(amostra)
+            feats["RMS"] = np.sqrt(np.mean(np.square(amostra)))
+            feats["Kurtosis"] = kurtosis(amostra)
+            feats["Peak to peak"] = np.ptp(amostra)
+            feats["Max Amplitude"] = np.max(amostra)
+            feats["Min Amplitude"] = np.min(amostra)
+            feats["Skewness"] = skew(amostra)
+            feats["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
+            feats["Mediana"] = np.median(amostra)
+            feats["Energia"] = np.sum(amostra ** 2)
             prob, _ = np.histogram(amostra, bins=30, density=True)
             prob = prob[prob > 0]
-            features_calculadas["Entropia"] = -np.sum(prob * np.log(prob))
-            return features_calculadas
-        
+            feats["Entropia"] = -np.sum(prob * np.log(prob))
+            return feats
+    
         def extrair_features_dataset(dataset_bruto, selected_features):
-            lista_dicts = []
+            lista = []
             for amostra in dataset_bruto:
                 f = extrair_features_amostra(amostra)
-                f_sel = {key: f[key] for key in selected_features}
-                lista_dicts.append(f_sel)
-            return pd.DataFrame(lista_dicts)
-        
-        
-        
-        # ==== FUNÇÃO PARA CARREGAR DADOS BRUTOS ====
-        def carregar_dados_brutos(nome):
-            # Para usar bases reais, substitua essa parte pelo carregamento real.
-            if nome == "CWRU":
-                df = pd.DataFrame(columns=['DE_data', 'fault'])
-        
-                for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
-                    for file_name in files:
-                        path = os.path.join(root, file_name)
-        
-                        mat = scipy.io.loadmat(path)
-        
-                        key_name = list(mat.keys())[3]
-                        DE_data = mat.get(key_name)
-                        fault = np.full((len(DE_data), 1), file_name[:-4])
-        
-                        df_temp = pd.DataFrame(
-                            {'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
-        
-                        df = pd.concat([df, df_temp], axis=0)
-                        # print(df['fault'].unique())
-        
-        
-                df.to_csv(r'todas_faltas.csv', index=False)
-        
-                df = pd.read_csv('todas_faltas.csv')
-        
-                win_len = 1000
-                stride = 900
-        
-                x = []
-                y = []
-        
-        
-                for k in df['fault'].unique():
-        
-                    df_temp_2 = df[df['fault'] == k]
-        
-                    for i in np.arange(0, len(df_temp_2)-(win_len), stride):
-                        temp = df_temp_2.iloc[i:i+win_len, :-1].values
-                        temp = temp.reshape((1, -1))
-                        x.append(temp)
-                        y.append(df_temp_2.iloc[i+win_len, -1])
-        
-                x = np.array(x)
-                x = x.reshape((x.shape[0], win_len))
-                y = np.array(y)
-        
-                return x, y
-            
-            elif nome == "JNU":
-                dataset = np.load(r"C:\\Arthur\\JNU_quantum_8.npz")
-                X = dataset['data']
-                y = dataset['label']
-        
-                return X, y
-            else:
-                return None, None
-        
-        def selecionar_features(X, features, selecionadas):
-            indices = [features.index(f) for f in selecionadas]
-            return X[:, indices]
-        
-        
-        
-        # --- CIRCUITOS DE ENCODING ---
-        def angle_encoding(x, wires, eixos):
-            # Aplica rotações baseadas nos eixos fornecidos
-            for i, wire in enumerate(wires):
-                for eixo in eixos:
-                    if eixo == "X":
-                        qml.RX(x[i], wires=wire)
-                    elif eixo == "Y":
-                        qml.RY(x[i], wires=wire)
-                    elif eixo == "Z":
-                        qml.RZ(x[i], wires=wire)
-        
-        def amplitude_encoding(x, wires):
-            qml.AmplitudeEmbedding(features=x, wires=wires, normalize=True)
-        
-        def z_featuremap(x, wires):
-            for i, wire in enumerate(wires):
-                qml.RZ(x[i], wires=wire)
-        
-        def x_featuremap(x, wires):
-            for i, wire in enumerate(wires):
-                qml.RX(x[i], wires=wire)
-        
-        def y_featuremap(x, wires):
-            for i, wire in enumerate(wires):
-                qml.RY(x[i], wires=wire)
-        
-        def zz_featuremap(x, wires):
-            for i, wire in enumerate(wires):
-                qml.RZ(x[i], wires=wire)
-            for i in range(len(wires) - 1):
-                qml.CNOT(wires=[wires[i], wires[i+1]])
-        
-        
-        
-        # --- CRIAÇÃO DO CIRCUITO PQC ---
-        def criar_circuito(encoding_method, eixos, entanglement_gate, n_qubits):
+                if selected_features:
+                    f = {k: f[k] for k in selected_features}
+                lista.append(f)
+            return pd.DataFrame(lista)
+    
+        st.divider()
+    
+        # ========= 3) ENCODING + PQC =========
+    
+        col1, col2 = st.columns(2)
+        with col1:
+            st.markdown(textos_ml["encoding_title"])
+            encoding_method = st.selectbox(
+                textos_ml["encoding_label"],
+                [" - ", "Angle encoding", "Amplitude encoding",
+                 "ZFeaturemap", "XFeaturemap", "YFeaturemap", "ZZFeaturemap"]
+            )
+    
+            # rotações de Euler (podem ser 1, 2 ou 3)
+            st.markdown(textos_ml["euler_title"])
+            rot = st.selectbox(
+                textos_ml["euler_label"],
+                [" - ", "1", "2", "3"],
+                help="Pode usar 1 eixo só (rotação simples) ou 2/3 eixos (Euler)."
+            )
+    
+            eixos = []
+            if rot != " - ":
+                rot_n = int(rot)
+                for i in range(rot_n):
+                    eixo_i = st.selectbox(
+                        textos_ml["euler_eixo_n"].format(n=i+1),
+                        ["X", "Y", "Z"],
+                        key=f"eixo_{i}"
+                    )
+                    eixos.append(eixo_i)
+    
+        with col2:
+            # aqui vem a correção da professora: QCNN não é porta
+            tipo_circuito = st.selectbox(
+                "Selecione o tipo de circuito / arquitetura quântica:",
+                [" - ", "Camada parametrizada", "Real Amplitudes", "QCNN (experimental)"]
+            )
+    
+            porta_emaranhamento = None
+            if tipo_circuito == "Camada parametrizada":
+                porta_emaranhamento = st.selectbox(
+                    textos_ml["entanglement_title"],
+                    [" - ", "CZ", "iSWAP"]
+                )
+    
+            paciencia = st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
+            epocas = st.number_input(textos_ml["epocas"], min_value=1, max_value=500, value=1, step=1)
+    
+        st.divider()
+    
+        # ========= 4) EXECUTAR =========
+    
+        def criar_circuito(encoding_method, eixos, tipo_circuito, porta_emaranhamento, n_qubits):
             dev = qml.device("default.qubit", wires=n_qubits)
-        
+    
             @qml.qnode(dev)
             def circuit(x, weights):
-                # Encoding
+                # 1) encoding
                 if encoding_method == "Angle encoding":
-                    angle_encoding(x, wires=range(n_qubits), eixos=eixos)
+                    for i in range(n_qubits):
+                        for eixo in eixos:
+                            if eixo == "X":
+                                qml.RX(x[i], wires=i)
+                            elif eixo == "Y":
+                                qml.RY(x[i], wires=i)
+                            elif eixo == "Z":
+                                qml.RZ(x[i], wires=i)
                 elif encoding_method == "Amplitude encoding":
-                    amplitude_encoding(x, wires=range(n_qubits))
+                    qml.AmplitudeEmbedding(features=x, wires=range(n_qubits), normalize=True)
                 elif encoding_method == "ZFeaturemap":
-                    z_featuremap(x, wires=range(n_qubits))
+                    for i in range(n_qubits):
+                        qml.RZ(x[i], wires=i)
                 elif encoding_method == "XFeaturemap":
-                    x_featuremap(x, wires=range(n_qubits))
+                    for i in range(n_qubits):
+                        qml.RX(x[i], wires=i)
                 elif encoding_method == "YFeaturemap":
-                    y_featuremap(x, wires=range(n_qubits))
+                    for i in range(n_qubits):
+                        qml.RY(x[i], wires=i)
                 elif encoding_method == "ZZFeaturemap":
-                    zz_featuremap(x, wires=range(n_qubits))
-                else:
-                    pass  # Nenhuma codificação
-                
-                # Camada parametrizada - camada simples com RX, RY, RZ com pesos
-                for i in range(n_qubits):
-                    qml.RX(weights[i, 0], wires=i)
-                    qml.RY(weights[i, 1], wires=i)
-                    qml.RZ(weights[i, 2], wires=i)
-        
-                # Emaranhamento (exemplo simples)
-                if entanglement_gate == "CZ":
+                    for i in range(n_qubits):
+                        qml.RZ(x[i], wires=i)
                     for i in range(n_qubits - 1):
-                        qml.CZ(wires=[i, i+1])
-                elif entanglement_gate == "iSWAP":
-                    for i in range(n_qubits - 1):
-                        qml.ISWAP(wires=[i, i+1])
-                elif entanglement_gate == "Real Amplitudes":
-                    qml.templates.layers.RealAmplitudes(weights, wires=range(n_qubits))
-                elif entanglement_gate == "QCNN":
-                    # Coloque aqui o seu template QCNN se quiser
-                    pass
-                
-                # Medição
-                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
-        
-            return circuit
-
-        # --- EXECUÇÃO DO MODELO ---
-        def executar_teste():
-        
-            if dataset_opcao == " - " and uploaded_file is None:
-                st.error(textos_ml['erro_1'])
-                return
-            if len(selected_features) == 0:
-                st.error(textos_ml['erro_2'])
-                return
-            if encoding_method == " - ":
-                st.error(textos_ml['erro_3'])
-                return
-            if len(eixos) == 0:
-                st.error(textos_ml['erro_4'])
-                return
-        
-            # Carrega dados
-            if dataset_opcao != " - ":
-                # Ajeitar o local dos dados
-                # X, y = carregar_dados_brutos(dataset_opcao)
-                if X is None or y is None:
-                    st.error(textos_ml['erro_5'])
-                    return
-            
-            else:
-                X = df.drop(columns='label').values
-                y = df['label'].values
-        
-            st.success(textos_ml['exec_1'])
-            # Seleciona features
-            X_sel = extrair_features_dataset(X, selected_features)
-            
-            x_train, x_test, y_train, y_test = train_test_split(X_sel, y, test_size=0.2, random_state=1)
-        
-            # Pré-processa (normalização)
-            scaler = StandardScaler()
-            x_train = scaler.fit_transform(x_train)
-            x_test = scaler.transform(x_test)
-            x_train = np.array([x / np.linalg.norm(x) for x in x_train])
-            x_test = np.array([x / np.linalg.norm(x) for x in x_test])
-        
-            # Define número de qubits como o número de features selecionadas
-            n_qubits = x_train.shape[1]
-            
-            # Pesos aleatórios para camada parametrizada
-            weights = np.random.uniform(low=0, high=2 * np.pi, size=(n_qubits, 3), requires_grad=True)
-        
-            # Porta de emaranhamento escolhida (default CZ)
-            entanglement_gate = entanglement_method
-        
-            # Cria circuito
-            circuit = criar_circuito(encoding_method, eixos, entanglement_gate, n_qubits)
-        
-            # Executa circuito para todo dataset (exemplo: só execução direta, sem treino)
-            resultados = np.array([circuit(x, weights) for x in x_train])
-        
-            # Como exemplo simples, usa saída quântica para treino SVM
-            X_features = resultados
-            X_train, X_test, y_train, y_test = train_test_split(X_features, y, test_size=0.2, random_state=42)
-        
-        
-            clf = SVC()
-            clf.fit(X_train, y_train)
-            y_pred = clf.predict(X_test)
-            acc = accuracy_score(y_test, y_pred)
-        
-            st.write(textos_ml['acc'])
+                        qml.CNOT(wires=[i, i+1])
     
-        
-        if st.button(textos_ml['exec_2']):
-            executar_teste()
+                # 2) parte variacional
+                if tipo_circuito == "Real Amplitudes":
+                    qml.templates.layers.RealAmplitudes(weights, wires=range(n_qubits))
+                elif tipo_circuito == "QCNN (experimental)":
+                    # placeholder
+                    qml.templates.StronglyEntanglingLayers(weights, wires=range(n_qubits))
+                else:  # Camada parametrizada
+                    for i in range(n_qubits):
+                        qml.RX(weights[i, 0], wires=i)
+                        qml.RY(weights[i, 1], wires=i)
+                        qml.RZ(weights[i, 2], wires=i)
+    
+                    # emaranhamento só se foi selecionado
+                    if porta_emaranhamento == "CZ":
+                        for i in range(n_qubits - 1):
+                            qml.CZ(wires=[i, i+1])
+                    elif porta_emaranhamento == "iSWAP":
+                        for i in range(n_qubits - 1):
+                            qml.ISWAP(wires=[i, i+1])
+    
+                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
+    
+            return circuit
+    
+        def proxima_potencia_de_2(n):
+            """retorna o menor 2^k >= n"""
+            k = 1
+            while 2**k < n:
+                k += 1
+            return 2**k
+    
+        if st.button(textos_ml["exec_2"]):
+            # ===== VALIDAÇÕES =====
+            if (modo_dataset == "Usar base de vibração do app" and (X_raw is None or y is None)) or \
+               (modo_dataset == "Enviar minha própria base" and (X_raw is None or y is None)):
+                st.error("Dados não carregados. Selecione uma base ou envie seu arquivo.")
+            elif encoding_method == " - ":
+                st.error("Por favor, selecione um método de codificação quântica.")
+            elif tipo_circuito == "Camada parametrizada" and (porta_emaranhamento is None or porta_emaranhamento == " - "):
+                st.error("Selecione uma porta de emaranhamento.")
+            else:
+                # ===== PREPARAR FEATURES =====
+                if len(selected_features) > 0:
+                    X_feat = extrair_features_dataset(X_raw, selected_features)
+                else:
+                    # usa TODAS as features calculáveis
+                    X_feat = extrair_features_dataset(X_raw, features_disponiveis)
+    
+                X_np = X_feat.values
+                y_np = np.array(y)
+    
+                # ===== AMPLITUDE CASE: fazer padding =====
+                if encoding_method == "Amplitude encoding":
+                    dim = X_np.shape[1]
+                    dim2 = proxima_potencia_de_2(dim)
+                    if dim2 != dim:
+                        # padding com zeros
+                        pad_width = dim2 - dim
+                        X_np = np.pad(X_np, ((0, 0), (0, pad_width)), mode="constant", constant_values=0.0)
+                    n_qubits = int(np.log2(X_np.shape[1]))
+                    st.info(f"Amplitude encoding requer 2^n features. Ajustei para {X_np.shape[1]} e usei {n_qubits} qubits.")
+                else:
+                    n_qubits = X_np.shape[1]
+    
+                # normalizar
+                scaler = StandardScaler()
+                X_np = scaler.fit_transform(X_np)
+    
+                # criar pesos
+                if tipo_circuito == "Real Amplitudes":
+                    weights = pnp.random.uniform(0, 2*np.pi, size=(1, n_qubits))
+                else:
+                    weights = pnp.random.uniform(0, 2*np.pi, size=(n_qubits, 3))
+    
+                circuit = criar_circuito(
+                    encoding_method,
+                    eixos,
+                    tipo_circuito,
+                    porta_emaranhamento,
+                    n_qubits
+                )
+    
+                # gera saídas quânticas
+                saidas = []
+                for x in X_np:
+                    saidas.append(circuit(x, weights))
+                saidas = np.array(saidas)
+    
+                # classificador clássico em cima
+                X_train, X_test, y_train, y_test = train_test_split(
+                    saidas, y_np, test_size=0.2, random_state=42
+                )
+                clf = SVC()
+                clf.fit(X_train, y_train)
+                y_pred = clf.predict(X_test)
+                acc = accuracy_score(y_test, y_pred)
+    
+                st.success(f"{textos_ml['acc']} {acc:.3f}")
+    
+        # botão pra voltar mesmo se der erro
+        st.divider()
+        if st.button("⬅ Voltar para a página inicial"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
 
 
         
@@ -2091,6 +2107,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
