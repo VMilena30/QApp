@@ -1041,13 +1041,12 @@ def mostrar_inf(textos):
         st.markdown(f"#### {textos['inf3']}")
         st.markdown(f"{textos['inf4']}")
 
-def main():
 
+def main():
+    import streamlit as st
     aplicar_css_botoes()
     mostrar_logos_parceiros()
 
-
-    # 2 - escolha de idioma logo abaixo da imagem
     if 'lang' not in st.session_state:
         st.session_state.lang = None
     
@@ -2106,4 +2105,5 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
