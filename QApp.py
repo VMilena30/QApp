@@ -127,6 +127,7 @@ TEXTOS = {
         "pagina_referencias": "Referências",
         "pagina_info": "Ajuda",
         "inf_ref": "Ajuda e Referências",
+        "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info2": "Informação sobre conceitos nas três áreas",
         "inf1": "Estimação de Confiabilidade com QBN:",
         "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
@@ -145,6 +146,7 @@ TEXTOS = {
         "idioma": "Choose the language:", 
         "referencias_titulo": "References",
         "inf_ref": "Help and References",
+        "ref": "Choose a module to access its references and related materials.",
         "referencias_intro": "To learn more about our work in this areas, check the references below:", 
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
         "info_inf": "Section describing the Quantum Inference techniques used.",
@@ -2174,6 +2176,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
