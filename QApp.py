@@ -786,45 +786,39 @@ def mostrar_cartoes_de_area(textos):
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
-
     st.markdown("""
         <style>
-            .clickable-text {
+            .clickable-link {
+                display: inline-block;
                 text-align: center;
-                font-weight: 600;
-                font-size: 16px;
+                font-size: 18px;
                 color: #1E90FF;
+                font-weight: 600;
                 cursor: pointer;
-                transition: 0.3s;
+                transition: 0.2s;
             }
-            .clickable-text:hover {
+            .clickable-link:hover {
                 color: #0047AB;
                 text-decoration: underline;
             }
         </style>
     """, unsafe_allow_html=True)
     
-    with st.sidebar:
-        # Área clicável
-        if st.markdown('<p class="clickable-text">❓ Ajuda e Referências</p>', unsafe_allow_html=True):
-            pass  # Streamlit não detecta clique direto em markdown, então fazemos o truque abaixo 👇
+    st.markdown('<p class="clickable-link">❓ Ajuda e Referências</p>', unsafe_allow_html=True)
     
-        # Simulando clique via botão invisível
-        if st.button(" ", key="referencias_btn", help="Ir para Ajuda e Referências", args=(), kwargs={}):
-            st.session_state['pagina'] = 'info'
+    if st.button(" ", key="link_info"):
+        st.session_state['pagina'] = 'info'
     
-        # Esconde o botão visualmente (mantém clicável sobre o texto)
-        st.markdown("""
-            <style>
-                div[data-testid="stButton"][key="referencias_btn"] {
-                    position: relative;
-                    top: -45px;
-                    opacity: 0;
-                    height: 0;
-                }
-            </style>
-        """, unsafe_allow_html=True)
-
+    st.markdown("""
+        <style>
+            div[data-testid="stButton"][key="link_info"] {
+                position: relative;
+                top: -35px;
+                opacity: 0;
+                height: 0;
+            }
+        </style>
+    """, unsafe_allow_html=True)
                 
     with col4:
         st.image("infer3.png", width=150)
@@ -2133,6 +2127,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
