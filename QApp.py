@@ -787,8 +787,10 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    # --- Exibe o link clicável ---
-    components.html("""
+# --- Função auxiliar para criar o link ---
+def link_para_info():
+    clicked = components.html(
+        """
         <div style="text-align:center; margin-top:20px;">
             <a id="ajuda" href="#" 
                style="font-size:20px;
@@ -804,11 +806,32 @@ def mostrar_cartoes_de_area(textos):
         </style>
         <script>
             const ajuda = document.getElementById("ajuda");
-            ajuda.addEventListener("click", function() {
-                window.parent.postMessage({ type: "streamlit:setSessionState", key: "pagina", value: "info" }, "*");
+            ajuda.addEventListener("click", function(e) {
+                e.preventDefault();
+                const streamlitEvents = window.parent.Streamlit;
+                if (streamlitEvents) {
+                    streamlitEvents.setComponentValue("clicou");
+                }
             });
         </script>
-    """, height=60)
+        """,
+        height=60,
+    )
+    return clicked
+
+    # --- Estado inicial ---
+    if "pagina" not in st.session_state:
+        st.session_state["pagina"] = "inicio"
+    
+    # --- Página inicial ---
+    if st.session_state["pagina"] == "inicio":
+        st.title("🏠 Página Inicial")
+    
+        click = link_para_info()  # mostra o link clicável
+    
+        if click == "clicou":  # detecta o clique vindo do componente
+            st.session_state["pagina"] = "info"
+            st.rerun()
 
     with col4:
         st.image("infer3.png", width=150)
@@ -2117,6 +2140,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
