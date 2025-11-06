@@ -843,15 +843,18 @@ def mostrar_cartoes_de_info(textos):
     with col2:
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'explicacao_otimizacao'
+            st.rerun()
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
             st.title(textos_ml["info1_titulo"])
             st.header(textos_ml["info1"])
+            st.rerun()
             
     with col4:
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia_info'
+            st.rerun()
     with col5:
         st.write("")
 
@@ -864,14 +867,17 @@ def mostrar_ref(textos):
     with col2:
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otim_ref'
+            st.rerun()
 
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_ref'
+            st.rerun()
 
     with col4:
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inf_ref'
+            st.rerun()
 
     with col5:
         st.write("")
@@ -2178,6 +2184,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
