@@ -794,13 +794,14 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    # Expander de ajuda e referências
     with st.expander(textos["inf_ref"], expanded=False):
 
-        # 🎨 CSS apenas para os botões dentro do expander
         st.markdown("""
             <style>
-            /* Afeta apenas os botões dentro do expander */
+            div[data-testid="stExpander"] div.stButton {
+                display: inline-block;
+                margin-right: 6px; /* aproxima os botões */
+            }
             div[data-testid="stExpander"] button {
                 background-color: white !important;
                 color: #333333 !important;
@@ -810,7 +811,6 @@ def mostrar_cartoes_de_area(textos):
                 border: 1px solid #cccccc !important;
                 transition: 0.2s ease-in-out;
             }
-
             div[data-testid="stExpander"] button:hover {
                 background-color: #f2f2f2 !important;
                 border-color: #999999 !important;
@@ -818,14 +818,14 @@ def mostrar_cartoes_de_area(textos):
             </style>
         """, unsafe_allow_html=True)
 
-        col1, col2 = st.columns(2)
+        # Lado a lado e próximos
+        col1, col2, _, _, _ = st.columns([1, 1, 0.1, 0.1, 0.1])
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
                 st.session_state['pagina'] = 'info'
         with col2:
             if st.button(textos["pagina_referencias"], key="btn_ref"):
                 st.session_state['pagina'] = 'ref'
-
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
@@ -2152,7 +2152,7 @@ def main():
         st.subheader(textos["pagina_info"])
 
     elif st.session_state['pagina'] == 'ref':
-        st.subheader(textos["pagina_ref"])
+        st.subheader(textos["pagina_referencia"])
         st.write(textos_ml["ref"])
 
         
@@ -2162,19 +2162,20 @@ def main():
                 st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'inferencia_ref':
-        st.subheader(textos["pagina_ref"])
+        st.subheader(textos["pagina_referencias"])
 
     elif st.session_state['pagina'] == 'otim_ref':
-        st.subheader(textos["pagina_ref"])
+        st.subheader(textos["pagina_referencias"])
         mostrar_referencias(textos, textos_otim)
 
     elif st.session_state['pagina'] == 'otim_ref':
-        st.subheader(textos["pagina_ref"])
+        st.subheader(textos["pagina_referencias"])
 
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
