@@ -2171,11 +2171,14 @@ def main():
 
     elif st.session_state['pagina'] == 'inf_ref':
         st.subheader(textos["pagina_referencias"])
+        mostrar_cartoes_de_ref(textos)
+        
 
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
