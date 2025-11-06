@@ -2165,6 +2165,8 @@ def main():
 
     elif st.session_state['pagina'] == 'ref':
         st.subheader(textos["pagina_referencias"])
+        st.write(textos["ref"])
+        mostrar_ref(textos)
 
         with st.sidebar:
             if st.button(textos["ini"]):
@@ -2188,7 +2190,6 @@ def main():
 
     elif st.session_state['pagina'] == 'inf_ref':
         st.subheader(textos["pagina_referencias"])
-        mostrar_ref(textos)
 
         with st.sidebar:
             if st.button(textos["ini"]):
@@ -2198,6 +2199,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
