@@ -157,11 +157,13 @@ TEXTOS = {
         ),
         "ini": "Homepage",
         "pagina_referencias": "References",
+        "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info": "Help",
         "pagina_info2": "Information about concepts in the three areas",
         "inf1": "Reliability Assessment with QBN:",
         "inf2": "Module designed for reliability assessment using Quantum Bayesian Networks (QBNs). It allows the integration of both discrete and continuous variables into a single model, representing events and their probabilistic dependencies in a unified way.",
         "inf3": "Method:",
+        "ref": "Choose a module to access its references and related materials.",
         "inf4": "Probabilistic dependencies between nodes are implemented with controlled quantum gates. Failure probability is estimated using Quantum Amplitude Estimation (QAE) and can be compared with classical methods, such as Monte Carlo simulation.",
     }
 }
@@ -790,12 +792,14 @@ def mostrar_cartoes_de_area(textos):
             st.session_state['pagina'] = 'ml'
 
     
-    expander = st.expander(textos["inf_ref"], expanded=False)
-    
-    # Detecta se o usuário abriu o expander
-    if expander:
-        st.session_state["pagina"] = "info"
-    
+    with st.expander(textos["inf_ref"], expanded=False):
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button(textos["pagina_info"], key="btn_info"):
+                st.session_state['pagina'] = 'info'
+        with col2:
+            if st.button(textos["pagina_referencias"], key="btn_ref"):
+                st.session_state['pagina'] = 'ref'
     
     with col4:
         st.image("infer3.png", width=150)
@@ -823,7 +827,26 @@ def mostrar_cartoes_de_info(textos):
     with col5:
         st.write("")
 
+def mostrar_cartoes_de_ref(textos):
+    col1, col2, col3, col4, col5 = st.columns(5)
 
+    with col1:
+        st.write("")
+
+    with col2:
+        if st.button(textos["pagina_otimizacao"], key="rotimizacao_btn"):
+            st.session_state['pagina'] = 'otim_ref'
+
+    with col3:
+        if st.button(textos["pagina_ml"], key="rml_btn"):
+            st.session_state['pagina'] = 'ml_ref'
+
+    with col4:
+        if st.button(textos["pagina_inferencia"], key="rinferencia_btn"):
+            st.session_state['pagina'] = 'inferencia_ref'
+
+    with col5:
+        st.write("")
 
 def ler_manualmente(textos):
     valor = st.text_input(textos["instancia_input"])
@@ -2102,8 +2125,31 @@ def main():
     elif st.session_state['pagina'] == 'inferencia_info':
         st.subheader(textos["pagina_info"])
 
+    elif st.session_state['pagina'] == 'ref':
+        st.subheader(textos["pagina_ref"])
+        st.write(textos_ml["ref"])
+
+        
+
+        with st.sidebar:
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
+
+    elif st.session_state['pagina'] == 'inferencia_ref':
+        st.subheader(textos["pagina_ref"])
+
+    elif st.session_state['pagina'] == 'otim_ref':
+        st.subheader(textos["pagina_ref"])
+        mostrar_referencias(textos, textos_otim)
+
+    elif st.session_state['pagina'] == 'otim_ref':
+        st.subheader(textos["pagina_ref"])
+
+
+
 if __name__ == "__main__":
     main()
+
 
 
 
