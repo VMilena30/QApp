@@ -772,20 +772,6 @@ def mostrar_referencias(textos, textos_otim):
       *Quantum Optimization for Redundancy Allocation Problem Considering Various Subsystems.*  
       33th European Safety and Reliability (ESREL) Conference.
         """)
-        
-def mostrar_cartoes_de_area(textos):
-    col1, col2, col3, col4, col5 = st.columns(5)
-    with col1:
-        st.write("")
-    with col2:
-        st.image("opt3.png", width=150)
-        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
-            st.session_state['pagina'] = 'otimizacao'
-            st.rerun()
-    with col3:
-        st.image("ml3.png", width=150)
-        if st.button(textos["pagina_ml"], key="ml_btn"):
-            st.session_state['pagina'] = 'ml'
 
 # --- Função auxiliar para criar o link ---
 def link_para_info():
@@ -818,18 +804,23 @@ def link_para_info():
         height=60,
     )
     return clicked
+        
+def mostrar_cartoes_de_area(textos):
+    col1, col2, col3, col4, col5 = st.columns(5)
+    with col1:
+        st.write("")
+    with col2:
+        st.image("opt3.png", width=150)
+        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
+            st.session_state['pagina'] = 'otimizacao'
+            st.rerun()
+    with col3:
+        st.image("ml3.png", width=150)
+        if st.button(textos["pagina_ml"], key="ml_btn"):
+            st.session_state['pagina'] = 'ml'
 
-    # --- Estado inicial ---
-    if "pagina" not in st.session_state:
-        st.session_state["pagina"] = "inicio"
-    
-    # --- Página inicial ---
-    if st.session_state["pagina"] == "inicio":
-        st.title("🏠 Página Inicial")
-    
-        click = link_para_info()  # mostra o link clicável
-    
-        if click == "clicou":  # detecta o clique vindo do componente
+        click = link_para_info()
+        if click == "clicou":
             st.session_state["pagina"] = "info"
             st.rerun()
 
@@ -2140,6 +2131,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
