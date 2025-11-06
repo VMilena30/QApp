@@ -2165,8 +2165,6 @@ def main():
 
     elif st.session_state['pagina'] == 'ref':
         st.subheader(textos["pagina_referencias"])
-        st.write(textos["ref"])
-
 
         with st.sidebar:
             if st.button(textos["ini"]):
@@ -2175,19 +2173,32 @@ def main():
     elif st.session_state['pagina'] == 'otim_ref':
         st.subheader(textos["pagina_referencias"])
         mostrar_referencias(textos, textos_otim)
+
+        with st.sidebar:
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
                             
     elif st.session_state['pagina'] == 'ml_ref':
         st.subheader(textos["pagina_referencias"])
+        st.write(oie)
+
+        with st.sidebar:
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
 
     elif st.session_state['pagina'] == 'inf_ref':
         st.subheader(textos["pagina_referencias"])
         mostrar_ref(textos)
-        
+
+        with st.sidebar:
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
 
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
