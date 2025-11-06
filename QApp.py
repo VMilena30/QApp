@@ -232,7 +232,7 @@ TEXTOS_OPT = {
         "executando_vqe": "Executando VQE, por favor, aguarde...",
         "de": "de",
         "pagina_otimizacao": "Otimização Quântica",
-        "s": "Número de subsistema",
+        "s": "Número de subsistemas",
         "nj_max": "Valor máximo dos componentes por subsistema",
         "nj_min": "Valor mínimo dos componentes por subsistema",
         "ctj_of": "Quantidade de tipos de componentes disponíveis",
@@ -1205,7 +1205,6 @@ def main():
         mostrar_cartoes_de_area(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
-        st.subheader(textos["pagina_otimizacao2"])
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
@@ -2192,6 +2191,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
