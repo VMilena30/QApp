@@ -787,27 +787,9 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-        st.markdown("""
-        <style>
-        .ajuda-link {
-            color: #1E90FF;
-            text-decoration: underline;
-            cursor: pointer;
-            font-size: 16px;
-        }
-        .ajuda-link:hover {
-            color: #104E8B;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Mostra o link e detecta clique via form (sem botão visível)
-        with st.form("ajuda_form"):
-            st.markdown('<p class="ajuda-link">💡 Ajuda e Referências</p>', unsafe_allow_html=True)
-            submit = st.form_submit_button("")  # invisível
-        
-        if submit:
-            st.session_state['pagina'] = 'info'
+    with st.expander("💡 Ajuda e Referências", expanded=False):
+        st.markdown(textos["pagina_info2"])
+        mostrar_cartoes_de_info(textos)
             
     with col4:
         st.image("infer3.png", width=150)
@@ -2116,6 +2098,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
