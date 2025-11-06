@@ -787,33 +787,57 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
             
-    st.markdown("""
-        <style>
-            div[data-testid="stButton"] > button {
-                background: none;
-                color: #1E90FF;
-                border: none;
-                padding: 0;
-                font-size: 18px;
-                font-weight: 600;
-                cursor: pointer;
-                text-align: center;
-                width: 100%;
-            }
-            div[data-testid="stButton"] > button:hover {
-                color: #0047AB;
-                text-decoration: underline;
-            }
-        </style>
-    """, unsafe_allow_html=True)
+    import streamlit as st
+    import streamlit.components.v1 as components
     
-    # Centraliza na página
-    st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
+    # Estilização do texto clicável centralizado
+    html_code = """
+        <div style='text-align:center;'>
+            <p id="ajuda_link"
+               style="font-size: 20px;
+                      font-weight: 600;
+                      color: #1E90FF;
+                      cursor: pointer;
+                      transition: 0.3s;">
+               ❓ Ajuda e Referências
+            </p>
+        </div>
     
-    if st.button("❓ Ajuda e Referências", key="ajuda_link"):
+        <script>
+            const link = window.parent.document.getElementById("ajuda_link");
+            if (link) {
+                link.addEventListener("click", function() {
+                    const streamlitEvent = new Event("ajudaClick");
+                    window.parent.document.dispatchEvent(streamlitEvent);
+                });
+            }
+        </script>
+    """
+    
+    # Mostra o HTML
+    components.html(html_code, height=60)
+    
+    # "Escuta" o clique com o evento personalizado
+    clicked = st.session_state.get("ajuda_click", False)
+    
+    # Usa hack simples: se clicar, define a página
+    # (O evento é pego via atualização detectada no app)
+    if "_event" not in st.session_state:
+        st.session_state["_event"] = False
+    
+    # O truque: um pequeno script JS dispara recarregamento, detectado pelo Streamlit
+    components.html("""
+        <script>
+            window.parent.document.addEventListener("ajudaClick", () => {
+                window.parent.location.href = window.parent.location.href + "?pagina=info";
+            });
+        </script>
+    """, height=0)
+    
+    # Quando a URL muda, o Streamlit recarrega e você pode ler:
+    if "pagina" in st.query_params and st.query_params["pagina"] == "info":
         st.session_state['pagina'] = 'info'
-    
-    st.markdown("</div>", unsafe_allow_html=True)
+
                 
     with col4:
         st.image("infer3.png", width=150)
@@ -2122,6 +2146,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
