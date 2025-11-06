@@ -787,9 +787,10 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
+    # --- Exibe o link clicável ---
     components.html("""
         <div style="text-align:center; margin-top:20px;">
-            <a href="?pagina=info"
+            <a id="ajuda" href="#" 
                style="font-size:20px;
                       font-weight:600;
                       color:#1E90FF;
@@ -801,14 +802,14 @@ def mostrar_cartoes_de_area(textos):
         <style>
             a:hover { color:#0047AB; text-decoration:underline; }
         </style>
+        <script>
+            const ajuda = document.getElementById("ajuda");
+            ajuda.addEventListener("click", function() {
+                window.parent.postMessage({ type: "streamlit:setSessionState", key: "pagina", value: "info" }, "*");
+            });
+        </script>
     """, height=60)
-    
-    # ao clicar, o Streamlit recarrega com o parâmetro na URL (?pagina=info)
-    query = st.query_params
-    if "pagina" in query and query["pagina"] == "info":
-        st.session_state["pagina"] = "info"
 
-    
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
@@ -2116,6 +2117,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
