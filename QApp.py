@@ -821,7 +821,7 @@ def mostrar_cartoes_de_area(textos):
         """, unsafe_allow_html=True)
 
         # Lado a lado e próximos
-        col1, col2, _, _, _ = st.columns([1, 1, 2, 1, 2])
+        col1, col2, _, _, _ = st.columns([1, 1, 1, 1, 1])
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
                 st.session_state['pagina'] = 'info'
@@ -2178,6 +2178,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
