@@ -787,27 +787,11 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    # centralizar o texto e deixar clicável
-    st.markdown(
-        f"""
-        <div style="text-align: center;">
-            <a href="#" onclick="window.parent.postMessage({{'setPage': 'info'}}, '*');"
-               style="font-size: 18px; text-decoration: none; color: #2E86C1; font-weight: bold;">
-               Ajuda e Referências 📘
-            </a>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-    
-    # Captura o clique simulando mudança de página
-    if "pagina" not in st.session_state:
-        st.session_state["pagina"] = "inicio"
-    
-    # Hack para comunicação JS → Python (simulação)
-    clicked = st.session_state.get("pagina") == "info"
-    if clicked:
-        st.write("Carregando página de Ajuda e Referências...")
+
+    with st.expander("📘 Ajuda e Referências", expanded=False):
+        st.write("Clique abaixo para acessar a página de informações.")
+        if st.button("Abrir página de Ajuda"):
+            st.session_state['pagina'] = 'info'
     
     with col4:
         st.image("infer3.png", width=150)
@@ -2116,6 +2100,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
