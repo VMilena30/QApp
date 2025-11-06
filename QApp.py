@@ -787,54 +787,28 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    # centralização e estilo do "link"
-    st.markdown("""
+    components.html("""
+        <div style="text-align:center; margin-top:20px;">
+            <a href="?pagina=info"
+               style="font-size:20px;
+                      font-weight:600;
+                      color:#1E90FF;
+                      text-decoration:none;
+                      transition:0.3s;">
+               ❓ Ajuda e Referências
+            </a>
+        </div>
         <style>
-            .fake-link {
-                display: block;
-                text-align: center;
-                color: #1E90FF;
-                font-weight: 600;
-                font-size: 20px;
-                cursor: pointer;
-                transition: 0.3s;
-            }
-            .fake-link:hover {
-                color: #0047AB;
-                text-decoration: underline;
-            }
+            a:hover { color:#0047AB; text-decoration:underline; }
         </style>
-    """, unsafe_allow_html=True)
+    """, height=60)
     
-    # cria um container central com clique detectável via form
-    col1, col2, col3 = st.columns([1,2,1])
-    with col2:
-        clicked = st.button("❓ Ajuda e Referências", key="ajuda_fake")
+    # ao clicar, o Streamlit recarrega com o parâmetro na URL (?pagina=info)
+    query = st.query_params
+    if "pagina" in query and query["pagina"] == "info":
+        st.session_state["pagina"] = "info"
+
     
-    # estiliza para não parecer botão
-    st.markdown("""
-        <style>
-            div[data-testid="stButton"][key="ajuda_fake"] > button {
-                background: none;
-                border: none;
-                color: #1E90FF;
-                font-weight: 600;
-                font-size: 20px;
-                text-align: center;
-                width: 100%;
-                cursor: pointer;
-            }
-            div[data-testid="stButton"][key="ajuda_fake"] > button:hover {
-                color: #0047AB;
-                text-decoration: underline;
-            }
-        </style>
-    """, unsafe_allow_html=True)
-    
-    # comportamento ao clicar
-    if clicked:
-        st.session_state['pagina'] = 'info'
-                
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
@@ -2142,6 +2116,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
