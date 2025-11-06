@@ -821,7 +821,7 @@ def mostrar_cartoes_de_area(textos):
         """, unsafe_allow_html=True)
 
         # Lado a lado e próximos
-        col1, col2, _, _, _ = st.columns([1, 1, 0.1, 0.1, 0.1])
+        col1, col2, _, _, _ = st.columns([1, 1, 2, 2, 2])
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
                 st.session_state['pagina'] = 'info'
@@ -862,15 +862,15 @@ def mostrar_cartoes_de_ref(textos):
         st.write("")
 
     with col2:
-        if st.button(textos["pagina_otimizacao"], key="rotimizacao_btn"):
+        if st.button(textos["pagina_otimizacao"], key="ref_otm"):
             st.session_state['pagina'] = 'otim_ref'
 
     with col3:
-        if st.button(textos["pagina_ml"], key="rml_btn"):
+        if st.button(textos["pagina_ml"], key="ref_ml"):
             st.session_state['pagina'] = 'ml_ref'
 
     with col4:
-        if st.button(textos["pagina_inferencia"], key="rinferencia_btn"):
+        if st.button(textos["pagina_inferencia"], key="ref_inf"):
             st.session_state['pagina'] = 'inf_ref'
 
     with col5:
@@ -2178,6 +2178,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
