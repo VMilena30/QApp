@@ -2110,7 +2110,7 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
-                  st.rerun()
+                st.rerun()
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
@@ -2200,6 +2200,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
