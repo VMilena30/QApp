@@ -178,11 +178,9 @@ TEXTOS_OPT = {
         "carregar_arquivo": "Carregar arquivo:",
         "minutos": "minutos",
         "minutos_e_segundos": "minutos e {segundos} segundos",
-        # Textos da ajuda
-        "problema_rap": "Problema de Alocação de Redundâncias (RAP):",
         "descricao_rap": "Módulo dedicado à resolução de problemas combinatórios por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO (Quadratic Unconstrained Binary Optimization). Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando a superposição, interferência e o paralelismo quântico para buscar soluções ótimas.",
         "algoritmos": "Problema abordado:",
-        "inicializacoes_titulo": "RAP (Reliability Allocation Problem)",
+        "inicializacoes_titulo": "- RAP (Reliability Allocation Problem)",
         "inicializacoes_descricao": (
             "**Clusterização:** parâmetros baseados nos centros dos clusters ótimos.\n\n"
             "**LHS:** amostragem uniforme pelo hipercubo latino.\n\n"
@@ -368,11 +366,9 @@ TEXTOS_OPT = {
         "insira_dados": "Enter the problem data to be analyzed:",
 
         # Help section
-        "problema_rap": "Redundancy Allocation Problem (RAP):",
-        "descricao_rap": "RAP refers to the optimization of allocating redundant components in a system to increase its reliability and availability.",
-
-        "algoritmos": "Available quantum algorithms:",
-        "descricao_algoritmos": "Quantum optimization algorithms are designed to leverage the unique properties of quantum mechanics, such as superposition and entanglement, to solve optimization problems like RAP.",
+        "descricao_rap": "Módulo dedicado à resolução de problemas combinatórios por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO (Quadratic Unconstrained Binary Optimization). Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando a superposição, interferência e o paralelismo quântico para buscar soluções ótimas.",
+        "algoritmos": "Problema abordado:",
+        "inicializacoes_titulo": "- RAP (Reliability Allocation Problem)",
 
         "qaoa_nome": "QAOA",
         "qaoa_desc": "Quantum Approximate Optimization Algorithm is a quantum algorithm designed to solve combinatorial optimization problems, such as RAP, by approximating optimal solutions using a parameterized sequence of quantum operations.",
@@ -1047,12 +1043,9 @@ def mostrar_otim(textos_otim):
     with st.sidebar:
         st.markdown(f"#### {textos_otim['area_de_aplicacao']}")
         with st.sidebar.expander(textos_otim["pagina_otimizacao"]):        
-            st.markdown(f"#### {textos_otim['problema_rap']}")
             st.markdown(f"{textos_otim['descricao_rap']}")
-
             st.markdown(f"#### {textos_otim['algoritmos']}")
-
-            st.markdown(f"{textos_otim['qaoa_desc']}")
+            st.markdown(f"{textos_otim['inicializacoes_titulo']}")
             
 def mostrar_ml(textos_ml):
     with st.sidebar.expander(textos_ml['pagina_ml']):
@@ -2195,6 +2188,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
