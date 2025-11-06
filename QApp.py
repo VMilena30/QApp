@@ -787,44 +787,33 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
             
-    
-    # Centralizar e estilizar o texto clicável
     st.markdown("""
         <style>
-            .link-center {
-                text-align: center;
+            div[data-testid="stButton"] > button {
+                background: none;
+                color: #1E90FF;
+                border: none;
+                padding: 0;
                 font-size: 18px;
                 font-weight: 600;
-                color: #1E90FF;
                 cursor: pointer;
-                transition: 0.3s;
+                text-align: center;
+                width: 100%;
             }
-            .link-center:hover {
+            div[data-testid="stButton"] > button:hover {
                 color: #0047AB;
                 text-decoration: underline;
             }
         </style>
     """, unsafe_allow_html=True)
     
-    # Cria o texto clicável
-    st.markdown('<p class="link-center" id="ajuda_link">❓ Ajuda e Referências</p>', unsafe_allow_html=True)
+    # Centraliza na página
+    st.markdown("<div style='text-align: center;'>", unsafe_allow_html=True)
     
-    # Script JavaScript para detectar clique e alterar a página no Streamlit
-    st.components.v1.html("""
-        <script>
-            const link = window.parent.document.getElementById("ajuda_link");
-            if (link) {
-                link.addEventListener("click", function() {
-                    const streamlitEvents = window.parent.Streamlit;
-                    if (streamlitEvents) {
-                        streamlitEvents.setComponentValue({pagina: 'info'});
-                    }
-                });
-            }
-        </script>
-    """, height=0)
-
-
+    if st.button("❓ Ajuda e Referências", key="ajuda_link"):
+        st.session_state['pagina'] = 'info'
+    
+    st.markdown("</div>", unsafe_allow_html=True)
                 
     with col4:
         st.image("infer3.png", width=150)
@@ -2133,6 +2122,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
