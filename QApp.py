@@ -2153,7 +2153,7 @@ def main():
 
     elif st.session_state['pagina'] == 'ref':
         st.subheader(textos["pagina_referencias"])
-        st.write(textos_ml["ref"])
+        st.write(textos["ref"])
 
 
         with st.sidebar:
@@ -2174,6 +2174,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
