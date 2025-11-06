@@ -789,10 +789,6 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-
-
-    if "pagina" not in st.session_state:
-        st.session_state["pagina"] = "inicio"
     
     expander = st.expander(textos["inf_ref"], expanded=False)
     
@@ -2108,6 +2104,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
