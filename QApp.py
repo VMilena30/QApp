@@ -787,12 +787,9 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    with st.sidebar:
-        with st.expander("Ajuda e Referências"):
-        
-        if st.button(textos["ini"]):
-            st.session_state['pagina'] = 'inicio'
-            
+    if st.button(textos["pagina_info"], key="referencias_btn"): 
+        st.session_state['pagina'] = 'info'
+                
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
@@ -2100,6 +2097,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
