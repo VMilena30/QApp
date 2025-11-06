@@ -795,6 +795,7 @@ def mostrar_cartoes_de_area(textos):
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
+            st.rerun()
 
     with st.expander(textos["inf_ref"], expanded=False):
 
@@ -825,13 +826,16 @@ def mostrar_cartoes_de_area(textos):
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
                 st.session_state['pagina'] = 'info'
+                st.rerun()
         with col2:
             if st.button(textos["pagina_referencias"], key="btn_ref"):
                 st.session_state['pagina'] = 'ref'
+                st.rerun()
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia'
+            st.rerun()
 
     with col5:
         st.write("")
@@ -865,17 +869,17 @@ def mostrar_ref(textos):
         st.write("")
 
     with col2:
-        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
+        if st.button(textos["pagina_otimizacao"], key="ref_otimizacao_btn"):
             st.session_state['pagina'] = 'otim_ref'
             st.rerun()
 
     with col3:
-        if st.button(textos["pagina_ml"], key="ml_btn"):
+        if st.button(textos["pagina_ml"], key="ref_ml_btn"):
             st.session_state['pagina'] = 'ml_ref'
             st.rerun()
 
     with col4:
-        if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
+        if st.button(textos["pagina_inferencia"], key="ref_inferencia_btn"):
             st.session_state['pagina'] = 'inf_ref'
             st.rerun()
 
@@ -2184,6 +2188,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
