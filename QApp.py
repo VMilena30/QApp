@@ -779,20 +779,45 @@ def mostrar_referencias(textos, textos_otim):
         
 def mostrar_cartoes_de_area(textos):
     col1, col2, col3, col4, col5 = st.columns(5)
+
     with col1:
         st.write("")
+
     with col2:
         st.image("opt3.png", width=150)
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao'
             st.rerun()
+
     with col3:
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-    
+    # Expander de ajuda e referências
     with st.expander(textos["inf_ref"], expanded=False):
+
+        # 🎨 CSS apenas para os botões dentro do expander
+        st.markdown("""
+            <style>
+            /* Afeta apenas os botões dentro do expander */
+            div[data-testid="stExpander"] button {
+                background-color: white !important;
+                color: #333333 !important;
+                font-size: 13px !important;
+                padding: 4px 10px !important;
+                border-radius: 6px !important;
+                border: 1px solid #cccccc !important;
+                transition: 0.2s ease-in-out;
+            }
+
+            div[data-testid="stExpander"] button:hover {
+                background-color: #f2f2f2 !important;
+                border-color: #999999 !important;
+            }
+            </style>
+        """, unsafe_allow_html=True)
+
         col1, col2 = st.columns(2)
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
@@ -800,11 +825,12 @@ def mostrar_cartoes_de_area(textos):
         with col2:
             if st.button(textos["pagina_referencias"], key="btn_ref"):
                 st.session_state['pagina'] = 'ref'
-    
+
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia'
+
     with col5:
         st.write("")
 
@@ -2149,6 +2175,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
