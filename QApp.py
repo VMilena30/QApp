@@ -947,41 +947,43 @@ def mostrar_logos_parceiros():
 def ler_manualmente(textos_otim):
     st.write(textos_otim["insira_dados"])
 
-    # Organizar inputs principais em 2 colunas
     col1, col2 = st.columns(2)
     with col1:
-        s = st.number_input(f"{textos_otim['s']}:", step=1, min_value=1)
+        s = st.number_input(f"{textos_otim['s']}:", step=1, min_value=1, max_value=50)
         nj_min = st.number_input(f"{textos_otim['nj_min']}:", step=1, min_value=0)
     with col2:
         nj_max = st.number_input(f"{textos_otim['nj_max']}:", step=1, min_value=1)
-        ctj_of = st.number_input(f"{textos_otim['ctj_of']}:", step=1, min_value=1)
+        ctj_of = st.number_input(f"{textos_otim['ctj_of']}:", step=1, min_value=1, max_value=100)
+
+    if nj_min > nj_max:
+        st.error("O valor mínimo de componentes não pode ser maior que o valor máximo.")
+        st.stop()
 
     st.markdown(f"**{textos_otim['lista_componentes']}**")
 
-    Rjk_of = []
-    cjk_of = []
-
+    Rjk_of, cjk_of = [], []
     for i in range(int(ctj_of)):
         col_r, col_c = st.columns(2)
         with col_r:
             Rjk_of.append(
-                st.number_input(f"{textos_otim['confiabilidade']} [{i+1}]:", 
-                                key=f'Rjk_of_{i}', 
-                                step=0.001, 
-                                min_value=0.000, 
-                                max_value=1.0, 
+                st.number_input(f"{textos_otim['confiabilidade']} [{i+1}]:",
+                                key=f'Rjk_of_{i}',
+                                step=0.001,
+                                min_value=0.0,
+                                max_value=1.0,
                                 format="%.8f")
             )
         with col_c:
             cjk_of.append(
-                st.number_input(f"{textos_otim['custo']} [{i+1}]:", 
-                                key=f'cjk_of_{i}', 
-                                step=1, 
+                st.number_input(f"{textos_otim['custo']} [{i+1}]:",
+                                key=f'cjk_of_{i}',
+                                step=1,
                                 min_value=0)
             )
 
-    # Input final em destaque
     C_of = st.number_input(f"{textos_otim['custo_total_limite']}:", step=1, min_value=1)
+    if C_of < min(cjk_of):
+        st.warning("O limite de custo total é menor que o menor custo de componente. Ajuste os valores.")
 
     dados = [[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]]
     return dados
@@ -1387,9 +1389,8 @@ def main():
             if modo_leitura == textos_otim['modo_leitura_upload']:
                 instancia = dados[0]  # Dados do upload
             else:
-                instancia = dados     # Dados da entrada manual
+                instancia = dados    
         
-            # Extrai variáveis da instância
             s = instancia[0]
             nj_max = instancia[1]
             nj_min = instancia[2]
@@ -2188,6 +2189,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
