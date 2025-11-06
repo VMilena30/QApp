@@ -786,9 +786,7 @@ def mostrar_cartoes_de_area(textos):
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
-            
-    import streamlit as st
-    import streamlit.components.v1 as components
+
     
     # Estilização do texto clicável centralizado
     html_code = """
@@ -2146,6 +2144,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
