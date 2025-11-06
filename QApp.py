@@ -125,7 +125,8 @@ TEXTOS = {
         ),
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
-        "pagina_info": "Ajuda", 
+        "pagina_info": "Ajuda",
+        "inf_ref": "Ajuda e Referências",
         "pagina_info2": "Informação sobre conceitos nas três áreas",
         "inf1": "Estimação de Confiabilidade com QBN:",
         "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
@@ -143,6 +144,7 @@ TEXTOS = {
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
         "referencias_titulo": "References",
+        "inf_ref": "Help and References",
         "referencias_intro": "To learn more about our work in this areas, check the references below:", 
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
         "info_inf": "Section describing the Quantum Inference techniques used.",
@@ -788,10 +790,16 @@ def mostrar_cartoes_de_area(textos):
             st.session_state['pagina'] = 'ml'
 
 
-    with st.expander("📘 Ajuda e Referências", expanded=False):
-        st.write("Clique abaixo para acessar a página de informações.")
-        if st.button("Abrir página de Ajuda"):
-            st.session_state['pagina'] = 'info'
+
+    if "pagina" not in st.session_state:
+        st.session_state["pagina"] = "inicio"
+    
+    expander = st.expander(textos["inf_ref"], expanded=False)
+    
+    # Detecta se o usuário abriu o expander
+    if expander:
+        st.session_state["pagina"] = "info"
+    
     
     with col4:
         st.image("infer3.png", width=150)
@@ -2100,6 +2108,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
