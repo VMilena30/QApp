@@ -786,7 +786,10 @@ def mostrar_cartoes_de_area(textos):
         st.image("ml3.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
-   st.markdown("""
+            
+    
+    # Centralizar e estilizar o texto clicável
+    st.markdown("""
         <style>
             .link-center {
                 text-align: center;
@@ -820,6 +823,8 @@ def mostrar_cartoes_de_area(textos):
             }
         </script>
     """, height=0)
+
+
                 
     with col4:
         st.image("infer3.png", width=150)
@@ -2128,6 +2133,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
