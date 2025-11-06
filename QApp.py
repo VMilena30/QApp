@@ -180,9 +180,9 @@ TEXTOS_OPT = {
         "minutos_e_segundos": "minutos e {segundos} segundos",
         # Textos da ajuda
         "problema_rap": "Problema de Alocação de Redundâncias (RAP):",
-        "descricao_rap": "O RAP refere-se à otimização da alocação de componentes redundantes em um sistema para aumentar sua confiabilidade e disponibilidade.",
-        "algoritmos": "Algoritmos quânticos disponíveis:",
-        "inicializacoes_titulo": "Métodos de Inicialização",
+        "descricao_rap": "Módulo dedicado à resolução de problemas combinatórios por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO (Quadratic Unconstrained Binary Optimization). Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando a superposição, interferência e o paralelismo quântico para buscar soluções ótimas.",
+        "algoritmos": "Problema abordado:",
+        "inicializacoes_titulo": "RAP (Reliability Allocation Problem)",
         "inicializacoes_descricao": (
             "**Clusterização:** parâmetros baseados nos centros dos clusters ótimos.\n\n"
             "**LHS:** amostragem uniforme pelo hipercubo latino.\n\n"
@@ -1052,13 +1052,8 @@ def mostrar_otim(textos_otim):
 
             st.markdown(f"#### {textos_otim['algoritmos']}")
 
-            st.markdown(f"**QAOA**: {textos_otim['qaoa_desc']}")
-            st.markdown(f"**VQE**: {textos_otim['vqe_desc']}")
-
-            st.markdown(f"#### {textos_otim['inicializacoes_titulo']}")
-            st.markdown(textos_otim['inicializacoes_descricao'])
+            st.markdown(f"{textos_otim['qaoa_desc']}")
             
-        
 def mostrar_ml(textos_ml):
     with st.sidebar.expander(textos_ml['pagina_ml']):
         st.markdown(f"#### {textos_ml['metodos']}")
@@ -2200,6 +2195,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
