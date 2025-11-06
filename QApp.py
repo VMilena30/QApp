@@ -772,38 +772,6 @@ def mostrar_referencias(textos, textos_otim):
       *Quantum Optimization for Redundancy Allocation Problem Considering Various Subsystems.*  
       33th European Safety and Reliability (ESREL) Conference.
         """)
-
-# --- Função auxiliar para criar o link ---
-def link_para_info():
-    clicked = components.html(
-        """
-        <div style="text-align:center; margin-top:20px;">
-            <a id="ajuda" href="#" 
-               style="font-size:20px;
-                      font-weight:600;
-                      color:#1E90FF;
-                      text-decoration:none;
-                      transition:0.3s;">
-               ❓ Ajuda e Referências
-            </a>
-        </div>
-        <style>
-            a:hover { color:#0047AB; text-decoration:underline; }
-        </style>
-        <script>
-            const ajuda = document.getElementById("ajuda");
-            ajuda.addEventListener("click", function(e) {
-                e.preventDefault();
-                const streamlitEvents = window.parent.Streamlit;
-                if (streamlitEvents) {
-                    streamlitEvents.setComponentValue("clicou");
-                }
-            });
-        </script>
-        """,
-        height=60,
-    )
-    return clicked
         
 def mostrar_cartoes_de_area(textos):
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -819,11 +787,28 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-        click = link_para_info()
-        if click == "clicou":
-            st.session_state["pagina"] = "info"
-            st.rerun()
-
+    # centralizar o texto e deixar clicável
+    st.markdown(
+        f"""
+        <div style="text-align: center;">
+            <a href="#" onclick="window.parent.postMessage({{'setPage': 'info'}}, '*');"
+               style="font-size: 18px; text-decoration: none; color: #2E86C1; font-weight: bold;">
+               Ajuda e Referências 📘
+            </a>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+    
+    # Captura o clique simulando mudança de página
+    if "pagina" not in st.session_state:
+        st.session_state["pagina"] = "inicio"
+    
+    # Hack para comunicação JS → Python (simulação)
+    clicked = st.session_state.get("pagina") == "info"
+    if clicked:
+        st.write("Carregando página de Ajuda e Referências...")
+    
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
@@ -2131,6 +2116,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
