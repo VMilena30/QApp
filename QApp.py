@@ -869,7 +869,7 @@ def mostrar_cartoes_de_ref(textos):
 
     with col4:
         if st.button(textos["pagina_inferencia"], key="rinferencia_btn"):
-            st.session_state['pagina'] = 'inferencia_ref'
+            st.session_state['pagina'] = 'inf_ref'
 
     with col5:
         st.write("")
@@ -2152,29 +2152,29 @@ def main():
         st.subheader(textos["pagina_info"])
 
     elif st.session_state['pagina'] == 'ref':
-        st.subheader(textos["pagina_referencia"])
+        st.subheader(textos["pagina_referencias"])
         st.write(textos_ml["ref"])
 
-        
 
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
-
-    elif st.session_state['pagina'] == 'inferencia_ref':
-        st.subheader(textos["pagina_referencias"])
-
+                
     elif st.session_state['pagina'] == 'otim_ref':
         st.subheader(textos["pagina_referencias"])
         mostrar_referencias(textos, textos_otim)
+                            
+    elif st.session_state['pagina'] == 'ml_ref':
+        st.subheader(textos["pagina_referencias"])
 
-    elif st.session_state['pagina'] == 'otim_ref':
+    elif st.session_state['pagina'] == 'inf_ref':
         st.subheader(textos["pagina_referencias"])
 
 
 
 if __name__ == "__main__":
     main()
+
 
 
 
