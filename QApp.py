@@ -1214,33 +1214,35 @@ def main():
         with col1:
             st.subheader("Aplicação")
         with col2:
-            # Botão de ajuda com key única
             ajuda = st.button("?", key="botao_ajuda")
         
         st.markdown("""
             <style>
-            /* Estiliza todos os botões - refine com base na estrutura */
-            div[data-testid="stButton"] button {
-                background-color: transparent;
-                border: 1px solid #03518C;
-                border-radius: 50%;
-                width: 24px;
-                height: 24px;
-                font-size: 14px;
-                font-weight: bold;
-                color: #03518C;
-                padding: 0;
-                margin-top: 2px;
-                cursor: pointer;
+            /* Estilo apenas para o botão de ajuda */
+            div[data-testid="stButton"] > button[kind="secondary"][aria-label="?"],
+            div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button {
+                background-color: white !important;
+                border: 1.5px solid #03518C !important;
+                border-radius: 50% !important;
+                width: 26px !important;
+                height: 26px !important;
+                font-size: 14px !important;
+                font-weight: bold !important;
+                color: #03518C !important;
+                padding: 0 !important;
+                margin-top: 2px !important;
+                cursor: pointer !important;
             }
-            div[data-testid="stButton"] button:has-text("?"):hover {
-                background-color: #e6f0fa;
-                color: #02416B;
-                border-color: #02416B;
+        
+            /* Efeito hover */
+            div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button:hover {
+                background-color: #f5f9ff !important;
+                color: #02416B !important;
+                border-color: #02416B !important;
             }
             </style>
         """, unsafe_allow_html=True)
-        
+            
         if ajuda:
             st.session_state["pagina"] = "explicacao_otimizacao"
             st.rerun()
@@ -1720,6 +1722,7 @@ def main():
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
+                st.rerun()
                     
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
@@ -2189,6 +2192,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
