@@ -787,7 +787,26 @@ def mostrar_cartoes_de_area(textos):
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
 
-        if st.button(textos["pagina_info"], key="referencias_btn"):
+        st.markdown("""
+        <style>
+        .ajuda-link {
+            color: #1E90FF;
+            text-decoration: underline;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        .ajuda-link:hover {
+            color: #104E8B;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        # Mostra o link e detecta clique via form (sem botão visível)
+        with st.form("ajuda_form"):
+            st.markdown('<p class="ajuda-link">💡 Ajuda e Referências</p>', unsafe_allow_html=True)
+            submit = st.form_submit_button("")  # invisível
+        
+        if submit:
             st.session_state['pagina'] = 'info'
             
     with col4:
@@ -1117,8 +1136,7 @@ def main():
         )
     
         st.stop()
-    
-    # 3 - Após escolha do idioma, sincroniza a seleção do sidebar com o idioma atual
+
     idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
     idioma_selecionado = st.sidebar.selectbox(
         "Language / Idioma:",
@@ -1126,7 +1144,6 @@ def main():
         index=0 if idioma_atual == "English"  else 1
     )
 
-    # Atualiza o idioma no estado se o usuário mudar pelo selectbox
     if idioma_selecionado == "🇧🇷 Português (BR)" and st.session_state.lang != "pt":
         st.session_state.lang = "pt"
     elif idioma_selecionado == "🇺🇸 English (US)" and st.session_state.lang != "en":
@@ -1136,7 +1153,6 @@ def main():
     textos = TEXTOS[lang]
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
-
 
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
@@ -1186,12 +1202,10 @@ def main():
             </style>
         """, unsafe_allow_html=True)
         
-        # Redireciona se clicado
         if ajuda:
             st.session_state["pagina"] = "explicacao_otimizacao"
             st.rerun()
     
-        # Aplica estilos personalizados
         st.markdown("""
             <style>
             div[role="radiogroup"] > label > div:first-child {
@@ -1238,8 +1252,6 @@ def main():
             }
             </style>
         """, unsafe_allow_html=True)
-    
-        # Leitura de dados
        
         modo_leitura = st.radio(
             textos_otim["modo_leitura_label"],
@@ -1491,7 +1503,6 @@ def main():
                         componentes_otimos.append(qaoa_result.x)
                         st.write(qaoa_result)
                         
-
                 energia_otimizada = min(energias)
                 confiabilidade = 1 - math.exp(energia_otimizada)
                 media_energia = np.mean(energias)
@@ -2105,5 +2116,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
