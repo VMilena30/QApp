@@ -682,6 +682,17 @@ TEXTOS_ML = {
     }
 }
 
+
+TEXTOS_INF = {
+    "pt": {
+        "pagina_inf": "Redes Bayesianas Quânticas",
+    },
+    "en": {
+        "pagina_inf": "Quantum Bayesian Networks",
+    }
+}
+
+
 def aplicar_css_botoes():
     st.markdown(
         """
@@ -2105,13 +2116,16 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
-        st.write("Lavínia")
+        st.write("f")
 
+
+        
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
                 st.rerun()
 
+    
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
         mostrar_cartoes_de_info(textos)
@@ -2191,6 +2205,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
