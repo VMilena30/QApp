@@ -2116,7 +2116,7 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
-        st.write("f")
+        st.write(TEXTOS_INF[pagina_inf])
 
 
         
@@ -2205,6 +2205,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
