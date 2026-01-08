@@ -1203,6 +1203,7 @@ def main():
     textos = TEXTOS[lang]
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
+    textos_inf = TEXTOS_INF[lang]
 
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
@@ -2116,7 +2117,7 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
-        st.write(TEXTOS_INF[pagina_inf])
+        st.write(textos_inf[pagina_inf])
 
 
         
@@ -2205,6 +2206,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
