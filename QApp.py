@@ -2214,7 +2214,631 @@ def main():
         st.subheader(textos["pagina_inferencia"])
         #st.write(textos_inf["pagina_inf"])
         
+        # ============================================================
+        # IMPORT DO SEU CORE
+        # ============================================================
+        
+        from cqbn_core import (  # noqa: E402
+            SafeConfig,
+            build_cqbn_from_dict,
+            classical_exact_joint_and_marginals,
+            classical_monte_carlo_marginals,
+            simulate_statevector_joint,
+            marginals_from_joint,
+            simulate_shots_raw_counts,
+            parse_raw_counts_to_joint_and_marginal_counts,
+            probs_from_marg_counts,
+            choose_k_for_evidence,
+            build_amplitude_amplified_circuit,
+        )
+        
+        # ============================================================
+        # SESSION STATE INIT
+        # ============================================================
+        
+        if "lang" not in st.session_state:
+            st.session_state.lang = "pt"
+        
+        if "bn_nodes" not in st.session_state:
+            # bn_nodes[name] = {"cardinality": int, "parents": [str], "probs_df": df, "cpt_df": df}
+            st.session_state.bn_nodes = {}
+        
+        if "selected_node" not in st.session_state:
+            st.session_state.selected_node = None
+        
+        T = TEXTOS_INF[st.session_state.lang]
+        
+        # ============================================================
+        # HELPERS (UI <-> bn_dict)
+        # ============================================================
+        
+        def make_root_probs_df(card: int) -> pd.DataFrame:
+            return pd.DataFrame({"state": list(range(card)), "prob": [1.0 / card] * card})
+        
+        def normalize_prob_column(df: pd.DataFrame, col: str = "prob") -> pd.DataFrame:
+            d = df.copy()
+            d[col] = pd.to_numeric(d[col], errors="coerce").fillna(0.0)
+            d[col] = d[col].clip(lower=0.0)
+            s = float(d[col].sum())
+            if s <= 0:
+                d[col] = 1.0 / len(d)
+            else:
+                d[col] = d[col] / s
+            return d
+        
+        def make_cpt_df(node: str, node_card: int, parents: List[str], parent_cards: Dict[str, int]) -> pd.DataFrame:
+            if not parents:
+                return pd.DataFrame()
+        
+            parent_ranges = [list(range(parent_cards[p])) for p in parents]
+            rows = []
+            for asg in itertools.product(*parent_ranges):
+                row = {p: v for p, v in zip(parents, asg)}
+                for s in range(node_card):
+                    row[f"p({node}={s})"] = 1.0 / node_card
+                rows.append(row)
+            return pd.DataFrame(rows)
+        
+        def extract_root_probs(df: pd.DataFrame, card: int) -> List[float]:
+            d = df.copy()
+            if "prob" not in d.columns:
+                raise ValueError("Root table must include 'prob' column.")
+            d = d.sort_values("state")
+            if len(d) != card:
+                raise ValueError(f"Root node: expected {card} states, got {len(d)}.")
+            d = normalize_prob_column(d, "prob")
+            return [float(x) for x in d["prob"].tolist()]
+        
+        def extract_cpt_dict(
+            cpt_df: pd.DataFrame,
+            node: str,
+            node_card: int,
+            parents: List[str],
+            parent_cards: Dict[str, int],
+        ) -> Dict[Tuple[int, ...], List[float]]:
+            if not parents:
+                return {}
+        
+            required_prob_cols = [f"p({node}={s})" for s in range(node_card)]
+            for col in parents + required_prob_cols:
+                if col not in cpt_df.columns:
+                    raise ValueError(f"CPT: missing column: {col}")
+        
+            out: Dict[Tuple[int, ...], List[float]] = {}
+        
+            for _, row in cpt_df.iterrows():
+                key = []
+                for p in parents:
+                    v = int(row[p])
+                    if v < 0 or v >= int(parent_cards[p]):
+                        raise ValueError(f"CPT: invalid value {p}={v} (card={parent_cards[p]}).")
+                    key.append(v)
+        
+                probs = [float(row[c]) if pd.notna(row[c]) else 0.0 for c in required_prob_cols]
+                probs = [max(0.0, x) for x in probs]
+                s = sum(probs)
+                if s <= 0:
+                    probs = [1.0 / node_card] * node_card
+                else:
+                    probs = [x / s for x in probs]
+        
+                out[tuple(key)] = probs
+        
+            expected = 1
+            for p in parents:
+                expected *= int(parent_cards[p])
+            if len(out) != expected:
+                raise ValueError(f"CPT incomplete for {node}. Expected {expected} rows, got {len(out)}.")
+        
+            return out
+        
+        def build_bn_dict_from_form() -> Dict[str, Any]:
+            nodes_out = {}
+            parent_cards = {n: int(st.session_state.bn_nodes[n]["cardinality"]) for n in st.session_state.bn_nodes}
+        
+            for n, data in st.session_state.bn_nodes.items():
+                card = int(data["cardinality"])
+                parents = list(data.get("parents", []))
+        
+                if not parents:
+                    probs_df = data.get("probs_df")
+                    if probs_df is None or probs_df.empty:
+                        raise ValueError(f"Root node '{n}': empty probs table.")
+                    probs = extract_root_probs(probs_df, card)
+                    nodes_out[n] = {"cardinality": card, "parents": [], "probs": probs}
+                else:
+                    cpt_df = data.get("cpt_df")
+                    if cpt_df is None or cpt_df.empty:
+                        raise ValueError(f"Node '{n}': empty CPT.")
+                    cpt = extract_cpt_dict(cpt_df, n, card, parents, parent_cards)
+                    nodes_out[n] = {"cardinality": card, "parents": parents, "cpt": cpt}
+        
+            return {"nodes": nodes_out}
+        
+        def fig_joint_dirac_percent_from_raw_counts(
+            raw_counts: Dict[str, int],
+            title: str,
+            top_k: Optional[int] = None,
+            annotate: bool = True,
+            decimals: int = 1,
+        ) -> plt.Figure:
+            if not raw_counts:
+                fig = plt.figure()
+                plt.text(0.5, 0.5, "No data to plot.", ha="center", va="center")
+                plt.axis("off")
+                return fig
+        
+            items = sorted(raw_counts.items(), key=lambda kv: kv[1], reverse=True)
+            if top_k is not None:
+                items = items[:int(top_k)]
+        
+            total = sum(c for _, c in items)
+            labels = [f"|{bits}>" for bits, _ in items]
+            xs = list(range(len(items)))
+            pcts = [100.0 * (c / total) for _, c in items]
+        
+            fig = plt.figure()
+            plt.bar(xs, pcts)
+            plt.xticks(xs, labels, rotation=90)
+            plt.title(title)
+            plt.xlabel("")
+            plt.ylabel("Probability (%)")
+        
+            if annotate:
+                for i, val in enumerate(pcts):
+                    plt.text(i, val, f"{val:.{decimals}f}%", ha="center", va="bottom", fontsize=9)
+        
+            plt.tight_layout()
+            return fig
+        
+        def figs_marginals_percent(
+            marg_probs: Dict[str, Dict[int, float]],
+            node_order: List[str],
+            title_prefix: str,
+            annotate: bool = True,
+            decimals: int = 1,
+        ) -> Dict[str, plt.Figure]:
+            figs = {}
+            for node in node_order:
+                dist = marg_probs.get(node, {})
+                if not dist:
+                    continue
+        
+                states = sorted(dist.keys())
+                xs = list(range(len(states)))
+                pcts = [100.0 * dist[s] for s in states]
+        
+                fig = plt.figure()
+                plt.bar(xs, pcts)
+                plt.xticks(xs, [str(s) for s in states])
+                plt.title(f"{title_prefix} - {node}")
+                plt.xlabel("")
+                plt.ylabel("Probability (%)")
+        
+                if annotate:
+                    for i, val in enumerate(pcts):
+                        plt.text(i, val, f"{val:.{decimals}f}%", ha="center", va="bottom", fontsize=9)
+        
+                plt.tight_layout()
+                figs[node] = fig
+            return figs
+        
+        def node_stats_from_distribution(dist: Dict[int, float], n_samples: Optional[int], exact: bool) -> Dict[str, float]:
+            if not dist:
+                return {"mean": float("nan"), "std": float("nan"), "ci_low": float("nan"), "ci_high": float("nan")}
+        
+            states = sorted(dist.keys())
+            mean = sum(s * dist[s] for s in states)
+            var = sum(((s - mean) ** 2) * dist[s] for s in states)
+            std = math.sqrt(max(0.0, var))
+        
+            if exact or (n_samples is None) or (n_samples <= 1):
+                return {"mean": mean, "std": std, "ci_low": mean, "ci_high": mean}
+        
+            se = std / math.sqrt(n_samples)
+            ci_low = mean - 1.96 * se
+            ci_high = mean + 1.96 * se
+            return {"mean": mean, "std": std, "ci_low": ci_low, "ci_high": ci_high}
+        
+        # ============================================================
+        # TOP HEADER
+        # ============================================================
+        
+        st.header(T["pagina_inf"])
+        st.title(T["titulo_app"])
+        st.caption(T["subtitulo_app"])
+        
+        # ============================================================
+        # SIDEBAR: CONFIG + RUNTIME
+        # ============================================================
+        
+        with st.sidebar:
+            st.session_state.lang = st.selectbox(
+                T["idioma_label"],
+                options=["pt", "en"],
+                index=0 if st.session_state.lang == "pt" else 1,
+                key="lang_selector",
+            )
+            T = TEXTOS_INF[st.session_state.lang]
+        
+            st.header(T["sidebar_execucao"])
+        
+            shots = st.number_input(T["shots"], min_value=256, max_value=200000, value=8192, step=256)
+            seed = st.number_input(T["seed"], min_value=0, max_value=10_000_000, value=123, step=1)
+        
+            st.subheader(T["safe_mode"])
+            safe_enabled = st.checkbox(T["enabled"], value=True)
+            max_total_qubits = st.number_input(T["max_total_qubits"], min_value=3, max_value=60, value=28, step=1)
+            max_parent_configs = st.number_input(T["max_parent_configs"], min_value=1, max_value=200000, value=512, step=1)
+            max_total_preps = st.number_input(T["max_total_preps"], min_value=1, max_value=1_000_000, value=50_000, step=1000)
+        
+            st.subheader(T["plots"])
+            top_k = st.number_input(T["topk"], min_value=0, max_value=500, value=0, step=1)
+            annotate = st.checkbox(T["annotate"], value=True)
+        
+            st.subheader(T["aa"])
+            use_aa = st.checkbox(T["aa_enable"], value=False)
+            aa_k_mode = st.selectbox(T["aa_k"], options=["auto", "manual"], index=0, disabled=not use_aa)
+            aa_k_manual = st.number_input(
+                T["aa_k_manual"],
+                min_value=0,
+                max_value=1000,
+                value=0,
+                step=1,
+                disabled=(not use_aa or aa_k_mode != "manual"),
+            )
+        
+            run = st.button(T["run"], type="primary")
+        
+        # ============================================================
+        # MAIN LAYOUT
+        # ============================================================
+        
+        colA, colB = st.columns([1, 2])
+        
+        with colA:
+            st.subheader(T["def_nos"])
+        
+            with st.form("add_node_form", clear_on_submit=True):
+                new_name = st.text_input(T["nome_no"], value="")
+                add_btn = st.form_submit_button(T["add_no"])
+        
+            if add_btn:
+                name = new_name.strip()
+                if not name:
+                    st.error(f"{T['erro']}: {T['nome_no']}.")
+                elif name in st.session_state.bn_nodes:
+                    st.error(f"{T['erro']}: {name} already exists.")
+                else:
+                    st.session_state.bn_nodes[name] = {
+                        "cardinality": 2,
+                        "parents": [],
+                        "probs_df": make_root_probs_df(2),
+                        "cpt_df": pd.DataFrame(),
+                    }
+                    st.session_state.selected_node = name
+                    st.success(f"{T['success']}: '{name}'")
+        
+            if st.session_state.bn_nodes:
+                nodes_list = list(st.session_state.bn_nodes.keys())
+                st.session_state.selected_node = st.selectbox(
+                    T["select_no"],
+                    options=nodes_list,
+                    index=nodes_list.index(st.session_state.selected_node) if st.session_state.selected_node in nodes_list else 0,
+                )
+        
+                del_col1, del_col2 = st.columns([1, 1])
+                with del_col1:
+                    if st.button(T["remove_no"]):
+                        n = st.session_state.selected_node
+                        for k in list(st.session_state.bn_nodes.keys()):
+                            if n in st.session_state.bn_nodes[k].get("parents", []):
+                                st.session_state.bn_nodes[k]["parents"] = [p for p in st.session_state.bn_nodes[k]["parents"] if p != n]
+                                st.session_state.bn_nodes[k]["cpt_df"] = pd.DataFrame()
+                        st.session_state.bn_nodes.pop(n, None)
+                        st.session_state.selected_node = None
+                        st.experimental_rerun()
+        
+                with del_col2:
+                    if st.button(T["limpar_rede"]):
+                        st.session_state.bn_nodes = {}
+                        st.session_state.selected_node = None
+                        st.experimental_rerun()
+        
+            st.markdown("---")
+            st.subheader(T["evidencia"])
+        
+            evidence: Dict[str, int] = {}
+            if st.session_state.bn_nodes:
+                ev_nodes = st.multiselect(T["nos_evidenciados"], options=list(st.session_state.bn_nodes.keys()), default=[])
+                for n in ev_nodes:
+                    card = int(st.session_state.bn_nodes[n]["cardinality"])
+                    evidence[n] = st.selectbox(f"{n} = ", options=list(range(card)), index=0, key=f"ev_{n}")
+        
+        with colB:
+            st.subheader(T["edicao_no"])
+        
+            if not st.session_state.bn_nodes or st.session_state.selected_node is None:
+                st.info(T["msg_adicione_no"])
+            else:
+                n = st.session_state.selected_node
+                data = st.session_state.bn_nodes[n]
+                all_nodes = list(st.session_state.bn_nodes.keys())
+                other_nodes = [x for x in all_nodes if x != n]
+        
+                new_card = st.number_input(f"{T['card_no']} — '{n}'", min_value=2, max_value=64, value=int(data["cardinality"]), step=1)
+                new_parents = st.multiselect(f"{T['pais_no']} — '{n}'", options=other_nodes, default=list(data.get("parents", [])))
+        
+                card_changed = int(new_card) != int(data["cardinality"])
+                parents_changed = list(new_parents) != list(data.get("parents", []))
+        
+                if card_changed or parents_changed:
+                    data["cardinality"] = int(new_card)
+                    data["parents"] = list(new_parents)
+        
+                    if not data["parents"]:
+                        data["probs_df"] = make_root_probs_df(int(new_card))
+                        data["cpt_df"] = pd.DataFrame()
+                    else:
+                        parent_cards = {p: int(st.session_state.bn_nodes[p]["cardinality"]) for p in data["parents"]}
+                        data["cpt_df"] = make_cpt_df(n, int(new_card), data["parents"], parent_cards)
+                        data["probs_df"] = pd.DataFrame()
+        
+                    st.session_state.bn_nodes[n] = data
+                    st.success(f"{T['success']}: updated structure.")
+        
+                st.markdown("---")
+        
+                if not data["parents"]:
+                    st.markdown(f"**{T['probs_raiz']}: {n}**")
+                    df = data.get("probs_df")
+                    if df is None or df.empty:
+                        df = make_root_probs_df(int(data["cardinality"]))
+        
+                    edited = st.data_editor(df, use_container_width=True, num_rows="fixed", key=f"probs_editor_{n}")
+                    edited = edited.copy()
+                    edited["state"] = list(range(int(data["cardinality"])))
+                    edited = normalize_prob_column(edited, "prob")
+                    data["probs_df"] = edited
+                    st.session_state.bn_nodes[n] = data
+        
+                    st.caption(T["caption_probs"])
+        
+                else:
+                    st.markdown(f"**{T['cpt']}: {n} | {T['pais_no']} = {data['parents']}**")
+                    parent_cards = {p: int(st.session_state.bn_nodes[p]["cardinality"]) for p in data["parents"]}
+                    df = data.get("cpt_df")
+                    if df is None or df.empty:
+                        df = make_cpt_df(n, int(data["cardinality"]), data["parents"], parent_cards)
+        
+                    edited = st.data_editor(df, use_container_width=True, num_rows="fixed", key=f"cpt_editor_{n}")
+        
+                    edited = edited.copy()
+                    for p in data["parents"]:
+                        edited[p] = pd.to_numeric(edited[p], errors="coerce").fillna(0).astype(int)
+        
+                    prob_cols = [f"p({n}={s})" for s in range(int(data["cardinality"]))]
+                    for c in prob_cols:
+                        edited[c] = pd.to_numeric(edited[c], errors="coerce").fillna(0.0).clip(lower=0.0)
+        
+                    row_sums = edited[prob_cols].sum(axis=1)
+                    for i in range(len(edited)):
+                        s = float(row_sums.iloc[i])
+                        if s <= 0:
+                            edited.loc[i, prob_cols] = 1.0 / len(prob_cols)
+                        else:
+                            edited.loc[i, prob_cols] = edited.loc[i, prob_cols] / s
+        
+                    data["cpt_df"] = edited
+                    st.session_state.bn_nodes[n] = data
+        
+                    st.caption(T["caption_cpt"])
+        
+        # ============================================================
+        # EXPORT / PREVIEW bn_dict
+        # ============================================================
+        
+        st.markdown("---")
+        st.subheader(T["preview_export"])
+        
+        if st.session_state.bn_nodes:
+            try:
+                bn_preview = build_bn_dict_from_form()
+        
+                bn_export = {"nodes": {}}
+                for n, nd in bn_preview["nodes"].items():
+                    nd2 = dict(nd)
+                    if "cpt" in nd2:
+                        cpt2 = {}
+                        for k, v in nd2["cpt"].items():
+                            cpt2[",".join(str(x) for x in k)] = v
+                        nd2["cpt"] = cpt2
+                    bn_export["nodes"][n] = nd2
+        
+                c1, c2 = st.columns([1, 1])
+                with c1:
+                    st.json(bn_export)
+                with c2:
+                    st.download_button(
+                        T["baixar_json"],
+                        data=json.dumps(bn_export, indent=2, ensure_ascii=False),
+                        file_name="bayesian_network.json",
+                        mime="application/json",
+                    )
+            except Exception as e:
+                st.warning(f"{T['bn_inconsistente']}: {e}")
+        else:
+            st.info(T["sem_nos"])
+        
+        # ============================================================
+        # RUN INFERENCE
+        # ============================================================
+        
+        if run:
+            if not st.session_state.bn_nodes:
+                st.error(f"{T['erro']}: {T['sem_nos']}")
+                st.stop()
+        
+            try:
+                bn = build_bn_dict_from_form()
+        
+                safe = SafeConfig(
+                    enabled=bool(safe_enabled),
+                    max_total_qubits=int(max_total_qubits),
+                    max_parent_configurations=int(max_parent_configs),
+                    max_total_preparation_calls=int(max_total_preps),
+                )
+        
+                with st.spinner(f"{T['construindo']}..."):
+                    U, mapping, ancillas, rep = build_cqbn_from_dict(bn, safe=safe)
+                    node_order = rep["estimates"]["topo_order"]
+        
+                st.success(T["circuito_ok"])
+                st.json(rep["estimates"])
+        
+                with st.spinner(f"{T['classico_exato']}..."):
+                    _, marg_exact = classical_exact_joint_and_marginals(bn, node_order)
+        
+                with st.spinner(f"{T['classico_mc']}..."):
+                    marg_mc = classical_monte_carlo_marginals(bn, node_order, n_samples=int(shots), seed=int(seed))
+        
+                with st.spinner(f"{T['quantico_sv']}..."):
+                    marg_q_sv = marginals_from_joint(simulate_statevector_joint(U, mapping, bn, node_order))
+        
+                marg_q_shots = {n: {} for n in node_order}
+                valid_total_shots = 0
+                raw_counts_q = {}
+                aer_ok = True
+        
+                try:
+                    with st.spinner(f"{T['quantico_shots']}..."):
+                        raw_counts_q = simulate_shots_raw_counts(U, mapping, node_order=node_order, shots=int(shots))
+                        _, marg_counts_q, valid_total_shots = parse_raw_counts_to_joint_and_marginal_counts(
+                            raw_counts_q, bn, mapping, node_order
+                        )
+                        if valid_total_shots == 0:
+                            raise RuntimeError("No valid samples.")
+                        marg_q_shots = probs_from_marg_counts(marg_counts_q)
+                except Exception as e:
+                    aer_ok = False
+                    st.warning(f"{T['warning']}: {e}")
+        
+                marg_q_aa = None
+                valid_total_aa = None
+                raw_counts_aa = {}
+        
+                if use_aa and evidence and aer_ok:
+                    with st.spinner(f"{T['aa_exec']}..."):
+                        if aa_k_mode == "manual":
+                            k_used = int(aa_k_manual)
+                        else:
+                            k_used = choose_k_for_evidence(U, bn, mapping, node_order, evidence)
+        
+                        AA = build_amplitude_amplified_circuit(U, mapping, ancillas, bn, node_order, evidence, k_used)
+                        raw_counts_aa = simulate_shots_raw_counts(AA, mapping, node_order=node_order, shots=int(shots))
+                        _, marg_counts_aa, valid_total_aa = parse_raw_counts_to_joint_and_marginal_counts(
+                            raw_counts_aa, bn, mapping, node_order
+                        )
+                        if valid_total_aa == 0:
+                            raise RuntimeError("No valid AA samples.")
+                        marg_q_aa = probs_from_marg_counts(marg_counts_aa)
+        
+                    st.info(f"k={k_used} | evidence={evidence}")
+        
+                st.markdown("---")
+                st.subheader(T["graficos"])
+        
+                top_k_val = None if int(top_k) == 0 else int(top_k)
+        
+                if aer_ok and raw_counts_q:
+                    st.markdown(f"**{T['outcomes_qshots']}**")
+                    st.pyplot(fig_joint_dirac_percent_from_raw_counts(
+                        raw_counts_q,
+                        title=f"Outcomes (%) — Quantum shots={shots}",
+                        top_k=top_k_val,
+                        annotate=bool(annotate),
+                        decimals=1,
+                    ))
+        
+                    st.markdown(f"**{T['marginais_qshots']}**")
+                    figs = figs_marginals_percent(
+                        marg_q_shots,
+                        node_order,
+                        title_prefix=f"Marginals (%) — Quantum shots={shots}",
+                        annotate=bool(annotate),
+                        decimals=1,
+                    )
+                    for _, fig in figs.items():
+                        st.pyplot(fig)
+        
+                if raw_counts_aa:
+                    st.markdown(f"**{T['outcomes_aa']}**")
+                    st.pyplot(fig_joint_dirac_percent_from_raw_counts(
+                        raw_counts_aa,
+                        title=f"Outcomes (%) — Quantum AA shots={shots}",
+                        top_k=top_k_val,
+                        annotate=bool(annotate),
+                        decimals=1,
+                    ))
+        
+                    st.markdown(f"**{T['marginais_aa']}**")
+                    figs = figs_marginals_percent(
+                        marg_q_aa,
+                        node_order,
+                        title_prefix=f"Marginals (%) — Quantum AA shots={shots}",
+                        annotate=bool(annotate),
+                        decimals=1,
+                    )
+                    for _, fig in figs.items():
+                        st.pyplot(fig)
+        
+                st.markdown("---")
+                st.subheader(T["tabela_a"])
+        
+                rows = []
+                for n in node_order:
+                    card = int(bn["nodes"][n]["cardinality"])
+                    for s in range(card):
+                        rows.append({
+                            "node": n,
+                            "state": s,
+                            "Classical exact (%)": 100.0 * marg_exact.get(n, {}).get(s, 0.0),
+                            "Classical MC (%)":    100.0 * marg_mc.get(n, {}).get(s, 0.0),
+                            "Quantum sv (%)":      100.0 * marg_q_sv.get(n, {}).get(s, 0.0),
+                            "Quantum shots (%)":   100.0 * marg_q_shots.get(n, {}).get(s, 0.0),
+                            "Quantum AA shots (%)": (100.0 * marg_q_aa.get(n, {}).get(s, 0.0)) if marg_q_aa else None,
+                        })
+                st.dataframe(pd.DataFrame(rows), use_container_width=True)
+        
+                st.subheader(T["tabela_b"])
+        
+                stats_by_method: Dict[str, Dict[str, Dict[str, float]]] = {}
+                stats_by_method["Classical exact"] = {n: node_stats_from_distribution(marg_exact.get(n, {}), None, True) for n in node_order}
+                stats_by_method["Quantum statevector"] = {n: node_stats_from_distribution(marg_q_sv.get(n, {}), None, True) for n in node_order}
+                stats_by_method["Classical MC"] = {n: node_stats_from_distribution(marg_mc.get(n, {}), int(shots), False) for n in node_order}
+                stats_by_method["Quantum shots"] = {n: node_stats_from_distribution(marg_q_shots.get(n, {}), int(valid_total_shots) if valid_total_shots else None, False) for n in node_order}
+                if marg_q_aa is not None:
+                    stats_by_method["Quantum AA shots"] = {n: node_stats_from_distribution(marg_q_aa.get(n, {}), int(valid_total_aa) if valid_total_aa else None, False) for n in node_order}
+        
+                rows2 = []
+                for n in node_order:
+                    for method, per_node in stats_by_method.items():
+                        stt = per_node.get(n, {})
+                        rows2.append({
+                            "node": n,
+                            "method": method,
+                            "mean": stt.get("mean"),
+                            "std": stt.get("std"),
+                            "CI95_low": stt.get("ci_low"),
+                            "CI95_high": stt.get("ci_high"),
+                        })
+                st.dataframe(pd.DataFrame(rows2), use_container_width=True)
+        
+            except Exception as e:
+                st.error(f"{T['erro']}: {e}")
 
+
+        
         
         
         
@@ -2303,6 +2927,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
