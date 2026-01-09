@@ -19,6 +19,14 @@ import io
 import matplotlib.pyplot as plt
 import base64
 import streamlit.components.v1 as components
+#Adicionado por Lavínia - comentário para controle
+import itertools
+import json
+from typing import Dict, List, Tuple, Any, Optional
+import pandas as pd
+
+
+
 
 st.set_page_config(
     page_title="QXplore",
@@ -682,14 +690,101 @@ TEXTOS_ML = {
     }
 }
 
-
 TEXTOS_INF = {
     "pt": {
         "pagina_inf": "Redes Bayesianas Quânticas",
+        "titulo_app": "Inferência CQBN — Formulário Guiado",
+        "subtitulo_app": "Monte a rede pela interface (sem JSON) e rode inferência clássica e quântica.",
+        "sidebar_execucao": "Execução",
+        "shots": "Shots (Quântico / Monte Carlo)",
+        "seed": "Seed (Monte Carlo)",
+        "safe_mode": "Safe mode",
+        "enabled": "Habilitado",
+        "plots": "Gráficos",
+        "topk": "Top-K outcomes (0 = todos)",
+        "annotate": "Anotar barras (%)",
+        "aa": "Amplitude Amplification (opcional)",
+        "aa_enable": "Habilitar AA",
+        "aa_k": "k",
+        "aa_k_manual": "k (manual)",
+        "run": "Rodar inferência",
+        "def_nos": "1) Definição dos nós",
+        "add_no": "Adicionar nó",
+        "nome_no": "Nome do nó (único)",
+        "select_no": "Selecionar nó para editar",
+        "remove_no": "Remover nó selecionado",
+        "limpar_rede": "Limpar rede inteira",
+        "evidencia": "2) Evidência (para AA)",
+        "nos_evidenciados": "Nós evidenciados",
+        "edicao_no": "Edição do nó",
+        "msg_adicione_no": "Adicione pelo menos um nó e selecione para editar.",
+        "card_no": "Cardinalidade",
+        "pais_no": "Pais",
+        "probs_raiz": "Probabilidades a priori (nó raiz)",
+        "cpt": "CPT",
+        "caption_probs": "A coluna 'prob' é normalizada automaticamente para somar 1.",
+        "caption_cpt": "As probabilidades de cada linha são normalizadas automaticamente para somar 1.",
+        "preview_export": "Preview / Export",
+        "baixar_json": "Baixar BN em JSON",
+        "sem_nos": "Sem nós definidos.",
+        "circuito_ok": "Circuito construído.",
+        "graficos": "Gráficos",
+        "outcomes_qshots": "Outcomes — Quantum shots",
+        "marginais_qshots": "Marginais — Quantum shots",
+        "outcomes_aa": "Outcomes — Quantum AA shots",
+        "marginais_aa": "Marginais — Quantum AA shots",
+        "tabela_a": "Tabela A — Probabilidades por nó/estado (%)",
+        "tabela_b": "Tabela B — Estatísticas por nó e método (mean/std/CI95(mean))",
+        "erro": "Erro",
+        "warning_bn_inconsistente": "BN ainda não está consistente para preview/export",
     },
     "en": {
         "pagina_inf": "Quantum Bayesian Networks",
-    }
+        "titulo_app": "CQBN Inference — Guided Form",
+        "subtitulo_app": "Build the network in the UI (no JSON) and run classical and quantum inference.",
+        "sidebar_execucao": "Execution",
+        "shots": "Shots (Quantum / Monte Carlo)",
+        "seed": "Seed (Monte Carlo)",
+        "safe_mode": "Safe mode",
+        "enabled": "Enabled",
+        "plots": "Plots",
+        "topk": "Top-K outcomes (0 = all)",
+        "annotate": "Annotate bars (%)",
+        "aa": "Amplitude Amplification (optional)",
+        "aa_enable": "Enable AA",
+        "aa_k": "k",
+        "aa_k_manual": "k (manual)",
+        "run": "Run inference",
+        "def_nos": "1) Node definition",
+        "add_no": "Add node",
+        "nome_no": "Node name (unique)",
+        "select_no": "Select node to edit",
+        "remove_no": "Remove selected node",
+        "limpar_rede": "Clear entire network",
+        "evidencia": "2) Evidence (for AA)",
+        "nos_evidenciados": "Evidenced nodes",
+        "edicao_no": "Node editing",
+        "msg_adicione_no": "Add at least one node and select it to edit.",
+        "card_no": "Cardinality",
+        "pais_no": "Parents",
+        "probs_raiz": "Prior probabilities (root node)",
+        "cpt": "CPT",
+        "caption_probs": "The 'prob' column is automatically normalized to sum to 1.",
+        "caption_cpt": "Each row is automatically normalized to sum to 1.",
+        "preview_export": "Preview / Export",
+        "baixar_json": "Download BN as JSON",
+        "sem_nos": "No nodes defined.",
+        "circuito_ok": "Circuit built.",
+        "graficos": "Plots",
+        "outcomes_qshots": "Outcomes — Quantum shots",
+        "marginais_qshots": "Marginals — Quantum shots",
+        "outcomes_aa": "Outcomes — Quantum AA shots",
+        "marginais_aa": "Marginals — Quantum AA shots",
+        "tabela_a": "Table A — Probabilities by node/state (%)",
+        "tabela_b": "Table B — Per-node statistics by method (mean/std/CI95(mean))",
+        "erro": "Error",
+        "warning_bn_inconsistente": "BN is not consistent yet for preview/export",
+    },
 }
 
 
@@ -2117,9 +2212,11 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
-        st.write(textos_inf["pagina_inf"])
+        #st.write(textos_inf["pagina_inf"])
+        
 
-
+        
+        
         
         with st.sidebar:
             if st.button(textos["ini"]):
@@ -2206,6 +2303,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
