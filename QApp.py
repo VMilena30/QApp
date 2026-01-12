@@ -2907,7 +2907,14 @@ def main():
                             consistent = False
                 if not consistent:
                     st.warning(textos_inf["warning_bn_inconsistente"])
-        
+
+                safe_mode = st.checkbox(
+                    textos_inf["safe_mode"],
+                    value=bool(st.session_state.get("qbn_safe_mode", True)),
+                )
+                st.session_state["qbn_safe_mode"] = bool(safe_mode)
+
+                
                 max_states = 200000 if safe_mode else 2000000
         
                 # Exact (when possible)
@@ -3158,6 +3165,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
