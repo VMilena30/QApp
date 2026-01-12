@@ -2792,7 +2792,6 @@ def main():
                 
                     submitted = st.form_submit_button(textos_inf["add_no"])
                     if submitted:
-                    if add_ok:
                         nome = (nome or "").strip()
                         if nome and (nome not in st.session_state.qbn["nodes"]):
                             st.session_state.qbn["nodes"][nome] = {
@@ -3313,6 +3312,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
