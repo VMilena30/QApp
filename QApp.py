@@ -2696,7 +2696,8 @@ def main():
             st.title(textos_inf["titulo_app"])
             st.caption(textos_inf["subtitulo_app"])
             st.divider()
-        
+
+            '''
             # ============================
             # Sidebar — execution controls
             # ============================
@@ -2718,7 +2719,7 @@ def main():
                 aa_k = st.number_input(textos_inf["aa_k"], min_value=0, max_value=25, value=0, step=1)
         
                 run = st.button(textos_inf["run"])
-        
+            '''
             # ============================
             # UI — build BN
             # ============================
@@ -2827,7 +2828,89 @@ def main():
                 query_nodes = st.multiselect("Query nodes", options=nodes, default=nodes[:1] if nodes else [])
                 if not query_nodes and nodes:
                     query_nodes = [nodes[0]]
-        
+
+            # ============================================================
+            # EXECUÇÃO (NA PÁGINA PRINCIPAL)
+            # ============================================================
+            
+            st.markdown("---")
+            st.subheader(textos_inf["sidebar_execucao"])
+            
+            colA, colB, colC = st.columns(3)
+            
+            with colA:
+                shots = st.number_input(
+                    textos_inf["shots"],
+                    min_value=100,
+                    max_value=200000,
+                    value=int(st.session_state.get("qbn_shots", 2000)),
+                    step=100,
+                )
+                st.session_state["qbn_shots"] = int(shots)
+            
+            with colB:
+                seed = st.number_input(
+                    textos_inf["seed"],
+                    min_value=0,
+                    max_value=10**9,
+                    value=int(st.session_state.get("qbn_seed", 123)),
+                    step=1,
+                )
+                st.session_state["qbn_seed"] = int(seed)
+            
+            with colC:
+                topk = st.number_input(
+                    textos_inf["topk"],
+                    min_value=0,
+                    max_value=200,
+                    value=int(st.session_state.get("qbn_topk", 20)),
+                    step=1,
+                )
+                st.session_state["qbn_topk"] = int(topk)
+            
+            colD, colE, colF = st.columns(3)
+            
+            with colD:
+                annotate = st.checkbox(
+                    textos_inf["annotate"],
+                    value=bool(st.session_state.get("qbn_annotate", True)),
+                )
+                st.session_state["qbn_annotate"] = bool(annotate)
+            
+            with colE:
+                aa_enable = st.checkbox(
+                    textos_inf["aa_enable"],
+                    value=bool(st.session_state.get("qbn_aa_enable", True)),
+                )
+                st.session_state["qbn_aa_enable"] = bool(aa_enable)
+            
+            with colF:
+                aa_k_manual = st.checkbox(
+                    textos_inf["aa_k_manual"],
+                    value=bool(st.session_state.get("qbn_aa_k_manual", False)),
+                )
+                st.session_state["qbn_aa_k_manual"] = bool(aa_k_manual)
+            
+            aa_k = None
+            if aa_enable:
+                if aa_k_manual:
+                    aa_k = int(
+                        st.number_input(
+                            textos_inf["aa_k"],
+                            min_value=0,
+                            max_value=50,
+                            value=int(st.session_state.get("qbn_aa_k", 1)),
+                            step=1,
+                        )
+                    )
+                    st.session_state["qbn_aa_k"] = int(aa_k)
+                else:
+                    st.caption(textos_inf["aa"])  # texto explicativo (opcional)
+            
+            st.markdown("")
+            run = st.button(textos_inf["run"], type="primary")
+
+            
             # ============================
             # Run inference
             # ============================
@@ -3098,6 +3181,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
