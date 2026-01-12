@@ -2697,29 +2697,6 @@ def main():
             st.caption(textos_inf["subtitulo_app"])
             st.divider()
 
-            '''
-            # ============================
-            # Sidebar — execution controls
-            # ============================
-            with st.sidebar:
-                st.markdown(f"### {textos_inf['sidebar_execucao']}")
-                shots = st.number_input(textos_inf["shots"], min_value=100, max_value=200000, value=5000, step=100)
-                seed = st.number_input(textos_inf["seed"], min_value=0, max_value=10_000_000, value=123, step=1)
-                topk = st.number_input(textos_inf["topk"], min_value=0, max_value=200, value=10, step=1)
-        
-                plots = st.checkbox(textos_inf["plots"], value=True)
-                annotate = st.checkbox(textos_inf["annotate"], value=True)
-        
-                st.markdown(f"### {textos_inf['safe_mode']}")
-                safe_mode = st.checkbox(textos_inf["enabled"], value=True)
-        
-                st.markdown(f"### {textos_inf['aa']}")
-                aa_enable = st.checkbox(textos_inf["aa_enable"], value=True)
-                aa_k_manual = st.checkbox(textos_inf["aa_k_manual"], value=False)
-                aa_k = st.number_input(textos_inf["aa_k"], min_value=0, max_value=25, value=0, step=1)
-        
-                run = st.button(textos_inf["run"])
-            '''
             # ============================
             # UI — build BN
             # ============================
@@ -3181,6 +3158,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
