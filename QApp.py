@@ -2228,6 +2228,7 @@ def main():
             return [f"s{i}" for i in range(max(1, card))]
         
         def _qbn_normalize_row(vals: List[float]) -> List[float]:
+            import numpy as np  # garante que np existe aqui
             arr = np.array([float(v) for v in vals], dtype=float)
             arr[arr < 0] = 0.0
             s = float(arr.sum())
@@ -3088,6 +3089,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
