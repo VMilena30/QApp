@@ -2844,7 +2844,7 @@ def main():
         
                     # parents
                     parent_opts = [n for n in nodes if n != nsel]
-                    parents = st.multiselect(textos_inf["pais_no"], options=parent_opts, default=info.get("parents", []))
+                    parents = st.multiselect(textos_inf["pais_do_no"], options=parent_opts, default=info.get("parents", []))
                     info["parents"] = parents
         
                     # probs editor
@@ -3322,6 +3322,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
