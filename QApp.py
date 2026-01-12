@@ -2574,6 +2574,7 @@ def main():
                     "counts": counts_full}
         
         def _qbn_aa_amplified_distribution(outcomes: List[str], p: Any, good_mask: Any, k: int) -> Any:
+            import numpy as np
             p_good = float(p[good_mask].sum())
             if p_good <= 0:
                 return p.copy()
@@ -2600,6 +2601,7 @@ def main():
         def _qbn_quantum_aa_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
                                  shots: int = 5000, seed: Optional[int] = None,
                                  k: int = 0, max_states: int = 200000) -> Optional[Dict[str, Any]]:
+            import numpy as np
             if not _qbn_is_binary_bn(bn):
                 return None
         
@@ -3095,6 +3097,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
