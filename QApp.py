@@ -2455,6 +2455,7 @@ def main():
             return all(len(bn["nodes"][n]["states"]) == 2 for n in bn["order"])
         
         def _qbn_joint_distribution_enumerate(bn: Dict[str, Any], max_states: int = 200000) -> Optional[Tuple[List[str], Any]]:
+            import numpy as np
             total = _qbn_total_state_space(bn)
             if total > max_states:
                 return None
@@ -3093,6 +3094,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
