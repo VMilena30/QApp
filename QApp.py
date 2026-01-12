@@ -2361,6 +2361,7 @@ def main():
         
         def _qbn_mc_likelihood_weighting(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
                                         n_samples: int = 2000, seed: Optional[int] = None) -> Dict[Tuple[Tuple[str, str], ...], float]:
+            import numpy as np
             rng = np.random.default_rng(seed)
             counts: Dict[Tuple[Tuple[str, str], ...], float] = {}
             weight_sum = 0.0
@@ -3089,6 +3090,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
