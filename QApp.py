@@ -140,7 +140,7 @@ TEXTOS = {
         "inf1": "Estimação de Confiabilidade com QBN:",
         "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
         "inf3": "Método:",
-        "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada com o uso de Quantum Amplitude Estimation (QAE), podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
+        "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada a partir de medições de circuitos quânticos e amplificação de amplitudes, podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -3084,6 +3084,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
