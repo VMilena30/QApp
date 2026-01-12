@@ -2690,6 +2690,7 @@ def main():
         
         def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
             import pandas as pd
+            import numpy as np
             _qbn_init_state()
         
             st.title(textos_inf["titulo_app"])
@@ -3097,6 +3098,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
