@@ -782,6 +782,8 @@ TEXTOS_INF = {
         "tabela_a": "Tabela comparativa (Exata vs Monte Carlo vs Quantum)",
         "tabela_b": "Tabela comparativa (Quantum Shots vs Quantum + AA)",
         "graficos": "Gráficos",
+        "outcomes_qshots": "Outcomes (Quantum Shots)",
+        "outcomes_qaa": "Outcomes (Quantum + AA)",
     },
 
     "en": {
@@ -875,6 +877,8 @@ TEXTOS_INF = {
         "tabela_a": "Comparison table (Exact vs Monte Carlo vs Quantum)",
         "tabela_b": "Comparison table (Quantum Shots vs Quantum + AA)",
         "Gráficos": "Charts",
+        "outcomes_qshots": "Outcomes (Quantum Shots)",
+        "outcomes_qaa": "Outcomes (Quantum + AA)",
     },
 }
 
@@ -3338,6 +3342,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
