@@ -692,98 +692,163 @@ TEXTOS_ML = {
 
 TEXTOS_INF = {
     "pt": {
+        # Página / títulos
         "pagina_inf": "Redes Bayesianas Quânticas",
         "titulo_app": "Inferência CQBN — Formulário Guiado",
         "subtitulo_app": "Monte a rede pela interface (sem JSON) e rode inferência clássica e quântica.",
+
+        # Seções principais
+        "def_nos": "1) Definição dos nós",
+        "def_estrutura": "2) Estrutura (pais por nó)",
+        "def_probs": "3) Probabilidades (marginais e condicionais)",
+        "evidencia": "4) Evidência e consulta",
+        "resultados": "Resultados",
+
+        # Visualização da rede (NOVO)
+        "rede_montada": "Rede Bayesiana montada",
+        "sem_rede": "Adicione nós para visualizar a rede.",
+        "probs_inseridas": "Probabilidades inseridas (marginais e CPTs)",
+
+        # Entradas (nós / estados)
+        "nome_no": "Nome do nó",
+        "qtd_estados": "Quantidade de estados",
+        "estados": "Estados (opcional, separados por vírgula)",
+        "add_no": "Adicionar nó",
+        "remover_no": "Remover nó",
+        "selecionar_no": "Selecionar nó",
+
+        # Estrutura
+        "pais_do_no": "Pais do nó",
+
+        # Probabilidades
+        "prob_marginal": "Probabilidades marginais",
+        "prob_condicional": "Tabela de probabilidades condicionais (CPT)",
+        "linha_cpt": "Linha da CPT",
+        "normalizar": "Normalizar",
+        "aviso_soma": "Algumas linhas não somam 1. Vou normalizar automaticamente.",
+
+        # Evidência / query
+        "evidencias": "Evidências",
+        "add_evidencia": "Adicionar evidência",
+        "limpar_evidencias": "Limpar evidências",
+        "query": "Consulta (nós de interesse)",
+
+        # Execução (na página principal)
         "sidebar_execucao": "Execução",
-        "shots": "Shots (Quântico / Monte Carlo)",
-        "seed": "Seed (Monte Carlo)",
         "safe_mode": "Safe mode",
         "enabled": "Habilitado",
+        "shots": "Shots (Quântico / Monte Carlo)",
+        "seed": "Seed (Monte Carlo)",
         "plots": "Gráficos",
         "topk": "Top-K outcomes (0 = todos)",
         "annotate": "Anotar barras (%)",
+
+        # Amplitude Amplification
         "aa": "Amplitude Amplification (opcional)",
         "aa_enable": "Habilitar AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
+
+        # Ação
         "run": "Rodar inferência",
-        "def_nos": "1) Definição dos nós",
-        "add_no": "Adicionar nó",
-        "nome_no": "Nome do nó (único)",
-        "select_no": "Selecionar nó para editar",
-        "remove_no": "Remover nó selecionado",
-        "limpar_rede": "Limpar rede inteira",
-        "evidencia": "2) Evidência (para AA)",
-        "nos_evidenciados": "Nós evidenciados",
-        "edicao_no": "Edição do nó",
-        "msg_adicione_no": "Adicione pelo menos um nó e selecione para editar.",
-        "card_no": "Cardinalidade",
-        "pais_no": "Pais",
-        "probs_raiz": "Probabilidades a priori (nó raiz)",
-        "cpt": "CPT",
-        "caption_probs": "A coluna 'prob' é normalizada automaticamente para somar 1.",
-        "caption_cpt": "As probabilidades de cada linha são normalizadas automaticamente para somar 1.",
-        "preview_export": "Preview / Export",
-        "baixar_json": "Baixar BN em JSON",
-        "sem_nos": "Sem nós definidos.",
-        "circuito_ok": "Circuito construído.",
-        "graficos": "Gráficos",
-        "outcomes_qshots": "Outcomes — Quantum shots",
-        "marginais_qshots": "Marginais — Quantum shots",
-        "outcomes_aa": "Outcomes — Quantum AA shots",
-        "marginais_aa": "Marginais — Quantum AA shots",
-        "tabela_a": "Tabela A — Probabilidades por nó/estado (%)",
-        "tabela_b": "Tabela B — Estatísticas por nó e método (mean/std/CI95(mean))",
-        "erro": "Erro",
-        "warning_bn_inconsistente": "BN ainda não está consistente para preview/export",
+
+        # Métodos (comparação)
+        "metodo": "Método",
+        "exata": "Exata (quando possível)",
+        "mc": "Monte Carlo (sempre)",
+        "q_shots": "Quantum Shots",
+        "q_aa": "Quantum + AA",
+
+        # Mensagens / validações
+        "aviso_binaria": "O bloco quântico (Shots/AA) está disponível apenas para redes binárias (2 estados por nó).",
+        "aviso_exata_off": "Inferência exata desabilitada: espaço de estados muito grande para o limite atual.",
+        "erro_rede_incompleta": "Rede incompleta: verifique nós, pais e probabilidades.",
+        "ok_rede": "Rede validada.",
+
+        # Saídas
+        "posterior": "Posterior",
+        "comparacao": "Comparação dos métodos",
+        "tabela_resultados": "Tabela de resultados",
     },
+
     "en": {
+        # Page / titles
         "pagina_inf": "Quantum Bayesian Networks",
         "titulo_app": "CQBN Inference — Guided Form",
         "subtitulo_app": "Build the network in the UI (no JSON) and run classical and quantum inference.",
+
+        # Main sections
+        "def_nos": "1) Node definition",
+        "def_estrutura": "2) Structure (parents per node)",
+        "def_probs": "3) Probabilities (marginals and CPTs)",
+        "evidencia": "4) Evidence and query",
+        "resultados": "Results",
+
+        # Network visualization (NEW)
+        "rede_montada": "Built Bayesian network",
+        "sem_rede": "Add nodes to visualize the network.",
+        "probs_inseridas": "Entered probabilities (marginals and CPTs)",
+
+        # Inputs (nodes / states)
+        "nome_no": "Node name",
+        "qtd_estados": "Number of states",
+        "estados": "States (optional, comma-separated)",
+        "add_no": "Add node",
+        "remover_no": "Remove node",
+        "selecionar_no": "Select node",
+
+        # Structure
+        "pais_do_no": "Parents of node",
+
+        # Probabilities
+        "prob_marginal": "Marginal probabilities",
+        "prob_condicional": "Conditional probability table (CPT)",
+        "linha_cpt": "CPT row",
+        "normalizar": "Normalize",
+        "aviso_soma": "Some rows do not sum to 1. I will normalize automatically.",
+
+        # Evidence / query
+        "evidencias": "Evidence",
+        "add_evidencia": "Add evidence",
+        "limpar_evidencias": "Clear evidence",
+        "query": "Query (nodes of interest)",
+
+        # Execution (on main page)
         "sidebar_execucao": "Execution",
-        "shots": "Shots (Quantum / Monte Carlo)",
-        "seed": "Seed (Monte Carlo)",
         "safe_mode": "Safe mode",
         "enabled": "Enabled",
+        "shots": "Shots (Quantum / Monte Carlo)",
+        "seed": "Seed (Monte Carlo)",
         "plots": "Plots",
         "topk": "Top-K outcomes (0 = all)",
         "annotate": "Annotate bars (%)",
+
+        # Amplitude Amplification
         "aa": "Amplitude Amplification (optional)",
         "aa_enable": "Enable AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
+
+        # Action
         "run": "Run inference",
-        "def_nos": "1) Node definition",
-        "add_no": "Add node",
-        "nome_no": "Node name (unique)",
-        "select_no": "Select node to edit",
-        "remove_no": "Remove selected node",
-        "limpar_rede": "Clear entire network",
-        "evidencia": "2) Evidence (for AA)",
-        "nos_evidenciados": "Evidenced nodes",
-        "edicao_no": "Node editing",
-        "msg_adicione_no": "Add at least one node and select it to edit.",
-        "card_no": "Cardinality",
-        "pais_no": "Parents",
-        "probs_raiz": "Prior probabilities (root node)",
-        "cpt": "CPT",
-        "caption_probs": "The 'prob' column is automatically normalized to sum to 1.",
-        "caption_cpt": "Each row is automatically normalized to sum to 1.",
-        "preview_export": "Preview / Export",
-        "baixar_json": "Download BN as JSON",
-        "sem_nos": "No nodes defined.",
-        "circuito_ok": "Circuit built.",
-        "graficos": "Plots",
-        "outcomes_qshots": "Outcomes — Quantum shots",
-        "marginais_qshots": "Marginals — Quantum shots",
-        "outcomes_aa": "Outcomes — Quantum AA shots",
-        "marginais_aa": "Marginals — Quantum AA shots",
-        "tabela_a": "Table A — Probabilities by node/state (%)",
-        "tabela_b": "Table B — Per-node statistics by method (mean/std/CI95(mean))",
-        "erro": "Error",
-        "warning_bn_inconsistente": "BN is not consistent yet for preview/export",
+
+        # Methods (comparison)
+        "metodo": "Method",
+        "exata": "Exact (when feasible)",
+        "mc": "Monte Carlo (always)",
+        "q_shots": "Quantum Shots",
+        "q_aa": "Quantum + AA",
+
+        # Messages / validation
+        "aviso_binaria": "The quantum block (Shots/AA) is available only for binary networks (2 states per node).",
+        "aviso_exata_off": "Exact inference disabled: state space is too large for the current limit.",
+        "erro_rede_incompleta": "Incomplete network: please check nodes, parents, and probabilities.",
+        "ok_rede": "Network validated.",
+
+        # Outputs
+        "posterior": "Posterior",
+        "comparacao": "Methods comparison",
+        "tabela_resultados": "Results table",
     },
 }
 
@@ -3246,6 +3311,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
