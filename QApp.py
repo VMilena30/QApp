@@ -818,8 +818,8 @@ TEXTOS_INF = {
         "linha_cpt": "CPT row",
         "normalizar": "Normalize",
         "aviso_soma": "Some rows do not sum to 1. I will normalize automatically.",
-        "probs_raiz": "Marginal probabilities (root node)"
-        "cpt": "Conditional Probability Table (CPT)"
+        "probs_raiz": "Marginal probabilities (root node)",
+        "cpt": "Conditional Probability Table (CPT)",
 
         # Evidence / query
         "evidencias": "Evidence",
@@ -3326,6 +3326,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
