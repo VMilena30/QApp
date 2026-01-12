@@ -711,7 +711,7 @@ TEXTOS_INF = {
 
         # Entradas (nós / estados)
         "nome_no": "Nome do nó",
-        "qtd_estados": "Quantidade de estados",
+        "card_no": "Quantidade de estados",
         "estados": "Estados (opcional, separados por vírgula)",
         "add_no": "Adicionar nó",
         "remover_no": "Remover nó",
@@ -791,7 +791,7 @@ TEXTOS_INF = {
 
         # Inputs (nodes / states)
         "nome_no": "Node name",
-        "qtd_estados": "Number of states",
+        "card_no": "Number of states",
         "estados": "States (optional, comma-separated)",
         "add_no": "Add node",
         "remover_no": "Remove node",
@@ -3312,6 +3312,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
