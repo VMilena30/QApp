@@ -2816,7 +2816,7 @@ def main():
         
                     c1, c2 = st.columns(2)
                     with c1:
-                        if st.button(textos_inf["remove_no"]):
+                        if st.button(textos_inf["remover_no"]):
                             # remove node + remove as parent from others
                             del st.session_state.qbn["nodes"][sel]
                             for n2 in list(st.session_state.qbn["nodes"].keys()):
@@ -3318,6 +3318,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
