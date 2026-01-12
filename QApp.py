@@ -717,6 +717,7 @@ TEXTOS_INF = {
         "remover_no": "Remover nó",
         "selecionar_no": "Selecionar nó",
         "sem_nos": "Nenhum nó definido ainda. Adicione o primeiro nó acima.",
+        "nos_evidenciados": "Nós evidenciados",
         
         # Estrutura
         "pais_do_no": "Pais do nó",
@@ -798,6 +799,7 @@ TEXTOS_INF = {
         "remover_no": "Remove node",
         "selecionar_no": "Select node",
         "sem_nos": "No nodes defined yet. Add your first node above.",
+        "nos_evidenciados": "Evidence nodes",
         
         # Structure
         "pais_do_no": "Parents of node",
@@ -3314,6 +3316,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
