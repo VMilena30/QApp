@@ -750,7 +750,8 @@ TEXTOS_INF = {
         "plots": "Gráficos",
         "topk": "Top-K outcomes (0 = todos)",
         "annotate": "Anotar barras (%)",
-
+        "circuito_ok": ""Circuito gerado com sucesso.",
+        
         # Amplitude Amplification
         "aa": "Amplitude Amplification (opcional)",
         "aa_enable": "Habilitar AA",
@@ -839,6 +840,7 @@ TEXTOS_INF = {
         "plots": "Plots",
         "topk": "Top-K outcomes (0 = all)",
         "annotate": "Annotate bars (%)",
+        "circuito_ok": "Circuit generated successfully.",
 
         # Amplitude Amplification
         "aa": "Amplitude Amplification (optional)",
@@ -3329,6 +3331,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
