@@ -3058,6 +3058,14 @@ def main():
                         for i, v in enumerate(vals):
                             ax.text(i, v, f"{v:.1f}%", ha="center", va="bottom", fontsize=8)
                     st.pyplot(fig)
+                
+                plots = st.checkbox(
+                    textos_inf["plots"],
+                    value=bool(st.session_state.get("qbn_plots", True)),
+                )
+                st.session_state["qbn_plots"] = bool(plots)
+
+                
                 if plots:
                     st.subheader(textos_inf["graficos"])
                     if last.get("qshots") is not None:
@@ -3165,6 +3173,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
