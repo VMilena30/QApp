@@ -720,6 +720,7 @@ TEXTOS_INF = {
         "nos_evidenciados": "Nós evidenciados",
         "preview_export": "Pré-visualização e exportação",
         "limpar_rede": "Limpar rede",
+        "edicao_no": "Edição do nó",
         
         # Estrutura
         "pais_do_no": "Pais do nó",
@@ -804,6 +805,7 @@ TEXTOS_INF = {
         "nos_evidenciados": "Evidence nodes",
         "preview_export": "Preview and export",
         "limpar_rede": "Clear network",
+        "edicao_no": "Node editing",
         
         # Structure
         "pais_do_no": "Parents of node",
@@ -3320,6 +3322,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
