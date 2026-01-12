@@ -780,6 +780,7 @@ TEXTOS_INF = {
         "comparacao": "Comparação dos métodos",
         "tabela_resultados": "Tabela de resultados",
         "tabela_a": "Tabela comparativa (Exata vs Monte Carlo vs Quantum)",
+        "tabela_b": "Tabela comparativa (Quantum Shots vs Quantum + AA)",
     },
 
     "en": {
@@ -871,6 +872,7 @@ TEXTOS_INF = {
         "comparacao": "Methods comparison",
         "tabela_resultados": "Results table",
         "tabela_a": "Comparison table (Exact vs Monte Carlo vs Quantum)",
+        "tabela_b": "Comparison table (Quantum Shots vs Quantum + AA)",
     },
 }
 
@@ -3334,6 +3336,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
