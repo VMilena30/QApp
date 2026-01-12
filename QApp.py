@@ -2687,6 +2687,23 @@ def main():
             k = int(max(0, math.floor((math.pi / (4 * theta)) - 0.5)))
             return int(min(k, int(k_max)))
         
+
+        def _qbn_build_dot_from_nodes(bn_nodes: dict) -> str:
+            # Graphviz DOT
+            lines = ["digraph BN {", 'rankdir="LR";', 'node [shape=box];']
+            # nodes
+            for n in bn_nodes.keys():
+                safe = n.replace('"', '\\"')
+                lines.append(f'"{safe}";')
+            # edges parent -> child
+            for child, info in bn_nodes.items():
+                for parent in info.get("parents", []):
+                    p = parent.replace('"', '\\"')
+                    c = child.replace('"', '\\"')
+                    lines.append(f'"{p}" -> "{c}";')
+            lines.append("}")
+            return "\n".join(lines)
+
         
         def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
             import pandas as pd
@@ -2789,6 +2806,62 @@ def main():
                         info["cpt"] = cpt
                         st.caption(textos_inf["caption_cpt"])
         
+                st.divider()
+
+                st.subheader(textos_inf.get("rede_montada", "Rede Bayesiana montada"))
+                
+                bn_nodes = st.session_state.qbn["nodes"]
+                
+                if not bn_nodes:
+                    st.info(textos_inf.get("sem_rede", "Adicione nós para visualizar a rede."))
+                else:
+                    # 1) Grafo
+                    dot = _qbn_build_dot_from_nodes(bn_nodes)
+                    st.graphviz_chart(dot, use_container_width=True)
+                
+                    # 2) Probabilidades inseridas (marginais e condicionais)
+                    import pandas as pd
+                
+                    with st.expander(textos_inf.get("probs_inseridas", "Probabilidades inseridas (marginais e CPTs)"), expanded=True):
+                        order = _qbn_topological_order(bn_nodes)
+                
+                        for n in order:
+                            info = bn_nodes[n]
+                            states = info["states"]
+                            parents = info.get("parents", [])
+                
+                            st.markdown(f"**{n}**")
+                            st.caption(f"States: {states} | Parents: {parents if parents else '-'}")
+                
+                            if len(parents) == 0:
+                                # root marginal
+                                probs = info.get("cpt", {}).get((), [1.0 / len(states)] * len(states))
+                                df = pd.DataFrame({"state": states, "P(state)": [float(x) for x in probs]})
+                                st.dataframe(df, use_container_width=True, hide_index=True)
+                            else:
+                                # CPT: each row = combination of parents; columns = child states
+                                parent_states = [bn_nodes[p]["states"] for p in parents]
+                                combos = list(itertools.product(*parent_states))
+                
+                                rows = []
+                                cpt = info.get("cpt", {})
+                                for comb in combos:
+                                    key = tuple(comb)
+                                    probs = cpt.get(key)
+                                    if probs is None:
+                                        probs = [1.0 / len(states)] * len(states)
+                
+                                    row = {parents[i]: comb[i] for i in range(len(parents))}
+                                    for j, stt in enumerate(states):
+                                        row[f"P({n}={stt})"] = float(probs[j])
+                                    rows.append(row)
+                
+                                df = pd.DataFrame(rows)
+                                st.dataframe(df, use_container_width=True, hide_index=True)
+                
+                            st.markdown("---")
+
+
                 st.divider()
                 st.subheader(textos_inf["evidencia"])
         
@@ -3173,6 +3246,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
