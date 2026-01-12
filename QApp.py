@@ -788,6 +788,7 @@ TEXTOS_INF = {
 }
 
 
+
 def aplicar_css_botoes():
     st.markdown(
         """
@@ -2213,6 +2214,794 @@ def main():
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
         #st.write(textos_inf["pagina_inf"])
+
+        # ============================================================
+        # QBN — Classical + Quantum (shots + AA) inference helpers
+        # ============================================================
+        
+        def _qbn_init_state():
+            if "qbn" not in st.session_state:
+                st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+        
+        def _qbn_states_from_card(card: int) -> List[str]:
+            card = int(card)
+            return [f"s{i}" for i in range(max(1, card))]
+        
+        def _qbn_normalize_row(vals: List[float]) -> List[float]:
+            arr = np.array([float(v) for v in vals], dtype=float)
+            arr[arr < 0] = 0.0
+            s = float(arr.sum())
+            if s <= 0:
+                # fallback uniform
+                return [1.0 / len(arr)] * len(arr)
+            return (arr / s).tolist()
+        
+        def _qbn_topological_order(nodes: Dict[str, Any]) -> List[str]:
+            # Kahn's algorithm
+            indeg = {n: 0 for n in nodes}
+            children = {n: [] for n in nodes}
+            for n, info in nodes.items():
+                for p in info.get("parents", []):
+                    if p not in nodes:
+                        continue
+                    indeg[n] += 1
+                    children[p].append(n)
+        
+            q = [n for n, d in indeg.items() if d == 0]
+            order = []
+            while q:
+                cur = q.pop(0)
+                order.append(cur)
+                for ch in children[cur]:
+                    indeg[ch] -= 1
+                    if indeg[ch] == 0:
+                        q.append(ch)
+        
+            # if cycle exists, just return insertion order to avoid crash
+            if len(order) != len(nodes):
+                return list(nodes.keys())
+            return order
+        
+        def _qbn_cond_prob(bn: Dict[str, Any], node: str, asg: Dict[str, str]) -> float:
+            info = bn["nodes"][node]
+            parents = info["parents"]
+            parent_vals = tuple(asg[p] for p in parents)
+            probs = info["cpt"].get(parent_vals)
+            if probs is None:
+                # default uniform
+                probs = [1.0 / len(info["states"])] * len(info["states"])
+            probs = _qbn_normalize_row(probs)
+            st_idx = info["states"].index(asg[node])
+            return float(probs[st_idx])
+        
+        def _qbn_joint_prob(bn: Dict[str, Any], asg: Dict[str, str]) -> float:
+            p = 1.0
+            for n in bn["order"]:
+                p *= _qbn_cond_prob(bn, n, asg)
+            return float(p)
+        
+        def _qbn_total_state_space(bn: Dict[str, Any]) -> int:
+            total = 1
+            for n in bn["order"]:
+                total *= max(1, len(bn["nodes"][n]["states"]))
+            return int(total)
+        
+        def _qbn_exact_posterior(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
+                                max_states: int = 200000) -> Optional[Dict[Tuple[Tuple[str, str], ...], float]]:
+            total = _qbn_total_state_space(bn)
+            if total > max_states:
+                return None
+        
+            nodes = bn["order"]
+            domains = {n: bn["nodes"][n]["states"] for n in nodes}
+        
+            post: Dict[Tuple[Tuple[str, str], ...], float] = {}
+            denom = 0.0
+        
+            for values in itertools.product(*[domains[n] for n in nodes]):
+                asg = dict(zip(nodes, values))
+                ok = True
+                for evn, evv in evidence.items():
+                    if asg.get(evn) != evv:
+                        ok = False
+                        break
+                if not ok:
+                    continue
+        
+                jp = _qbn_joint_prob(bn, asg)
+                if jp <= 0:
+                    continue
+        
+                denom += jp
+                outcome = tuple((qn, asg[qn]) for qn in query_nodes)
+                post[outcome] = post.get(outcome, 0.0) + jp
+        
+            if denom <= 0:
+                return {tuple((qn, evidence.get(qn, "")) for qn in query_nodes): 0.0}
+        
+            for k in list(post.keys()):
+                post[k] /= denom
+            return post
+        
+        def _qbn_exact_marginals(bn: Dict[str, Any], evidence: Dict[str, str],
+                                max_states: int = 200000) -> Optional[Dict[str, Dict[str, float]]]:
+            total = _qbn_total_state_space(bn)
+            if total > max_states:
+                return None
+        
+            nodes = bn["order"]
+            domains = {n: bn["nodes"][n]["states"] for n in nodes}
+            marg = {n: {s: 0.0 for s in domains[n]} for n in nodes}
+            denom = 0.0
+        
+            for values in itertools.product(*[domains[n] for n in nodes]):
+                asg = dict(zip(nodes, values))
+                ok = True
+                for evn, evv in evidence.items():
+                    if asg.get(evn) != evv:
+                        ok = False
+                        break
+                if not ok:
+                    continue
+                jp = _qbn_joint_prob(bn, asg)
+                if jp <= 0:
+                    continue
+                denom += jp
+                for n in nodes:
+                    marg[n][asg[n]] += jp
+        
+            if denom <= 0:
+                return {n: {s: 0.0 for s in domains[n]} for n in nodes}
+        
+            for n in nodes:
+                for s in domains[n]:
+                    marg[n][s] /= denom
+            return marg
+        
+        def _qbn_mc_likelihood_weighting(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
+                                        n_samples: int = 2000, seed: Optional[int] = None) -> Dict[Tuple[Tuple[str, str], ...], float]:
+            rng = np.random.default_rng(seed)
+            counts: Dict[Tuple[Tuple[str, str], ...], float] = {}
+            weight_sum = 0.0
+        
+            for _ in range(int(n_samples)):
+                w = 1.0
+                asg: Dict[str, str] = {}
+        
+                for node in bn["order"]:
+                    info = bn["nodes"][node]
+                    parents = info["parents"]
+                    parent_vals = tuple(asg[pn] for pn in parents)
+                    states = info["states"]
+                    probs = info["cpt"].get(parent_vals)
+                    if probs is None:
+                        probs = [1.0 / max(1, len(states))] * max(1, len(states))
+                    probs = np.array(_qbn_normalize_row(probs), dtype=float)
+        
+                    if node in evidence:
+                        st = evidence[node]
+                        if st not in states:
+                            st = states[0]
+                        w *= float(probs[states.index(st)])
+                        asg[node] = st
+                    else:
+                        st = rng.choice(states, p=probs)
+                        asg[node] = st
+        
+                outcome = tuple((qn, asg[qn]) for qn in query_nodes)
+                counts[outcome] = counts.get(outcome, 0.0) + w
+                weight_sum += w
+        
+            if weight_sum <= 0:
+                return {tuple((qn, evidence.get(qn, "")) for qn in query_nodes): 0.0}
+        
+            for k in list(counts.keys()):
+                counts[k] /= weight_sum
+            return counts
+        
+        def _qbn_mc_marginals_lw(bn: Dict[str, Any], evidence: Dict[str, str], n_samples: int = 2000,
+                                 seed: Optional[int] = None) -> Dict[str, Dict[str, float]]:
+            rng = np.random.default_rng(seed)
+            nodes = bn["order"]
+            domains = {n: bn["nodes"][n]["states"] for n in nodes}
+            marg = {n: {s: 0.0 for s in domains[n]} for n in nodes}
+            weight_sum = 0.0
+        
+            for _ in range(int(n_samples)):
+                w = 1.0
+                asg: Dict[str, str] = {}
+                for node in nodes:
+                    info = bn["nodes"][node]
+                    parents = info["parents"]
+                    parent_vals = tuple(asg[pn] for pn in parents)
+                    states = info["states"]
+                    probs = info["cpt"].get(parent_vals)
+                    if probs is None:
+                        probs = [1.0 / max(1, len(states))] * max(1, len(states))
+                    probs = np.array(_qbn_normalize_row(probs), dtype=float)
+        
+                    if node in evidence:
+                        st = evidence[node]
+                        if st not in states:
+                            st = states[0]
+                        w *= float(probs[states.index(st)])
+                        asg[node] = st
+                    else:
+                        st = rng.choice(states, p=probs)
+                        asg[node] = st
+        
+                for n in nodes:
+                    marg[n][asg[n]] += w
+                weight_sum += w
+        
+            if weight_sum <= 0:
+                return {n: {s: 0.0 for s in domains[n]} for n in nodes}
+        
+            for n in nodes:
+                for s in domains[n]:
+                    marg[n][s] /= weight_sum
+            return marg
+        
+        def _qbn_outcome_label(bitstring: str) -> str:
+            # Render in dirac notation: |0101>
+            return f"|{bitstring}>"
+        
+        def _qbn_is_binary_bn(bn: Dict[str, Any]) -> bool:
+            return all(len(bn["nodes"][n]["states"]) == 2 for n in bn["order"])
+        
+        def _qbn_joint_distribution_enumerate(bn: Dict[str, Any], max_states: int = 200000) -> Optional[Tuple[List[str], np.ndarray]]:
+            total = _qbn_total_state_space(bn)
+            if total > max_states:
+                return None
+        
+            nodes = bn["order"]
+            domains = {n: bn["nodes"][n]["states"] for n in nodes}
+        
+            outcomes: List[str] = []
+            probs: List[float] = []
+            for values in itertools.product(*[domains[n] for n in nodes]):
+                asg = dict(zip(nodes, values))
+                jp = _qbn_joint_prob(bn, asg)
+                if jp < 0:
+                    jp = 0.0
+                # binary: map to bitstring with state index (0/1)
+                bits = []
+                for n in nodes:
+                    st = asg[n]
+                    idx = domains[n].index(st)
+                    bits.append(str(int(idx)))
+                outcomes.append("".join(bits))
+                probs.append(float(jp))
+        
+            p = np.array(probs, dtype=float)
+            s = float(p.sum())
+            if s <= 0:
+                return None
+            p = p / s
+            return outcomes, p
+        
+        def _qbn_filter_evidence_bitstrings(bn: Dict[str, Any], evidence: Dict[str, str]) -> Dict[int, int]:
+            # returns mapping from qubit position -> required bit (0/1)
+            nodes = bn["order"]
+            req: Dict[int, int] = {}
+            for n, st in evidence.items():
+                if n not in nodes:
+                    continue
+                info = bn["nodes"][n]
+                if st not in info["states"]:
+                    continue
+                bit = info["states"].index(st)
+                if bit not in (0, 1):
+                    continue
+                req[nodes.index(n)] = int(bit)
+            return req
+        
+        def _qbn_quantum_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
+                              shots: int = 5000, seed: Optional[int] = None,
+                              max_states: int = 200000) -> Optional[Dict[str, Any]]:
+            # Quantum shots: ideal q-sampling of the joint distribution + postselection on evidence.
+            if not _qbn_is_binary_bn(bn):
+                return None
+        
+            jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
+            if jd is None:
+                return None
+            outcomes, p = jd
+        
+            rng = np.random.default_rng(seed)
+            idxs = rng.choice(len(outcomes), size=int(shots), replace=True, p=p)
+            samples = [outcomes[i] for i in idxs]
+        
+            req = _qbn_filter_evidence_bitstrings(bn, evidence)
+            accepted = []
+            for bs in samples:
+                ok = True
+                for pos, bit in req.items():
+                    if int(bs[pos]) != int(bit):
+                        ok = False
+                        break
+                if ok:
+                    accepted.append(bs)
+        
+            acc_n = len(accepted)
+            acc_rate = acc_n / max(1, int(shots))
+        
+            # posterior over query nodes, computed from accepted
+            nodes = bn["order"]
+            q_positions = [nodes.index(qn) for qn in query_nodes if qn in nodes]
+        
+            post: Dict[Tuple[Tuple[str, str], ...], float] = {}
+            # marginals over all nodes
+            marg = {n: {s: 0.0 for s in bn["nodes"][n]["states"]} for n in nodes}
+        
+            if acc_n <= 0:
+                return {"post": {tuple((qn, evidence.get(qn, "")) for qn in query_nodes): 0.0},
+                        "marg": marg, "accepted": 0, "acc_rate": acc_rate,
+                        "counts": {}}
+        
+            counts_full: Dict[str, int] = {}
+            for bs in accepted:
+                counts_full[bs] = counts_full.get(bs, 0) + 1
+                # marginals
+                for i, n in enumerate(nodes):
+                    st = bn["nodes"][n]["states"][int(bs[i])]
+                    marg[n][st] += 1
+                # query outcome
+                out_pairs = []
+                for qn in query_nodes:
+                    if qn not in nodes:
+                        continue
+                    pos = nodes.index(qn)
+                    st = bn["nodes"][qn]["states"][int(bs[pos])]
+                    out_pairs.append((qn, st))
+                outcome = tuple(out_pairs)
+                post[outcome] = post.get(outcome, 0.0) + 1
+        
+            for k in list(post.keys()):
+                post[k] /= acc_n
+            for n in nodes:
+                for s in bn["nodes"][n]["states"]:
+                    marg[n][s] /= acc_n
+        
+            return {"post": post, "marg": marg, "accepted": acc_n, "acc_rate": acc_rate,
+                    "counts": counts_full}
+        
+        def _qbn_aa_amplified_distribution(outcomes: List[str], p: np.ndarray, good_mask: np.ndarray, k: int) -> np.ndarray:
+            p_good = float(p[good_mask].sum())
+            if p_good <= 0:
+                return p.copy()
+            if p_good >= 1:
+                return p.copy()
+        
+            theta = math.asin(math.sqrt(p_good))
+            # Grover iterations rotate by (2k+1)theta
+            p_good_prime = (math.sin((2 * int(k) + 1) * theta) ** 2)
+        
+            p_bad = 1.0 - p_good
+            p_bad_prime = 1.0 - p_good_prime
+        
+            p2 = np.zeros_like(p)
+            # keep relative weights inside good/bad
+            p2[good_mask] = p[good_mask] / p_good * p_good_prime
+            p2[~good_mask] = p[~good_mask] / p_bad * p_bad_prime
+            # renormalize numerical drift
+            s = float(p2.sum())
+            if s > 0:
+                p2 /= s
+            return p2
+        
+        def _qbn_quantum_aa_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
+                                 shots: int = 5000, seed: Optional[int] = None,
+                                 k: int = 0, max_states: int = 200000) -> Optional[Dict[str, Any]]:
+            if not _qbn_is_binary_bn(bn):
+                return None
+        
+            jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
+            if jd is None:
+                return None
+            outcomes, p = jd
+        
+            # good states = those matching evidence
+            req = _qbn_filter_evidence_bitstrings(bn, evidence)
+            if len(req) == 0:
+                # nothing to amplify
+                return _qbn_quantum_shots(bn, query_nodes, evidence, shots=shots, seed=seed, max_states=max_states)
+        
+            good_mask = np.ones(len(outcomes), dtype=bool)
+            for i, bs in enumerate(outcomes):
+                ok = True
+                for pos, bit in req.items():
+                    if int(bs[pos]) != int(bit):
+                        ok = False
+                        break
+                good_mask[i] = ok
+        
+            p2 = _qbn_aa_amplified_distribution(outcomes, p, good_mask, k=int(k))
+        
+            rng = np.random.default_rng(seed)
+            idxs = rng.choice(len(outcomes), size=int(shots), replace=True, p=p2)
+            samples = [outcomes[i] for i in idxs]
+        
+            # postselect (still needed because AA isn't perfect unless k is optimal)
+            accepted = []
+            for bs in samples:
+                ok = True
+                for pos, bit in req.items():
+                    if int(bs[pos]) != int(bit):
+                        ok = False
+                        break
+                if ok:
+                    accepted.append(bs)
+        
+            acc_n = len(accepted)
+            acc_rate = acc_n / max(1, int(shots))
+        
+            nodes = bn["order"]
+            post: Dict[Tuple[Tuple[str, str], ...], float] = {}
+            marg = {n: {s: 0.0 for s in bn["nodes"][n]["states"]} for n in nodes}
+        
+            if acc_n <= 0:
+                return {"post": {tuple((qn, evidence.get(qn, "")) for qn in query_nodes): 0.0},
+                        "marg": marg, "accepted": 0, "acc_rate": acc_rate,
+                        "counts": {}}
+        
+            counts_full: Dict[str, int] = {}
+            for bs in accepted:
+                counts_full[bs] = counts_full.get(bs, 0) + 1
+                for i, n in enumerate(nodes):
+                    st = bn["nodes"][n]["states"][int(bs[i])]
+                    marg[n][st] += 1
+                out_pairs = []
+                for qn in query_nodes:
+                    if qn not in nodes:
+                        continue
+                    pos = nodes.index(qn)
+                    st = bn["nodes"][qn]["states"][int(bs[pos])]
+                    out_pairs.append((qn, st))
+                outcome = tuple(out_pairs)
+                post[outcome] = post.get(outcome, 0.0) + 1
+        
+            for k0 in list(post.keys()):
+                post[k0] /= acc_n
+            for n in nodes:
+                for s in bn["nodes"][n]["states"]:
+                    marg[n][s] /= acc_n
+        
+            return {"post": post, "marg": marg, "accepted": acc_n, "acc_rate": acc_rate,
+                    "counts": counts_full}
+        
+        def _qbn_best_grover_k(p_good: float, k_max: int = 12) -> int:
+            # heuristic optimal k = floor(pi/(4*theta) - 1/2)
+            if p_good <= 0 or p_good >= 1:
+                return 0
+            theta = math.asin(math.sqrt(p_good))
+            k = int(max(0, math.floor((math.pi / (4 * theta)) - 0.5)))
+            return int(min(k, int(k_max)))
+        
+        
+        def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
+            _qbn_init_state()
+        
+            st.title(textos_inf["titulo_app"])
+            st.caption(textos_inf["subtitulo_app"])
+            st.divider()
+        
+            # ============================
+            # Sidebar — execution controls
+            # ============================
+            with st.sidebar:
+                st.markdown(f"### {textos_inf['sidebar_execucao']}")
+                shots = st.number_input(textos_inf["shots"], min_value=100, max_value=200000, value=5000, step=100)
+                seed = st.number_input(textos_inf["seed"], min_value=0, max_value=10_000_000, value=123, step=1)
+                topk = st.number_input(textos_inf["topk"], min_value=0, max_value=200, value=10, step=1)
+        
+                plots = st.checkbox(textos_inf["plots"], value=True)
+                annotate = st.checkbox(textos_inf["annotate"], value=True)
+        
+                st.markdown(f"### {textos_inf['safe_mode']}")
+                safe_mode = st.checkbox(textos_inf["enabled"], value=True)
+        
+                st.markdown(f"### {textos_inf['aa']}")
+                aa_enable = st.checkbox(textos_inf["aa_enable"], value=True)
+                aa_k_manual = st.checkbox(textos_inf["aa_k_manual"], value=False)
+                aa_k = st.number_input(textos_inf["aa_k"], min_value=0, max_value=25, value=0, step=1)
+        
+                run = st.button(textos_inf["run"])
+        
+            # ============================
+            # UI — build BN
+            # ============================
+            col_list, col_edit = st.columns([1, 2], gap="large")
+        
+            with col_list:
+                st.subheader(textos_inf["def_nos"])
+                with st.form("qbn_add_node_form", clear_on_submit=False):
+                    nome = st.text_input(textos_inf["nome_no"], value="")
+                    card = st.number_input(textos_inf["card_no"], min_value=2, max_value=8, value=2, step=1)
+                    add_ok = st.form_submit_button(textos_inf["add_no"])
+                    if add_ok:
+                        nome = (nome or "").strip()
+                        if nome and (nome not in st.session_state.qbn["nodes"]):
+                            st.session_state.qbn["nodes"][nome] = {
+                                "card": int(card),
+                                "states": _qbn_states_from_card(int(card)),
+                                "parents": [],
+                                "cpt": {(): [1.0 / int(card)] * int(card)},
+                            }
+                            st.session_state.qbn["selected"] = nome
+                            st.rerun()
+        
+                nodes = list(st.session_state.qbn["nodes"].keys())
+                if nodes:
+                    sel = st.selectbox(textos_inf["select_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
+                    st.session_state.qbn["selected"] = sel
+        
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        if st.button(textos_inf["remove_no"]):
+                            # remove node + remove as parent from others
+                            del st.session_state.qbn["nodes"][sel]
+                            for n2 in list(st.session_state.qbn["nodes"].keys()):
+                                ps = st.session_state.qbn["nodes"][n2]["parents"]
+                                st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
+                            st.session_state.qbn["selected"] = (list(st.session_state.qbn["nodes"].keys())[0] if st.session_state.qbn["nodes"] else None)
+                            st.rerun()
+                    with c2:
+                        if st.button(textos_inf["limpar_rede"]):
+                            st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                            st.rerun()
+                else:
+                    st.info(textos_inf["sem_nos"])
+        
+            with col_edit:
+                nodes = list(st.session_state.qbn["nodes"].keys())
+                if nodes and st.session_state.qbn["selected"]:
+                    nsel = st.session_state.qbn["selected"]
+                    info = st.session_state.qbn["nodes"][nsel]
+                    st.subheader(textos_inf["edicao_no"])
+        
+                    # parents
+                    parent_opts = [n for n in nodes if n != nsel]
+                    parents = st.multiselect(textos_inf["pais_no"], options=parent_opts, default=info.get("parents", []))
+                    info["parents"] = parents
+        
+                    # probs editor
+                    st.markdown(f"**{textos_inf['probs_raiz']}**" if len(parents) == 0 else f"**{textos_inf['cpt']}**")
+        
+                    # Build editor dataframe
+                    if len(parents) == 0:
+                        df = pd.DataFrame({"state": info["states"], "prob": info["cpt"].get((), [1.0 / len(info["states"])] * len(info["states"]))})
+                        edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_root_{nsel}")
+                        probs = _qbn_normalize_row(edited["prob"].tolist())
+                        info["cpt"] = {(): probs}
+                        st.caption(textos_inf["caption_probs"])
+                    else:
+                        # create all parent combinations
+                        parent_states = [st.session_state.qbn["nodes"][p]["states"] for p in parents]
+                        combos = list(itertools.product(*parent_states))
+                        rows = []
+                        for comb in combos:
+                            row = {f"{parents[i]}": comb[i] for i in range(len(parents))}
+                            key = tuple(comb)
+                            probs = info["cpt"].get(key)
+                            if probs is None:
+                                probs = [1.0 / len(info["states"])] * len(info["states"])
+                            for j, stt in enumerate(info["states"]):
+                                row[stt] = probs[j]
+                            rows.append(row)
+                        df = pd.DataFrame(rows)
+                        edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_cpt_{nsel}")
+                        # write back
+                        cpt = {}
+                        for _, r in edited.iterrows():
+                            key = tuple(r[p] for p in parents)
+                            probs = [float(r[stt]) for stt in info["states"]]
+                            cpt[key] = _qbn_normalize_row(probs)
+                        info["cpt"] = cpt
+                        st.caption(textos_inf["caption_cpt"])
+        
+                st.divider()
+                st.subheader(textos_inf["evidencia"])
+        
+                # evidence selection (applied to all methods; AA uses it explicitly)
+                nodes = list(st.session_state.qbn["nodes"].keys())
+                ev_nodes = st.multiselect(textos_inf["nos_evidenciados"], options=nodes, default=[])
+                evidence: Dict[str, str] = {}
+                for evn in ev_nodes:
+                    stt = st.selectbox(f"{evn}", options=st.session_state.qbn["nodes"][evn]["states"], key=f"ev_{evn}")
+                    evidence[evn] = stt
+        
+                st.divider()
+                # query nodes
+                query_nodes = st.multiselect("Query nodes", options=nodes, default=nodes[:1] if nodes else [])
+                if not query_nodes and nodes:
+                    query_nodes = [nodes[0]]
+        
+            # ============================
+            # Run inference
+            # ============================
+            bn_ready = (len(st.session_state.qbn["nodes"]) > 0)
+            if run and bn_ready:
+                # Build BN object
+                bn_nodes = st.session_state.qbn["nodes"]
+                order = _qbn_topological_order(bn_nodes)
+                bn = {"nodes": bn_nodes, "order": order}
+        
+                # Basic consistency check: all parents exist and CPT rows exist (we allow missing rows but warn)
+                consistent = True
+                for n in order:
+                    info = bn_nodes[n]
+                    for p in info.get("parents", []):
+                        if p not in bn_nodes:
+                            consistent = False
+                if not consistent:
+                    st.warning(textos_inf["warning_bn_inconsistente"])
+        
+                max_states = 200000 if safe_mode else 2000000
+        
+                # Exact (when possible)
+                exact_post = _qbn_exact_posterior(bn, query_nodes=query_nodes, evidence=evidence, max_states=max_states)
+                exact_marg = _qbn_exact_marginals(bn, evidence=evidence, max_states=max_states)
+        
+                # Monte Carlo (always)
+                mc_post = _qbn_mc_likelihood_weighting(bn, query_nodes=query_nodes, evidence=evidence, n_samples=int(shots), seed=int(seed))
+                mc_marg = _qbn_mc_marginals_lw(bn, evidence=evidence, n_samples=int(shots), seed=int(seed))
+        
+                # Quantum shots (binary only + feasible enumeration)
+                qshots = _qbn_quantum_shots(bn, query_nodes=query_nodes, evidence=evidence, shots=int(shots), seed=int(seed), max_states=max_states)
+        
+                qaa = None
+                k_used = None
+                if aa_enable and qshots is not None and len(evidence) > 0:
+                    # compute p_good from joint distribution to pick k (if not manual)
+                    jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
+                    if jd is not None:
+                        outs, p = jd
+                        req = _qbn_filter_evidence_bitstrings(bn, evidence)
+                        good_mask = np.ones(len(outs), dtype=bool)
+                        for i, bs in enumerate(outs):
+                            ok = True
+                            for pos, bit in req.items():
+                                if int(bs[pos]) != int(bit):
+                                    ok = False
+                                    break
+                            good_mask[i] = ok
+                        p_good = float(p[good_mask].sum())
+                        if aa_k_manual:
+                            k_used = int(aa_k)
+                        else:
+                            k_used = _qbn_best_grover_k(p_good, k_max=12)
+                        qaa = _qbn_quantum_aa_shots(bn, query_nodes=query_nodes, evidence=evidence, shots=int(shots),
+                                                    seed=int(seed), k=int(k_used), max_states=max_states)
+        
+                st.session_state.qbn["last"] = {
+                    "bn": bn,
+                    "evidence": evidence,
+                    "query_nodes": query_nodes,
+                    "exact_post": exact_post,
+                    "exact_marg": exact_marg,
+                    "mc_post": mc_post,
+                    "mc_marg": mc_marg,
+                    "qshots": qshots,
+                    "qaa": qaa,
+                    "k_used": k_used,
+                    "shots": int(shots),
+                    "seed": int(seed),
+                }
+        
+            # ============================
+            # Results
+            # ============================
+            last = st.session_state.qbn.get("last")
+            if last:
+                bn = last["bn"]
+                nodes_order = bn["order"]
+        
+                st.success(textos_inf["circuito_ok"])
+        
+                # ---- Table A: node/state probabilities by method (%)
+                exact_marg = last.get("exact_marg")
+                mc_marg = last.get("mc_marg")
+                qshots = last.get("qshots")
+                qaa = last.get("qaa")
+        
+                def _get_marg(marg, node, state):
+                    if marg is None:
+                        return None
+                    return float(marg.get(node, {}).get(state, 0.0))
+        
+                rows = []
+                for n in nodes_order:
+                    for s in bn["nodes"][n]["states"]:
+                        rows.append({
+                            "node": n,
+                            "state": s,
+                            "Exact (%)": (100*_get_marg(exact_marg, n, s)) if exact_marg is not None else None,
+                            "MC (%)": (100*_get_marg(mc_marg, n, s)) if mc_marg is not None else None,
+                            "Quantum Shots (%)": (100*_get_marg(qshots["marg"], n, s)) if qshots is not None else None,
+                            "Quantum AA (%)": (100*_get_marg(qaa["marg"], n, s)) if qaa is not None else None,
+                        })
+                dfA = pd.DataFrame(rows)
+                st.subheader(textos_inf["tabela_a"])
+                st.dataframe(dfA, use_container_width=True)
+        
+                # ---- Table B: mean/std/CI95(mean) for binary nodes by method
+                st.subheader(textos_inf["tabela_b"])
+                stats_rows = []
+                methods = [
+                    ("Exact", exact_marg, None),
+                    ("MC", mc_marg, int(last.get("shots", 0))),
+                    ("Quantum Shots", (qshots["marg"] if qshots else None), (qshots["accepted"] if qshots else 0)),
+                    ("Quantum AA", (qaa["marg"] if qaa else None), (qaa["accepted"] if qaa else 0)),
+                ]
+                for n in nodes_order:
+                    states = bn["nodes"][n]["states"]
+                    if len(states) != 2:
+                        continue
+                    s0, s1 = states[0], states[1]
+                    for mname, marg, n_eff in methods:
+                        if marg is None:
+                            continue
+                        p1 = float(marg.get(n, {}).get(s1, 0.0))
+                        mean = p1
+                        std = math.sqrt(max(0.0, p1 * (1.0 - p1)))
+                        ci = None
+                        if n_eff and n_eff > 1:
+                            se = math.sqrt(max(1e-12, p1 * (1.0 - p1) / n_eff))
+                            ci = (mean - 1.96 * se, mean + 1.96 * se)
+                        stats_rows.append({
+                            "node": n,
+                            "method": mname,
+                            "mean(P=1)": mean,
+                            "std": std,
+                            "CI95(mean)": (f"[{ci[0]:.4f}, {ci[1]:.4f}]" if ci else ""),
+                        })
+                dfB = pd.DataFrame(stats_rows)
+                st.dataframe(dfB, use_container_width=True)
+        
+                # ---- Charts: quantum outcomes (top-k)
+                def _plot_outcomes(counts: Dict[str, int], title: str):
+                    if not counts:
+                        st.info(title + " — (no accepted shots)")
+                        return
+                    total = sum(counts.values())
+                    items = sorted(counts.items(), key=lambda kv: kv[1], reverse=True)
+                    if int(topk) > 0:
+                        items = items[: int(topk)]
+                    labels = [_qbn_outcome_label(k) for k, _ in items]
+                    vals = [v / total * 100 for _, v in items]
+                    fig, ax = plt.subplots()
+                    ax.bar(range(len(labels)), vals)
+                    ax.set_xticks(range(len(labels)))
+                    ax.set_xticklabels(labels, rotation=0)
+                    ax.set_ylabel("Probability (%)")
+                    ax.set_title(title)
+                    if annotate:
+                        for i, v in enumerate(vals):
+                            ax.text(i, v, f"{v:.1f}%", ha="center", va="bottom", fontsize=8)
+                    st.pyplot(fig)
+                if plots:
+                    st.subheader(textos_inf["graficos"])
+                    if last.get("qshots") is not None:
+                        st.markdown(f"**{textos_inf['outcomes_qshots']}** (accepted={last['qshots']['accepted']}, acc_rate={last['qshots']['acc_rate']:.3f})")
+                        _plot_outcomes(last["qshots"]["counts"], textos_inf["outcomes_qshots"])
+                    if last.get("qaa") is not None:
+                        k_used = last.get("k_used")
+                        st.markdown(f"**{textos_inf['outcomes_aa']}** (k={k_used}, accepted={last['qaa']['accepted']}, acc_rate={last['qaa']['acc_rate']:.3f})")
+                        _plot_outcomes(last["qaa"]["counts"], textos_inf["outcomes_aa"])
+        
+            # export preview
+            st.divider()
+            st.subheader(textos_inf["preview_export"])
+            nodes = list(st.session_state.qbn["nodes"].keys())
+            if nodes:
+                order = _qbn_topological_order(st.session_state.qbn["nodes"])
+                bn_preview = {"nodes": st.session_state.qbn["nodes"], "order": order}
+                st.json({"order": order, "nodes": {n: {"parents": bn_preview["nodes"][n]["parents"], "states": bn_preview["nodes"][n]["states"]} for n in order}})
+        
+        
+        
+
         
 
 
@@ -2305,6 +3094,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
