@@ -735,6 +735,7 @@ TEXTOS_INF = {
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
         "caption_probs": "Preencha as probabilidades. Para nós com pais, cada linha da CPT (combinação de estados dos pais) deve somar 1.",
         "caption_cpt": "Para cada combinação de estados dos pais, informe as probabilidades do nó (a linha deve somar 1).",
+       
         # Evidência / query
         "evidencias": "Evidências",
         "add_evidencia": "Adicionar evidência",
@@ -778,6 +779,7 @@ TEXTOS_INF = {
         "posterior": "Posterior",
         "comparacao": "Comparação dos métodos",
         "tabela_resultados": "Tabela de resultados",
+        "tabela_a": "Tabela comparativa (Exata vs Monte Carlo vs Quantum)",
     },
 
     "en": {
@@ -868,6 +870,7 @@ TEXTOS_INF = {
         "posterior": "Posterior",
         "comparacao": "Methods comparison",
         "tabela_resultados": "Results table",
+        "tabela_a": "Comparison table (Exact vs Monte Carlo vs Quantum)",
     },
 }
 
@@ -3331,6 +3334,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
