@@ -734,7 +734,7 @@ TEXTOS_INF = {
         "probs_raiz": "Probabilidades marginais (nó raiz)",
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
         "caption_probs": "Preencha as probabilidades. Para nós com pais, cada linha da CPT (combinação de estados dos pais) deve somar 1.",
-
+        "caption_cpt": "Para cada combinação de estados dos pais, informe as probabilidades do nó (a linha deve somar 1).",
         # Evidência / query
         "evidencias": "Evidências",
         "add_evidencia": "Adicionar evidência",
@@ -822,7 +822,8 @@ TEXTOS_INF = {
         "probs_raiz": "Marginal probabilities (root node)",
         "cpt": "Conditional Probability Table (CPT)",
         "caption_probs": "Fill in the probabilities. For nodes with parents, each CPT row (a parent-state combination) must sum to 1.",
-
+        "caption_cpt": "For each parent-state combination, enter the node probabilities (the row must sum to 1).",
+        
         # Evidence / query
         "evidencias": "Evidence",
         "add_evidencia": "Add evidence",
@@ -3328,6 +3329,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
