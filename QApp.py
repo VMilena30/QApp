@@ -2999,16 +2999,6 @@ def main():
                 bn_preview = {"nodes": st.session_state.qbn["nodes"], "order": order}
                 st.json({"order": order, "nodes": {n: {"parents": bn_preview["nodes"][n]["parents"], "states": bn_preview["nodes"][n]["states"]} for n in order}})
         
-        
-        
-
-        
-
-
-        
-        
-        
-        
         with st.sidebar:
             if st.button(textos["ini"]):
                 st.session_state['pagina'] = 'inicio'
@@ -3094,6 +3084,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
