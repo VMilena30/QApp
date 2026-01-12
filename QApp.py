@@ -2326,6 +2326,8 @@ def main():
         
         def _qbn_exact_marginals(bn: Dict[str, Any], evidence: Dict[str, str],
                                 max_states: int = 200000) -> Optional[Dict[str, Dict[str, float]]]:
+            
+            import numpy as np
             total = _qbn_total_state_space(bn)
             if total > max_states:
                 return None
@@ -3090,6 +3092,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
