@@ -2213,6 +2213,7 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
+        pagina_inferencia_qbn(textos, textos_inf)
         #st.write(textos_inf["pagina_inf"])
 
         # ============================================================
@@ -3084,6 +3085,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
