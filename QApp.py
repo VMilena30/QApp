@@ -2213,7 +2213,6 @@ def main():
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
-        pagina_inferencia_qbn(textos, textos_inf)
         #st.write(textos_inf["pagina_inf"])
 
         # ============================================================
@@ -2999,6 +2998,9 @@ def main():
                 order = _qbn_topological_order(st.session_state.qbn["nodes"])
                 bn_preview = {"nodes": st.session_state.qbn["nodes"], "order": order}
                 st.json({"order": order, "nodes": {n: {"parents": bn_preview["nodes"][n]["parents"], "states": bn_preview["nodes"][n]["states"]} for n in order}})
+
+        # Render QBN inference page
+        pagina_inferencia_qbn(textos, textos_inf)
         
         with st.sidebar:
             if st.button(textos["ini"]):
@@ -3085,6 +3087,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
