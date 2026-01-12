@@ -733,6 +733,7 @@ TEXTOS_INF = {
         "aviso_soma": "Algumas linhas não somam 1. Vou normalizar automaticamente.",
         "probs_raiz": "Probabilidades marginais (nó raiz)",
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
+        "caption_probs": "Preencha as probabilidades. Para nós com pais, cada linha da CPT (combinação de estados dos pais) deve somar 1.",
 
         # Evidência / query
         "evidencias": "Evidências",
@@ -820,6 +821,7 @@ TEXTOS_INF = {
         "aviso_soma": "Some rows do not sum to 1. I will normalize automatically.",
         "probs_raiz": "Marginal probabilities (root node)",
         "cpt": "Conditional Probability Table (CPT)",
+        "caption_probs": "Fill in the probabilities. For nodes with parents, each CPT row (a parent-state combination) must sum to 1.",
 
         # Evidence / query
         "evidencias": "Evidence",
@@ -3326,6 +3328,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
