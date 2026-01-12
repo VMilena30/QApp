@@ -719,6 +719,7 @@ TEXTOS_INF = {
         "sem_nos": "Nenhum nó definido ainda. Adicione o primeiro nó acima.",
         "nos_evidenciados": "Nós evidenciados",
         "preview_export": "Pré-visualização e exportação",
+        "limpar_rede": "Limpar rede",
         
         # Estrutura
         "pais_do_no": "Pais do nó",
@@ -802,6 +803,7 @@ TEXTOS_INF = {
         "sem_nos": "No nodes defined yet. Add your first node above.",
         "nos_evidenciados": "Evidence nodes",
         "preview_export": "Preview and export",
+        "limpar_rede": "Clear network",
         
         # Structure
         "pais_do_no": "Parents of node",
@@ -3318,6 +3320,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
