@@ -2505,6 +2505,7 @@ def main():
         def _qbn_quantum_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
                               shots: int = 5000, seed: Optional[int] = None,
                               max_states: int = 200000) -> Optional[Dict[str, Any]]:
+            import numpy as np
             # Quantum shots: ideal q-sampling of the joint distribution + postselection on evidence.
             if not _qbn_is_binary_bn(bn):
                 return None
@@ -3094,6 +3095,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
