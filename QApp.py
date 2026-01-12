@@ -2405,6 +2405,7 @@ def main():
         
         def _qbn_mc_marginals_lw(bn: Dict[str, Any], evidence: Dict[str, str], n_samples: int = 2000,
                                  seed: Optional[int] = None) -> Dict[str, Dict[str, float]]:
+            import numpy as np
             rng = np.random.default_rng(seed)
             nodes = bn["order"]
             domains = {n: bn["nodes"][n]["states"] for n in nodes}
@@ -3092,6 +3093,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
