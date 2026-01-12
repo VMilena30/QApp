@@ -2566,7 +2566,7 @@ def main():
             return {"post": post, "marg": marg, "accepted": acc_n, "acc_rate": acc_rate,
                     "counts": counts_full}
         
-        def _qbn_aa_amplified_distribution(outcomes: List[str], p: np.ndarray, good_mask: np.ndarray, k: int) -> np.ndarray:
+        def _qbn_aa_amplified_distribution(outcomes: List[str], p: Any, good_mask: Any, k: int) -> Any:
             p_good = float(p[good_mask].sum())
             if p_good <= 0:
                 return p.copy()
@@ -3094,6 +3094,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
