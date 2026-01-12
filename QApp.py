@@ -2787,8 +2787,8 @@ def main():
             with col_list:
                 st.subheader(textos_inf["def_nos"])
                 with st.form("form_add_node"):
-                    nome = st.text_input(...)
-                    card = st.number_input(textos_inf["card_no"], min_value=2, max_value=8, value=2, step=1)
+                    nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
+                    card = st.number_input(textos_inf["card_no"], min_value=2, max_value=8, value=2, step=1,  key="qbn_new_node_card")
                 
                     submitted = st.form_submit_button(textos_inf["add_no"])
                     if submitted:
@@ -3312,6 +3312,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
