@@ -2811,7 +2811,7 @@ def main():
         
                 nodes = list(st.session_state.qbn["nodes"].keys())
                 if nodes:
-                    sel = st.selectbox(textos_inf["select_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
+                    sel = st.selectbox(textos_inf["selecionar_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
                     st.session_state.qbn["selected"] = sel
         
                     c1, c2 = st.columns(2)
@@ -3318,6 +3318,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
