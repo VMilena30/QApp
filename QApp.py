@@ -793,9 +793,6 @@ TEXTOS_INF = {
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
         "circ_joint_indisp": "Distribuição conjunta exata indisponível com o limite atual (max_states).",
         "circ_desc_stateprep": "Circuito com medição ao final.",
-        "circuito_aa_preview": "Preview AA (conceitual)",
-        "circ_desc_aa": "Circuito conceitual com blocos repetidos de Oracle/Diffusion para ilustrar a amplificação.",
-
     },
 
     "en": {
@@ -900,9 +897,6 @@ TEXTOS_INF = {
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
         "circ_joint_indisp": "Exact joint distribution is not available under the current max_states limit.",
         "circ_desc_stateprep": "Circuit followed by measurement.",
-        "circuito_aa_preview": "AA preview (conceptual)",
-        "circ_desc_aa": "Conceptual circuit with repeated Oracle/Diffusion blocks to illustrate amplification.",
-
     },
 }
 
@@ -3298,15 +3292,6 @@ def main():
                         fig = qc.draw(output="mpl")
                         st.pyplot(fig)
                 
-                    if last.get("qaa") is not None and last.get("k_used") is not None:
-                        k_used_local = int(last.get("k_used") or 0)
-                        st.markdown(f"**{textos_inf['circuito_aa_preview']}** (k={k_used_local})")
-                        st.caption(textos_inf["circ_desc_aa"])
-                
-                        qc_aa = _qbn_build_aa_preview_circuit_for_display(bn, k=k_used_local)
-                        if qc_aa is not None:
-                            fig2 = qc_aa.draw(output="mpl")
-                            st.pyplot(fig2)
                 
                         
                 # ---- Table A: node/state probabilities by method (%)
@@ -3523,6 +3508,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
