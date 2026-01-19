@@ -3240,9 +3240,14 @@ def main():
                 
                 if plots:
                     st.subheader(textos_inf["graficos"])
+                    c1, c2 = st.columns(2)
+
+                    with c1:
                     if last.get("qshots") is not None:
                         st.markdown(f"**{textos_inf['outcomes_qshots']}** (accepted={last['qshots']['accepted']}, acc_rate={last['qshots']['acc_rate']:.3f})")
                         _plot_outcomes(last["qshots"]["counts"], textos_inf["outcomes_qshots"])
+                    
+                    with c2:
                     if last.get("qaa") is not None:
                         k_used = last.get("k_used")
                         st.markdown(f"**{textos_inf['outcomes_qaa']}** (k={k_used}, accepted={last['qaa']['accepted']}, acc_rate={last['qaa']['acc_rate']:.3f})")
@@ -3345,6 +3350,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
