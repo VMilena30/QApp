@@ -3216,13 +3216,20 @@ def main():
                     if int(topk) > 0:
                         items = items[: int(topk)]
                     labels = [_qbn_outcome_label(k) for k, _ in items]
+
+                    # remover notação de Dirac (|...⟩ / |...>)
+                    labels = [
+                        str(l).strip().replace("|", "").replace("⟩", "").replace(">", "")
+                        for l in labels
+                    ]
+                    
                     vals = [v / total * 100 for _, v in items]
                     fig, ax = plt.subplots(figsize=(6.0, 3.0), dpi=120)
 
 
                     ax.bar(range(len(labels)), vals)
                     ax.set_xticks(range(len(labels)))
-                    ax.set_xticklabels(labels, rotation=0)
+                    ax.set_xticklabels(labels, rotation=90, ha = "center")
                     ax.set_ylabel("Probability (%)")
                     ax.set_title(title)
                     if annotate:
@@ -3230,6 +3237,9 @@ def main():
                             ax.text(i, v, f"{v:.1f}%", ha="center", va="bottom", fontsize=8)
                     fig.tight_layout()
                     st.pyplot(fig)
+                
+
+                
                 
                 plots = st.checkbox(
                     textos_inf["plots"],
@@ -3350,6 +3360,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
