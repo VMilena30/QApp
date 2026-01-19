@@ -784,6 +784,18 @@ TEXTOS_INF = {
         "graficos": "Gráficos",
         "outcomes_qshots": "Outcomes (Quantum Shots)",
         "outcomes_qaa": "Outcomes (Quantum + AA)",
+
+        # Plot do Circuito
+        "ver_circuito": "Ver circuito (QBN)",
+        "circ_indisp": "Circuito indisponível para visualização nas configurações atuais.", 
+        "circ_apenas_binaria": "Visualização do circuito disponível apenas para redes binárias (2 estados por nó).", 
+        "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
+        "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
+        "circ_joint_indisp": "Distribuição conjunta exata indisponível com o limite atual (max_states).",
+        "circ_desc_stateprep": "Circuito de preparação de estado (amplitudes ∝ √P) com medição ao final.",
+        "circuito_aa_preview": "Preview AA (conceitual)",
+        "circ_desc_aa": "Circuito conceitual com blocos repetidos de Oracle/Diffusion para ilustrar a amplificação.",
+
     },
 
     "en": {
@@ -879,6 +891,18 @@ TEXTOS_INF = {
         "Gráficos": "Charts",
         "outcomes_qshots": "Outcomes (Quantum Shots)",
         "outcomes_qaa": "Outcomes (Quantum + AA)",
+
+        # Circuit Plot
+        "ver_circuito": "Show circuit (QBN)",
+        "circ_indisp": "Circuit is not available for display under the current settings.",
+        "circ_apenas_binaria": "Circuit display is available only for binary networks (2 states per node).",
+        "circ_sem_nos": "Not enough nodes to build the circuit.",
+        "circ_muito_grande": "Circuit is too large to display (too many qubits).",
+        "circ_joint_indisp": "Exact joint distribution is not available under the current max_states limit.",
+        "circ_desc_stateprep": "State-preparation circuit (amplitudes ∝ √P) followed by measurement.",
+        "circuito_aa_preview": "AA preview (conceptual)",
+        "circ_desc_aa": "Conceptual circuit with repeated Oracle/Diffusion blocks to illustrate amplification.",
+
     },
 }
 
@@ -3135,7 +3159,65 @@ def main():
                     "shots": int(shots),
                     "seed": int(seed),
                 }
-        
+
+            def _qbn_build_stateprep_circuit_for_display(bn: Dict[str, Any], max_states: int, textos_inf: Dict[str, str]):
+                from qiskit import QuantumCircuit
+                import numpy as np
+            
+                if not _qbn_is_binary_bn(bn):
+                    return None, textos_inf["circ_apenas_binaria"]
+            
+                n = len(bn["order"])
+                if n <= 0:
+                    return None, textos_inf["circ_sem_nos"]
+            
+                # evitar circuitos enormes para plot
+                if n > 10:
+                    return None, textos_inf["circ_muito_grande"]
+            
+                jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
+                if jd is None:
+                    return None, textos_inf["circ_joint_indisp"]
+            
+                outcomes, p = jd
+                dim = 2 ** n
+                amps = np.zeros(dim, dtype=complex)
+            
+                for bs, prob in zip(outcomes, p):
+                    idx = int(bs[::-1], 2)
+                    amps[idx] = np.sqrt(float(prob))
+            
+                qc = QuantumCircuit(n, n)
+                qc.initialize(amps, list(range(n)))
+                qc.barrier()
+                qc.measure(list(range(n)), list(range(n)))
+                return qc, None
+            
+            
+            def _qbn_build_aa_preview_circuit_for_display(bn: Dict[str, Any], k: int):
+                from qiskit import QuantumCircuit
+                from qiskit.circuit import Gate
+            
+                n = len(bn["order"])
+                if n <= 0:
+                    return None
+            
+                qc = QuantumCircuit(n, n)
+                qc.barrier(label="A")
+            
+                oracle = Gate(name="Oracle(evidence)", num_qubits=n, params=[])
+                diffusion = Gate(name="Diffusion", num_qubits=n, params=[])
+            
+                for _ in range(int(max(0, k))):
+                    qc.append(oracle, list(range(n)))
+                    qc.append(diffusion, list(range(n)))
+            
+                qc.barrier(label="Measure")
+                qc.measure(list(range(n)), list(range(n)))
+                return qc
+
+
+            
             # ============================
             # Results
             # ============================
@@ -3145,7 +3227,29 @@ def main():
                 nodes_order = bn["order"]
         
                 st.success(textos_inf["circuito_ok"])
-        
+
+                # ---- Circuit plot (QBN)
+                with st.expander(textos_inf["ver_circuito"], expanded=False):
+                    qc, err = _qbn_build_stateprep_circuit_for_display(bn, max_states=max_states, textos_inf=textos_inf)
+                
+                    if qc is None:
+                        st.info(err if err else textos_inf["circ_indisp"])
+                    else:
+                        st.caption(textos_inf["circ_desc_stateprep"])
+                        fig = qc.draw(output="mpl")
+                        st.pyplot(fig)
+                
+                    if last.get("qaa") is not None and last.get("k_used") is not None:
+                        k_used_local = int(last.get("k_used") or 0)
+                        st.markdown(f"**{textos_inf['circuito_aa_preview']}** (k={k_used_local})")
+                        st.caption(textos_inf["circ_desc_aa"])
+                
+                        qc_aa = _qbn_build_aa_preview_circuit_for_display(bn, k=k_used_local)
+                        if qc_aa is not None:
+                            fig2 = qc_aa.draw(output="mpl")
+                            st.pyplot(fig2)
+                
+                        
                 # ---- Table A: node/state probabilities by method (%)
                 exact_marg = last.get("exact_marg")
                 mc_marg = last.get("mc_marg")
@@ -3360,6 +3464,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
