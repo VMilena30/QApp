@@ -792,7 +792,7 @@ TEXTOS_INF = {
         "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
         "circ_joint_indisp": "Distribuição conjunta exata indisponível com o limite atual (max_states).",
-        "circ_desc_stateprep": "Circuito de preparação de estado (amplitudes ∝ √P) com medição ao final.",
+        "circ_desc_stateprep": "Circuito com medição ao final.",
         "circuito_aa_preview": "Preview AA (conceitual)",
         "circ_desc_aa": "Circuito conceitual com blocos repetidos de Oracle/Diffusion para ilustrar a amplificação.",
 
@@ -899,7 +899,7 @@ TEXTOS_INF = {
         "circ_sem_nos": "Not enough nodes to build the circuit.",
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
         "circ_joint_indisp": "Exact joint distribution is not available under the current max_states limit.",
-        "circ_desc_stateprep": "State-preparation circuit (amplitudes ∝ √P) followed by measurement.",
+        "circ_desc_stateprep": "Circuit followed by measurement.",
         "circuito_aa_preview": "AA preview (conceptual)",
         "circ_desc_aa": "Conceptual circuit with repeated Oracle/Diffusion blocks to illustrate amplification.",
 
@@ -3161,37 +3161,89 @@ def main():
                 }
 
             def _qbn_build_stateprep_circuit_for_display(bn: Dict[str, Any], max_states: int, textos_inf: Dict[str, str]):
+                # Circuito fiel às CPTs (binário): Ry para raízes e mcry para condicionais.
                 from qiskit import QuantumCircuit
                 import numpy as np
             
                 if not _qbn_is_binary_bn(bn):
                     return None, textos_inf["circ_apenas_binaria"]
             
-                n = len(bn["order"])
+                order = bn["order"]
+                n = len(order)
                 if n <= 0:
                     return None, textos_inf["circ_sem_nos"]
             
-                # evitar circuitos enormes para plot
+                # segurança: circuito cresce rápido (só display)
                 if n > 10:
                     return None, textos_inf["circ_muito_grande"]
             
-                jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
-                if jd is None:
-                    return None, textos_inf["circ_joint_indisp"]
+                nodes = bn["nodes"]
             
-                outcomes, p = jd
-                dim = 2 ** n
-                amps = np.zeros(dim, dtype=complex)
-            
-                for bs, prob in zip(outcomes, p):
-                    idx = int(bs[::-1], 2)
-                    amps[idx] = np.sqrt(float(prob))
+                # mapa nó -> índice de qubit (pela ordem topológica usada no modelo)
+                q_index = {name: i for i, name in enumerate(order)}
             
                 qc = QuantumCircuit(n, n)
-                qc.initialize(amps, list(range(n)))
-                qc.barrier()
+            
+                def _theta_from_p1(p1: float) -> float:
+                    p1 = float(max(0.0, min(1.0, p1)))
+                    return 2.0 * float(np.arcsin(np.sqrt(p1)))
+            
+                for child in order:
+                    info = nodes[child]
+                    parents = info.get("parents", [])
+                    states = info["states"]  # binário
+                    # convencao: states[0] -> |0>, states[1] -> |1>
+                    s0, s1 = states[0], states[1]
+            
+                    t = q_index[child]
+            
+                    if len(parents) == 0:
+                        # raiz: P(child=s1)
+                        probs = info.get("cpt", {}).get((), [0.5, 0.5])
+                        probs = _qbn_normalize_row(probs)
+                        p1 = float(probs[1])
+                        qc.ry(_theta_from_p1(p1), t)
+                        qc.barrier()
+                        continue
+            
+                    # condicional: para cada combinação de pais, aplicar mcry(theta)
+                    parent_states = [nodes[p]["states"] for p in parents]  # cada um binário
+                    combos = list(itertools.product(*parent_states))       # tuplas de strings (estados)
+            
+                    cpt = info.get("cpt", {})
+                    controls = [q_index[p] for p in parents]
+            
+                    for comb in combos:
+                        # comb é tupla (estado_do_pai1, estado_do_pai2, ...)
+                        probs = cpt.get(tuple(comb), [0.5, 0.5])
+                        probs = _qbn_normalize_row(probs)
+                        p1 = float(probs[1])
+                        theta = _theta_from_p1(p1)
+            
+                        # Queremos controlar em 1. Então, para pais no estado "0" (states[0]),
+                        # aplicamos X antes e desfazemos depois.
+                        flip_qubits = []
+                        for i, p in enumerate(parents):
+                            p_states = nodes[p]["states"]
+                            desired_state = comb[i]  # string
+                            desired_bit = 0 if desired_state == p_states[0] else 1
+                            if desired_bit == 0:
+                                qb = q_index[p]
+                                qc.x(qb)
+                                flip_qubits.append(qb)
+            
+                        # multi-controlled Ry (sem ancila) — display fiel ao mecanismo CPT
+                        qc.mcry(theta, controls, t, None, mode="noancilla")
+            
+                        # desfaz X
+                        for qb in flip_qubits:
+                            qc.x(qb)
+            
+                    qc.barrier()
+            
                 qc.measure(list(range(n)), list(range(n)))
                 return qc, None
+
             
             
             def _qbn_build_aa_preview_circuit_for_display(bn: Dict[str, Any], k: int):
@@ -3471,6 +3523,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
