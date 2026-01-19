@@ -3245,8 +3245,8 @@ def main():
                         _plot_outcomes(last["qshots"]["counts"], textos_inf["outcomes_qshots"])
                     if last.get("qaa") is not None:
                         k_used = last.get("k_used")
-                        st.markdown(f"**{textos_inf['outcomes_aa']}** (k={k_used}, accepted={last['qaa']['accepted']}, acc_rate={last['qaa']['acc_rate']:.3f})")
-                        _plot_outcomes(last["qaa"]["counts"], textos_inf["outcomes_aa"])
+                        st.markdown(f"**{textos_inf['outcomes_qaa']}** (k={k_used}, accepted={last['qaa']['accepted']}, acc_rate={last['qaa']['acc_rate']:.3f})")
+                        _plot_outcomes(last["qaa"]["counts"], textos_inf["outcomes_qaa"])
         
             # export preview
             st.divider()
@@ -3345,6 +3345,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
