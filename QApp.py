@@ -3217,7 +3217,9 @@ def main():
                         items = items[: int(topk)]
                     labels = [_qbn_outcome_label(k) for k, _ in items]
                     vals = [v / total * 100 for _, v in items]
-                    fig, ax = plt.subplots()
+                    fig, ax = plt.subplots(figsize=(6.0, 2.8), dpi=120) 
+
+
                     ax.bar(range(len(labels)), vals)
                     ax.set_xticks(range(len(labels)))
                     ax.set_xticklabels(labels, rotation=0)
@@ -3226,6 +3228,7 @@ def main():
                     if annotate:
                         for i, v in enumerate(vals):
                             ax.text(i, v, f"{v:.1f}%", ha="center", va="bottom", fontsize=8)
+                    fig.tight_layout()
                     st.pyplot(fig)
                 
                 plots = st.checkbox(
@@ -3342,6 +3345,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
