@@ -3230,8 +3230,15 @@ def main():
 
                 # ---- Circuit plot (QBN)
                 with st.expander(textos_inf["ver_circuito"], expanded=False):
-                    qc, err = _qbn_build_stateprep_circuit_for_display(bn, max_states=max_states, textos_inf=textos_inf)
-                
+                    safe_mode_now = bool(st.session_state.get("qbn_safe_mode", True))
+                    max_states_now = 200000 if safe_mode_now else 2000000
+                    
+                    qc, err = _qbn_build_stateprep_circuit_for_display(
+                        bn,
+                        max_states=max_states_now,
+                        textos_inf=textos_inf
+                    )
+                                        
                     if qc is None:
                         st.info(err if err else textos_inf["circ_indisp"])
                     else:
@@ -3464,6 +3471,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
