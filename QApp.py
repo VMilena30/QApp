@@ -3217,7 +3217,7 @@ def main():
                         items = items[: int(topk)]
                     labels = [_qbn_outcome_label(k) for k, _ in items]
                     vals = [v / total * 100 for _, v in items]
-                    fig, ax = plt.subplots(figsize=(6.0, 3.0, dpi=120) 
+                    fig, ax = plt.subplots(figsize=(6.0, 3.0, dpi==120) 
 
 
                     ax.bar(range(len(labels)), vals)
@@ -3350,6 +3350,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
