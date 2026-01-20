@@ -2609,6 +2609,73 @@ def main():
         def _qbn_outcome_label(bitstring: str) -> str:
             # Render in dirac notation: |0101>
             return f"|{bitstring}>"
+
+        def _qbn_node_bits(bn: Dict[str, Any]) -> Dict[str, int]:
+            import math
+            bits: Dict[str, int] = {}
+            for n in bn.get("order", []):
+                ni = len(bn["nodes"][n]["states"])
+                mi = int(math.ceil(math.log2(ni))) if ni > 1 else 1
+                bits[n] = mi
+            return bits
+
+        def _qbn_node_offsets(bn: Dict[str, Any]) -> Dict[str, int]:
+            offs: Dict[str, int] = {}
+            cur = 0
+            bits = _qbn_node_bits(bn)
+            for n in bn.get("order", []):
+                offs[n] = cur
+                cur += int(bits.get(n, 1))
+            return offs
+
+        def _qbn_int_to_bits(x: int, width: int) -> str:
+            return format(int(x), f"0{int(width)}b")
+
+        def _qbn_bits_to_int(bits: str) -> int:
+            return int(bits, 2) if bits else 0
+
+        def _qbn_encode_assignment(bn: Dict[str, Any], asg: Dict[str, str]) -> str:
+            bits = _qbn_node_bits(bn)
+            out = []
+            for n in bn.get("order", []):
+                states = bn["nodes"][n]["states"]
+                idx = states.index(asg[n])
+                out.append(_qbn_int_to_bits(idx, bits[n]))
+            return "".join(out)
+
+        def _qbn_decode_bitstring(bn: Dict[str, Any], bitstring: str) -> Tuple[Optional[Dict[str, str]], bool]:
+            bits = _qbn_node_bits(bn)
+            offs = _qbn_node_offsets(bn)
+            asg: Dict[str, str] = {}
+            for n in bn.get("order", []):
+                o = int(offs[n])
+                w = int(bits[n])
+                chunk = bitstring[o:o+w]
+                idx = _qbn_bits_to_int(chunk)
+                states = bn["nodes"][n]["states"]
+                if idx >= len(states):
+                    return None, False
+                asg[n] = states[idx]
+            return asg, True
+
+        def _qbn_filter_evidence_bits(bn: Dict[str, Any], evidence: Dict[str, str]) -> Dict[int, int]:
+            req: Dict[int, int] = {}
+            bits = _qbn_node_bits(bn)
+            offs = _qbn_node_offsets(bn)
+
+            for n, st in evidence.items():
+                if n not in bn.get("order", []):
+                    continue
+                states = bn["nodes"][n]["states"]
+                if st not in states:
+                    continue
+                idx = states.index(st)
+                bstr = _qbn_int_to_bits(idx, bits[n])
+                o = int(offs[n])
+                for j, ch in enumerate(bstr):
+                    req[o + j] = int(ch)
+            return req
+
         
         def _qbn_is_binary_bn(bn: Dict[str, Any]) -> bool:
             return all(len(bn["nodes"][n]["states"]) == 2 for n in bn["order"])
@@ -2618,44 +2685,29 @@ def main():
             total = _qbn_total_state_space(bn)
             if total > max_states:
                 return None
-        
+
             nodes = bn["order"]
             domains = {n: bn["nodes"][n]["states"] for n in nodes}
-        
+
             outcomes: List[str] = []
             probs: List[float] = []
-        
             for values in itertools.product(*[domains[n] for n in nodes]):
                 asg = dict(zip(nodes, values))
                 jp = _qbn_joint_prob(bn, asg)
                 if jp < 0:
                     jp = 0.0
-                bs = _qbn_encode_assignment(bn, asg)  # agora multi-bit por nó
-                outcomes.append(bs)
+                outcomes.append(_qbn_encode_assignment(bn, asg))
                 probs.append(float(jp))
-        
+
             p = np.array(probs, dtype=float)
             s = float(p.sum())
             if s <= 0:
                 return None
             p = p / s
             return outcomes, p
-
         
         def _qbn_filter_evidence_bitstrings(bn: Dict[str, Any], evidence: Dict[str, str]) -> Dict[int, int]:
-            # returns mapping from qubit position -> required bit (0/1)
-            #nodes = bn["order"]
-            #req: Dict[int, int] = {}
-            #for n, st in evidence.items():
-                #if n not in nodes:
-                    #continue
-                #info = bn["nodes"][n]
-                #if st not in info["states"]:
-                    #continue
-                #bit = info["states"].index(st)
-                #if bit not in (0, 1):
-                    #continue
-                #req[nodes.index(n)] = int(bit)
+            # returns mapping from global bit position -> required bit (0/1)
             return _qbn_filter_evidence_bits(bn, evidence)
         
         def _qbn_quantum_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
@@ -2663,8 +2715,8 @@ def main():
                               max_states: int = 200000) -> Optional[Dict[str, Any]]:
             import numpy as np
             # Quantum shots: ideal q-sampling of the joint distribution + postselection on evidence.
-            if not _qbn_is_binary_bn(bn):
-                return None
+            #if not _qbn_is_binary_bn(bn):
+            #    return None
         
             jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
             if jd is None:
@@ -2685,40 +2737,43 @@ def main():
                         break
                 if ok:
                     accepted.append(bs)
-        
+                    
             acc_n = len(accepted)
             acc_rate = acc_n / max(1, int(shots))
         
             # posterior over query nodes, computed from accepted
             nodes = bn["order"]
-            q_positions = [nodes.index(qn) for qn in query_nodes if qn in nodes]
-        
+
             post: Dict[Tuple[Tuple[str, str], ...], float] = {}
             # marginals over all nodes
             marg = {n: {s: 0.0 for s in bn["nodes"][n]["states"]} for n in nodes}
-        
+
             if acc_n <= 0:
                 return {"post": {tuple((qn, evidence.get(qn, "")) for qn in query_nodes): 0.0},
                         "marg": marg, "accepted": 0, "acc_rate": acc_rate,
                         "counts": {}}
-        
+
             counts_full: Dict[str, int] = {}
             for bs in accepted:
                 counts_full[bs] = counts_full.get(bs, 0) + 1
+
+                asg, ok = _qbn_decode_bitstring(bn, bs)
+                if not ok or asg is None:
+                    continue
+
                 # marginals
-                for i, n in enumerate(nodes):
-                    st = bn["nodes"][n]["states"][int(bs[i])]
-                    marg[n][st] += 1
+                for n in nodes:
+                    marg[n][asg[n]] += 1
+
                 # query outcome
                 out_pairs = []
                 for qn in query_nodes:
                     if qn not in nodes:
                         continue
-                    pos = nodes.index(qn)
-                    st = bn["nodes"][qn]["states"][int(bs[pos])]
-                    out_pairs.append((qn, st))
+                    out_pairs.append((qn, asg[qn]))
                 outcome = tuple(out_pairs)
                 post[outcome] = post.get(outcome, 0.0) + 1
+
         
             for k in list(post.keys()):
                 post[k] /= acc_n
@@ -2758,8 +2813,8 @@ def main():
                                  shots: int = 5000, seed: Optional[int] = None,
                                  k: int = 0, max_states: int = 200000) -> Optional[Dict[str, Any]]:
             import numpy as np
-            if not _qbn_is_binary_bn(bn):
-                return None
+            #if not _qbn_is_binary_bn(bn):
+            #    return None
         
             jd = _qbn_joint_distribution_enumerate(bn, max_states=max_states)
             if jd is None:
@@ -2813,16 +2868,19 @@ def main():
             counts_full: Dict[str, int] = {}
             for bs in accepted:
                 counts_full[bs] = counts_full.get(bs, 0) + 1
-                for i, n in enumerate(nodes):
-                    st = bn["nodes"][n]["states"][int(bs[i])]
-                    marg[n][st] += 1
+
+                asg, ok = _qbn_decode_bitstring(bn, bs)
+                if not ok or asg is None:
+                    continue
+
+                for n in nodes:
+                    marg[n][asg[n]] += 1
+
                 out_pairs = []
                 for qn in query_nodes:
                     if qn not in nodes:
                         continue
-                    pos = nodes.index(qn)
-                    st = bn["nodes"][qn]["states"][int(bs[pos])]
-                    out_pairs.append((qn, st))
+                    out_pairs.append((qn, asg[qn]))
                 outcome = tuple(out_pairs)
                 post[outcome] = post.get(outcome, 0.0) + 1
         
@@ -3696,6 +3754,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
