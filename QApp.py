@@ -695,7 +695,7 @@ TEXTOS_INF = {
         # Página / títulos
         "pagina_inf": "Redes Bayesianas Quânticas",
         "titulo_app": "Inferência CQBN — Formulário Guiado",
-        "subtitulo_app": "Monte a rede pela interface (sem JSON) e rode inferência clássica e quântica.",
+        "subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
 
         # Seções principais
         "def_nos": "1) Definição dos nós",
@@ -799,7 +799,7 @@ TEXTOS_INF = {
         # Page / titles
         "pagina_inf": "Quantum Bayesian Networks",
         "titulo_app": "CQBN Inference — Guided Form",
-        "subtitulo_app": "Build the network in the UI (no JSON) and run classical and quantum inference.",
+        "subtitulo_app": "Build the network and run classical and quantum inference.",
 
         # Main sections
         "def_nos": "1) Node definition",
@@ -3508,6 +3508,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
