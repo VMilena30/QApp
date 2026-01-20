@@ -784,6 +784,15 @@ TEXTOS_INF = {
         "graficos": "Gráficos",
         "outcomes_qshots": "Outcomes (Quantum Shots)",
         "outcomes_qaa": "Outcomes (Quantum + AA)",
+        "col_node": "Nó",
+        "col_state": "Estado",
+        "col_exact_pct": "Exata (%)",
+        "col_mc_pct": "Monte Carlo (%)",
+        "col_mc_ci95": "Monte Carlo — IC95 (%)", 
+        "col_qshots_pct": "Quantum Shots (%)",
+        "col_qshots_ci95": "Quantum Shots — IC95 (%)",
+        "col_qaa_pct": "Quantum + AA (%)",
+        "col_qaa_ci95": "Quantum + AA — IC95 (%)",
 
         # Plot do Circuito
         "ver_circuito": "Circuito Quântico e Número de qubits",
@@ -901,6 +910,16 @@ TEXTOS_INF = {
         "Gráficos": "Charts",
         "outcomes_qshots": "Outcomes (Quantum Shots)",
         "outcomes_qaa": "Outcomes (Quantum + AA)",
+        "col_node": "Node",
+        "col_state": "State",
+        "col_exact_pct": "Exact (%)",
+        "col_mc_pct": "Monte Carlo (%)",
+        "col_mc_ci95": "Monte Carlo — CI95 (%)",
+        "col_qshots_pct": "Quantum Shots (%)",
+        "col_qshots_ci95": "Quantum Shots — CI95 (%)",
+        "col_qaa_pct": "Quantum + AA (%)",
+        "col_qaa_ci95": "Quantum + AA — CI95 (%)",
+        
 
         # Circuit Plot
         "ver_circuito": "Quantum Circuit and Number of Qubits",
@@ -3404,66 +3423,60 @@ def main():
                     st.dataframe(df_map, use_container_width=True, hide_index=True)
 
                 
-                        
-                # ---- Table A: node/state probabilities by method (%)
+                # ---- Results table (single): node/state probabilities by method (%) + CI95 where applicable
                 exact_marg = last.get("exact_marg")
                 mc_marg = last.get("mc_marg")
                 qshots = last.get("qshots")
                 qaa = last.get("qaa")
-        
+                
                 def _get_marg(marg, node, state):
                     if marg is None:
                         return None
                     return float(marg.get(node, {}).get(state, 0.0))
-        
+                
+                def _ci95_pct(p: float, n_eff: int):
+                    # CI95 for a Bernoulli indicator of "being in this state" (per-state CI).
+                    if (n_eff is None) or (n_eff <= 1):
+                        return ""
+                    p = float(max(0.0, min(1.0, p)))
+                    se = math.sqrt(max(1e-12, p * (1.0 - p) / float(n_eff)))
+                    lo = max(0.0, p - 1.96 * se)
+                    hi = min(1.0, p + 1.96 * se)
+                    return f"[{100.0*lo:.1f}, {100.0*hi:.1f}]"
+                
+                n_eff_mc = int(last.get("shots", 0))
+                n_eff_qshots = int(qshots.get("accepted", 0)) if qshots else 0
+                n_eff_qaa = int(qaa.get("accepted", 0)) if qaa else 0
+                
                 rows = []
                 for n in nodes_order:
                     for s in bn["nodes"][n]["states"]:
+                        p_exact = _get_marg(exact_marg, n, s) if exact_marg is not None else None
+                        p_mc = _get_marg(mc_marg, n, s) if mc_marg is not None else None
+                        p_qs = _get_marg(qshots["marg"], n, s) if qshots is not None else None
+                        p_qa = _get_marg(qaa["marg"], n, s) if qaa is not None else None
+                
                         rows.append({
-                            "node": n,
-                            "state": s,
-                            "Exact (%)": (100*_get_marg(exact_marg, n, s)) if exact_marg is not None else None,
-                            "MC (%)": (100*_get_marg(mc_marg, n, s)) if mc_marg is not None else None,
-                            "Quantum Shots (%)": (100*_get_marg(qshots["marg"], n, s)) if qshots is not None else None,
-                            "Quantum AA (%)": (100*_get_marg(qaa["marg"], n, s)) if qaa is not None else None,
+                            textos_inf["col_node"]: n,
+                            textos_inf["col_state"]: s,
+                
+                            textos_inf["col_exact_pct"]: (100.0 * p_exact) if (p_exact is not None) else None,
+                
+                            textos_inf["col_mc_pct"]: (100.0 * p_mc) if (p_mc is not None) else None,
+                            textos_inf["col_mc_ci95"]: _ci95_pct(p_mc, n_eff_mc) if (p_mc is not None) else "",
+                
+                            textos_inf["col_qshots_pct"]: (100.0 * p_qs) if (p_qs is not None) else None,
+                            textos_inf["col_qshots_ci95"]: _ci95_pct(p_qs, n_eff_qshots) if (p_qs is not None) else "",
+                
+                            textos_inf["col_qaa_pct"]: (100.0 * p_qa) if (p_qa is not None) else None,
+                            textos_inf["col_qaa_ci95"]: _ci95_pct(p_qa, n_eff_qaa) if (p_qa is not None) else "",
                         })
-                dfA = pd.DataFrame(rows)
-                st.subheader(textos_inf["tabela_a"])
-                st.dataframe(dfA, use_container_width=True)
-        
-                # ---- Table B: mean/std/CI95(mean) for binary nodes by method
-                st.subheader(textos_inf["tabela_b"])
-                stats_rows = []
-                methods = [
-                    ("Exact", exact_marg, None),
-                    ("MC", mc_marg, int(last.get("shots", 0))),
-                    ("Quantum Shots", (qshots["marg"] if qshots else None), (qshots["accepted"] if qshots else 0)),
-                    ("Quantum AA", (qaa["marg"] if qaa else None), (qaa["accepted"] if qaa else 0)),
-                ]
-                for n in nodes_order:
-                    states = bn["nodes"][n]["states"]
-                    if len(states) != 2:
-                        continue
-                    s0, s1 = states[0], states[1]
-                    for mname, marg, n_eff in methods:
-                        if marg is None:
-                            continue
-                        p1 = float(marg.get(n, {}).get(s1, 0.0))
-                        mean = p1
-                        std = math.sqrt(max(0.0, p1 * (1.0 - p1)))
-                        ci = None
-                        if n_eff and n_eff > 1:
-                            se = math.sqrt(max(1e-12, p1 * (1.0 - p1) / n_eff))
-                            ci = (mean - 1.96 * se, mean + 1.96 * se)
-                        stats_rows.append({
-                            "node": n,
-                            "method": mname,
-                            "mean(P=1)": mean,
-                            "std": std,
-                            "CI95(mean)": (f"[{ci[0]:.4f}, {ci[1]:.4f}]" if ci else ""),
-                        })
-                dfB = pd.DataFrame(stats_rows)
-                st.dataframe(dfB, use_container_width=True)
+                
+                df_results = pd.DataFrame(rows)
+                
+                st.subheader(textos_inf["tabela_resultados"])
+                st.dataframe(df_results, use_container_width=True)
+
         
                 # ---- Charts: quantum outcomes (top-k)
                 def _plot_outcomes(counts: Dict[str, int], title: str):
@@ -3619,6 +3632,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
