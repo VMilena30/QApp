@@ -2624,18 +2624,14 @@ def main():
         
             outcomes: List[str] = []
             probs: List[float] = []
+        
             for values in itertools.product(*[domains[n] for n in nodes]):
                 asg = dict(zip(nodes, values))
                 jp = _qbn_joint_prob(bn, asg)
                 if jp < 0:
                     jp = 0.0
-                # binary: map to bitstring with state index (0/1)
-                bits = []
-                for n in nodes:
-                    st = asg[n]
-                    idx = domains[n].index(st)
-                    bits.append(str(int(idx)))
-                outcomes.append("".join(bits))
+                bs = _qbn_encode_assignment(bn, asg)  # agora multi-bit por nó
+                outcomes.append(bs)
                 probs.append(float(jp))
         
             p = np.array(probs, dtype=float)
@@ -2644,22 +2640,23 @@ def main():
                 return None
             p = p / s
             return outcomes, p
+
         
         def _qbn_filter_evidence_bitstrings(bn: Dict[str, Any], evidence: Dict[str, str]) -> Dict[int, int]:
             # returns mapping from qubit position -> required bit (0/1)
-            nodes = bn["order"]
-            req: Dict[int, int] = {}
-            for n, st in evidence.items():
-                if n not in nodes:
-                    continue
-                info = bn["nodes"][n]
-                if st not in info["states"]:
-                    continue
-                bit = info["states"].index(st)
-                if bit not in (0, 1):
-                    continue
-                req[nodes.index(n)] = int(bit)
-            return req
+            #nodes = bn["order"]
+            #req: Dict[int, int] = {}
+            #for n, st in evidence.items():
+                #if n not in nodes:
+                    #continue
+                #info = bn["nodes"][n]
+                #if st not in info["states"]:
+                    #continue
+                #bit = info["states"].index(st)
+                #if bit not in (0, 1):
+                    #continue
+                #req[nodes.index(n)] = int(bit)
+            return _qbn_filter_evidence_bits(bn, evidence)
         
         def _qbn_quantum_shots(bn: Dict[str, Any], query_nodes: List[str], evidence: Dict[str, str],
                               shots: int = 5000, seed: Optional[int] = None,
@@ -2920,8 +2917,75 @@ def main():
                 "mapping": mapping,
                 "all_binary": all_binary,
             }
-            
+
+        def _qbn_node_bits(bn: Dict[str, Any]) -> Dict[str, int]:
+            import math
+            bits = {}
+            for n in bn["order"]:
+                ni = len(bn["nodes"][n]["states"])
+                bits[n] = int(math.ceil(math.log2(ni))) if ni > 1 else 1
+            return bits
         
+        def _qbn_node_offsets(bn: Dict[str, Any]) -> Dict[str, int]:
+            # offset (posição inicial) de cada nó no bitstring global
+            offs = {}
+            cur = 0
+            bits = _qbn_node_bits(bn)
+            for n in bn["order"]:
+                offs[n] = cur
+                cur += bits[n]
+            return offs
+        
+        def _qbn_int_to_bits(x: int, width: int) -> str:
+            # MSB->LSB
+            return format(int(x), f"0{int(width)}b")
+        
+        def _qbn_bits_to_int(bits: str) -> int:
+            return int(bits, 2) if bits else 0
+        
+        def _qbn_encode_assignment(bn: Dict[str, Any], asg: Dict[str, str]) -> str:
+            bits = _qbn_node_bits(bn)
+            out = []
+            for n in bn["order"]:
+                states = bn["nodes"][n]["states"]
+                idx = states.index(asg[n])
+                out.append(_qbn_int_to_bits(idx, bits[n]))
+            return "".join(out)
+        
+        def _qbn_decode_bitstring(bn: Dict[str, Any], bitstring: str) -> Tuple[Optional[Dict[str, str]], bool]:
+            bits = _qbn_node_bits(bn)
+            offs = _qbn_node_offsets(bn)
+            asg: Dict[str, str] = {}
+            for n in bn["order"]:
+                o = offs[n]
+                w = bits[n]
+                chunk = bitstring[o:o+w]
+                idx = _qbn_bits_to_int(chunk)
+                states = bn["nodes"][n]["states"]
+                if idx >= len(states):
+                    return None, False  # bitstring inválido para esse nó
+                asg[n] = states[idx]
+            return asg, True
+        
+        def _qbn_filter_evidence_bits(bn: Dict[str, Any], evidence: Dict[str, str]) -> Dict[int, int]:
+            # retorna mapping posicao_bit_global -> bit requerido (0/1), agora multi-bit por nó
+            req: Dict[int, int] = {}
+            bits = _qbn_node_bits(bn)
+            offs = _qbn_node_offsets(bn)
+        
+            for n, st in evidence.items():
+                if n not in bn["order"]:
+                    continue
+                states = bn["nodes"][n]["states"]
+                if st not in states:
+                    continue
+                idx = states.index(st)
+                bstr = _qbn_int_to_bits(idx, bits[n])
+                o = offs[n]
+                for j, ch in enumerate(bstr):
+                    req[o + j] = int(ch)
+            return req
+
         def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
             import pandas as pd
             import numpy as np
@@ -3632,6 +3696,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
