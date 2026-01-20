@@ -786,7 +786,7 @@ TEXTOS_INF = {
         "outcomes_qaa": "Outcomes (Quantum + AA)",
 
         # Plot do Circuito
-        "ver_circuito": "Ver circuito (QBN)",
+        "ver_circuito": "Circuito Quântico e Número de qubits",
         "circ_indisp": "Circuito indisponível para visualização nas configurações atuais.", 
         "circ_apenas_binaria": "Visualização do circuito disponível apenas para redes binárias (2 estados por nó).", 
         "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
@@ -799,7 +799,7 @@ TEXTOS_INF = {
         "q_total": "Total de qubits", 
         "q_nodes": "Qubits (nós)", 
         "q_anc": "Qubits (ancillas)", 
-        "q_caption": "Contagem de ancillas estimada conforme decomposição CnRY/rotações controladas (estilo Borujeni et al., 2021).",  
+        "q_caption": "Contagem de ancillas estimada conforme decomposição CnRY/rotações controladas.",  
         "q_role_node": "Nó", 
         "q_role_ancilla": "Ancilla",
         "q_col_qubit": "Qubit",
@@ -903,7 +903,7 @@ TEXTOS_INF = {
         "outcomes_qaa": "Outcomes (Quantum + AA)",
 
         # Circuit Plot
-        "ver_circuito": "Show circuit (QBN)",
+        "ver_circuito": "Quantum Circuit and Number of Qubits",
         "circ_indisp": "Circuit is not available for display under the current settings.",
         "circ_apenas_binaria": "Circuit display is available only for binary networks (2 states per node).",
         "circ_sem_nos": "Not enough nodes to build the circuit.",
@@ -3619,6 +3619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
