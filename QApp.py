@@ -698,11 +698,8 @@ TEXTOS_INF = {
         "subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
 
         # Seções principais
-        "def_nos": "1) Definição dos nós",
-        "def_estrutura": "2) Estrutura (pais por nó)",
-        "def_probs": "3) Probabilidades (marginais e condicionais)",
-        "evidencia": "4) Evidência e consulta",
-        "resultados": "Resultados",
+        "def_nos": "Definição dos nós",
+        "evidencia": "Evidência e consulta",
 
         # Visualização da rede (NOVO)
         "rede_montada": "Rede Bayesiana montada",
@@ -712,7 +709,6 @@ TEXTOS_INF = {
         # Entradas (nós / estados)
         "nome_no": "Nome do nó",
         "card_no": "Quantidade de estados",
-        "estados": "Estados (opcional, separados por vírgula)",
         "add_no": "Adicionar nó",
         "remover_no": "Remover nó",
         "selecionar_no": "Selecionar nó",
@@ -726,26 +722,14 @@ TEXTOS_INF = {
         "pais_do_no": "Pais do nó",
 
         # Probabilidades
-        "prob_marginal": "Probabilidades marginais",
-        "prob_condicional": "Tabela de probabilidades condicionais (CPT)",
-        "linha_cpt": "Linha da CPT",
-        "normalizar": "Normalizar",
-        "aviso_soma": "Algumas linhas não somam 1. Vou normalizar automaticamente.",
         "probs_raiz": "Probabilidades marginais (nó raiz)",
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
         "caption_probs": "Preencha as probabilidades. Para nós com pais, cada linha da CPT (combinação de estados dos pais) deve somar 1.",
         "caption_cpt": "Para cada combinação de estados dos pais, informe as probabilidades do nó (a linha deve somar 1).",
-       
-        # Evidência / query
-        "evidencias": "Evidências",
-        "add_evidencia": "Adicionar evidência",
-        "limpar_evidencias": "Limpar evidências",
-        "query": "Consulta (nós de interesse)",
 
         # Execução (na página principal)
         "sidebar_execucao": "Execução",
         "safe_mode": "Safe mode",
-        "enabled": "Habilitado",
         "shots": "Shots (Quântico / Monte Carlo)",
         "seed": "Seed (Monte Carlo)",
         "plots": "Gráficos",
@@ -762,22 +746,7 @@ TEXTOS_INF = {
         # Ação
         "run": "Rodar inferência",
 
-        # Métodos (comparação)
-        "metodo": "Método",
-        "exata": "Exata (quando possível)",
-        "mc": "Monte Carlo (sempre)",
-        "q_shots": "Quantum Shots",
-        "q_aa": "Quantum + AA",
-
-        # Mensagens / validações
-        "aviso_binaria": "O bloco quântico (Shots/AA) está disponível apenas para redes binárias (2 estados por nó).",
-        "aviso_exata_off": "Inferência exata desabilitada: espaço de estados muito grande para o limite atual.",
-        "erro_rede_incompleta": "Rede incompleta: verifique nós, pais e probabilidades.",
-        "ok_rede": "Rede validada.",
-
         # Saídas
-        "posterior": "Posterior",
-        "comparacao": "Comparação dos métodos",
         "tabela_resultados": "Tabela de resultados",
         "tabela_a": "Tabela comparativa (Exata vs Monte Carlo vs Quantum)",
         "tabela_b": "Tabela comparativa (Quantum Shots vs Quantum + AA)",
@@ -800,7 +769,6 @@ TEXTOS_INF = {
         "circ_apenas_binaria": "Visualização do circuito disponível apenas para redes binárias (2 estados por nó).", 
         "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
-        "circ_joint_indisp": "Distribuição conjunta exata indisponível com o limite atual (max_states).",
         "circ_desc_stateprep": "Circuito com medição ao final.",
 
         # Número de qubits
@@ -824,11 +792,8 @@ TEXTOS_INF = {
         "subtitulo_app": "Build the network and run classical and quantum inference.",
 
         # Main sections
-        "def_nos": "1) Node definition",
-        "def_estrutura": "2) Structure (parents per node)",
-        "def_probs": "3) Probabilities (marginals and CPTs)",
-        "evidencia": "4) Evidence and query",
-        "resultados": "Results",
+        "def_nos": "Node definition",
+        "evidencia": "Evidence and query",
 
         # Network visualization (NEW)
         "rede_montada": "Built Bayesian network",
@@ -838,7 +803,6 @@ TEXTOS_INF = {
         # Inputs (nodes / states)
         "nome_no": "Node name",
         "card_no": "Number of states",
-        "estados": "States (optional, comma-separated)",
         "add_no": "Add node",
         "remover_no": "Remove node",
         "selecionar_no": "Select node",
@@ -852,26 +816,14 @@ TEXTOS_INF = {
         "pais_do_no": "Parents of node",
 
         # Probabilities
-        "prob_marginal": "Marginal probabilities",
-        "prob_condicional": "Conditional probability table (CPT)",
-        "linha_cpt": "CPT row",
-        "normalizar": "Normalize",
-        "aviso_soma": "Some rows do not sum to 1. I will normalize automatically.",
         "probs_raiz": "Marginal probabilities (root node)",
         "cpt": "Conditional Probability Table (CPT)",
         "caption_probs": "Fill in the probabilities. For nodes with parents, each CPT row (a parent-state combination) must sum to 1.",
         "caption_cpt": "For each parent-state combination, enter the node probabilities (the row must sum to 1).",
-        
-        # Evidence / query
-        "evidencias": "Evidence",
-        "add_evidencia": "Add evidence",
-        "limpar_evidencias": "Clear evidence",
-        "query": "Query (nodes of interest)",
 
         # Execution (on main page)
         "sidebar_execucao": "Execution",
         "safe_mode": "Safe mode",
-        "enabled": "Enabled",
         "shots": "Shots (Quantum / Monte Carlo)",
         "seed": "Seed (Monte Carlo)",
         "plots": "Plots",
@@ -888,22 +840,7 @@ TEXTOS_INF = {
         # Action
         "run": "Run inference",
 
-        # Methods (comparison)
-        "metodo": "Method",
-        "exata": "Exact (when feasible)",
-        "mc": "Monte Carlo (always)",
-        "q_shots": "Quantum Shots",
-        "q_aa": "Quantum + AA",
-
-        # Messages / validation
-        "aviso_binaria": "The quantum block (Shots/AA) is available only for binary networks (2 states per node).",
-        "aviso_exata_off": "Exact inference disabled: state space is too large for the current limit.",
-        "erro_rede_incompleta": "Incomplete network: please check nodes, parents, and probabilities.",
-        "ok_rede": "Network validated.",
-
         # Outputs
-        "posterior": "Posterior",
-        "comparacao": "Methods comparison",
         "tabela_resultados": "Results table",
         "tabela_a": "Comparison table (Exact vs Monte Carlo vs Quantum)",
         "tabela_b": "Comparison table (Quantum Shots vs Quantum + AA)",
@@ -927,7 +864,6 @@ TEXTOS_INF = {
         "circ_apenas_binaria": "Circuit display is available only for binary networks (2 states per node).",
         "circ_sem_nos": "Not enough nodes to build the circuit.",
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
-        "circ_joint_indisp": "Exact joint distribution is not available under the current max_states limit.",
         "circ_desc_stateprep": "Circuit followed by measurement.",
 
         # Number of qubits
@@ -3632,6 +3568,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
