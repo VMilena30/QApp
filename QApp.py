@@ -694,8 +694,8 @@ TEXTOS_INF = {
     "pt": {
         # Página / títulos
         "pagina_inf": "Redes Bayesianas Quânticas",
-        "titulo_app": "Inferência CQBN",
-        "subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
+        #"titulo_app": "Inferência CQBN",
+        #"subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
         
         "intro_qbn": """
         **Redes Bayesianas (Clássicas e Quânticas) — Inferência**
@@ -820,8 +820,8 @@ TEXTOS_INF = {
     "en": {
         # Page / titles
         "pagina_inf": "Quantum Bayesian Networks",
-        "titulo_app": "CQBN Inference",
-        "subtitulo_app": "Build the network and run classical and quantum inference.",
+        #"titulo_app": "CQBN Inference",
+        #"subtitulo_app": "Build the network and run classical and quantum inference.",
             "intro_qbn": """
         **Bayesian Networks (Classical and Quantum) — Inference**
         
@@ -2927,7 +2927,7 @@ def main():
             import numpy as np
             _qbn_init_state()
         
-            st.title(textos_inf["titulo_app"])
+            #st.title(textos_inf["titulo_app"])
             st.caption(textos_inf["subtitulo_app"])
             st.divider()
 
@@ -3632,6 +3632,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
