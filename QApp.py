@@ -2928,7 +2928,7 @@ def main():
             _qbn_init_state()
         
             #st.title(textos_inf["titulo_app"])
-            st.caption(textos_inf["subtitulo_app"])
+            #st.caption(textos_inf["subtitulo_app"])
             st.divider()
 
             # ============================
@@ -3632,6 +3632,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
