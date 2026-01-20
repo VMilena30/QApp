@@ -793,6 +793,19 @@ TEXTOS_INF = {
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
         "circ_joint_indisp": "Distribuição conjunta exata indisponível com o limite atual (max_states).",
         "circ_desc_stateprep": "Circuito com medição ao final.",
+
+        # Número de qubits
+        "q_header": "Recursos (qubits)", 
+        "q_total": "Total de qubits", 
+        "q_nodes": "Qubits (nós)", 
+        "q_anc": "Qubits (ancillas)", 
+        "q_caption": "Contagem de ancillas estimada conforme decomposição CnRY/rotações controladas (estilo Borujeni et al., 2021).",  
+        "q_role_node": "Nó", 
+        "q_role_ancilla": "Ancilla",
+        "q_col_qubit": "Qubit",
+        "q_col_role": "Tipo",
+        "q_col_node": "Nó", 
+        "q_col_slot": "Índice (slot)",
     },
 
     "en": {
@@ -897,6 +910,20 @@ TEXTOS_INF = {
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
         "circ_joint_indisp": "Exact joint distribution is not available under the current max_states limit.",
         "circ_desc_stateprep": "Circuit followed by measurement.",
+
+        # Number of qubits
+        "q_header": "Resources (qubits)",
+        "q_total": "Total qubits",
+        "q_nodes": "Qubits (nodes)",
+        "q_anc": "Qubits (ancillas)",
+        "q_caption": "Ancilla count estimated under CnRY / controlled-rotation decomposition (Borujeni et al., 2021 style).", 
+        "q_role_node": "Node",
+        "q_role_ancilla": "Ancilla",
+        "q_col_qubit": "Qubit",
+        "q_col_role": "Type",
+        "q_col_node": "Node",
+        "q_col_slot": "Index (slot)",
+
     },
 }
 
@@ -2817,6 +2844,64 @@ def main():
             lines.append("}")
             return "\n".join(lines)
 
+        def _qbn_qubit_accounting(bn: Dict[str, Any]) -> Dict[str, Any]:
+        import math
+    
+        order = bn.get("order", [])
+        nodes = bn.get("nodes", {})
+    
+        # qubits por nó: mi = ceil(log2(ni))
+        node_bits: Dict[str, int] = {}
+        for n in order:
+            ni = len(nodes[n]["states"])
+            mi = int(math.ceil(math.log2(ni))) if ni > 1 else 1
+            node_bits[n] = mi
+    
+        q_nodes = int(sum(node_bits.values()))
+    
+        # ancillas (estimativa “paper-style”):
+        # - se binária: mBN,2 = s + max(|Pi|) - 1  => anc = max(|Pi|) - 1
+        # - caso geral: anc = max_i( mq,Pi(Vi) + mi - 1 )
+        all_binary = all(len(nodes[n]["states"]) == 2 for n in order) if order else True
+    
+        if all_binary:
+            max_parents = 0
+            for n in order:
+                max_parents = max(max_parents, len(nodes[n].get("parents", [])))
+            q_anc = int(max(0, max_parents - 1))
+        else:
+            anc_candidates = []
+            for n in order:
+                parents = nodes[n].get("parents", [])
+                if len(parents) == 0:
+                    continue
+                mq_parents = int(sum(node_bits.get(p, 1) for p in parents))
+                anc_candidates.append(int(mq_parents + node_bits[n] - 1))
+            q_anc = int(max(anc_candidates)) if anc_candidates else 0
+    
+        q_total = int(q_nodes + q_anc)
+    
+        # mapeamento: indices sequenciais para qubits de nós; ancillas no final
+        mapping = []
+        q = 0
+        for n in order:
+            mi = int(node_bits[n])
+            for j in range(mi):
+                mapping.append({"qubit": q, "role": "node", "node": n, "slot": j})
+                q += 1
+        for a in range(int(q_anc)):
+            mapping.append({"qubit": q, "role": "ancilla", "node": "", "slot": a})
+            q += 1
+    
+        return {
+            "q_total": q_total,
+            "q_nodes": q_nodes,
+            "q_anc": q_anc,
+            "node_bits": node_bits,
+            "mapping": mapping,
+            "all_binary": all_binary,
+        }
+        
         
         def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
             import pandas as pd
@@ -3291,7 +3376,33 @@ def main():
                         st.caption(textos_inf["circ_desc_stateprep"])
                         fig = qc.draw(output="mpl")
                         st.pyplot(fig)
-                
+                    acct = _qbn_qubit_accounting(bn)
+
+                    st.subheader(textos_inf["q_header"])
+                    c1, c2, c3 = st.columns(3)
+                    c1.metric(textos_inf["q_total"], acct["q_total"])
+                    c2.metric(textos_inf["q_nodes"], acct["q_nodes"])
+                    c3.metric(textos_inf["q_anc"], acct["q_anc"])
+                    
+                    st.caption(textos_inf["q_caption"])
+                    
+                    import pandas as pd
+                    df_map = pd.DataFrame(acct["mapping"])
+                    
+                    df_map["role"] = df_map["role"].map({
+                        "node": textos_inf["q_role_node"],
+                        "ancilla": textos_inf["q_role_ancilla"],
+                    })
+                    
+                    df_map = df_map.rename(columns={
+                        "qubit": textos_inf["q_col_qubit"],
+                        "role": textos_inf["q_col_role"],
+                        "node": textos_inf["q_col_node"],
+                        "slot": textos_inf["q_col_slot"],
+                    })
+                    
+                    st.dataframe(df_map, use_container_width=True, hide_index=True)
+
                 
                         
                 # ---- Table A: node/state probabilities by method (%)
@@ -3508,6 +3619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
