@@ -2845,63 +2845,63 @@ def main():
             return "\n".join(lines)
 
         def _qbn_qubit_accounting(bn: Dict[str, Any]) -> Dict[str, Any]:
-        import math
-    
-        order = bn.get("order", [])
-        nodes = bn.get("nodes", {})
-    
-        # qubits por nó: mi = ceil(log2(ni))
-        node_bits: Dict[str, int] = {}
-        for n in order:
-            ni = len(nodes[n]["states"])
-            mi = int(math.ceil(math.log2(ni))) if ni > 1 else 1
-            node_bits[n] = mi
-    
-        q_nodes = int(sum(node_bits.values()))
-    
-        # ancillas (estimativa “paper-style”):
-        # - se binária: mBN,2 = s + max(|Pi|) - 1  => anc = max(|Pi|) - 1
-        # - caso geral: anc = max_i( mq,Pi(Vi) + mi - 1 )
-        all_binary = all(len(nodes[n]["states"]) == 2 for n in order) if order else True
-    
-        if all_binary:
-            max_parents = 0
-            for n in order:
-                max_parents = max(max_parents, len(nodes[n].get("parents", [])))
-            q_anc = int(max(0, max_parents - 1))
-        else:
-            anc_candidates = []
-            for n in order:
-                parents = nodes[n].get("parents", [])
-                if len(parents) == 0:
-                    continue
-                mq_parents = int(sum(node_bits.get(p, 1) for p in parents))
-                anc_candidates.append(int(mq_parents + node_bits[n] - 1))
-            q_anc = int(max(anc_candidates)) if anc_candidates else 0
-    
-        q_total = int(q_nodes + q_anc)
-    
-        # mapeamento: indices sequenciais para qubits de nós; ancillas no final
-        mapping = []
-        q = 0
-        for n in order:
-            mi = int(node_bits[n])
-            for j in range(mi):
-                mapping.append({"qubit": q, "role": "node", "node": n, "slot": j})
-                q += 1
-        for a in range(int(q_anc)):
-            mapping.append({"qubit": q, "role": "ancilla", "node": "", "slot": a})
-            q += 1
-    
-        return {
-            "q_total": q_total,
-            "q_nodes": q_nodes,
-            "q_anc": q_anc,
-            "node_bits": node_bits,
-            "mapping": mapping,
-            "all_binary": all_binary,
-        }
+            import math
         
+            order = bn.get("order", [])
+            nodes = bn.get("nodes", {})
+        
+            # qubits por nó: mi = ceil(log2(ni))
+            node_bits: Dict[str, int] = {}
+            for n in order:
+                ni = len(nodes[n]["states"])
+                mi = int(math.ceil(math.log2(ni))) if ni > 1 else 1
+                node_bits[n] = mi
+        
+            q_nodes = int(sum(node_bits.values()))
+        
+            # ancillas (estimativa “paper-style”):
+            # - se binária: mBN,2 = s + max(|Pi|) - 1  => anc = max(|Pi|) - 1
+            # - caso geral: anc = max_i( mq,Pi(Vi) + mi - 1 )
+            all_binary = all(len(nodes[n]["states"]) == 2 for n in order) if order else True
+        
+            if all_binary:
+                max_parents = 0
+                for n in order:
+                    max_parents = max(max_parents, len(nodes[n].get("parents", [])))
+                q_anc = int(max(0, max_parents - 1))
+            else:
+                anc_candidates = []
+                for n in order:
+                    parents = nodes[n].get("parents", [])
+                    if len(parents) == 0:
+                        continue
+                    mq_parents = int(sum(node_bits.get(p, 1) for p in parents))
+                    anc_candidates.append(int(mq_parents + node_bits[n] - 1))
+                q_anc = int(max(anc_candidates)) if anc_candidates else 0
+        
+            q_total = int(q_nodes + q_anc)
+        
+            # mapeamento: indices sequenciais para qubits de nós; ancillas no final
+            mapping = []
+            q = 0
+            for n in order:
+                mi = int(node_bits[n])
+                for j in range(mi):
+                    mapping.append({"qubit": q, "role": "node", "node": n, "slot": j})
+                    q += 1
+            for a in range(int(q_anc)):
+                mapping.append({"qubit": q, "role": "ancilla", "node": "", "slot": a})
+                q += 1
+        
+            return {
+                "q_total": q_total,
+                "q_nodes": q_nodes,
+                "q_anc": q_anc,
+                "node_bits": node_bits,
+                "mapping": mapping,
+                "all_binary": all_binary,
+            }
+            
         
         def pagina_inferencia_qbn(textos: Dict[str, str], textos_inf: Dict[str, str]):
             import pandas as pd
@@ -3619,6 +3619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
