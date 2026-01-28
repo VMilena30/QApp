@@ -3555,22 +3555,27 @@ def main():
                     else:
                         st.caption(textos_inf["circ_desc_stateprep"])
                         
-                        # Opções de visualização do circuito
                         show_decomposed = st.checkbox(
                             textos_inf["circ_decomp"],
                             value=True,
                             key="qbn_show_decomposed"
                         )
-                        reps = st.slider(
-                            textos_inf["circ_decomp_level"],
-                            1, 6, 3,
-                            key="qbn_decomp_reps"
-                        )
-                        force_basis = st.checkbox(
-                            textos_inf["circ_force_basis"],
-                            value=False,
-                            key="qbn_force_basis"
-                        )
+                        
+                        # só mostra o nível se estiver decomposto
+                        if show_decomposed:
+                            reps = st.slider(
+                                textos_inf["circ_decomp_level"],
+                                1, 6, 3,
+                                key="qbn_decomp_reps"
+                            )
+                            force_basis = st.checkbox(
+                                textos_inf["circ_force_basis"],
+                                value=False,
+                                key="qbn_force_basis"
+                            )
+                        else:
+                            reps = 0
+                            force_basis = False
                         
                         qc_show = qc
                         if show_decomposed:
@@ -3827,6 +3832,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
