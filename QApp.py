@@ -3398,7 +3398,7 @@ def main():
 
                 acct = _qbn_qubit_accounting(bn)
                 bits = acct["node_bits"]
-                offs = _qbn_node_offsets(bn, bits)
+                offs = _qbn_node_offsets(bn)
                 q_nodes = int(acct["q_nodes"])
 
                 # segurança: circuito pode explodir para redes grandes e/ou CPTs muito ramificadas (só display)
@@ -3783,6 +3783,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
