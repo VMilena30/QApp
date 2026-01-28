@@ -3381,87 +3381,112 @@ def main():
                 }
 
             def _qbn_build_stateprep_circuit_for_display(bn: Dict[str, Any], max_states: int, textos_inf: Dict[str, str]):
-                # Circuito fiel às CPTs (binário): Ry para raízes e mcry para condicionais.
+                # Circuito de preparação de estado (display): suporta nós binários e multiestados.
+                # Estratégia:
+                # - Cada nó Vi usa mi = ceil(log2(|states(Vi)|)) qubits (encoding por índice do estado).
+                # - Nós raiz: StatePreparation(amplitudes) no registrador do nó.
+                # - Nós condicionais: StatePreparation controlado pelos qubits dos pais, para cada combinação de estados dos pais.
                 from qiskit import QuantumCircuit
+                from qiskit.circuit.library import StatePreparation
                 import numpy as np
-            
-                if not _qbn_is_binary_bn(bn):
-                    return None, textos_inf["circ_apenas_binaria"]
-            
-                order = bn["order"]
-                n = len(order)
-                if n <= 0:
+                import itertools
+
+                order = bn.get("order", [])
+                nodes = bn.get("nodes", {})
+                if not order:
                     return None, textos_inf["circ_sem_nos"]
-            
-                # segurança: circuito cresce rápido (só display)
-                if n > 10:
+
+                acct = _qbn_qubit_accounting(bn)
+                bits = acct["node_bits"]
+                offs = _qbn_node_offsets(bn, bits)
+                q_nodes = int(acct["q_nodes"])
+
+                # segurança: circuito pode explodir para redes grandes e/ou CPTs muito ramificadas (só display)
+                if q_nodes > 18:
                     return None, textos_inf["circ_muito_grande"]
-            
-                nodes = bn["nodes"]
-            
-                # mapa nó -> índice de qubit (pela ordem topológica usada no modelo)
-                q_index = {name: i for i, name in enumerate(order)}
-            
-                qc = QuantumCircuit(n, n)
-            
-                def _theta_from_p1(p1: float) -> float:
-                    p1 = float(max(0.0, min(1.0, p1)))
-                    return 2.0 * float(np.arcsin(np.sqrt(p1)))
-            
+
+                # limite simples por número total de linhas de CPT (somatório produto das cardinalidades dos pais)
+                total_rows = 0
+                for child in order:
+                    parents = nodes[child].get("parents", [])
+                    if not parents:
+                        continue
+                    row_count = 1
+                    for p in parents:
+                        row_count *= int(len(nodes[p]["states"]))
+                    total_rows += int(row_count)
+                if total_rows > 512:
+                    return None, textos_inf["circ_muito_grande"]
+
+                qc = QuantumCircuit(q_nodes, q_nodes)
+
+                def _amps_from_probs(probs: List[float], m_bits: int) -> List[complex]:
+                    """Converte probs (tamanho ni) em amplitudes sqrt(p) (tamanho 2^m_bits), com padding em zeros."""
+                    probs = _qbn_normalize_row(list(probs))
+                    dim = int(2 ** int(m_bits))
+                    amps = [0.0] * dim
+                    for i, pi in enumerate(probs):
+                        if i >= dim:
+                            break
+                        amps[i] = float(np.sqrt(max(0.0, float(pi))))
+
+                    # normalização numérica (StatePreparation espera vetor normalizado)
+                    norm = float(np.linalg.norm(np.array(amps, dtype=float)))
+                    if norm <= 0:
+                        amps[0] = 1.0
+                        norm = 1.0
+                    amps = [complex(a / norm) for a in amps]
+                    return amps
+
                 for child in order:
                     info = nodes[child]
                     parents = info.get("parents", [])
-                    states = info["states"]  # binário
-                    # convencao: states[0] -> |0>, states[1] -> |1>
-                    s0, s1 = states[0], states[1]
-            
-                    t = q_index[child]
-            
+
+                    mi = int(bits[child])
+                    t0 = int(offs[child])
+                    target_qubits = list(range(t0, t0 + mi))
+
+                    ni = int(len(info["states"]))
+                    cpt = info.get("cpt", {}) or {}
+
                     if len(parents) == 0:
-                        # raiz: P(child=s1)
-                        probs = info.get("cpt", {}).get((), [0.5, 0.5])
-                        probs = _qbn_normalize_row(probs)
-                        p1 = float(probs[1])
-                        qc.ry(_theta_from_p1(p1), t)
+                        # raiz
+                        probs = cpt.get((), [1.0 / ni] * ni)
+                        amps = _amps_from_probs(probs, mi)
+                        gate = StatePreparation(amps).to_gate(label=f"Prep({child})")
+                        qc.append(gate, target_qubits)
                         qc.barrier()
                         continue
-            
-                    # condicional: para cada combinação de pais, aplicar mcry(theta)
-                    parent_states = [nodes[p]["states"] for p in parents]  # cada um binário
-                    combos = list(itertools.product(*parent_states))       # tuplas de strings (estados)
-            
-                    cpt = info.get("cpt", {})
-                    controls = [q_index[p] for p in parents]
-            
+
+                    # condicional: para cada combinação de estados dos pais, aplicar Prep controlado
+                    parent_states = [nodes[p]["states"] for p in parents]
+                    combos = list(itertools.product(*parent_states))
+
+                    controls: List[int] = []
+                    for p in parents:
+                        mp = int(bits[p])
+                        p0 = int(offs[p])
+                        controls.extend(list(range(p0, p0 + mp)))
+
                     for comb in combos:
-                        # comb é tupla (estado_do_pai1, estado_do_pai2, ...)
-                        probs = cpt.get(tuple(comb), [0.5, 0.5])
-                        probs = _qbn_normalize_row(probs)
-                        p1 = float(probs[1])
-                        theta = _theta_from_p1(p1)
-            
-                        # Queremos controlar em 1. Então, para pais no estado "0" (states[0]),
-                        # aplicamos X antes e desfazemos depois.
-                        flip_qubits = []
+                        probs = cpt.get(tuple(comb), [1.0 / ni] * ni)
+                        amps = _amps_from_probs(probs, mi)
+                        base_gate = StatePreparation(amps).to_gate(label=f"Prep({child})")
+
+                        # ctrl_state em bits (concatenados na mesma ordem dos controls)
+                        ctrl_bits = ""
                         for i, p in enumerate(parents):
                             p_states = nodes[p]["states"]
-                            desired_state = comb[i]  # string
-                            desired_bit = 0 if desired_state == p_states[0] else 1
-                            if desired_bit == 0:
-                                qb = q_index[p]
-                                qc.x(qb)
-                                flip_qubits.append(qb)
-            
-                        # multi-controlled Ry (sem ancila) — display fiel ao mecanismo CPT
-                        qc.mcry(theta, controls, t, None, mode="noancilla")
-            
-                        # desfaz X
-                        for qb in flip_qubits:
-                            qc.x(qb)
-            
+                            idx = int(p_states.index(comb[i]))
+                            ctrl_bits += _qbn_int_to_bits(idx, int(bits[p]))
+                        ctrl_state_int = int(ctrl_bits, 2) if ctrl_bits else 0
+
+                        cgate = base_gate.control(num_ctrl_qubits=len(controls), ctrl_state=ctrl_state_int)
+                        qc.append(cgate, controls + target_qubits)
+
                     qc.barrier()
-            
-                qc.measure(list(range(n)), list(range(n)))
+
+                qc.measure(list(range(q_nodes)), list(range(q_nodes)))
                 return qc, None
 
             
@@ -3754,6 +3779,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
