@@ -3453,7 +3453,11 @@ def main():
                         # raiz
                         probs = cpt.get((), [1.0 / ni] * ni)
                         amps = _amps_from_probs(probs, mi)
-                        gate = StatePreparation(amps).to_gate(label=f"Prep({child})")
+                        gate = StatePreparation(amps)
+                        try:
+                            gate.name = f"Prep({child})"
+                        except Exception:
+                            pass
                         qc.append(gate, target_qubits)
                         qc.barrier()
                         continue
@@ -3471,7 +3475,11 @@ def main():
                     for comb in combos:
                         probs = cpt.get(tuple(comb), [1.0 / ni] * ni)
                         amps = _amps_from_probs(probs, mi)
-                        base_gate = StatePreparation(amps).to_gate(label=f"Prep({child})")
+                        base_gate = StatePreparation(amps)
+                        try:
+                            base_gate.name = f"Prep({child})"
+                        except Exception:
+                            pass
 
                         # ctrl_state em bits (concatenados na mesma ordem dos controls)
                         ctrl_bits = ""
@@ -3783,6 +3791,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
