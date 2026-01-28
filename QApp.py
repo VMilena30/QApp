@@ -801,7 +801,7 @@ TEXTOS_INF = {
         "circ_apenas_binaria": "Visualização do circuito disponível apenas para redes binárias (2 estados por nó).", 
         "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
-        "circ_desc_stateprep": "Circuito com medição ao final.",
+        "circ_desc_stateprep": "Este circuito mostra a preparação do estado da QBN. No modo padrão, blocos como 'State Preparation' aparecem como operações de alto nível. Ative a decomposição para visualizar as portas elementares (o circuito pode ficar bem maior).",
         "circ_decomp": "Mostrar decomposição (portas elementares)",
         "circ_decomp_level": "Nível de decomposição",
         "circ_force_basis": "Forçar base u/cx",
@@ -930,8 +930,7 @@ TEXTOS_INF = {
         "circ_apenas_binaria": "Circuit display is available only for binary networks (2 states per node).",
         "circ_sem_nos": "Not enough nodes to build the circuit.",
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
-        "circ_desc_stateprep": "Circuit followed by measurement.",
-        # Dentro de TEXTOS_INF["en"]:
+        "circ_desc_stateprep": "This circuit shows the QBN state preparation. In the default view, blocks like 'State Preparation' appear as high-level operations. Enable decomposition to see elementary gates (the circuit may become much larger).",
         "circ_decomp": "Show decomposition (elementary gates)",
         "circ_decomp_level": "Decomposition level",
         "circ_force_basis": "Force u/cx basis",
@@ -3828,6 +3827,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
