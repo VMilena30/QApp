@@ -802,6 +802,9 @@ TEXTOS_INF = {
         "circ_sem_nos": "Não há nós suficientes para montar o circuito.",
         "circ_muito_grande": "Circuito grande demais para visualização (muitos qubits).",
         "circ_desc_stateprep": "Circuito com medição ao final.",
+        "circ_decomp": "Mostrar decomposição (portas elementares)",
+        "circ_decomp_level": "Nível de decomposição",
+        "circ_force_basis": "Forçar base u/cx",
 
         # Número de qubits
         "q_header": "Recursos (qubits)", 
@@ -928,6 +931,10 @@ TEXTOS_INF = {
         "circ_sem_nos": "Not enough nodes to build the circuit.",
         "circ_muito_grande": "Circuit is too large to display (too many qubits).",
         "circ_desc_stateprep": "Circuit followed by measurement.",
+        # Dentro de TEXTOS_INF["en"]:
+        "circ_decomp": "Show decomposition (elementary gates)",
+        "circ_decomp_level": "Decomposition level",
+        "circ_force_basis": "Force u/cx basis",
 
         # Number of qubits
         "q_header": "Resources (qubits)",
@@ -3548,11 +3555,41 @@ def main():
                         st.info(err if err else textos_inf["circ_indisp"])
                     else:
                         st.caption(textos_inf["circ_desc_stateprep"])
+                        
+                        # Opções de visualização do circuito
+                        show_decomposed = st.checkbox(
+                            textos_inf["circ_decomp"],
+                            value=True,
+                            key="qbn_show_decomposed"
+                        )
+                        reps = st.slider(
+                            textos_inf["circ_decomp_level"],
+                            1, 6, 3,
+                            key="qbn_decomp_reps"
+                        )
+                        force_basis = st.checkbox(
+                            textos_inf["circ_force_basis"],
+                            value=False,
+                            key="qbn_force_basis"
+                        )
+                        
+                        qc_show = qc
+                        if show_decomposed:
+                            qc_show = qc_show.decompose(reps=int(reps))
+                            if force_basis:
+                                try:
+                                    from qiskit import transpile
+                                    qc_show = transpile(qc_show, basis_gates=["u", "cx"], optimization_level=1)
+                                except Exception:
+                                    pass
+                        
                         try:
-                            fig = qc.draw(output="mpl")
+                            fig = qc_show.draw(output="mpl")
                             st.pyplot(fig)
                         except Exception:
-                            st.code(qc.draw(output="text"))
+                            st.code(qc_show.draw(output="text"))
+
+
 
                     acct = _qbn_qubit_accounting(bn)
 
@@ -3791,6 +3828,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
