@@ -3540,8 +3540,12 @@ def main():
                         st.info(err if err else textos_inf["circ_indisp"])
                     else:
                         st.caption(textos_inf["circ_desc_stateprep"])
-                        fig = qc.draw(output="mpl")
-                        st.pyplot(fig)
+                        try:
+                            fig = qc.draw(output="mpl")
+                            st.pyplot(fig)
+                        except Exception:
+                            st.code(qc.draw(output="text"))
+
                     acct = _qbn_qubit_accounting(bn)
 
                     st.subheader(textos_inf["q_header"])
@@ -3779,6 +3783,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
