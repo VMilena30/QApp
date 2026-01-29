@@ -746,7 +746,6 @@ TEXTOS_INF = {
         "selecionar_no": "Selecionar nó",
         "sem_nos": "Nenhum nó definido ainda. Adicione o primeiro nó acima.",
         "nos_evidenciados": "Nós evidenciados",
-        "preview_export": "Pré-visualização e exportação",
         "limpar_rede": "Limpar rede",
         "edicao_no": "Edição do nó",
         
@@ -874,7 +873,6 @@ TEXTOS_INF = {
         "selecionar_no": "Select node",
         "sem_nos": "No nodes defined yet. Add your first node above.",
         "nos_evidenciados": "Evidence nodes",
-        "preview_export": "Preview and export",
         "limpar_rede": "Clear network",
         "edicao_no": "Node editing",
         
@@ -3735,15 +3733,6 @@ def main():
                             st.markdown(f"**{textos_inf['outcomes_qaa']}** (k={k_used}, accepted={last['qaa']['accepted']}, acc_rate={last['qaa']['acc_rate']:.3f})")
                             _plot_outcomes(last["qaa"]["counts"], textos_inf["outcomes_qaa"])
         
-            # export preview
-            st.divider()
-            st.subheader(textos_inf["preview_export"])
-            nodes = list(st.session_state.qbn["nodes"].keys())
-            if nodes:
-                order = _qbn_topological_order(st.session_state.qbn["nodes"])
-                bn_preview = {"nodes": st.session_state.qbn["nodes"], "order": order}
-                st.json({"order": order, "nodes": {n: {"parents": bn_preview["nodes"][n]["parents"], "states": bn_preview["nodes"][n]["states"]} for n in order}})
-
         # Render QBN inference page
         pagina_inferencia_qbn(textos, textos_inf)
         
@@ -3832,6 +3821,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
