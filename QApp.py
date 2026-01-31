@@ -698,7 +698,7 @@ TEXTOS_INF = {
         #"subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
         
         "intro_qbn": r"""
-        ## Redes Bayesianas (Clássicas e Quânticas) — Inferência
+        ###Redes Bayesianas
         
         Redes Bayesianas (BNs) são grafos direcionados acíclicos (DAGs) que representam dependências probabilísticas entre variáveis.  
         Na prática, elas permitem **atualizar probabilidades** quando você observa evidências (por exemplo: um sensor “falhou”, um teste “passou”, um componente “degradou”).
@@ -3851,6 +3851,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
