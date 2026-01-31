@@ -3628,9 +3628,7 @@ def main():
                         st.info(textos_inf["sem_nos"])                        
 
                     
-        
-                    # probs editor
-                    st.markdown(f"**{textos_inf['probs_raiz']}**" if len(parents) == 0 else f"**{textos_inf['cpt']}**")
+
         
                     # Build editor dataframe
                     if len(parents) == 0:
@@ -4367,6 +4365,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
