@@ -744,9 +744,20 @@ TEXTOS_INF = {
         **Referência:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
 
-        # Seções principais
-        "def_nos": "Definição dos nós",
-        "evidencia": "Evidência e consulta",
+        "guia_qbn": r"""
+        ### Instruções:
+        
+        1) **Adicione os nós** (à esquerda): informe o nome e a quantidade de estados e clique em **Adicionar nó**.  
+        2) **Edite um nó** (à direita): selecione o nó, defina os **pais** e preencha as probabilidades (**marginal** ou **condicionais**).  
+           - As probabilidades são **normalizadas automaticamente** (a soma por linha vira 1).  
+        3) **Revise a rede montada**: confira o grafo e as probabilidades inseridas no painel “Probabilidades inseridas”.  
+        4) **Defina evidências e consulta**: escolha os nós observados (e seus estados) e os nós de consulta, depois clique em **Rodar inferência**.
+        """,
+        
+                
+                # Seções principais
+                "def_nos": "Definição dos nós",
+                "evidencia": "Evidência e consulta",
 
         # Visualização da rede (NOVO)
         "rede_montada": "Rede Bayesiana montada",
@@ -885,7 +896,18 @@ TEXTOS_INF = {
         
         **Reference:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
+        "guia_qbn": r"""
+        ### Instructions:
+        
+        1) **Add nodes** (left): provide the node name and number of states, then click **Add node**.  
+        2) **Edit a node** (right): select the node, define its **parents**, and fill probabilities (**marginal** or **conditional**).  
+           - Probabilities are **auto-normalized** (each row sums to 1).  
+        3) **Review the assembled network**: check the graph and the “Inserted probabilities” panel.  
+        4) **Set evidence and queries**: select observed nodes (and their states) and query nodes, then click **Run inference**.
+        """,
 
+
+        
         # Main sections
         "def_nos": "Node definition",
         "evidencia": "Evidence and query",
@@ -3086,6 +3108,7 @@ def main():
             #st.title(textos_inf["titulo_app"])
             #st.caption(textos_inf["subtitulo_app"])
             st.divider()
+            st.markdown(textos_inf["guia_qbn"])
 
             # ============================
             # UI — build BN
@@ -3851,6 +3874,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
