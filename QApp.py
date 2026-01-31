@@ -765,6 +765,7 @@ TEXTOS_INF = {
         # Seções principais
         "def_nos": "Definição dos nós",
         "evidencia": "Evidência e consulta",
+        "query_nodes": "Nós de consulta",
 
         # Visualização da rede (NOVO)
         "rede_montada": "Rede Bayesiana montada",
@@ -927,6 +928,7 @@ TEXTOS_INF = {
         # Main sections
         "def_nos": "Node definition",
         "evidencia": "Evidence and query",
+        "query_nodes": "Query nodes",
 
         # Network visualization (NEW)
         "rede_montada": "Built Bayesian network",
@@ -3302,13 +3304,27 @@ def main():
                 st.caption(textos_inf["evidencia_desc"])
                 # evidence selection (applied to all methods; AA uses it explicitly)
                 nodes = list(st.session_state.qbn["nodes"].keys())
-                ev_nodes = st.multiselect(textos_inf["nos_evidenciados"], options=nodes, default=[])
-                evidence: Dict[str, str] = {}
-                for evn in ev_nodes:
-                    stt = st.selectbox(f"{evn}", options=st.session_state.qbn["nodes"][evn]["states"], key=f"ev_{evn}")
-                    evidence[evn] = stt
+                if not nodes:
+                    st.info(textos_inf.get("sem_rede", "Adicione nós para visualizar a rede."))
+                    evidence: Dict[str, str] = {}
+                    query_nodes: List[str] = []
+                else:
+                    ev_nodes = st.multiselect(textos_inf["nos_evidenciados"], options=nodes, default=[])
+                    evidence: Dict[str, str] = {}
+                    for evn in ev_nodes:
+                        stt = st.selectbox(
+                            f"{evn}",
+                            options=st.session_state.qbn["nodes"][evn]["states"],
+                            key=f"ev_{evn}",
+                        )
+                        evidence[evn] = stt
         
                 st.divider()
+                query_nodes = st.multiselect(
+                    textos_inf["query_nodes"],
+                    options=nodes,
+                    default=nodes[:1] if nodes else [],
+                )
                 # query nodes
                 st.caption(textos_inf["query_desc"])
                 query_nodes = st.multiselect("Query nodes", options=nodes, default=nodes[:1] if nodes else [])
@@ -3913,6 +3929,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
