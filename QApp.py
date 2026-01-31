@@ -3621,7 +3621,11 @@ def main():
                         )
                         
                         info["parents"] = parents
-    
+                        # probs editor
+                        parents_now = info.get("parents", [])
+                        st.markdown(f"**{textos_inf['probs_raiz']}**" if len(parents_now) == 0 else f"**{textos_inf['cpt']}**")
+                    else:
+                        st.info(textos_inf["sem_nos"])                        
 
                     
         
@@ -4363,6 +4367,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
