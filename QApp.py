@@ -3326,8 +3326,6 @@ def main():
                     default=nodes[:1] if nodes else [],
                 )
                 # query nodes
-                st.caption(textos_inf["query_desc"])
-                query_nodes = st.multiselect("Query nodes", options=nodes, default=nodes[:1] if nodes else [])
                 if not query_nodes and nodes:
                     query_nodes = [nodes[0]]
 
@@ -3929,6 +3927,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
