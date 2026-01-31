@@ -3474,12 +3474,12 @@ def main():
                             textos_inf["dist_points"],
                             min_value=2,
                             max_value=32,
-                            value=int(st.session_state.get("qbn_new_node_npoints", 8)),
+                            value=8,
                             step=1,
                             help=textos_inf.get("dist_points_help", ""),
                             key="qbn_new_node_npoints",
                         )
-                        st.session_state["qbn_new_node_npoints"] = int(n_points)
+
                 
                         method_label = st.selectbox(
                             textos_inf["dist_method"],
@@ -4381,6 +4381,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
