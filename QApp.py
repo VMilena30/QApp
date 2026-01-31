@@ -3412,216 +3412,216 @@ def main():
         
             with col_list:
                 st.subheader(textos_inf["def_nos"])
-                st.caption(textos_inf["def_nos_desc"])
+                st.caption(textos_inf("def_nos_desc", ""))
             
-            with st.form("form_add_node"):
-                nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
-            
-                is_cont = st.checkbox(
-                    textos_inf["node_continuous"],
-                    value=bool(st.session_state.get("qbn_new_node_cont", False)),
-                    help=textos_inf.get("node_continuous_help", ""),
-                    key="qbn_new_node_cont",
-                )
-            
-                # defaults
-                card = 2
-                cont_payload = None
-            
-                if not is_cont:
-                    card = st.number_input(
-                        textos_inf["card_no"],
-                        min_value=2,
-                        max_value=8,
-                        value=2,
-                        step=1,
-                        key="qbn_new_node_card",
+                with st.form("form_add_node"):
+                    nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
+                
+                    is_cont = st.checkbox(
+                        textos_inf["node_continuous"],
+                        value=bool(st.session_state.get("qbn_new_node_cont", False)),
+                        help=textos_inf.get("node_continuous_help", ""),
+                        key="qbn_new_node_cont",
                     )
-                else:
-                    st.caption(textos_inf.get("dist_params", "Parâmetros da distribuição"))
-            
-                    dist_family = st.selectbox(
-                        textos_inf["dist_family"],
-                        options=["Weibull", "Normal", "Exponential"],
-                        index=0,
-                        help=textos_inf.get("dist_family_help", ""),
-                        key="qbn_new_node_dist_family",
-                    )
-            
-                    # params UI
-                    params = {}
-                    if dist_family == "Normal":
-                        c1, c2 = st.columns(2)
-                        with c1:
-                            params["mu"] = st.number_input("μ (mean)", value=0.0, step=0.1, key="qbn_new_node_mu")
-                        with c2:
-                            params["sigma"] = st.number_input("σ (std)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_sigma")
-                        dist_key = "normal"
-            
-                    elif dist_family == "Exponential":
-                        params["lam"] = st.number_input("λ (rate)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_lam")
-                        dist_key = "exponential"
-            
-                    else:  # Weibull
-                        c1, c2 = st.columns(2)
-                        with c1:
-                            params["k"] = st.number_input("k (shape)", min_value=1e-6, value=1.5, step=0.1, key="qbn_new_node_k")
-                        with c2:
-                            params["scale"] = st.number_input("scale", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_scale")
-                        dist_key = "weibull"
-            
-                    n_points = st.number_input(
-                        textos_inf["dist_points"],
-                        min_value=2,
-                        max_value=32,
-                        value=int(st.session_state.get("qbn_new_node_npoints", 8)),
-                        step=1,
-                        help=textos_inf.get("dist_points_help", ""),
-                        key="qbn_new_node_npoints",
-                    )
-                    st.session_state["qbn_new_node_npoints"] = int(n_points)
-            
-                    method_label = st.selectbox(
-                        textos_inf["dist_method"],
-                        options=[textos_inf["dist_method_equal"], textos_inf["dist_method_quantile"]],
-                        index=0,
-                        key="qbn_new_node_dmethod_label",
-                    )
-                    method = "equal"
-                    if method_label == textos_inf["dist_method_quantile"]:
-                        method = "quantile"
-            
-                    q_low, q_high = st.slider(
-                        textos_inf["dist_quantile_range"],
-                        min_value=0.0,
-                        max_value=1.0,
-                        value=(0.001, 0.999),
-                        step=0.001,
-                        key="qbn_new_node_qrange",
-                    )
-            
-                    auto_root = st.checkbox(
-                        textos_inf["dist_root_autofill"],
-                        value=True,
-                        help=textos_inf.get("dist_root_autofill_help", ""),
-                        key="qbn_new_node_autoroot",
-                    )
-            
-                    # preview
-                    try:
-                        dist = _qbn_make_scipy_dist(dist_key, params)
-                        edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), method, float(q_low), float(q_high))
-                        with st.expander(textos_inf["dist_preview"], expanded=False):
-                            import pandas as pd
-                            dfp = pd.DataFrame({
-                                "state": _qbn_states_from_points(int(n_points)),
-                                "x_mid": [round(x, 6) for x in mids],
-                                "prob": [round(p, 6) for p in probs],
-                            })
-                            st.dataframe(dfp, use_container_width=True, hide_index=True)
-                    except Exception as e:
-                        st.warning(f"{textos_inf.get('dist_preview','Prévia')}: {e}")
-            
-                    # for creation
-                    card = int(n_points)
-                    cont_payload = {
-                        "enabled": True,
-                        "dist": dist_key,
-                        "params": params,
-                        "n_points": int(n_points),
-                        "method": method,
-                        "q_low": float(q_low),
-                        "q_high": float(q_high),
-                        "auto_root": bool(auto_root),
-                    }
-            
-                submitted = st.form_submit_button(textos_inf["add_no"])
-            
-                if submitted:
-                    nome = (nome or "").strip()
-                    if nome and (nome not in st.session_state.qbn["nodes"]):
-            
-                        if cont_payload and cont_payload.get("enabled", False):
-                            # discretize now
-                            dist = _qbn_make_scipy_dist(cont_payload["dist"], cont_payload["params"])
-                            edges, mids, probs = _qbn_discretize_continuous(
-                                dist,
-                                cont_payload["n_points"],
-                                cont_payload["method"],
-                                cont_payload["q_low"],
-                                cont_payload["q_high"],
-                            )
-            
-                            states = _qbn_states_from_points(int(cont_payload["n_points"]))
-                            # initial marginal: either from discretization or uniform
-                            init_probs = probs if cont_payload.get("auto_root", True) else ([1.0 / len(states)] * len(states))
-            
-                            st.session_state.qbn["nodes"][nome] = {
-                                "card": int(card),
-                                "states": states,
-                                "parents": [],
-                                "cpt": {(): init_probs},
-                                # continuous metadata (optional, used for UI/traceability)
-                                "continuous": True,
-                                "continuous_dist": cont_payload["dist"],
-                                "continuous_params": cont_payload["params"],
-                                "continuous_method": cont_payload["method"],
-                                "continuous_qrange": (cont_payload["q_low"], cont_payload["q_high"]),
-                                "continuous_midpoints": mids,
-                                "continuous_edges": edges,
-                            }
-                        else:
-                            st.session_state.qbn["nodes"][nome] = {
-                                "card": int(card),
-                                "states": _qbn_states_from_card(int(card)),
-                                "parents": [],
-                                "cpt": {(): [1.0 / int(card)] * int(card)},
-                            }
-            
-                        st.session_state.qbn["selected"] = nome
-                        st.rerun()
+                
+                    # defaults
+                    card = 2
+                    cont_payload = None
+                
+                    if not is_cont:
+                        card = st.number_input(
+                            textos_inf["card_no"],
+                            min_value=2,
+                            max_value=8,
+                            value=2,
+                            step=1,
+                            key="qbn_new_node_card",
+                        )
+                    else:
+                        st.caption(textos_inf.get("dist_params", "Parâmetros da distribuição"))
+                
+                        dist_family = st.selectbox(
+                            textos_inf["dist_family"],
+                            options=["Weibull", "Normal", "Exponential"],
+                            index=0,
+                            help=textos_inf.get("dist_family_help", ""),
+                            key="qbn_new_node_dist_family",
+                        )
+                
+                        # params UI
+                        params = {}
+                        if dist_family == "Normal":
+                            c1, c2 = st.columns(2)
+                            with c1:
+                                params["mu"] = st.number_input("μ (mean)", value=0.0, step=0.1, key="qbn_new_node_mu")
+                            with c2:
+                                params["sigma"] = st.number_input("σ (std)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_sigma")
+                            dist_key = "normal"
+                
+                        elif dist_family == "Exponential":
+                            params["lam"] = st.number_input("λ (rate)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_lam")
+                            dist_key = "exponential"
+                
+                        else:  # Weibull
+                            c1, c2 = st.columns(2)
+                            with c1:
+                                params["k"] = st.number_input("k (shape)", min_value=1e-6, value=1.5, step=0.1, key="qbn_new_node_k")
+                            with c2:
+                                params["scale"] = st.number_input("scale", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_scale")
+                            dist_key = "weibull"
+                
+                        n_points = st.number_input(
+                            textos_inf["dist_points"],
+                            min_value=2,
+                            max_value=32,
+                            value=int(st.session_state.get("qbn_new_node_npoints", 8)),
+                            step=1,
+                            help=textos_inf.get("dist_points_help", ""),
+                            key="qbn_new_node_npoints",
+                        )
+                        st.session_state["qbn_new_node_npoints"] = int(n_points)
+                
+                        method_label = st.selectbox(
+                            textos_inf["dist_method"],
+                            options=[textos_inf["dist_method_equal"], textos_inf["dist_method_quantile"]],
+                            index=0,
+                            key="qbn_new_node_dmethod_label",
+                        )
+                        method = "equal"
+                        if method_label == textos_inf["dist_method_quantile"]:
+                            method = "quantile"
+                
+                        q_low, q_high = st.slider(
+                            textos_inf["dist_quantile_range"],
+                            min_value=0.0,
+                            max_value=1.0,
+                            value=(0.001, 0.999),
+                            step=0.001,
+                            key="qbn_new_node_qrange",
+                        )
+                
+                        auto_root = st.checkbox(
+                            textos_inf["dist_root_autofill"],
+                            value=True,
+                            help=textos_inf.get("dist_root_autofill_help", ""),
+                            key="qbn_new_node_autoroot",
+                        )
+                
+                        # preview
+                        try:
+                            dist = _qbn_make_scipy_dist(dist_key, params)
+                            edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), method, float(q_low), float(q_high))
+                            with st.expander(textos_inf["dist_preview"], expanded=False):
+                                import pandas as pd
+                                dfp = pd.DataFrame({
+                                    "state": _qbn_states_from_points(int(n_points)),
+                                    "x_mid": [round(x, 6) for x in mids],
+                                    "prob": [round(p, 6) for p in probs],
+                                })
+                                st.dataframe(dfp, use_container_width=True, hide_index=True)
+                        except Exception as e:
+                            st.warning(f"{textos_inf.get('dist_preview','Prévia')}: {e}")
+                
+                        # for creation
+                        card = int(n_points)
+                        cont_payload = {
+                            "enabled": True,
+                            "dist": dist_key,
+                            "params": params,
+                            "n_points": int(n_points),
+                            "method": method,
+                            "q_low": float(q_low),
+                            "q_high": float(q_high),
+                            "auto_root": bool(auto_root),
+                        }
+                
+                    submitted = st.form_submit_button(textos_inf["add_no"])
+                
+                    if submitted:
+                        nome = (nome or "").strip()
+                        if nome and (nome not in st.session_state.qbn["nodes"]):
+                
+                            if cont_payload and cont_payload.get("enabled", False):
+                                # discretize now
+                                dist = _qbn_make_scipy_dist(cont_payload["dist"], cont_payload["params"])
+                                edges, mids, probs = _qbn_discretize_continuous(
+                                    dist,
+                                    cont_payload["n_points"],
+                                    cont_payload["method"],
+                                    cont_payload["q_low"],
+                                    cont_payload["q_high"],
+                                )
+                
+                                states = _qbn_states_from_points(int(cont_payload["n_points"]))
+                                # initial marginal: either from discretization or uniform
+                                init_probs = probs if cont_payload.get("auto_root", True) else ([1.0 / len(states)] * len(states))
+                
+                                st.session_state.qbn["nodes"][nome] = {
+                                    "card": int(card),
+                                    "states": states,
+                                    "parents": [],
+                                    "cpt": {(): init_probs},
+                                    # continuous metadata (optional, used for UI/traceability)
+                                    "continuous": True,
+                                    "continuous_dist": cont_payload["dist"],
+                                    "continuous_params": cont_payload["params"],
+                                    "continuous_method": cont_payload["method"],
+                                    "continuous_qrange": (cont_payload["q_low"], cont_payload["q_high"]),
+                                    "continuous_midpoints": mids,
+                                    "continuous_edges": edges,
+                                }
+                            else:
+                                st.session_state.qbn["nodes"][nome] = {
+                                    "card": int(card),
+                                    "states": _qbn_states_from_card(int(card)),
+                                    "parents": [],
+                                    "cpt": {(): [1.0 / int(card)] * int(card)},
+                                }
+                
+                            st.session_state.qbn["selected"] = nome
+                            st.rerun()
 
         
-            nodes = list(st.session_state.qbn["nodes"].keys())
-            if nodes:
-                sel = st.selectbox(textos_inf["selecionar_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
-                st.session_state.qbn["selected"] = sel
-    
-                c1, c2 = st.columns(2)
-                with c1:
-                    if st.button(textos_inf["remover_no"]):
-                        # remove node + remove as parent from others
-                        del st.session_state.qbn["nodes"][sel]
-                        for n2 in list(st.session_state.qbn["nodes"].keys()):
-                            ps = st.session_state.qbn["nodes"][n2]["parents"]
-                            st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
-                        st.session_state.qbn["selected"] = (list(st.session_state.qbn["nodes"].keys())[0] if st.session_state.qbn["nodes"] else None)
-                        st.rerun()
-                with c2:
-                    if st.button(textos_inf["limpar_rede"]):
-                        st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
-                        st.rerun()
-            else:
-                st.info(textos_inf["sem_nos"])
-        
-            with col_edit:
                 nodes = list(st.session_state.qbn["nodes"].keys())
-                if nodes and st.session_state.qbn["selected"]:
-                    nsel = st.session_state.qbn["selected"]
-                    info = st.session_state.qbn["nodes"][nsel]
-                    st.subheader(textos_inf["edicao_no"])
-                    st.caption(textos_inf["edicao_no_desc"])
-                    
-                    parent_opts = [n for n in nodes if n != nsel]
-                    parents = st.multiselect(
-                        textos_inf["pais_do_no"],
-                        options=parent_opts,
-                        default=info.get("parents", []),
-                        help=textos_inf["pais_do_no_help"],
-                    )
-                    
-                    info["parents"] = parents
-
+                if nodes:
+                    sel = st.selectbox(textos_inf["selecionar_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
+                    st.session_state.qbn["selected"] = sel
+        
+                    c1, c2 = st.columns(2)
+                    with c1:
+                        if st.button(textos_inf["remover_no"]):
+                            # remove node + remove as parent from others
+                            del st.session_state.qbn["nodes"][sel]
+                            for n2 in list(st.session_state.qbn["nodes"].keys()):
+                                ps = st.session_state.qbn["nodes"][n2]["parents"]
+                                st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
+                            st.session_state.qbn["selected"] = (list(st.session_state.qbn["nodes"].keys())[0] if st.session_state.qbn["nodes"] else None)
+                            st.rerun()
+                    with c2:
+                        if st.button(textos_inf["limpar_rede"]):
+                            st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                            st.rerun()
+                else:
+                    st.info(textos_inf["sem_nos"])
+            
+                with col_edit:
+                    nodes = list(st.session_state.qbn["nodes"].keys())
+                    if nodes and st.session_state.qbn["selected"]:
+                        nsel = st.session_state.qbn["selected"]
+                        info = st.session_state.qbn["nodes"][nsel]
+                        st.subheader(textos_inf["edicao_no"])
+                        st.caption(textos_inf["edicao_no_desc"])
+                        
+                        parent_opts = [n for n in nodes if n != nsel]
+                        parents = st.multiselect(
+                            textos_inf["pais_do_no"],
+                            options=parent_opts,
+                            default=info.get("parents", []),
+                            help=textos_inf["pais_do_no_help"],
+                        )
+                        
+                        info["parents"] = parents
+    
                     # ----------------------------
                     # RV / distribuição contínua
                     # ----------------------------
@@ -4452,6 +4452,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
