@@ -864,17 +864,21 @@ TEXTOS_INF = {
         "q_col_node": "Nó", 
         "q_col_slot": "Índice (slot)",
 
-        # --- RV / distribuição contínua ---
-        "rv_title": "Variável aleatória (distribuição contínua)",
-        "rv_enable": "Modelar este nó como distribuição contínua",
-        "rv_dist": "Distribuição",
-        "rv_params": "Parâmetros",
-        "rv_points": "Pontos de discretização (N)",
-        "rv_apply": "Aplicar discretização",
-        "rv_preview": "Pré-visualização da discretização",
-        "rv_note_root": "Obs.: Para nós raiz, a discretização preenche automaticamente a distribuição marginal.",
-        "rv_note_cond": "Obs.: Para nós condicionais, a discretização ajusta os estados (card), mas a CPT ainda deve ser preenchida para cada configuração dos pais.",
-        "rv_help_points": "N define quantos estados discretos serão criados (s0..s{N-1}). Mais pontos = melhor aproximação, porém maior custo.",
+        "node_continuous": "Variável contínua (distribuição)?",
+        "node_continuous_help": "Marque se este nó representa uma variável contínua (ex.: Weibull, Normal, Exponencial). O nó será discretizado em pontos (estados) para uso no circuito.",
+        "dist_family": "Distribuição",
+        "dist_family_help": "Escolha a família da distribuição contínua.",
+        "dist_params": "Parâmetros da distribuição",
+        "dist_points": "Quantidade de pontos (estados) na discretização",
+        "dist_points_help": "Esta quantidade vira o número de estados do nó. Ex.: 8 pontos → 8 estados.",
+        "dist_method": "Método de discretização",
+        "dist_method_equal": "Bins de largura igual (probabilidades pela CDF)",
+        "dist_method_quantile": "Bins por quantis (bins com mesma probabilidade)",
+        "dist_quantile_range": "Faixa de quantis (para cortar caudas)",
+        "dist_preview": "Prévia da discretização",
+        "dist_root_autofill": "Preencher automaticamente a marginal (apenas nó raiz)",
+        "dist_root_autofill_help": "Se o nó não tiver pais, você pode preencher a marginal automaticamente a partir da discretização.",
+
 
     },
 
@@ -1014,7 +1018,7 @@ TEXTOS_INF = {
         "tabela_resultados": "Results table",
         "tabela_a": "Comparison table (Exact vs Monte Carlo vs Quantum)",
         "tabela_b": "Comparison table (Quantum Shots vs Quantum + AA)",
-        "Gráficos": "Charts",
+        "graficos": "Charts",
         "outcomes_qshots": "Outcomes (Quantum Shots)",
         "outcomes_qaa": "Outcomes (Quantum + AA)",
         "col_node": "Node",
@@ -1051,18 +1055,21 @@ TEXTOS_INF = {
         "q_col_role": "Type",
         "q_col_node": "Node",
         "q_col_slot": "Index (slot)",
-        # --- RV / continuous distribution ---
-        "rv_title": "Random variable (continuous distribution)",
-        "rv_enable": "Model this node as a continuous distribution",
-        "rv_dist": "Distribution",
-        "rv_params": "Parameters",
-        "rv_points": "Discretization points (N)",
-        "rv_apply": "Apply discretization",
-        "rv_preview": "Discretization preview",
-        "rv_note_root": "Note: For root nodes, discretization automatically fills the marginal distribution.",
-        "rv_note_cond": "Note: For conditional nodes, discretization updates the states (card), but you still must fill the CPT for each parent configuration.",
-        "rv_help_points": "N defines how many discrete states will be created (s0..s{N-1}). More points = better approximation, but higher cost.",
-        
+
+        "node_continuous": "Continuous variable (distribution)?",
+        "node_continuous_help": "Enable if this node represents a continuous variable (e.g., Weibull, Normal, Exponential). The node will be discretized into points (states) for circuit use.",
+        "dist_family": "Distribution",
+        "dist_family_help": "Choose the continuous distribution family.",
+        "dist_params": "Distribution parameters",
+        "dist_points": "Number of discretization points (states)",
+        "dist_points_help": "This becomes the number of node states. E.g., 8 points → 8 states.",
+        "dist_method": "Discretization method",
+        "dist_method_equal": "Equal-width bins (probabilities from CDF)",
+        "dist_method_quantile": "Quantile bins (equal-probability bins)",
+        "dist_quantile_range": "Quantile range (to trim tails)",
+        "dist_preview": "Discretization preview",
+        "dist_root_autofill": "Auto-fill marginal (root node only)",
+        "dist_root_autofill_help": "If the node has no parents, you can auto-fill its marginal from the discretization.",
 
 
 
@@ -2509,6 +2516,84 @@ def main():
         def _qbn_states_from_card(card: int) -> List[str]:
             card = int(card)
             return [f"s{i}" for i in range(max(1, card))]
+
+        def _qbn_states_from_points(n: int) -> List[str]:
+            n = int(n)
+            return [f"x{i}" for i in range(max(1, n))]
+        
+        def _qbn_make_scipy_dist(dist_name: str, params: Dict[str, float]):
+            from scipy import stats
+            dist_name = (dist_name or "").lower().strip()
+        
+            if dist_name == "normal":
+                mu = float(params.get("mu", 0.0))
+                sigma = float(params.get("sigma", 1.0))
+                sigma = max(sigma, 1e-12)
+                return stats.norm(loc=mu, scale=sigma)
+        
+            if dist_name == "exponential":
+                lam = float(params.get("lam", 1.0))  # rate λ
+                lam = max(lam, 1e-12)
+                return stats.expon(scale=1.0 / lam)
+        
+            if dist_name == "weibull":
+                k = float(params.get("k", 1.5))       # shape
+                scale = float(params.get("scale", 1.0))
+                k = max(k, 1e-12)
+                scale = max(scale, 1e-12)
+                return stats.weibull_min(c=k, scale=scale)
+        
+            raise ValueError(f"Unsupported distribution: {dist_name}")
+        
+        def _qbn_discretize_continuous(dist, n_points: int, method: str, q_low: float, q_high: float) -> Tuple[List[float], List[float], List[float]]:
+            """
+            Returns: (edges, midpoints, probs)
+            - edges: n_points+1 cut points
+            - midpoints: representative value per bin (n_points)
+            - probs: probability per bin (n_points), normalized
+            """
+            import numpy as np
+        
+            n_points = int(n_points)
+            q_low = float(q_low)
+            q_high = float(q_high)
+        
+            q_low = max(0.0, min(q_low, 1.0))
+            q_high = max(0.0, min(q_high, 1.0))
+            if q_high <= q_low:
+                q_low, q_high = 0.001, 0.999
+        
+            # Finite support cut (avoid +/-inf)
+            x_low = float(dist.ppf(q_low))
+            x_high = float(dist.ppf(q_high))
+        
+            if not np.isfinite(x_low):
+                x_low = float(dist.ppf(0.001))
+            if not np.isfinite(x_high):
+                x_high = float(dist.ppf(0.999))
+        
+            if method == "quantile":
+                qs = np.linspace(q_low, q_high, n_points + 1)
+                edges = dist.ppf(qs)
+                edges = np.array(edges, dtype=float)
+            else:
+                # default: equal-width in x, probs from CDF
+                edges = np.linspace(x_low, x_high, n_points + 1)
+        
+            # probs from CDF differences
+            cdf_edges = dist.cdf(edges)
+            probs = np.diff(cdf_edges)
+            probs = [float(x) for x in probs.tolist()]
+            probs = _qbn_normalize_row(probs)
+        
+            mids = ((edges[:-1] + edges[1:]) / 2.0).tolist()
+            edges = [float(x) for x in np.array(edges, dtype=float).tolist()]
+            mids = [float(x) for x in mids]
+        
+            return edges, mids, probs
+
+
+
         
         def _qbn_normalize_row(vals: List[float]) -> List[float]:
             import numpy as np  # garante que np existe aqui
@@ -3329,33 +3414,173 @@ def main():
                 st.subheader(textos_inf["def_nos"])
                 st.caption(textos_inf["def_nos_desc"])
             
-                with st.form("form_add_node"):
-                    nome = st.text_input(
-                        textos_inf["nome_no"],
-                        value="",
-                        key="qbn_new_node_name",
-                        help=textos_inf["nome_no_help"],
-                    )
+            with st.form("form_add_node"):
+                nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
+            
+                is_cont = st.checkbox(
+                    textos_inf["node_continuous"],
+                    value=bool(st.session_state.get("qbn_new_node_cont", False)),
+                    help=textos_inf.get("node_continuous_help", ""),
+                    key="qbn_new_node_cont",
+                )
+            
+                # defaults
+                card = 2
+                cont_payload = None
+            
+                if not is_cont:
                     card = st.number_input(
                         textos_inf["card_no"],
-                        min_value=2, max_value=8, value=2, step=1,
+                        min_value=2,
+                        max_value=8,
+                        value=2,
+                        step=1,
                         key="qbn_new_node_card",
-                        help=textos_inf["card_no_help"],
                     )
-                    
-                    submitted = st.form_submit_button(textos_inf["add_no"])
-                    if submitted:
-                        nome = (nome or "").strip()
-                        if nome and (nome not in st.session_state.qbn["nodes"]):
+                else:
+                    st.caption(textos_inf.get("dist_params", "Parâmetros da distribuição"))
+            
+                    dist_family = st.selectbox(
+                        textos_inf["dist_family"],
+                        options=["Weibull", "Normal", "Exponential"],
+                        index=0,
+                        help=textos_inf.get("dist_family_help", ""),
+                        key="qbn_new_node_dist_family",
+                    )
+            
+                    # params UI
+                    params = {}
+                    if dist_family == "Normal":
+                        c1, c2 = st.columns(2)
+                        with c1:
+                            params["mu"] = st.number_input("μ (mean)", value=0.0, step=0.1, key="qbn_new_node_mu")
+                        with c2:
+                            params["sigma"] = st.number_input("σ (std)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_sigma")
+                        dist_key = "normal"
+            
+                    elif dist_family == "Exponential":
+                        params["lam"] = st.number_input("λ (rate)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_lam")
+                        dist_key = "exponential"
+            
+                    else:  # Weibull
+                        c1, c2 = st.columns(2)
+                        with c1:
+                            params["k"] = st.number_input("k (shape)", min_value=1e-6, value=1.5, step=0.1, key="qbn_new_node_k")
+                        with c2:
+                            params["scale"] = st.number_input("scale", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_scale")
+                        dist_key = "weibull"
+            
+                    n_points = st.number_input(
+                        textos_inf["dist_points"],
+                        min_value=2,
+                        max_value=32,
+                        value=int(st.session_state.get("qbn_new_node_npoints", 8)),
+                        step=1,
+                        help=textos_inf.get("dist_points_help", ""),
+                        key="qbn_new_node_npoints",
+                    )
+                    st.session_state["qbn_new_node_npoints"] = int(n_points)
+            
+                    method_label = st.selectbox(
+                        textos_inf["dist_method"],
+                        options=[textos_inf["dist_method_equal"], textos_inf["dist_method_quantile"]],
+                        index=0,
+                        key="qbn_new_node_dmethod_label",
+                    )
+                    method = "equal"
+                    if method_label == textos_inf["dist_method_quantile"]:
+                        method = "quantile"
+            
+                    q_low, q_high = st.slider(
+                        textos_inf["dist_quantile_range"],
+                        min_value=0.0,
+                        max_value=1.0,
+                        value=(0.001, 0.999),
+                        step=0.001,
+                        key="qbn_new_node_qrange",
+                    )
+            
+                    auto_root = st.checkbox(
+                        textos_inf["dist_root_autofill"],
+                        value=True,
+                        help=textos_inf.get("dist_root_autofill_help", ""),
+                        key="qbn_new_node_autoroot",
+                    )
+            
+                    # preview
+                    try:
+                        dist = _qbn_make_scipy_dist(dist_key, params)
+                        edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), method, float(q_low), float(q_high))
+                        with st.expander(textos_inf["dist_preview"], expanded=False):
+                            import pandas as pd
+                            dfp = pd.DataFrame({
+                                "state": _qbn_states_from_points(int(n_points)),
+                                "x_mid": [round(x, 6) for x in mids],
+                                "prob": [round(p, 6) for p in probs],
+                            })
+                            st.dataframe(dfp, use_container_width=True, hide_index=True)
+                    except Exception as e:
+                        st.warning(f"{textos_inf.get('dist_preview','Prévia')}: {e}")
+            
+                    # for creation
+                    card = int(n_points)
+                    cont_payload = {
+                        "enabled": True,
+                        "dist": dist_key,
+                        "params": params,
+                        "n_points": int(n_points),
+                        "method": method,
+                        "q_low": float(q_low),
+                        "q_high": float(q_high),
+                        "auto_root": bool(auto_root),
+                    }
+            
+                submitted = st.form_submit_button(textos_inf["add_no"])
+            
+                if submitted:
+                    nome = (nome or "").strip()
+                    if nome and (nome not in st.session_state.qbn["nodes"]):
+            
+                        if cont_payload and cont_payload.get("enabled", False):
+                            # discretize now
+                            dist = _qbn_make_scipy_dist(cont_payload["dist"], cont_payload["params"])
+                            edges, mids, probs = _qbn_discretize_continuous(
+                                dist,
+                                cont_payload["n_points"],
+                                cont_payload["method"],
+                                cont_payload["q_low"],
+                                cont_payload["q_high"],
+                            )
+            
+                            states = _qbn_states_from_points(int(cont_payload["n_points"]))
+                            # initial marginal: either from discretization or uniform
+                            init_probs = probs if cont_payload.get("auto_root", True) else ([1.0 / len(states)] * len(states))
+            
+                            st.session_state.qbn["nodes"][nome] = {
+                                "card": int(card),
+                                "states": states,
+                                "parents": [],
+                                "cpt": {(): init_probs},
+                                # continuous metadata (optional, used for UI/traceability)
+                                "continuous": True,
+                                "continuous_dist": cont_payload["dist"],
+                                "continuous_params": cont_payload["params"],
+                                "continuous_method": cont_payload["method"],
+                                "continuous_qrange": (cont_payload["q_low"], cont_payload["q_high"]),
+                                "continuous_midpoints": mids,
+                                "continuous_edges": edges,
+                            }
+                        else:
                             st.session_state.qbn["nodes"][nome] = {
                                 "card": int(card),
                                 "states": _qbn_states_from_card(int(card)),
                                 "parents": [],
                                 "cpt": {(): [1.0 / int(card)] * int(card)},
-                                "rv": {"enabled": False},  
                             }
-                            st.session_state.qbn["selected"] = nome
-                            st.rerun()
+            
+                        st.session_state.qbn["selected"] = nome
+                        st.rerun()
+
         
                 nodes = list(st.session_state.qbn["nodes"].keys())
                 if nodes:
@@ -3604,7 +3829,7 @@ def main():
         
                 st.divider()
                 query_nodes = st.multiselect(
-                    textos_inf["query_nodes"],
+                    textos_inf.get("query_nodes", "Query nodes"),
                     options=nodes,
                     default=nodes[:1] if nodes else [],
                 )
@@ -4227,6 +4452,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
