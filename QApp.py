@@ -871,9 +871,6 @@ TEXTOS_INF = {
         "dist_params": "Parâmetros da distribuição",
         "dist_points": "Quantidade de pontos (estados) na discretização",
         "dist_points_help": "Esta quantidade vira o número de estados do nó. Ex.: 8 pontos → 8 estados.",
-        "dist_method": "Método de discretização",
-        "dist_method_equal": "Bins de largura igual (probabilidades pela CDF)",
-        "dist_method_quantile": "Bins por quantis (bins com mesma probabilidade)",
         "dist_quantile_range": "Faixa de quantis (para cortar caudas)",
         "dist_preview": "Prévia da discretização",
         "dist_root_autofill": "Preencher automaticamente a marginal (apenas nó raiz)",
@@ -1063,9 +1060,6 @@ TEXTOS_INF = {
         "dist_params": "Distribution parameters",
         "dist_points": "Number of discretization points (states)",
         "dist_points_help": "This becomes the number of node states. E.g., 8 points → 8 states.",
-        "dist_method": "Discretization method",
-        "dist_method_equal": "Equal-width bins (probabilities from CDF)",
-        "dist_method_quantile": "Quantile bins (equal-probability bins)",
         "dist_quantile_range": "Quantile range (to trim tails)",
         "dist_preview": "Discretization preview",
         "dist_root_autofill": "Auto-fill marginal (root node only)",
@@ -2545,7 +2539,7 @@ def main():
         
             raise ValueError(f"Unsupported distribution: {dist_name}")
         
-        def _qbn_discretize_continuous(dist, n_points: int, method: str, q_low: float, q_high: float) -> Tuple[List[float], List[float], List[float]]:
+        def _qbn_discretize_continuous(dist, n_points: int, q_low: float, q_high: float) -> Tuple[List[float], List[float], List[float]]:
             """
             Returns: (edges, midpoints, probs)
             - edges: n_points+1 cut points
@@ -2572,13 +2566,7 @@ def main():
             if not np.isfinite(x_high):
                 x_high = float(dist.ppf(0.999))
         
-            if method == "quantile":
-                qs = np.linspace(q_low, q_high, n_points + 1)
-                edges = dist.ppf(qs)
-                edges = np.array(edges, dtype=float)
-            else:
-                # default: equal-width in x, probs from CDF
-                edges = np.linspace(x_low, x_high, n_points + 1)
+            edges = np.linspace(x_low, x_high, n_points + 1)
         
             # probs from CDF differences
             cdf_edges = dist.cdf(edges)
@@ -3480,15 +3468,6 @@ def main():
                             key="qbn_new_node_npoints",
                         )
                 
-                        method_label = st.selectbox(
-                            textos_inf["dist_method"],
-                            options=[textos_inf["dist_method_equal"], textos_inf["dist_method_quantile"]],
-                            index=0,
-                            key="qbn_new_node_dmethod_label",
-                        )
-                        method = "equal"
-                        if method_label == textos_inf["dist_method_quantile"]:
-                            method = "quantile"
                 
                         q_low, q_high = st.slider(
                             textos_inf["dist_quantile_range"],
@@ -3509,7 +3488,7 @@ def main():
                         # preview (agora atualiza ao vivo)
                         try:
                             dist = _qbn_make_scipy_dist(dist_key, params)
-                            edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), method, float(q_low), float(q_high))
+                            edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), float(q_low), float(q_high))
                             with st.expander(textos_inf["dist_preview"], expanded=False):
                                 import pandas as pd
                                 dfp = pd.DataFrame({
@@ -3528,13 +3507,12 @@ def main():
                             "dist": dist_key,
                             "params": params,
                             "n_points": int(n_points),
-                            "method": method,
                             "q_low": float(q_low),
                             "q_high": float(q_high),
                             "auto_root": bool(auto_root),
                         }
                 
-                    # ✅ botão normal (fora do form)
+                    # botão normal (fora do form)
                     submitted = st.button(textos_inf["add_no"], key="qbn_add_node_btn")
                 
                     if submitted:
@@ -3546,7 +3524,6 @@ def main():
                                 edges, mids, probs = _qbn_discretize_continuous(
                                     dist,
                                     cont_payload["n_points"],
-                                    cont_payload["method"],
                                     cont_payload["q_low"],
                                     cont_payload["q_high"],
                                 )
@@ -3562,7 +3539,6 @@ def main():
                                     "continuous": True,
                                     "continuous_dist": cont_payload["dist"],
                                     "continuous_params": cont_payload["params"],
-                                    "continuous_method": cont_payload["method"],
                                     "continuous_qrange": (cont_payload["q_low"], cont_payload["q_high"]),
                                     "continuous_midpoints": mids,
                                     "continuous_edges": edges,
@@ -4378,6 +4354,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
