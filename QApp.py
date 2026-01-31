@@ -3487,7 +3487,9 @@ def main():
                         index=0,
                         key="qbn_new_node_dmethod_label",
                     )
-                    method = "equal" if method_label == textos_inf["dist_method_quantile"]: method = "quantile"
+                    method = "equal"
+                    if method_label == textos_inf["dist_method_quantile"]:
+                        method = "quantile"
             
                     q_low, q_high = st.slider(
                         textos_inf["dist_quantile_range"],
@@ -4450,6 +4452,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
