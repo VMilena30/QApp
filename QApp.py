@@ -3370,6 +3370,8 @@ def main():
             
             colD, colE, colF = st.columns(3)
             
+            colD = st.columns(1)[0]
+            
             with colD:
                 annotate = st.checkbox(
                     textos_inf["annotate"],
@@ -3377,19 +3379,23 @@ def main():
                 )
                 st.session_state["qbn_annotate"] = bool(annotate)
             
-            with colE:
-                aa_enable = st.checkbox(
-                    textos_inf["aa_enable"],
-                    value=bool(st.session_state.get("qbn_aa_enable", True)),
-                )
-                st.session_state["qbn_aa_enable"] = bool(aa_enable)
+            # ----------------------------
+            # AA (seção separada)
+            # ----------------------------
+            st.markdown("---")
+            st.subheader(textos_inf["aa"])
             
-            with colF:
-                aa_k_manual = st.checkbox(
-                    textos_inf["aa_k_manual"],
-                    value=bool(st.session_state.get("qbn_aa_k_manual", False)),
-                )
-                st.session_state["qbn_aa_k_manual"] = bool(aa_k_manual)
+            aa_enable = st.checkbox(
+                textos_inf["aa_enable"],
+                value=bool(st.session_state.get("qbn_aa_enable", True)),
+            )
+            st.session_state["qbn_aa_enable"] = bool(aa_enable)
+            
+            aa_k_manual = st.checkbox(
+                textos_inf["aa_k_manual"],
+                value=bool(st.session_state.get("qbn_aa_k_manual", False)),
+            )
+            st.session_state["qbn_aa_k_manual"] = bool(aa_k_manual)
             
             aa_k = None
             if aa_enable:
@@ -3406,6 +3412,7 @@ def main():
                     st.session_state["qbn_aa_k"] = int(aa_k)
                 else:
                     st.caption(textos_inf["aa"])  # texto explicativo (opcional)
+
             
             st.markdown("")
             run = st.button(textos_inf["run"], type="primary")
@@ -3927,6 +3934,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
