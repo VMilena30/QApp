@@ -863,6 +863,19 @@ TEXTOS_INF = {
         "q_col_role": "Tipo",
         "q_col_node": "Nó", 
         "q_col_slot": "Índice (slot)",
+
+        # --- RV / distribuição contínua ---
+        "rv_title": "Variável aleatória (distribuição contínua)",
+        "rv_enable": "Modelar este nó como distribuição contínua",
+        "rv_dist": "Distribuição",
+        "rv_params": "Parâmetros",
+        "rv_points": "Pontos de discretização (N)",
+        "rv_apply": "Aplicar discretização",
+        "rv_preview": "Pré-visualização da discretização",
+        "rv_note_root": "Obs.: Para nós raiz, a discretização preenche automaticamente a distribuição marginal.",
+        "rv_note_cond": "Obs.: Para nós condicionais, a discretização ajusta os estados (card), mas a CPT ainda deve ser preenchida para cada configuração dos pais.",
+        "rv_help_points": "N define quantos estados discretos serão criados (s0..s{N-1}). Mais pontos = melhor aproximação, porém maior custo.",
+
     },
 
     "en": {
@@ -1038,6 +1051,20 @@ TEXTOS_INF = {
         "q_col_role": "Type",
         "q_col_node": "Node",
         "q_col_slot": "Index (slot)",
+        # --- RV / continuous distribution ---
+        "rv_title": "Random variable (continuous distribution)",
+        "rv_enable": "Model this node as a continuous distribution",
+        "rv_dist": "Distribution",
+        "rv_params": "Parameters",
+        "rv_points": "Discretization points (N)",
+        "rv_apply": "Apply discretization",
+        "rv_preview": "Discretization preview",
+        "rv_note_root": "Note: For root nodes, discretization automatically fills the marginal distribution.",
+        "rv_note_cond": "Note: For conditional nodes, discretization updates the states (card), but you still must fill the CPT for each parent configuration.",
+        "rv_help_points": "N defines how many discrete states will be created (s0..s{N-1}). More points = better approximation, but higher cost.",
+        
+
+
 
     },
 }
@@ -2492,6 +2519,148 @@ def main():
                 # fallback uniform
                 return [1.0 / len(arr)] * len(arr)
             return (arr / s).tolist()
+
+        def _qbn_norm_cdf(x: float, mu: float, sigma: float) -> float:
+            import math
+            z = (x - mu) / (sigma * math.sqrt(2.0))
+            return 0.5 * (1.0 + math.erf(z))
+        
+        def _qbn_norm_ppf(p: float, mu: float, sigma: float) -> float:
+            # Approx. inverse CDF (Acklam), pure python
+            import math
+            if p <= 0.0:
+                return -math.inf
+            if p >= 1.0:
+                return math.inf
+        
+            # Coefficients
+            a = [-3.969683028665376e+01,  2.209460984245205e+02,
+                 -2.759285104469687e+02,  1.383577518672690e+02,
+                 -3.066479806614716e+01,  2.506628277459239e+00]
+            b = [-5.447609879822406e+01,  1.615858368580409e+02,
+                 -1.556989798598866e+02,  6.680131188771972e+01,
+                 -1.328068155288572e+01]
+            c = [-7.784894002430293e-03, -3.223964580411365e-01,
+                 -2.400758277161838e+00, -2.549732539343734e+00,
+                  4.374664141464968e+00,  2.938163982698783e+00]
+            d = [ 7.784695709041462e-03,  3.224671290700398e-01,
+                  2.445134137142996e+00,  3.754408661907416e+00]
+        
+            plow = 0.02425
+            phigh = 1.0 - plow
+        
+            if p < plow:
+                q = math.sqrt(-2.0 * math.log(p))
+                x = (((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / \
+                    ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0)
+            elif p > phigh:
+                q = math.sqrt(-2.0 * math.log(1.0 - p))
+                x = -(((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / \
+                     ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0)
+            else:
+                q = p - 0.5
+                r = q*q
+                x = (((((a[0]*r + a[1])*r + a[2])*r + a[3])*r + a[4])*r + a[5]) * q / \
+                    (((((b[0]*r + b[1])*r + b[2])*r + b[3])*r + b[4])*r + 1.0)
+        
+            # One step of Halley refinement
+            e = _qbn_norm_cdf(x, 0.0, 1.0) - p
+            u = e * math.sqrt(2.0*math.pi) * math.exp(0.5*x*x)
+            x = x - u / (1.0 + 0.5*x*u)
+        
+            return mu + sigma * x
+        
+        def _qbn_exp_cdf(x: float, lam: float) -> float:
+            import math
+            if x <= 0.0:
+                return 0.0
+            return 1.0 - math.exp(-lam * x)
+        
+        def _qbn_exp_ppf(p: float, lam: float) -> float:
+            import math
+            p = min(max(p, 1e-15), 1.0 - 1e-15)
+            return -math.log(1.0 - p) / lam
+        
+        def _qbn_weibull_cdf(x: float, k: float, scale: float) -> float:
+            import math
+            if x <= 0.0:
+                return 0.0
+            return 1.0 - math.exp(-((x / scale) ** k))
+        
+        def _qbn_weibull_ppf(p: float, k: float, scale: float) -> float:
+            import math
+            p = min(max(p, 1e-15), 1.0 - 1e-15)
+            return scale * ((-math.log(1.0 - p)) ** (1.0 / k))
+        
+        def _qbn_discretize_continuous(dist: str, params: dict, n: int, q_low=1e-3, q_high=1-1e-3):
+            """
+            Returns (probs, edges, mids)
+            probs: length n, sums to 1
+            edges: length n+1
+            mids: length n
+            """
+            import numpy as np
+        
+            n = int(n)
+            dist = (dist or "").lower().strip()
+        
+            if dist == "normal":
+                mu = float(params.get("mu", 0.0))
+                sigma = float(params.get("sigma", 1.0))
+                sigma = max(sigma, 1e-12)
+                lo = _qbn_norm_ppf(q_low, mu, sigma)
+                hi = _qbn_norm_ppf(q_high, mu, sigma)
+                cdf = lambda x: _qbn_norm_cdf(x, mu, sigma)
+        
+            elif dist == "exponential":
+                lam = float(params.get("lam", 1.0))
+                lam = max(lam, 1e-12)
+                lo = 0.0
+                hi = _qbn_exp_ppf(q_high, lam)
+                cdf = lambda x: _qbn_exp_cdf(x, lam)
+        
+            elif dist == "weibull":
+                k = float(params.get("k", 1.5))
+                scale = float(params.get("scale", 1.0))
+                k = max(k, 1e-12)
+                scale = max(scale, 1e-12)
+                lo = 0.0
+                hi = _qbn_weibull_ppf(q_high, k, scale)
+                cdf = lambda x: _qbn_weibull_cdf(x, k, scale)
+        
+            else:
+                raise ValueError(f"Unknown distribution: {dist}")
+        
+            edges = np.linspace(lo, hi, n + 1)
+            probs = []
+            mids = []
+            for i in range(n):
+                a = float(edges[i])
+                b = float(edges[i + 1])
+                p = float(cdf(b) - cdf(a))
+                probs.append(max(0.0, p))
+                mids.append(0.5 * (a + b))
+        
+            probs = _qbn_normalize_row(probs)
+            return probs, edges.tolist(), mids
+        
+        def _qbn_resize_cpt_for_new_card(info: dict, new_card: int):
+            """Keeps CPT keys, but resets each row to uniform of length new_card."""
+            new_card = int(new_card)
+            info["card"] = new_card
+            info["states"] = _qbn_states_from_card(new_card)
+        
+            cpt = info.get("cpt", {})
+            new_cpt = {}
+            for k in cpt.keys():
+                new_cpt[k] = [1.0 / new_card] * new_card
+            if not new_cpt:
+                new_cpt = {(): [1.0 / new_card] * new_card}
+            info["cpt"] = new_cpt
+
+
+
+        
         
         def _qbn_topological_order(nodes: Dict[str, Any]) -> List[str]:
             # Kahn's algorithm
@@ -3183,6 +3352,7 @@ def main():
                                 "states": _qbn_states_from_card(int(card)),
                                 "parents": [],
                                 "cpt": {(): [1.0 / int(card)] * int(card)},
+                                "rv": {"enabled": False},  
                             }
                             st.session_state.qbn["selected"] = nome
                             st.rerun()
@@ -3226,6 +3396,98 @@ def main():
                     )
                     
                     info["parents"] = parents
+
+                    # ----------------------------
+                    # RV / distribuição contínua
+                    # ----------------------------
+                    with st.expander(textos_inf.get("rv_title", "Variável aleatória (distribuição contínua)"), expanded=False):
+                        rv = info.setdefault("rv", {"enabled": False})
+                        rv_enabled = st.checkbox(
+                            textos_inf.get("rv_enable", "Modelar este nó como distribuição contínua"),
+                            value=bool(rv.get("enabled", False)),
+                            key=f"rv_enabled_{nsel}",
+                        )
+                        rv["enabled"] = bool(rv_enabled)
+                    
+                        if rv_enabled:
+                            dist_map = {
+                                "normal": "Normal",
+                                "exponential": "Exponential",
+                                "weibull": "Weibull",
+                            }
+                            dist = st.selectbox(
+                                textos_inf.get("rv_dist", "Distribuição"),
+                                options=list(dist_map.keys()),
+                                format_func=lambda k: dist_map.get(k, k),
+                                index=list(dist_map.keys()).index(rv.get("dist", "normal")) if rv.get("dist", "normal") in dist_map else 0,
+                                key=f"rv_dist_{nsel}",
+                            )
+                            rv["dist"] = dist
+                    
+                            st.markdown(f"**{textos_inf.get('rv_params','Parâmetros')}**")
+                    
+                            params = rv.setdefault("params", {})
+                            if dist == "normal":
+                                mu = st.number_input("μ", value=float(params.get("mu", 0.0)), step=0.1, key=f"rv_mu_{nsel}")
+                                sigma = st.number_input("σ", value=float(params.get("sigma", 1.0)), min_value=1e-9, step=0.1, key=f"rv_sigma_{nsel}")
+                                params["mu"] = float(mu)
+                                params["sigma"] = float(sigma)
+                            elif dist == "exponential":
+                                lam = st.number_input("λ (rate)", value=float(params.get("lam", 1.0)), min_value=1e-9, step=0.1, key=f"rv_lam_{nsel}")
+                                params["lam"] = float(lam)
+                            elif dist == "weibull":
+                                k = st.number_input("k (shape)", value=float(params.get("k", 1.5)), min_value=1e-9, step=0.1, key=f"rv_k_{nsel}")
+                                scale = st.number_input("scale", value=float(params.get("scale", 1.0)), min_value=1e-9, step=0.1, key=f"rv_scale_{nsel}")
+                                params["k"] = float(k)
+                                params["scale"] = float(scale)
+                    
+                            n_points = st.number_input(
+                                textos_inf.get("rv_points", "Pontos de discretização (N)"),
+                                min_value=2,
+                                max_value=32,
+                                value=int(rv.get("n_points", info.get("card", 2))),
+                                step=1,
+                                help=textos_inf.get("rv_help_points", ""),
+                                key=f"rv_points_{nsel}",
+                            )
+                            rv["n_points"] = int(n_points)
+                    
+                            # preview (computed live)
+                            try:
+                                probs, edges, mids = _qbn_discretize_continuous(dist, params, int(n_points))
+                                df_prev = pd.DataFrame({
+                                    "bin": list(range(int(n_points))),
+                                    "x_low": edges[:-1],
+                                    "x_high": edges[1:],
+                                    "x_mid": mids,
+                                    "prob": probs,
+                                })
+                                st.markdown(f"**{textos_inf.get('rv_preview','Pré-visualização da discretização')}**")
+                                st.dataframe(df_prev, use_container_width=True, hide_index=True)
+                            except Exception as e:
+                                st.warning(f"Discretização não pôde ser calculada: {e}")
+                    
+                            if len(parents) == 0:
+                                st.caption(textos_inf.get("rv_note_root", ""))
+                            else:
+                                st.caption(textos_inf.get("rv_note_cond", ""))
+                    
+                            if st.button(textos_inf.get("rv_apply", "Aplicar discretização"), key=f"rv_apply_{nsel}"):
+                                probs, edges, mids = _qbn_discretize_continuous(dist, params, int(n_points))
+                    
+                                # ajusta card/estados
+                                if len(parents) == 0:
+                                    info["card"] = int(n_points)
+                                    info["states"] = _qbn_states_from_card(int(n_points))
+                                    info["cpt"] = {(): probs}  # nó raiz: pronto
+                                else:
+                                    # condicional: estados mudam, CPT precisa ser refeita por configuração
+                                    _qbn_resize_cpt_for_new_card(info, int(n_points))
+                    
+                                st.success("Discretização aplicada.")
+                                st.rerun()
+
+                    
         
                     # probs editor
                     st.markdown(f"**{textos_inf['probs_raiz']}**" if len(parents) == 0 else f"**{textos_inf['cpt']}**")
@@ -3965,6 +4227,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
