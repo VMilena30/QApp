@@ -3412,7 +3412,7 @@ def main():
         
             with col_list:
                 st.subheader(textos_inf["def_nos"])
-                st.caption(textos_inf("def_nos_desc", ""))
+                st.caption(textos_inf["def_nos_desc"])
             
                 with st.form("form_add_node"):
                     nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
@@ -4452,6 +4452,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
