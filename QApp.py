@@ -805,7 +805,7 @@ TEXTOS_INF = {
         "circuito_ok": "Circuito gerado com sucesso.",
         "exec_desc": "Ajuste como a inferência será executada. Se não tiver certeza, mantenha os valores padrão.",
         "shots_help": "Número de amostras. Mais shots = resultados mais estáveis, porém mais lentos.",
-        "seed_help": "Semente do Monte Carlo (reprodutibilidade). Só afeta Monte Carlo.",
+        "seed_help": "Semente do Monte Carlo (reprodutibilidade).",
         "topk_help": "Mostra apenas os Top-N outcomes no gráfico (0 = mostra todos).",
         "annotate_help": "Mostra o valor (%) em cima de cada barra do gráfico.",
         
@@ -978,7 +978,7 @@ TEXTOS_INF = {
         "circuito_ok": "Circuit generated successfully.",
         "exec_desc": "Controls how inference is executed. If unsure, keep the default values.",
         "shots_help": "Number of samples. More shots = more stable results, but slower.",
-        "seed_help": "Monte Carlo random seed (reproducibility). Affects Monte Carlo only.",
+        "seed_help": "Monte Carlo random seed (reproducibility).",
         "topk_help": "Show only the Top-N outcomes in plots (0 = show all).",
         "annotate_help": "Display the percentage value on top of each bar.",
 
@@ -3965,6 +3965,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
