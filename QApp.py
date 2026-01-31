@@ -784,7 +784,9 @@ TEXTOS_INF = {
         
         # Estrutura
         "pais_do_no": "Pais do nó",
-        
+        "lbl_states": "Estados",
+        "lbl_parents": "Pais",
+
         # Probabilidades
         "probs_raiz": "Probabilidades marginais (nó raiz)",
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
@@ -944,6 +946,8 @@ TEXTOS_INF = {
         
         # Structure
         "pais_do_no": "Parents of node",
+        "lbl_states": "States",
+        "lbl_parents": "Parents",
 
         # Probabilities
         "probs_raiz": "Marginal probabilities (root node)",
@@ -3909,6 +3913,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
