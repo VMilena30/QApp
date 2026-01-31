@@ -3622,95 +3622,6 @@ def main():
                         
                         info["parents"] = parents
     
-                    # ----------------------------
-                    # RV / distribuição contínua
-                    # ----------------------------
-                    with st.expander(textos_inf.get("rv_title", "Variável aleatória (distribuição contínua)"), expanded=False):
-                        rv = info.setdefault("rv", {"enabled": False})
-                        rv_enabled = st.checkbox(
-                            textos_inf.get("rv_enable", "Modelar este nó como distribuição contínua"),
-                            value=bool(rv.get("enabled", False)),
-                            key=f"rv_enabled_{nsel}",
-                        )
-                        rv["enabled"] = bool(rv_enabled)
-                    
-                        if rv_enabled:
-                            dist_map = {
-                                "normal": "Normal",
-                                "exponential": "Exponential",
-                                "weibull": "Weibull",
-                            }
-                            dist = st.selectbox(
-                                textos_inf.get("rv_dist", "Distribuição"),
-                                options=list(dist_map.keys()),
-                                format_func=lambda k: dist_map.get(k, k),
-                                index=list(dist_map.keys()).index(rv.get("dist", "normal")) if rv.get("dist", "normal") in dist_map else 0,
-                                key=f"rv_dist_{nsel}",
-                            )
-                            rv["dist"] = dist
-                    
-                            st.markdown(f"**{textos_inf.get('rv_params','Parâmetros')}**")
-                    
-                            params = rv.setdefault("params", {})
-                            if dist == "normal":
-                                mu = st.number_input("μ", value=float(params.get("mu", 0.0)), step=0.1, key=f"rv_mu_{nsel}")
-                                sigma = st.number_input("σ", value=float(params.get("sigma", 1.0)), min_value=1e-9, step=0.1, key=f"rv_sigma_{nsel}")
-                                params["mu"] = float(mu)
-                                params["sigma"] = float(sigma)
-                            elif dist == "exponential":
-                                lam = st.number_input("λ (rate)", value=float(params.get("lam", 1.0)), min_value=1e-9, step=0.1, key=f"rv_lam_{nsel}")
-                                params["lam"] = float(lam)
-                            elif dist == "weibull":
-                                k = st.number_input("k (shape)", value=float(params.get("k", 1.5)), min_value=1e-9, step=0.1, key=f"rv_k_{nsel}")
-                                scale = st.number_input("scale", value=float(params.get("scale", 1.0)), min_value=1e-9, step=0.1, key=f"rv_scale_{nsel}")
-                                params["k"] = float(k)
-                                params["scale"] = float(scale)
-                    
-                            n_points = st.number_input(
-                                textos_inf.get("rv_points", "Pontos de discretização (N)"),
-                                min_value=2,
-                                max_value=32,
-                                value=int(rv.get("n_points", info.get("card", 2))),
-                                step=1,
-                                help=textos_inf.get("rv_help_points", ""),
-                                key=f"rv_points_{nsel}",
-                            )
-                            rv["n_points"] = int(n_points)
-                    
-                            # preview (computed live)
-                            try:
-                                probs, edges, mids = _qbn_discretize_continuous(dist, params, int(n_points))
-                                df_prev = pd.DataFrame({
-                                    "bin": list(range(int(n_points))),
-                                    "x_low": edges[:-1],
-                                    "x_high": edges[1:],
-                                    "x_mid": mids,
-                                    "prob": probs,
-                                })
-                                st.markdown(f"**{textos_inf.get('rv_preview','Pré-visualização da discretização')}**")
-                                st.dataframe(df_prev, use_container_width=True, hide_index=True)
-                            except Exception as e:
-                                st.warning(f"Discretização não pôde ser calculada: {e}")
-                    
-                            if len(parents) == 0:
-                                st.caption(textos_inf.get("rv_note_root", ""))
-                            else:
-                                st.caption(textos_inf.get("rv_note_cond", ""))
-                    
-                            if st.button(textos_inf.get("rv_apply", "Aplicar discretização"), key=f"rv_apply_{nsel}"):
-                                probs, edges, mids = _qbn_discretize_continuous(dist, params, int(n_points))
-                    
-                                # ajusta card/estados
-                                if len(parents) == 0:
-                                    info["card"] = int(n_points)
-                                    info["states"] = _qbn_states_from_card(int(n_points))
-                                    info["cpt"] = {(): probs}  # nó raiz: pronto
-                                else:
-                                    # condicional: estados mudam, CPT precisa ser refeita por configuração
-                                    _qbn_resize_cpt_for_new_card(info, int(n_points))
-                    
-                                st.success("Discretização aplicada.")
-                                st.rerun()
 
                     
         
@@ -4452,6 +4363,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
