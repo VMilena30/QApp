@@ -3606,12 +3606,14 @@ def main():
             
                 with col_edit:
                     nodes = list(st.session_state.qbn["nodes"].keys())
+                
                     if nodes and st.session_state.qbn["selected"]:
                         nsel = st.session_state.qbn["selected"]
                         info = st.session_state.qbn["nodes"][nsel]
+                
                         st.subheader(textos_inf["edicao_no"])
                         st.caption(textos_inf["edicao_no_desc"])
-                        
+                
                         parent_opts = [n for n in nodes if n != nsel]
                         parents = st.multiselect(
                             textos_inf["pais_do_no"],
@@ -3619,48 +3621,62 @@ def main():
                             default=info.get("parents", []),
                             help=textos_inf["pais_do_no_help"],
                         )
-                        
                         info["parents"] = parents
-                        # probs editor
+                
                         parents_now = info.get("parents", [])
-                        st.markdown(f"**{textos_inf['probs_raiz']}**" if len(parents_now) == 0 else f"**{textos_inf['cpt']}**")
+                
+                        # título do editor
+                        st.markdown(
+                            f"**{textos_inf['probs_raiz']}**" if len(parents_now) == 0 else f"**{textos_inf['cpt']}**"
+                        )
+                
+                        # ----------------------------
+                        # Build editor dataframe
+                        # ----------------------------
+                        if len(parents_now) == 0:
+                            df = pd.DataFrame({
+                                "state": info["states"],
+                                "prob": info.get("cpt", {}).get((), [1.0 / len(info["states"])] * len(info["states"]))
+                            })
+                
+                            edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_root_{nsel}")
+                            probs = _qbn_normalize_row(edited["prob"].tolist())
+                            info["cpt"] = {(): probs}
+                            st.caption(textos_inf["caption_probs"])
+                
+                        else:
+                            parent_states = [st.session_state.qbn["nodes"][p]["states"] for p in parents_now]
+                            combos = list(itertools.product(*parent_states))
+                
+                            rows = []
+                            for comb in combos:
+                                row = {f"{parents_now[i]}": comb[i] for i in range(len(parents_now))}
+                                key = tuple(comb)
+                
+                                probs = info.get("cpt", {}).get(key)
+                                if probs is None:
+                                    probs = [1.0 / len(info["states"])] * len(info["states"])
+                
+                                for j, stt in enumerate(info["states"]):
+                                    row[stt] = probs[j]
+                
+                                rows.append(row)
+                
+                            df = pd.DataFrame(rows)
+                            edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_cpt_{nsel}")
+                
+                            cpt = {}
+                            for _, r in edited.iterrows():
+                                key = tuple(r[p] for p in parents_now)
+                                probs = [float(r[stt]) for stt in info["states"]]
+                                cpt[key] = _qbn_normalize_row(probs)
+                
+                            info["cpt"] = cpt
+                            st.caption(textos_inf["caption_cpt"])
+                
                     else:
-                        st.info(textos_inf["sem_nos"])                        
+                        st.info(textos_inf["sem_nos"])
 
-                    
-
-        
-                    # Build editor dataframe
-                    if len(parents) == 0:
-                        df = pd.DataFrame({"state": info["states"], "prob": info["cpt"].get((), [1.0 / len(info["states"])] * len(info["states"]))})
-                        edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_root_{nsel}")
-                        probs = _qbn_normalize_row(edited["prob"].tolist())
-                        info["cpt"] = {(): probs}
-                        st.caption(textos_inf["caption_probs"])
-                    else:
-                        # create all parent combinations
-                        parent_states = [st.session_state.qbn["nodes"][p]["states"] for p in parents]
-                        combos = list(itertools.product(*parent_states))
-                        rows = []
-                        for comb in combos:
-                            row = {f"{parents[i]}": comb[i] for i in range(len(parents))}
-                            key = tuple(comb)
-                            probs = info["cpt"].get(key)
-                            if probs is None:
-                                probs = [1.0 / len(info["states"])] * len(info["states"])
-                            for j, stt in enumerate(info["states"]):
-                                row[stt] = probs[j]
-                            rows.append(row)
-                        df = pd.DataFrame(rows)
-                        edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_cpt_{nsel}")
-                        # write back
-                        cpt = {}
-                        for _, r in edited.iterrows():
-                            key = tuple(r[p] for p in parents)
-                            probs = [float(r[stt]) for stt in info["states"]]
-                            cpt[key] = _qbn_normalize_row(probs)
-                        info["cpt"] = cpt
-                        st.caption(textos_inf["caption_cpt"])
         
                 st.divider()
 
@@ -4365,6 +4381,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
