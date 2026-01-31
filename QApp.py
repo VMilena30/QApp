@@ -3487,9 +3487,7 @@ def main():
                         index=0,
                         key="qbn_new_node_dmethod_label",
                     )
-                    method = "equal"
-                    if method_label == textos_inf["dist_method_quantile"]:
-                        method = "quantile"
+                    method = "equal" if method_label == textos_inf["dist_method_quantile"]: method = "quantile"
             
                     q_low, q_high = st.slider(
                         textos_inf["dist_quantile_range"],
@@ -3582,27 +3580,27 @@ def main():
                         st.rerun()
 
         
-                nodes = list(st.session_state.qbn["nodes"].keys())
-                if nodes:
-                    sel = st.selectbox(textos_inf["selecionar_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
-                    st.session_state.qbn["selected"] = sel
-        
-                    c1, c2 = st.columns(2)
-                    with c1:
-                        if st.button(textos_inf["remover_no"]):
-                            # remove node + remove as parent from others
-                            del st.session_state.qbn["nodes"][sel]
-                            for n2 in list(st.session_state.qbn["nodes"].keys()):
-                                ps = st.session_state.qbn["nodes"][n2]["parents"]
-                                st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
-                            st.session_state.qbn["selected"] = (list(st.session_state.qbn["nodes"].keys())[0] if st.session_state.qbn["nodes"] else None)
-                            st.rerun()
-                    with c2:
-                        if st.button(textos_inf["limpar_rede"]):
-                            st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
-                            st.rerun()
-                else:
-                    st.info(textos_inf["sem_nos"])
+            nodes = list(st.session_state.qbn["nodes"].keys())
+            if nodes:
+                sel = st.selectbox(textos_inf["selecionar_no"], options=nodes, index=nodes.index(st.session_state.qbn["selected"]) if st.session_state.qbn["selected"] in nodes else 0)
+                st.session_state.qbn["selected"] = sel
+    
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button(textos_inf["remover_no"]):
+                        # remove node + remove as parent from others
+                        del st.session_state.qbn["nodes"][sel]
+                        for n2 in list(st.session_state.qbn["nodes"].keys()):
+                            ps = st.session_state.qbn["nodes"][n2]["parents"]
+                            st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
+                        st.session_state.qbn["selected"] = (list(st.session_state.qbn["nodes"].keys())[0] if st.session_state.qbn["nodes"] else None)
+                        st.rerun()
+                with c2:
+                    if st.button(textos_inf["limpar_rede"]):
+                        st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                        st.rerun()
+            else:
+                st.info(textos_inf["sem_nos"])
         
             with col_edit:
                 nodes = list(st.session_state.qbn["nodes"].keys())
@@ -4452,6 +4450,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
