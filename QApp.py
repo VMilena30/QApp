@@ -3414,7 +3414,7 @@ def main():
                 st.subheader(textos_inf["def_nos"])
                 st.caption(textos_inf["def_nos_desc"])
             
-                with st.form("form_add_node"):
+                with st.container(border=True):
                     nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
                 
                     is_cont = st.checkbox(
@@ -3479,7 +3479,6 @@ def main():
                             help=textos_inf.get("dist_points_help", ""),
                             key="qbn_new_node_npoints",
                         )
-
                 
                         method_label = st.selectbox(
                             textos_inf["dist_method"],
@@ -3507,7 +3506,7 @@ def main():
                             key="qbn_new_node_autoroot",
                         )
                 
-                        # preview
+                        # preview (agora atualiza ao vivo)
                         try:
                             dist = _qbn_make_scipy_dist(dist_key, params)
                             edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), method, float(q_low), float(q_high))
@@ -3535,14 +3534,14 @@ def main():
                             "auto_root": bool(auto_root),
                         }
                 
-                    submitted = st.form_submit_button(textos_inf["add_no"])
+                    # ✅ botão normal (fora do form)
+                    submitted = st.button(textos_inf["add_no"], key="qbn_add_node_btn")
                 
                     if submitted:
                         nome = (nome or "").strip()
                         if nome and (nome not in st.session_state.qbn["nodes"]):
                 
                             if cont_payload and cont_payload.get("enabled", False):
-                                # discretize now
                                 dist = _qbn_make_scipy_dist(cont_payload["dist"], cont_payload["params"])
                                 edges, mids, probs = _qbn_discretize_continuous(
                                     dist,
@@ -3553,7 +3552,6 @@ def main():
                                 )
                 
                                 states = _qbn_states_from_points(int(cont_payload["n_points"]))
-                                # initial marginal: either from discretization or uniform
                                 init_probs = probs if cont_payload.get("auto_root", True) else ([1.0 / len(states)] * len(states))
                 
                                 st.session_state.qbn["nodes"][nome] = {
@@ -3561,7 +3559,6 @@ def main():
                                     "states": states,
                                     "parents": [],
                                     "cpt": {(): init_probs},
-                                    # continuous metadata (optional, used for UI/traceability)
                                     "continuous": True,
                                     "continuous_dist": cont_payload["dist"],
                                     "continuous_params": cont_payload["params"],
@@ -4381,6 +4378,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
