@@ -800,7 +800,7 @@ TEXTOS_INF = {
         "shots": "Shots (Quântico / Monte Carlo)",
         "seed": "Seed (Monte Carlo)",
         "plots": "Gráficos",
-        "topk": "Top-K outcomes (0 = todos)",
+        "topk": "Top-N outcomes (0 = todos)",
         "annotate": "Anotar barras (%)",
         "circuito_ok": "Circuito gerado com sucesso.",
         
@@ -809,6 +809,11 @@ TEXTOS_INF = {
         "aa_enable": "Habilitar AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
+        "aa_desc": "Opcional. Use AA para tentar aumentar a chance de medir eventos raros. Em geral, vale a pena quando as probabilidades são pequenas.",
+        "aa_enable_help": "Ative para rodar também a versão quântica com Amplitude Amplification (além de shots padrão).",
+        "aa_k_manual_help": "Se marcado, você escolhe k. Se desmarcado, o software usa um valor automático.",
+        "aa_k_help": "Número de iterações de AA. k maior pode ajudar, mas também pode piorar se passar do ponto.",
+        "aa_tip": "Dica: se você não sabe qual k usar, deixe o modo automático.",
 
         # Ação
         "run": "Rodar inferência",
@@ -963,15 +968,26 @@ TEXTOS_INF = {
         "shots": "Shots (Quantum / Monte Carlo)",
         "seed": "Seed (Monte Carlo)",
         "plots": "Plots",
-        "topk": "Top-K outcomes (0 = all)",
+        "topk": "Top-N outcomes (0 = all)",
         "annotate": "Annotate bars (%)",
         "circuito_ok": "Circuit generated successfully.",
+        "exec_desc": "Ajuste como a inferência será executada. Se não tiver certeza, mantenha os valores padrão.",
+        "shots_help": "Número de amostras. Mais shots = resultados mais estáveis, porém mais lentos.",
+        "seed_help": "Semente do Monte Carlo (reprodutibilidade). Só afeta Monte Carlo.",
+        "topk_help": "Mostra apenas os Top-N outcomes no gráfico (0 = mostra todos).",
+        "annotate_help": "Mostra o valor (%) em cima de cada barra do gráfico.",
+
 
         # Amplitude Amplification
         "aa": "Amplitude Amplification",
         "aa_enable": "Enable AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
+        "aa_desc": "Optional. Use AA to increase the chance of measuring rare events. It is most useful when probabilities are small.",
+        "aa_enable_help": "Enable to also run the quantum version with Amplitude Amplification (in addition to standard shots).",
+        "aa_k_manual_help": "If checked, you choose k. If unchecked, the app uses an automatic value.",
+        "aa_k_help": "Number of AA iterations. Larger k may help, but can also hurt if it overshoots.",
+        "aa_tip": "Tip: if you are unsure about k, keep automatic mode.",
 
         # Action
         "run": "Run inference",
@@ -3335,6 +3351,7 @@ def main():
             
             st.markdown("---")
             st.subheader(textos_inf["sidebar_execucao"])
+            st.caption(textos_inf["exec_desc"])
             
             colA, colB, colC = st.columns(3)
             
@@ -3345,6 +3362,7 @@ def main():
                     max_value=200000,
                     value=int(st.session_state.get("qbn_shots", 2000)),
                     step=100,
+                    help=textos_inf["shots_help"],
                 )
                 st.session_state["qbn_shots"] = int(shots)
             
@@ -3355,6 +3373,7 @@ def main():
                     max_value=10**9,
                     value=int(st.session_state.get("qbn_seed", 123)),
                     step=1,
+                    help=textos_inf["seed_help"],
                 )
                 st.session_state["qbn_seed"] = int(seed)
             
@@ -3365,6 +3384,7 @@ def main():
                     max_value=200,
                     value=int(st.session_state.get("qbn_topk", 20)),
                     step=1,
+                    help=textos_inf["topk_help"],
                 )
                 st.session_state["qbn_topk"] = int(topk)
             
@@ -3376,6 +3396,7 @@ def main():
                 annotate = st.checkbox(
                     textos_inf["annotate"],
                     value=bool(st.session_state.get("qbn_annotate", True)),
+                    help=textos_inf["annotate_help"]
                 )
                 st.session_state["qbn_annotate"] = bool(annotate)
             
@@ -3384,16 +3405,19 @@ def main():
             # ----------------------------
             st.markdown("---")
             st.subheader(textos_inf["aa"])
+            st.caption(textos_inf["aa_desc"])
             
             aa_enable = st.checkbox(
                 textos_inf["aa_enable"],
                 value=bool(st.session_state.get("qbn_aa_enable", True)),
+                help=textos_inf["aa_enable_help"],
             )
             st.session_state["qbn_aa_enable"] = bool(aa_enable)
             
             aa_k_manual = st.checkbox(
                 textos_inf["aa_k_manual"],
                 value=bool(st.session_state.get("qbn_aa_k_manual", False)),
+                help=textos_inf["aa_k_manual_help"],
             )
             st.session_state["qbn_aa_k_manual"] = bool(aa_k_manual)
             
@@ -3407,11 +3431,13 @@ def main():
                             max_value=50,
                             value=int(st.session_state.get("qbn_aa_k", 1)),
                             step=1,
+                            help=textos_inf["aa_k_help"],
                         )
                     )
                     st.session_state["qbn_aa_k"] = int(aa_k)
                 else:
                     st.caption(textos_inf["aa"])  # texto explicativo (opcional)
+                    st.info(textos_inf["aa_tip"])
 
             
             st.markdown("")
@@ -3934,6 +3960,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
