@@ -712,7 +712,7 @@ TEXTOS_INF = {
         - **Exata** (quando viável)
         - **Monte Carlo**
         - **Quântico (shots)**
-        - **Quântico + Amplitude Amplification (AA)** *(opcional)*
+        - **Quântico + Amplitude Amplification (AA)**
         
         ### Intuição do método quântico (alto nível)
         A ideia é representar a BN como um **circuito quântico**:
@@ -805,7 +805,7 @@ TEXTOS_INF = {
         "circuito_ok": "Circuito gerado com sucesso.",
         
         # Amplitude Amplification
-        "aa": "Amplitude Amplification (opcional)",
+        "aa": "Amplitude Amplification",
         "aa_enable": "Habilitar AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
@@ -875,7 +875,7 @@ TEXTOS_INF = {
         - **Exact** (when feasible)
         - **Monte Carlo**
         - **Quantum (shots)**
-        - **Quantum + Amplitude Amplification (AA)** *(optional)*
+        - **Quantum + Amplitude Amplification (AA)** 
         
         ### Quantum approach (high-level intuition)
         The idea is to represent the BN as a **quantum circuit**:
@@ -968,7 +968,7 @@ TEXTOS_INF = {
         "circuito_ok": "Circuit generated successfully.",
 
         # Amplitude Amplification
-        "aa": "Amplitude Amplification (optional)",
+        "aa": "Amplitude Amplification",
         "aa_enable": "Enable AA",
         "aa_k": "k",
         "aa_k_manual": "k (manual)",
@@ -3934,6 +3934,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
