@@ -807,7 +807,7 @@ TEXTOS_INF = {
         "shots_help": "Número de amostras. Mais shots = resultados mais estáveis, porém mais lentos.",
         "seed_help": "Semente do Monte Carlo (reprodutibilidade). Só afeta Monte Carlo.",
         "topk_help": "Mostra apenas os Top-N outcomes no gráfico (0 = mostra todos).",
-        "annotate_help": "Mostra o valor (%) em cima de cada barra do gráfico."
+        "annotate_help": "Mostra o valor (%) em cima de cada barra do gráfico.",
         
         # Amplitude Amplification
         "aa": "Amplitude Amplification",
@@ -3965,6 +3965,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
