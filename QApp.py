@@ -697,36 +697,51 @@ TEXTOS_INF = {
         #"titulo_app": "Inferência CQBN",
         #"subtitulo_app": "Monte a rede pela interface e rode inferência clássica e quântica.",
         
-        "intro_qbn": """
-        **Redes Bayesianas (Clássicas e Quânticas) — Inferência**
+        "intro_qbn": r"""
+        ## Redes Bayesianas (Clássicas e Quânticas) — Inferência
         
-        Redes Bayesianas (BNs) são modelos probabilísticos em grafo (DAG) para representar dependências entre variáveis e atualizar crenças quando novas evidências chegam. Na engenharia de confiabilidade e risco, elas são úteis para: diagnóstico de falhas e causas-raiz, propagação de incertezas, avaliação de risco/segurança, e apoio à decisão em manutenção e inspeção (inferência “forward” e “inverse”).:contentReference[oaicite:0]{index=0}
+        Redes Bayesianas (BNs) são grafos direcionados acíclicos (DAGs) que representam dependências probabilísticas entre variáveis.  
+        Na prática, elas permitem **atualizar probabilidades** quando você observa evidências (por exemplo: um sensor “falhou”, um teste “passou”, um componente “degradou”).
         
-        **O que este módulo faz**
-        - Você monta a BN (nós, estados, pais e CPTs), define evidências e faz consultas.
-        - O software compara quatro abordagens na mesma tela: **Exata** (quando viável), **Monte Carlo**, **Quantum (shots)** e **Quantum + AA**.
+        ### O que você faz neste módulo
+        - **Constrói a BN** (nós, estados, pais e CPTs).
+        - **Define evidências** (o que foi observado).
+        - **Consulta probabilidades** (posteriores) e compara métodos.
         
-        **Ideia do método quântico (Borujeni et al., 2021)**
-        O trabalho propõe um procedimento sistemático para representar BNs em circuitos quânticos (gate model), onde:
-        - nós raiz são mapeados com rotações **RY**;
-        - nós condicionais usam rotações **controladas** (CRY/CnRY), com decomposição em portas elementares e uso de **ancillas** quando há múltiplos controles.:contentReference[oaicite:1]{index=1}:contentReference[oaicite:2]{index=2}
+        ### Métodos comparados na mesma tela
+        - **Exata** (quando viável)
+        - **Monte Carlo**
+        - **Quântico (shots)**
+        - **Quântico + Amplitude Amplification (AA)** *(opcional)*
         
-        **Equações essenciais (binário)**
-        Para um nó binário \(V_i\\) (estado 0/1), o ângulo de rotação pode ser calculado por:
-        \\[
-        \\theta = 2\\,\\tan^{-1}\\Big(\\sqrt{\\tfrac{P(V_i=1)}{P(V_i=0)}}\\Big)
-        \\]
-        e, no caso condicional, a mesma forma é usada para cada configuração dos pais \(\\Pi_i\\).:contentReference[oaicite:3]{index=3}
+        ### Intuição do método quântico (alto nível)
+        A ideia é representar a BN como um **circuito quântico**:
+        - nós raiz são preparados com rotações **RY**;
+        - nós condicionais usam rotações **controladas** (ex.: **CRY**, **CnRY**);
+        - quando há muitos controles, pode haver **decomposição** e uso de **ancillas**.
         
-        **Recursos (qubits)**
-        - Para nós com mais de dois estados: \(m_i=\\lceil\\log_2(n_i)\\rceil\\) qubits representam um nó com \(n_i\\) estados.:contentReference[oaicite:4]{index=4}
-        - Para BNs binárias, o total de qubits pode ser estimado como:
-        \\[
-        m_{BN,2}= s + \\max_i |\\Pi_{V_i}| - 1
-        \\]
-        onde \(s\\) é o número de nós e o termo extra corresponde às ancillas para rotações multi-controladas.:contentReference[oaicite:5]{index=5}
+        ### Equação essencial (nó binário)
+        Para um nó binário $V_i \in \{0,1\}$, o ângulo da rotação pode ser obtido por:
         
-        *Referência:* Borujeni, S. E. et al. **Quantum circuit representation of Bayesian networks** (Expert Systems With Applications, 2021).:contentReference[oaicite:6]{index=6}
+        $$
+        \theta = 2\arctan\left(\sqrt{\frac{P(V_i=1)}{P(V_i=0)}}\right)
+        $$
+        
+        No caso **condicional**, a mesma forma é aplicada **para cada configuração dos pais** $\Pi_i$.
+        
+        ### Recursos (qubits): regra rápida
+        - Se um nó tem $n_i$ estados, você precisa de  
+          $$m_i=\lceil \log_2(n_i)\rceil$$
+          qubits para representá-lo.
+        - Em BNs **binárias**, uma estimativa simples para o total é:
+        
+        $$
+        m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
+        $$
+        
+        onde $s$ é o número de nós e o termo extra reflete ancillas usadas em rotações multi-controladas.
+        
+        **Referência:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
 
         # Seções principais
@@ -824,36 +839,51 @@ TEXTOS_INF = {
         "pagina_inf": "Quantum Bayesian Networks",
         #"titulo_app": "CQBN Inference",
         #"subtitulo_app": "Build the network and run classical and quantum inference.",
-            "intro_qbn": """
-        **Bayesian Networks (Classical and Quantum) — Inference**
+        "intro_qbn_en": r"""
+        ## Bayesian Networks (Classical and Quantum) — Inference
         
-        Bayesian Networks (BNs) are probabilistic DAG models that represent dependencies among variables and update beliefs as evidence becomes available. In reliability and risk engineering, they are commonly used for fault diagnosis and root-cause reasoning, uncertainty propagation, risk/safety assessment, and maintenance/inspection decision support (forward and inverse inference).:contentReference[oaicite:7]{index=7}
+        Bayesian Networks (BNs) are directed acyclic graphs (DAGs) that represent probabilistic dependencies among variables.  
+        In practice, they let you **update probabilities** when you observe evidence (e.g., a sensor “failed”, a test “passed”, a component “degraded”).
         
-        **What this module does**
-        - You define the BN (nodes, states, parents, CPTs), set evidence, and run queries.
-        - The app compares four approaches on one screen: **Exact** (when feasible), **Monte Carlo**, **Quantum (shots)**, and **Quantum + AA**.
+        ### What you do in this module
+        - **Build the BN** (nodes, states, parents, and CPTs).
+        - **Set evidence** (what has been observed).
+        - **Query posterior probabilities** and compare methods.
         
-        **Quantum method overview (Borujeni et al., 2021)**
-        The paper presents a systematic procedure to represent BNs using gate-based quantum circuits, where:
-        - root nodes are encoded via **RY** rotations;
-        - conditional nodes are encoded via **controlled rotations** (CRY/CnRY), decomposed into elementary gates and supported by **ancillas** for multi-controlled rotations.:contentReference[oaicite:8]{index=8}:contentReference[oaicite:9]{index=9}
+        ### Methods compared side by side
+        - **Exact** (when feasible)
+        - **Monte Carlo**
+        - **Quantum (shots)**
+        - **Quantum + Amplitude Amplification (AA)** *(optional)*
         
-        **Key equations (binary case)**
-        For a binary node \(V_i\\) (0/1), the rotation angle can be computed as:
-        \\[
-        \\theta = 2\\,\\tan^{-1}\\Big(\\sqrt{\\tfrac{P(V_i=1)}{P(V_i=0)}}\\Big)
-        \\]
-        and the conditional case applies the same form for each parent configuration \(\\Pi_i\\).:contentReference[oaicite:10]{index=10}
+        ### Quantum approach (high-level intuition)
+        The idea is to represent the BN as a **quantum circuit**:
+        - root nodes are prepared with **RY** rotations;
+        - conditional nodes use **controlled rotations** (e.g., **CRY**, **CnRY**);
+        - when there are many controls, the circuit may require **decomposition** and **ancilla qubits**.
         
-        **Resources (qubits)**
-        - For multi-state nodes: \(m_i=\\lceil\\log_2(n_i)\\rceil\\) qubits represent a node with \(n_i\\) states.:contentReference[oaicite:11]{index=11}
-        - For binary BNs, an estimate of total qubits is:
-        \\[
-        m_{BN,2}= s + \\max_i |\\Pi_{V_i}| - 1
-        \\]
-        where \(s\\) is the number of nodes and the extra term accounts for ancillas used in multi-controlled rotations.:contentReference[oaicite:12]{index=12}
+        ### Key equation (binary node)
+        For a binary node $V_i \in \{0,1\}$, the rotation angle can be computed as:
         
-        *Reference:* Borujeni, S. E. et al. **Quantum circuit representation of Bayesian networks** (Expert Systems With Applications, 2021).:contentReference[oaicite:13]{index=13}
+        $$
+        \theta = 2\arctan\left(\sqrt{\frac{P(V_i=1)}{P(V_i=0)}}\right)
+        $$
+        
+        In the **conditional** case, the same formula is applied **for each parent configuration** $\Pi_i$.
+        
+        ### Resources (qubits): quick rule
+        - If a node has $n_i$ states, you need  
+          $$m_i=\lceil \log_2(n_i)\rceil$$
+          qubits to represent it.
+        - For **binary BNs**, a simple estimate of the total is:
+        
+        $$
+        m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
+        $$
+        
+        where $s$ is the number of nodes and the extra term reflects ancillas used by multi-controlled rotations.
+        
+        **Reference:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
 
         # Main sections
@@ -3821,6 +3851,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
