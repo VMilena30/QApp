@@ -753,10 +753,18 @@ TEXTOS_INF = {
         4) **Defina evidências e consulta**: escolha os nós observados (e seus estados) e os nós de consulta, depois clique em **Rodar inferência**.
         """,
         
-                
-                # Seções principais
-                "def_nos": "Definição dos nós",
-                "evidencia": "Evidência e consulta",
+        "def_nos_desc": "Crie os nós da rede. Comece pelos nós principais (ex.: Falha, Causa, Sensor).",
+        "nome_no_help": "Use um identificador curto e único (ex.: A, B, Pump, Sensor).",
+        "card_no_help": "Número de estados do nó (mínimo 2). Ex.: 2 = {s0,s1}.",
+        "edicao_no_desc": "Selecione um nó para definir pais e preencher probabilidades (marginal ou CPT).",
+        "pais_do_no_help": "Escolha quais nós influenciam este nó.",
+        "rede_montada_desc": "Visualize o grafo e revise as probabilidades antes de rodar a inferência.",
+        "evidencia_desc": "Evidência = nós observados. Para cada nó escolhido, selecione o estado observado.",
+        "query_desc": "Consulta = nós para os quais você quer obter as probabilidades posteriores.",
+
+        # Seções principais
+        "def_nos": "Definição dos nós",
+        "evidencia": "Evidência e consulta",
 
         # Visualização da rede (NOVO)
         "rede_montada": "Rede Bayesiana montada",
@@ -776,7 +784,7 @@ TEXTOS_INF = {
         
         # Estrutura
         "pais_do_no": "Pais do nó",
-
+        
         # Probabilidades
         "probs_raiz": "Probabilidades marginais (nó raiz)",
         "cpt": "Tabela de Probabilidades Condicionais (CPT)",
@@ -904,6 +912,14 @@ TEXTOS_INF = {
         4) **Set evidence and queries**: select observed nodes (and their states) and query nodes, then click **Run inference**.
         """,
 
+        "def_nos_desc": "Create the network nodes. Start with the main variables (e.g., Failure, Cause, Sensor).",
+        "nome_no_help": "Use a short, unique identifier (e.g., A, B, Pump, Sensor).",
+        "card_no_help": "Number of states (min 2). Example: 2 = {s0,s1}.",
+        "edicao_no_desc": "Select a node to define parents and fill probabilities (marginal or CPT).",
+        "pais_do_no_help": "Select which nodes influence this node (incoming edges).",
+        "rede_montada_desc": "Inspect the graph and probabilities before running inference.",
+        "evidencia_desc": "Evidence = observed nodes. For each selected node, choose the observed state.",
+        "query_desc": "Queries = nodes you want posterior probabilities for.",
 
         
         # Main sections
@@ -3115,10 +3131,22 @@ def main():
         
             with col_list:
                 st.subheader(textos_inf["def_nos"])
+                st.caption(textos_inf["def_nos_desc"])
+            
                 with st.form("form_add_node"):
-                    nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
-                    card = st.number_input(textos_inf["card_no"], min_value=2, max_value=8, value=2, step=1,  key="qbn_new_node_card")
-                
+                    nome = st.text_input(
+                        textos_inf["nome_no"],
+                        value="",
+                        key="qbn_new_node_name",
+                        help=textos_inf["nome_no_help"],
+                    )
+                    card = st.number_input(
+                        textos_inf["card_no"],
+                        min_value=2, max_value=8, value=2, step=1,
+                        key="qbn_new_node_card",
+                        help=textos_inf["card_no_help"],
+                    )
+                    
                     submitted = st.form_submit_button(textos_inf["add_no"])
                     if submitted:
                         nome = (nome or "").strip()
@@ -3160,10 +3188,16 @@ def main():
                     nsel = st.session_state.qbn["selected"]
                     info = st.session_state.qbn["nodes"][nsel]
                     st.subheader(textos_inf["edicao_no"])
-        
-                    # parents
+                    st.caption(textos_inf["edicao_no_desc"])
+                    
                     parent_opts = [n for n in nodes if n != nsel]
-                    parents = st.multiselect(textos_inf["pais_do_no"], options=parent_opts, default=info.get("parents", []))
+                    parents = st.multiselect(
+                        textos_inf["pais_do_no"],
+                        options=parent_opts,
+                        default=info.get("parents", []),
+                        help=textos_inf["pais_do_no_help"],
+                    )
+                    
                     info["parents"] = parents
         
                     # probs editor
@@ -3204,6 +3238,7 @@ def main():
                 st.divider()
 
                 st.subheader(textos_inf.get("rede_montada", "Rede Bayesiana montada"))
+                st.caption(textos_inf["rede_montada_desc"])
                 
                 bn_nodes = st.session_state.qbn["nodes"]
                 
@@ -3226,7 +3261,8 @@ def main():
                             parents = info.get("parents", [])
                 
                             st.markdown(f"**{n}**")
-                            st.caption(f"States: {states} | Parents: {parents if parents else '-'}")
+                            st.caption(f"{textos_inf['lbl_states']}: {states} | {textos_inf['lbl_parents']}: {parents if parents else '-'}")
+
                 
                             if len(parents) == 0:
                                 # root marginal
@@ -3259,7 +3295,7 @@ def main():
 
                 st.divider()
                 st.subheader(textos_inf["evidencia"])
-        
+                st.caption(textos_inf["evidencia_desc"])
                 # evidence selection (applied to all methods; AA uses it explicitly)
                 nodes = list(st.session_state.qbn["nodes"].keys())
                 ev_nodes = st.multiselect(textos_inf["nos_evidenciados"], options=nodes, default=[])
@@ -3270,6 +3306,7 @@ def main():
         
                 st.divider()
                 # query nodes
+                st.caption(textos_inf["query_desc"])
                 query_nodes = st.multiselect("Query nodes", options=nodes, default=nodes[:1] if nodes else [])
                 if not query_nodes and nodes:
                     query_nodes = [nodes[0]]
@@ -3872,6 +3909,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
