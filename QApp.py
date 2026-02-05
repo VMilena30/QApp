@@ -34,39 +34,70 @@ st.set_page_config(
     layout="wide"
 )
 
+def load_logo_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+logo_base64 = load_logo_base64("bar.png")
+
+BAR_COLOR = "#0d4376"
+BAR_HEIGHT = 64
+
 st.markdown(
-    """
+    f"""
     <style>
-    .topbar {
-        width: 100%;
-        height: 60px;
-        background-color: #7A00CC; /* ← cor da barra */
-        display: flex;
-        align-items: center;
-        padding-left: 30px;
-        box-sizing: border-box;
-    }
+      /* Remove margens padrão do Streamlit */
+      .block-container {{
+          padding-top: 0rem !important;
+          padding-left: 0rem !important;
+          padding-right: 0rem !important;
+          max-width: 100% !important;
+      }}
 
-    .topbar img {
-        height: 32px;
-        margin-right: 12px;
-    }
+      /* Remove header padrão */
+      header[data-testid="stHeader"] {{
+          display: none;
+      }}
 
-    .topbar-title {
-        color: white;
-        font-size: 22px;
-        font-weight: 600;
-        font-family: "Segoe UI", sans-serif;
-    }
+      /* Topbar fixa */
+      .qx-topbar {{
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          height: {BAR_HEIGHT}px;
+          background-color: {BAR_COLOR};
+          display: flex;
+          align-items: center;
+          padding: 0 28px;
+          z-index: 9999;
+          box-sizing: border-box;
+      }}
 
-    /* remove espaço extra do topo */
-    header {visibility: hidden;}
+      .qx-topbar img {{
+          height: 36px;
+          margin-right: 12px;
+      }}
+
+      .qx-title {{
+          color: white;
+          font-size: 22px;
+          font-weight: 700;
+          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      }}
+
+      /* Espaço para não cobrir o conteúdo */
+      .content-offset {{
+          padding-top: {BAR_HEIGHT + 20}px;
+      }}
     </style>
 
-    <div class="topbar">
-        <img src="https://raw.githubusercontent.com/SEU_REPO/logo.png">
-        <div class="topbar-title">QXplore</div>
+    <div class="qx-topbar">
+        <img src="data:image/png;base64,{logo_base64}">
+        <div class="qx-title">QXplore</div>
     </div>
+
+    <div class="content-offset"></div>
     """,
     unsafe_allow_html=True
 )
@@ -4392,6 +4423,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
