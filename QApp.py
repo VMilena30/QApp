@@ -1576,6 +1576,7 @@ def main():
                 .centered {
                     display: flex;
                     flex-direction: column;
+                    margin-top: -10px;  
                     align-items: center;
                     justify-content: start;
                 }
@@ -4417,6 +4418,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
