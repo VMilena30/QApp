@@ -163,7 +163,7 @@ st.markdown("""
 
 if st.session_state.step == "login":
     # espaço vertical pra centralizar “na mão” sem quebrar layout
-    st.markdown("<div style='height:18vh'></div>", unsafe_allow_html=True)
+    st.markdown("<div style='height:1vh'></div>", unsafe_allow_html=True)
 
     left, mid, right = st.columns([1.2, 1.0, 1.2])
 
@@ -4510,6 +4510,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
