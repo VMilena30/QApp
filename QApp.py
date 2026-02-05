@@ -158,7 +158,6 @@ if "step" not in st.session_state:
 
 st.markdown("""
 <style>
-  /* reduz um pouco o padding superior padrão do Streamlit nessa tela */
   section[data-testid="stMain"] .block-container{
     padding-top: 1rem !important;
   }
@@ -180,7 +179,6 @@ st.markdown("""
     opacity: 0.8;
     margin-bottom: 14px;
   }
-  /* botão ocupa a largura do card (opcional) */
   .stButton>button{
     width: 100%;
   }
@@ -192,15 +190,15 @@ if st.session_state.step == "login":
 
     with mid:
         st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-        st.markdown("<div class='login-title'>Acesso ao QXplore</div>", unsafe_allow_html=True)
-        st.markdown("<div class='login-sub'>Preencha para continuar.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-title'>Access QXplore</div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-sub'>Please fill in the form to continue.</div>", unsafe_allow_html=True)
 
         with st.form("login_form", clear_on_submit=False):
-            name = st.text_input("Nome (opcional)")
-            email = st.text_input("E-mail *")
-            company = st.text_input("Empresa / Instituição *")
-            role = st.text_input("Cargo/Função (opcional)")
-            submitted = st.form_submit_button("Continuar")
+            name = st.text_input("Name (optional)")
+            email = st.text_input("Email *")
+            company = st.text_input("Company / Institution *")
+            role = st.text_input("Role / Position (optional)")
+            submitted = st.form_submit_button("Continue")
 
         if submitted:
             name_clean = (name or "").strip()
@@ -209,16 +207,26 @@ if st.session_state.step == "login":
             role_clean = (role or "").strip()
 
             if not email_clean or not company_clean:
-                st.error("Preencha pelo menos e-mail e empresa.")
+                st.error("Please provide at least your email and company.")
             elif not is_valid_email(email_clean):
-                st.error("E-mail inválido.")
+                st.error("Invalid email address.")
             else:
-                # horário (use local). Se preferir UTC, use datetime.utcnow()
                 created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                # salva nos 2 lugares: SQLite + CSV
-                save_registration(name_clean, email_clean, company_clean, role_clean, created_at)
-                append_csv_log(name_clean, email_clean, company_clean, role_clean, created_at)
+                save_registration(
+                    name_clean,
+                    email_clean,
+                    company_clean,
+                    role_clean,
+                    created_at
+                )
+                append_csv_log(
+                    name_clean,
+                    email_clean,
+                    company_clean,
+                    role_clean,
+                    created_at
+                )
 
                 st.session_state.user = {
                     "name": name_clean,
@@ -4547,6 +4555,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
