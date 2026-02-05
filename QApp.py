@@ -29,9 +29,6 @@ import json
 from typing import Dict, List, Tuple, Any, Optional
 import pandas as pd
 
-
-
-
 st.set_page_config(
     page_title="QXplore",
     page_icon="pesq.png",
@@ -138,72 +135,67 @@ def save_registration(name, email, company, role):
 
 init_db()
 
-if "authenticated" not in st.session_state:
-    st.session_state.authenticated = False
+if "step" not in st.session_state:
+    st.session_state.step = "login"
 
-# ---------- CSS do card ----------
+# CSS do card (aplicado ao container do meio via classe)
 st.markdown("""
 <style>
-  .login-wrap{
-    min-height: 75vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-  }
-  .login-card{
-    width: 380px;
-    max-width: calc(100vw - 48px);
+  div[data-testid="column"] .login-card{
     background: white;
-    padding: 20px 20px 10px 20px;
+    border: 1px solid rgba(0,0,0,0.10);
     border-radius: 14px;
-    border: 1px solid rgba(0,0,0,0.08);
+    padding: 22px 22px 16px 22px;
     box-shadow: 0 10px 26px rgba(0,0,0,0.10);
   }
   .login-title{
     font-size: 20px;
     font-weight: 800;
-    margin: 0 0 6px 0;
+    margin-bottom: 4px;
   }
   .login-sub{
     font-size: 13px;
     opacity: 0.8;
-    margin: 0 0 14px 0;
+    margin-bottom: 14px;
   }
 </style>
 """, unsafe_allow_html=True)
 
-if not st.session_state.authenticated:
-    st.markdown('<div class="login-wrap"><div class="login-card">', unsafe_allow_html=True)
-    st.markdown('<div class="login-title">Acesso ao QXplore</div>', unsafe_allow_html=True)
-    st.markdown('<div class="login-sub">Preencha para continuar.</div>', unsafe_allow_html=True)
+if st.session_state.step == "login":
+    # espaço vertical pra centralizar “na mão” sem quebrar layout
+    st.markdown("<div style='height:18vh'></div>", unsafe_allow_html=True)
 
-    with st.form("login_form"):
-        name = st.text_input("Nome (opcional)")
-        email = st.text_input("E-mail *")
-        company = st.text_input("Empresa / Instituição *")
-        role = st.text_input("Cargo/Função (opcional)")
-        submitted = st.form_submit_button("Entrar")
+    left, mid, right = st.columns([1.2, 1.0, 1.2])
 
-    if submitted:
-        if not email or not company:
-            st.error("Preencha pelo menos e-mail e empresa.")
-        elif not is_valid_email(email):
-            st.error("E-mail inválido.")
-        else:
-            save_registration(name.strip(), email.strip().lower(), company.strip(), role.strip())
-            st.session_state.authenticated = True
-            st.rerun()
+    with mid:
+        st.markdown("<div class='login-card'>", unsafe_allow_html=True)
+        st.markdown("<div class='login-title'>Acesso ao QXplore</div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-sub'>Preencha para continuar.</div>", unsafe_allow_html=True)
 
-    st.markdown("</div></div>", unsafe_allow_html=True)
+        with st.form("login_form", clear_on_submit=False):
+            name = st.text_input("Nome (opcional)")
+            email = st.text_input("E-mail *")
+            company = st.text_input("Empresa / Instituição *")
+            role = st.text_input("Cargo/Função (opcional)")
+            submitted = st.form_submit_button("Continuar")
 
-    # (opcional) debug pra achar o DB
-    with st.expander("Debug (onde está o banco?)"):
-        st.write("cwd:", os.getcwd())
-        st.write("db:", os.path.abspath(DB_PATH))
-        st.write("files:", os.listdir(os.getcwd()))
+        if submitted:
+            if not email or not company:
+                st.error("Preencha pelo menos e-mail e empresa.")
+            elif not is_valid_email(email):
+                st.error("E-mail inválido.")
+            else:
+                save_registration((name or "").strip(),
+                                  email.strip().lower(),
+                                  company.strip(),
+                                  (role or "").strip())
+                st.session_state.user = {"name": name, "email": email, "company": company, "role": role}
+                st.session_state.step = "lang"
+                st.rerun()
+
+        st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
-
 
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -4518,6 +4510,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
