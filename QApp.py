@@ -1704,6 +1704,7 @@ def mostrar_inf(textos):
 
 def main():
     import streamlit as st
+    import os
     aplicar_css_botoes()
     mostrar_logos_parceiros()
 
@@ -4585,6 +4586,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
