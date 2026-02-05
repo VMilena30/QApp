@@ -46,10 +46,9 @@ BAR_HEIGHT = 64
 st.markdown(
     f"""
     <style>
-      /* Não remover o header inteiro, só tirar o fundo */
+      /* NÃO esconda o header: ele ajuda a sidebar */
       header[data-testid="stHeader"] {{
           background: transparent;
-          height: 0px;
       }}
 
       /* Topbar fixa */
@@ -63,7 +62,8 @@ st.markdown(
           display: flex;
           align-items: center;
           padding: 0 28px;
-          z-index: 999;
+          z-index: 1000;
+          box-sizing: border-box;
       }}
 
       .qx-topbar img {{
@@ -78,9 +78,21 @@ st.markdown(
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       }}
 
-      /* Empurra só o conteúdo principal */
+      /* Empurra o MAIN para baixo da topbar */
       section[data-testid="stMain"] {{
-          padding-top: {BAR_HEIGHT + 20}px;
+          padding-top: {BAR_HEIGHT + 16}px;
+      }}
+
+      /* Empurra a SIDEBAR para baixo da topbar e garante que fique “por cima” */
+      aside[data-testid="stSidebar"] {{
+          top: {BAR_HEIGHT}px;
+          height: calc(100vh - {BAR_HEIGHT}px);
+          z-index: 1001;
+      }}
+
+      /* Ajuste do conteúdo interno da sidebar */
+      aside[data-testid="stSidebar"] > div {{
+          padding-top: 12px;
       }}
     </style>
 
@@ -4413,6 +4425,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
