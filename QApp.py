@@ -23,6 +23,8 @@ import re
 import sqlite3
 from datetime import datetime
 import os
+from datetime import datetime
+import csv
 #Adicionado por Lavínia - comentário para controle
 import itertools
 import json
@@ -102,8 +104,15 @@ st.markdown(
     unsafe_allow_html=True
 )
 
-DB_PATH = "qxplore_users.db"
+LOG_DIR = "registros"
+os.makedirs(LOG_DIR, exist_ok=True)
 
+DB_PATH = os.path.join(LOG_DIR, "qxplore_users.db")
+CSV_PATH = os.path.join(LOG_DIR, "acessos.csv")
+
+# =========================
+# 2) Banco (SQLite)
+# =========================
 def init_db():
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
@@ -123,24 +132,45 @@ def init_db():
 def is_valid_email(email: str) -> bool:
     return re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email or "") is not None
 
-def save_registration(name, email, company, role):
+def save_registration(name, email, company, role, created_at):
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
     cur.execute("""
         INSERT INTO registrations (name, email, company, role, created_at)
         VALUES (?, ?, ?, ?, ?)
-    """, (name, email, company, role, datetime.utcnow().isoformat()))
+    """, (name, email, company, role, created_at))
     con.commit()
     con.close()
 
+# =========================
+# 3) Log em CSV (append)
+# =========================
+def append_csv_log(name, email, company, role, created_at):
+    file_exists = os.path.exists(CSV_PATH)
+    with open(CSV_PATH, "a", newline="", encoding="utf-8") as f:
+        w = csv.writer(f)
+        if not file_exists:
+            w.writerow(["created_at", "name", "email", "company", "role"])
+        w.writerow([created_at, name, email, company, role])
+
 init_db()
 
+# =========================
+# 4) Estado
+# =========================
 if "step" not in st.session_state:
     st.session_state.step = "login"
 
-# CSS do card (aplicado ao container do meio via classe)
+# =========================
+# 5) CSS do card
+# =========================
 st.markdown("""
 <style>
+  /* reduz um pouco o padding superior padrão do Streamlit nessa tela */
+  section[data-testid="stMain"] .block-container{
+    padding-top: 1rem !important;
+  }
+
   div[data-testid="column"] .login-card{
     background: white;
     border: 1px solid rgba(0,0,0,0.10);
@@ -158,11 +188,17 @@ st.markdown("""
     opacity: 0.8;
     margin-bottom: 14px;
   }
+  /* botão ocupa a largura do card (opcional) */
+  .stButton>button{
+    width: 100%;
+  }
 </style>
 """, unsafe_allow_html=True)
 
+# =========================
+# 6) Tela de login
+# =========================
 if st.session_state.step == "login":
-
     left, mid, right = st.columns([1.2, 1.0, 1.2])
 
     with mid:
@@ -178,20 +214,39 @@ if st.session_state.step == "login":
             submitted = st.form_submit_button("Continuar")
 
         if submitted:
-            if not email or not company:
+            name_clean = (name or "").strip()
+            email_clean = (email or "").strip().lower()
+            company_clean = (company or "").strip()
+            role_clean = (role or "").strip()
+
+            if not email_clean or not company_clean:
                 st.error("Preencha pelo menos e-mail e empresa.")
-            elif not is_valid_email(email):
+            elif not is_valid_email(email_clean):
                 st.error("E-mail inválido.")
             else:
-                save_registration((name or "").strip(),
-                                  email.strip().lower(),
-                                  company.strip(),
-                                  (role or "").strip())
-                st.session_state.user = {"name": name, "email": email, "company": company, "role": role}
+                # horário (use local). Se preferir UTC, use datetime.utcnow()
+                created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                # salva nos 2 lugares: SQLite + CSV
+                save_registration(name_clean, email_clean, company_clean, role_clean, created_at)
+                append_csv_log(name_clean, email_clean, company_clean, role_clean, created_at)
+
+                st.session_state.user = {
+                    "name": name_clean,
+                    "email": email_clean,
+                    "company": company_clean,
+                    "role": role_clean,
+                    "created_at": created_at
+                }
                 st.session_state.step = "lang"
                 st.rerun()
 
         st.markdown("</div>", unsafe_allow_html=True)
+
+        # Debug opcional (remove depois)
+        with st.expander("Debug: onde está salvando?"):
+            st.write("DB:", os.path.abspath(DB_PATH))
+            st.write("CSV:", os.path.abspath(CSV_PATH))
 
     st.stop()
 
@@ -4508,6 +4563,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
