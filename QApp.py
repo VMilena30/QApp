@@ -101,6 +101,67 @@ st.markdown(
     unsafe_allow_html=True
 )
 
+DB_PATH = "qxplore_users.db"
+
+def init_db():
+    con = sqlite3.connect(DB_PATH)
+    cur = con.cursor()
+    cur.execute("""
+    CREATE TABLE IF NOT EXISTS registrations (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT,
+        email TEXT NOT NULL,
+        company TEXT NOT NULL,
+        role TEXT,
+        created_at TEXT NOT NULL
+    )
+    """)
+    con.commit()
+    con.close()
+
+def is_valid_email(email: str) -> bool:
+    return re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email) is not None
+
+def save_registration(name, email, company, role):
+    con = sqlite3.connect(DB_PATH)
+    cur = con.cursor()
+    cur.execute("""
+        INSERT INTO registrations (name, email, company, role, created_at)
+        VALUES (?, ?, ?, ?, ?)
+    """, (name, email, company, role, datetime.utcnow().isoformat()))
+    con.commit()
+    con.close()
+
+init_db()
+
+if "authenticated" not in st.session_state:
+    st.session_state.authenticated = False
+
+if not st.session_state.authenticated:
+    st.title("Acesso ao QXplore")
+    st.write("Preencha para continuar:")
+
+    with st.form("login_form"):
+        name = st.text_input("Nome (opcional)")
+        email = st.text_input("E-mail *")
+        company = st.text_input("Empresa / Instituição *")
+        role = st.text_input("Cargo/Função (opcional)")
+        submitted = st.form_submit_button("Entrar")
+
+    if submitted:
+        if not email or not company:
+            st.error("Preencha pelo menos e-mail e empresa.")
+            st.stop()
+        if not is_valid_email(email):
+            st.error("E-mail inválido.")
+            st.stop()
+
+        save_registration(name, email.strip().lower(), company.strip(), role.strip())
+        st.session_state.authenticated = True
+        st.rerun()
+
+    st.stop()
+
 
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -4415,6 +4476,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
