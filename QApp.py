@@ -123,7 +123,7 @@ def init_db():
     con.close()
 
 def is_valid_email(email: str) -> bool:
-    return re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email) is not None
+    return re.match(r"^[^@\s]+@[^@\s]+\.[^@\s]+$", email or "") is not None
 
 def save_registration(name, email, company, role):
     con = sqlite3.connect(DB_PATH)
@@ -140,9 +140,41 @@ init_db()
 if "authenticated" not in st.session_state:
     st.session_state.authenticated = False
 
+# ---------- CSS do card ----------
+st.markdown("""
+<style>
+  .login-wrap{
+    min-height: 75vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+  }
+  .login-card{
+    width: 380px;
+    max-width: calc(100vw - 48px);
+    background: white;
+    padding: 20px 20px 10px 20px;
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,0.08);
+    box-shadow: 0 10px 26px rgba(0,0,0,0.10);
+  }
+  .login-title{
+    font-size: 20px;
+    font-weight: 800;
+    margin: 0 0 6px 0;
+  }
+  .login-sub{
+    font-size: 13px;
+    opacity: 0.8;
+    margin: 0 0 14px 0;
+  }
+</style>
+""", unsafe_allow_html=True)
+
 if not st.session_state.authenticated:
-    st.title("Acesso ao QXplore")
-    st.write("Preencha para continuar:")
+    st.markdown('<div class="login-wrap"><div class="login-card">', unsafe_allow_html=True)
+    st.markdown('<div class="login-title">Acesso ao QXplore</div>', unsafe_allow_html=True)
+    st.markdown('<div class="login-sub">Preencha para continuar.</div>', unsafe_allow_html=True)
 
     with st.form("login_form"):
         name = st.text_input("Nome (opcional)")
@@ -154,14 +186,20 @@ if not st.session_state.authenticated:
     if submitted:
         if not email or not company:
             st.error("Preencha pelo menos e-mail e empresa.")
-            st.stop()
-        if not is_valid_email(email):
+        elif not is_valid_email(email):
             st.error("E-mail inválido.")
-            st.stop()
+        else:
+            save_registration(name.strip(), email.strip().lower(), company.strip(), role.strip())
+            st.session_state.authenticated = True
+            st.rerun()
 
-        save_registration(name, email.strip().lower(), company.strip(), role.strip())
-        st.session_state.authenticated = True
-        st.rerun()
+    st.markdown("</div></div>", unsafe_allow_html=True)
+
+    # (opcional) debug pra achar o DB
+    with st.expander("Debug (onde está o banco?)"):
+        st.write("cwd:", os.getcwd())
+        st.write("db:", os.path.abspath(DB_PATH))
+        st.write("files:", os.listdir(os.getcwd()))
 
     st.stop()
 
@@ -4479,6 +4517,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
