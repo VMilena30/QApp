@@ -110,9 +110,7 @@ os.makedirs(LOG_DIR, exist_ok=True)
 DB_PATH = os.path.join(LOG_DIR, "qxplore_users.db")
 CSV_PATH = os.path.join(LOG_DIR, "acessos.csv")
 
-# =========================
-# 2) Banco (SQLite)
-# =========================
+
 def init_db():
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
@@ -142,9 +140,7 @@ def save_registration(name, email, company, role, created_at):
     con.commit()
     con.close()
 
-# =========================
-# 3) Log em CSV (append)
-# =========================
+
 def append_csv_log(name, email, company, role, created_at):
     file_exists = os.path.exists(CSV_PATH)
     with open(CSV_PATH, "a", newline="", encoding="utf-8") as f:
@@ -155,15 +151,11 @@ def append_csv_log(name, email, company, role, created_at):
 
 init_db()
 
-# =========================
-# 4) Estado
-# =========================
+
 if "step" not in st.session_state:
     st.session_state.step = "login"
 
-# =========================
-# 5) CSS do card
-# =========================
+
 st.markdown("""
 <style>
   /* reduz um pouco o padding superior padrão do Streamlit nessa tela */
@@ -195,9 +187,6 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# =========================
-# 6) Tela de login
-# =========================
 if st.session_state.step == "login":
     left, mid, right = st.columns([1.2, 1.0, 1.2])
 
@@ -249,17 +238,6 @@ if st.session_state.step == "login":
             st.write("CSV:", os.path.abspath(CSV_PATH))
 
     st.stop()
-
-CSV_PATH = "registros/acessos.csv"
-
-if os.path.exists(CSV_PATH):
-    with open(CSV_PATH, "rb") as f:
-        st.download_button(
-            label="⬇️ Baixar registros (CSV)",
-            data=f,
-            file_name="acessos_qxplore.csv",
-            mime="text/csv"
-        )
 
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -4574,6 +4552,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
