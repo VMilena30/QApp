@@ -19,6 +19,9 @@ import io
 import matplotlib.pyplot as plt
 import base64
 import streamlit.components.v1 as components
+import re
+import sqlite3
+from datetime import datetime
 #Adicionado por Lavínia - comentário para controle
 import itertools
 import json
@@ -4476,6 +4479,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
