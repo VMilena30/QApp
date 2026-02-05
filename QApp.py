@@ -1595,11 +1595,8 @@ def main():
             """
             <div style="text-align: center;">
                 <p style="font-size:36px; margin-bottom: 5px; font-weight: bold;">
-                    Explore Quantum Computing with / Explore a Computação Quântica com<br>
+                    Explore Quantum Computing with com<br>
                     <span style="color:#0d4376;">QXplore!</span>
-                </p>
-                <p style="font-size:18px; margin-top: 5px;">
-                    Select your language to get started / Selecione seu idioma para começar:
                 </p>
             </div>
             """,
@@ -1629,11 +1626,6 @@ def main():
             st.write("")
         
         st.markdown("</div>", unsafe_allow_html=True)
-    
-        st.info(
-            "ℹ️ For a better experience, you can change the language anytime during navigation.\n\n"
-            "ℹ️ Para uma melhor experiência, você pode alterar o idioma a qualquer momento durante a navegação."
-        )
     
         st.stop()
 
@@ -4425,6 +4417,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
