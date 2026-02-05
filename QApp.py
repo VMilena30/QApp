@@ -46,12 +46,10 @@ BAR_HEIGHT = 64
 st.markdown(
     f"""
     <style>
-      /* NÃO esconda o header: ele ajuda a sidebar */
       header[data-testid="stHeader"] {{
           background: transparent;
       }}
 
-      /* Topbar fixa */
       .qx-topbar {{
           position: fixed;
           top: 0;
@@ -78,9 +76,8 @@ st.markdown(
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       }}
 
-      /* Empurra o MAIN para baixo da topbar */
       section[data-testid="stMain"] {{
-          padding-top: {BAR_HEIGHT + 16}px;
+          padding-top: {BAR_HEIGHT + 5}px;
       }}
 
       /* Empurra a SIDEBAR para baixo da topbar e garante que fique “por cima” */
@@ -4418,6 +4415,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
