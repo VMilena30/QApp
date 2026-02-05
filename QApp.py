@@ -38,7 +38,7 @@ def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-logo_base64 = load_logo_base64("bar.png")
+logo_base64 = load_logo_base64("bar2.png")
 
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
@@ -4423,6 +4423,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
