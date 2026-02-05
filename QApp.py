@@ -39,7 +39,7 @@ st.set_page_config(
 
 ADMIN_EMAILS = [
     "vmilena3010@gmail.com",
-    "outro.admin@instituicao.br",
+    "lav@ufpe.br",
 ]
 
 def load_logo_base64(path):
@@ -245,39 +245,6 @@ if st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
-
-user_email = (st.session_state.get("user", {}).get("email") or "").lower()
-
-if user_email in ADMIN_EMAILS:
-    st.subheader("Admin – Download logs")
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-        if os.path.exists(CSV_PATH):
-            with open(CSV_PATH, "rb") as f:
-                st.download_button(
-                    "⬇️ Download access log (CSV)",
-                    data=f,
-                    file_name="acessos.csv",
-                    mime="text/csv",
-                    use_container_width=True
-                )
-        else:
-            st.info("CSV log not found yet.")
-
-    with col2:
-        if os.path.exists(DB_PATH):
-            with open(DB_PATH, "rb") as f:
-                st.download_button(
-                    "⬇️ Download database (SQLite)",
-                    data=f,
-                    file_name="qxplore_users.db",
-                    mime="application/octet-stream",
-                    use_container_width=True
-                )
-        else:
-            st.info("Database not found yet.")
             
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -1769,7 +1736,7 @@ def main():
         st.markdown(
             """
             <div style="text-align: center;">
-                <p style="font-size:36px; margin-bottom: 5px; font-weight: bold;">
+                <p style="font-size:36px; margin-bottom: 1px; font-weight: bold;">
                     Explore Quantum Computing with com<br>
                     <span style="color:#0d4376;">QXplore!</span>
                 </p>
@@ -1801,6 +1768,32 @@ def main():
             st.write("")
         
         st.markdown("</div>", unsafe_allow_html=True)
+
+        user_email = (st.session_state.get("user", {}).get("email") or "").lower()
+
+        if user_email in ADMIN_EMAILS:
+            st.subheader("Admin – Download logs")
+        
+            if os.path.exists(CSV_PATH):
+                with open(CSV_PATH, "rb") as f:
+                    st.download_button(
+                        "Download access log (CSV)",
+                        data=f,
+                        file_name="acessos.csv",
+                        mime="text/csv",
+                        use_container_width=True
+                    )
+        
+            if os.path.exists(DB_PATH):
+                with open(DB_PATH, "rb") as f:
+                    st.download_button(
+                        "Download database (SQLite)",
+                        data=f,
+                        file_name="qxplore_users.db",
+                        mime="application/octet-stream",
+                        use_container_width=True
+                    )
+
     
         st.stop()
 
@@ -4592,6 +4585,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
