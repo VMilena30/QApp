@@ -232,11 +232,6 @@ if st.session_state.step == "login":
 
         st.markdown("</div>", unsafe_allow_html=True)
 
-        # Debug opcional (remove depois)
-        with st.expander("Debug: onde está salvando?"):
-            st.write("DB:", os.path.abspath(DB_PATH))
-            st.write("CSV:", os.path.abspath(CSV_PATH))
-
     st.stop()
 
 parametros_treino=[
@@ -4552,6 +4547,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
