@@ -250,6 +250,17 @@ if st.session_state.step == "login":
 
     st.stop()
 
+CSV_PATH = "registros/acessos.csv"
+
+if os.path.exists(CSV_PATH):
+    with open(CSV_PATH, "rb") as f:
+        st.download_button(
+            label="⬇️ Baixar registros (CSV)",
+            data=f,
+            file_name="acessos_qxplore.csv",
+            mime="text/csv"
+        )
+
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -4563,6 +4574,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
