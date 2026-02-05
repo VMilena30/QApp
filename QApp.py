@@ -37,6 +37,11 @@ st.set_page_config(
     layout="wide"
 )
 
+ADMIN_EMAILS = [
+    "vmilena3010@gmail.com",
+    "outro.admin@instituicao.br",
+]
+
 def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
@@ -109,7 +114,6 @@ os.makedirs(LOG_DIR, exist_ok=True)
 
 DB_PATH = os.path.join(LOG_DIR, "qxplore_users.db")
 CSV_PATH = os.path.join(LOG_DIR, "acessos.csv")
-
 
 def init_db():
     con = sqlite3.connect(DB_PATH)
@@ -242,6 +246,39 @@ if st.session_state.step == "login":
 
     st.stop()
 
+user_email = (st.session_state.get("user", {}).get("email") or "").lower()
+
+if user_email in ADMIN_EMAILS:
+    st.subheader("Admin – Download logs")
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        if os.path.exists(CSV_PATH):
+            with open(CSV_PATH, "rb") as f:
+                st.download_button(
+                    "⬇️ Download access log (CSV)",
+                    data=f,
+                    file_name="acessos.csv",
+                    mime="text/csv",
+                    use_container_width=True
+                )
+        else:
+            st.info("CSV log not found yet.")
+
+    with col2:
+        if os.path.exists(DB_PATH):
+            with open(DB_PATH, "rb") as f:
+                st.download_button(
+                    "⬇️ Download database (SQLite)",
+                    data=f,
+                    file_name="qxplore_users.db",
+                    mime="application/octet-stream",
+                    use_container_width=True
+                )
+        else:
+            st.info("Database not found yet.")
+            
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -4555,6 +4592,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
