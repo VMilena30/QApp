@@ -34,6 +34,29 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<style>
+.header {
+    background-color: #0d4376;
+    padding: 25px 0;
+    text-align: center;
+    width: 100%;
+}
+.header-title {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+}
+</style>
+
+<div class="header">
+    <div class="header-title">
+        QXplore
+    </div>
+</div>
+""", unsafe_allow_html=True)
+
+
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -4354,6 +4377,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
