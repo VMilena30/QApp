@@ -46,17 +46,10 @@ BAR_HEIGHT = 64
 st.markdown(
     f"""
     <style>
-      /* Remove margens padrão do Streamlit */
-      .block-container {{
-          padding-top: 0rem !important;
-          padding-left: 0rem !important;
-          padding-right: 0rem !important;
-          max-width: 100% !important;
-      }}
-
-      /* Remove header padrão */
+      /* Não remover o header inteiro, só tirar o fundo */
       header[data-testid="stHeader"] {{
-          display: none;
+          background: transparent;
+          height: 0px;
       }}
 
       /* Topbar fixa */
@@ -70,8 +63,7 @@ st.markdown(
           display: flex;
           align-items: center;
           padding: 0 28px;
-          z-index: 9999;
-          box-sizing: border-box;
+          z-index: 999;
       }}
 
       .qx-topbar img {{
@@ -86,8 +78,8 @@ st.markdown(
           font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       }}
 
-      /* Espaço para não cobrir o conteúdo */
-      .content-offset {{
+      /* Empurra só o conteúdo principal */
+      section[data-testid="stMain"] {{
           padding-top: {BAR_HEIGHT + 20}px;
       }}
     </style>
@@ -96,8 +88,6 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">QXplore</div>
     </div>
-
-    <div class="content-offset"></div>
     """,
     unsafe_allow_html=True
 )
@@ -4423,6 +4413,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
