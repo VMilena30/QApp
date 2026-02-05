@@ -34,27 +34,42 @@ st.set_page_config(
     layout="wide"
 )
 
-st.markdown("""
-<style>
-.header {
-    background-color: #0d4376;
-    padding: 25px 0;
-    text-align: center;
-    width: 100%;
-}
-.header-title {
-    color: white;
-    font-size: 26px;
-    font-weight: bold;
-}
-</style>
+st.markdown(
+    """
+    <style>
+    .topbar {
+        width: 100%;
+        height: 60px;
+        background-color: #7A00CC; /* ← cor da barra */
+        display: flex;
+        align-items: center;
+        padding-left: 30px;
+        box-sizing: border-box;
+    }
 
-<div class="header">
-    <div class="header-title">
-        QXplore
+    .topbar img {
+        height: 32px;
+        margin-right: 12px;
+    }
+
+    .topbar-title {
+        color: white;
+        font-size: 22px;
+        font-weight: 600;
+        font-family: "Segoe UI", sans-serif;
+    }
+
+    /* remove espaço extra do topo */
+    header {visibility: hidden;}
+    </style>
+
+    <div class="topbar">
+        <img src="https://raw.githubusercontent.com/SEU_REPO/logo.png">
+        <div class="topbar-title">QXplore</div>
     </div>
-</div>
-""", unsafe_allow_html=True)
+    """,
+    unsafe_allow_html=True
+)
 
 
 parametros_treino=[
@@ -4377,6 +4392,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
