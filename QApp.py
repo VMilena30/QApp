@@ -1884,6 +1884,7 @@ def main():
         st.session_state['pagina'] = 'inicio'
     
     if st.session_state['pagina'] == 'inicio':
+        mostrar_logos_parceiros()
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
         
@@ -4646,6 +4647,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
