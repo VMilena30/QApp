@@ -183,6 +183,13 @@ def append_csv_log(name, email, company, role, created_at):
 
 init_db()
 
+import random
+
+def generate_otp():
+    """Generate a 6-digit numeric OTP code"""
+    return str(random.randint(100000, 999999))
+
+
 
 if "step" not in st.session_state:
     st.session_state.step = "login"
@@ -4653,6 +4660,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
