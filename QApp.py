@@ -49,7 +49,7 @@ def load_logo_base64(path):
 logo_base64 = load_logo_base64("barr.png")
 
 BAR_COLOR = "#0d4376"
-BAR_HEIGHT = 64
+BAR_HEIGHT = 20
 
 st.markdown(
     f"""
@@ -4636,6 +4636,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
