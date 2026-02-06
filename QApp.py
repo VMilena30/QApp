@@ -1833,10 +1833,10 @@ def main():
             otp = "123456"
             #otp = generate_otp()
             #try:
-                #send_otp_email(st.session_state.otp_email, otp)
-            except Exception:
-                st.error("Could not resend verification email.")
-                st.stop()
+            #send_otp_email(st.session_state.otp_email, otp)
+            #except Exception:
+                #st.error("Could not resend verification email.")
+                #st.stop()
 
             st.session_state.otp_code = otp
             st.success("A new code was sent.")
@@ -4689,6 +4689,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
