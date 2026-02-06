@@ -243,32 +243,29 @@ if st.session_state.step == "login":
             elif not is_valid_email(email_clean):
                 st.error("Invalid email address.")
             else:
-                created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                otp = generate_otp()
 
-                save_registration(
-                    name_clean,
-                    email_clean,
-                    company_clean,
-                    role_clean,
-                    created_at
-                )
-                append_csv_log(
-                    name_clean,
-                    email_clean,
-                    company_clean,
-                    role_clean,
-                    created_at
-                )
+                # ✅ se quiser testar sem e-mail, descomente a linha abaixo e comente send_otp_email
+                # otp = "123456"
 
-                st.session_state.user = {
+                try:
+                    send_otp_email(email_clean, otp)
+                except Exception:
+                    st.error("Could not send verification email. Check SMTP secrets.")
+                    st.stop()
+
+                st.session_state.pending_user = {
                     "name": name_clean,
                     "email": email_clean,
                     "company": company_clean,
-                    "role": role_clean,
-                    "created_at": created_at
+                    "role": role_clean
                 }
-                st.session_state.step = "lang"
+                st.session_state.otp_code = otp
+                st.session_state.otp_email = email_clean
+
+                st.session_state.step = "verify"
                 st.rerun()
+
 
         st.markdown("</div>", unsafe_allow_html=True)
 
@@ -1772,52 +1769,6 @@ def main():
     # 3. não pode ir para app sem idioma
     if st.session_state.step == "app" and st.session_state.lang is None:
         st.session_state.step = "lang"
-
-    # ---------------- STEP 1: LOGIN ----------------
-    if st.session_state.step == "login":
-        # use aqui o seu "card" pequeno se você já tem (vou deixar simples)
-        st.markdown("## Access to qPrism")
-        st.write("Fill in your details to continue.")
-
-        with st.form("login_form"):
-            name = st.text_input("Name (optional)")
-            email = st.text_input("Email *")
-            company = st.text_input("Company / Institution *")
-            role = st.text_input("Role / Position (optional)")
-            submitted = st.form_submit_button("Continue")
-
-        if submitted:
-            name_clean = (name or "").strip()
-            email_clean = (email or "").strip().lower()
-            company_clean = (company or "").strip()
-            role_clean = (role or "").strip()
-
-            if not email_clean or not company_clean:
-                st.error("Please provide at least your email and company.")
-                st.stop()
-            if not is_valid_email(email_clean):
-                st.error("Invalid email address.")
-                st.stop()
-
-            otp = generate_otp()
-            try:
-                send_otp_email(email_clean, otp)
-            except Exception as e:
-                st.error("Could not send verification email. Check SMTP secrets.")
-                st.stop()
-
-            st.session_state.pending_user = {
-                "name": name_clean,
-                "email": email_clean,
-                "company": company_clean,
-                "role": role_clean,
-            }
-            st.session_state.otp_code = otp
-            st.session_state.otp_email = email_clean
-            st.session_state.step = "verify"
-            st.rerun()
-
-        st.stop()
 
     # ---------------- STEP 2: VERIFY OTP ----------------
     if st.session_state.step == "verify":
@@ -4702,6 +4653,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
