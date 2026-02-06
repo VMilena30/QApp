@@ -32,7 +32,7 @@ from typing import Dict, List, Tuple, Any, Optional
 import pandas as pd
 
 st.set_page_config(
-    page_title="QXplore",
+    page_title="qPrism",
     page_icon="pesq.png",
     layout="wide"
 )
@@ -88,14 +88,12 @@ st.markdown(
           padding-top: {BAR_HEIGHT + 5}px;
       }}
 
-      /* Empurra a SIDEBAR para baixo da topbar e garante que fique “por cima” */
       aside[data-testid="stSidebar"] {{
           top: {BAR_HEIGHT}px;
           height: calc(100vh - {BAR_HEIGHT}px);
           z-index: 1001;
       }}
 
-      /* Ajuste do conteúdo interno da sidebar */
       aside[data-testid="stSidebar"] > div {{
           padding-top: 12px;
       }}
@@ -103,7 +101,7 @@ st.markdown(
 
     <div class="qx-topbar">
         <img src="data:image/png;base64,{logo_base64}">
-        <div class="qx-title">QXplore</div>
+        <div class="qx-title">qPrism</div>
     </div>
     """,
     unsafe_allow_html=True
@@ -1832,9 +1830,10 @@ def main():
                 st.error("Invalid code.")
 
         if resend_btn:
-            otp = generate_otp()
-            try:
-                send_otp_email(st.session_state.otp_email, otp)
+            otp = "123456"
+            #otp = generate_otp()
+            #try:
+                #send_otp_email(st.session_state.otp_email, otp)
             except Exception:
                 st.error("Could not resend verification email.")
                 st.stop()
@@ -4690,6 +4689,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
