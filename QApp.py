@@ -1788,13 +1788,11 @@ def main():
 
 
     if st.session_state.step == "verify":
-
-        st.markdown('<div class="center-wrap">', unsafe_allow_html=True)
-        st.markdown('<div class="login-card">', unsafe_allow_html=True)
+        st.markdown('<div class="auth-wrap"><div class="auth-card">', unsafe_allow_html=True)
     
-        st.markdown("<div class='login-title'>Email verification</div>", unsafe_allow_html=True)
+        st.markdown("<div class='auth-title'>Email verification</div>", unsafe_allow_html=True)
         st.markdown(
-            f"<div class='login-sub'>We sent a 6-digit code to<br><b>{st.session_state.otp_email}</b></div>",
+            f"<div class='auth-sub'>We sent a 6-digit code to <b>{st.session_state.otp_email}</b>.</div>",
             unsafe_allow_html=True
         )
     
@@ -1804,37 +1802,27 @@ def main():
             placeholder="Enter the 6-digit code"
         )
     
-        col1, col2 = st.columns(2)
+        st.markdown('<div class="auth-actions">', unsafe_allow_html=True)
     
-        with col1:
-            verify_btn = st.button("Verify", use_container_width=True)
-        with col2:
-            resend_btn = st.button("Resend code", use_container_width=True)
+        verify_btn = st.button("Verify", use_container_width=True)
+        resend_btn = st.button("Resend code", use_container_width=True)
+    
+        st.markdown("</div>", unsafe_allow_html=True)
     
         if verify_btn:
-            if (code_input or "").strip() == st.session_state.otp_code:
+            if (code_input or "").strip() == (st.session_state.otp_code or ""):
                 from datetime import datetime
     
                 user = st.session_state.pending_user
                 created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-                save_registration(
-                    user["name"],
-                    user["email"],
-                    user["company"],
-                    user["role"],
-                    created_at
-                )
-                append_csv_log(
-                    user["name"],
-                    user["email"],
-                    user["company"],
-                    user["role"],
-                    created_at
-                )
+                # salva só aqui (após verificação)
+                save_registration(user["name"], user["email"], user["company"], user["role"], created_at)
+                append_csv_log(user["name"], user["email"], user["company"], user["role"], created_at)
     
-                st.session_state.user = user
+                st.session_state.user = {**user, "created_at": created_at}
                 st.session_state.pending_user = None
+    
                 st.session_state.otp_verified = True
                 st.session_state.step = "lang"
                 st.rerun()
@@ -4699,6 +4687,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
