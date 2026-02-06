@@ -1700,7 +1700,6 @@ def main():
     import os
 
     aplicar_css_botoes()
-    mostrar_logos_parceiros()
 
     if "step" not in st.session_state:
         st.session_state.step = "login"   # login -> verify -> lang -> app
@@ -4636,6 +4635,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
