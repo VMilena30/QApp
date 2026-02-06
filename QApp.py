@@ -1760,6 +1760,8 @@ def main():
     if "otp_email" not in st.session_state:
         st.session_state.otp_email = None
 
+    st.write("DEBUG step:", st.session_state.step, "| otp_verified:", st.session_state.otp_verified, "| lang:", st.session_state.lang)
+
     # ---------------- STEP 1: LOGIN ----------------
     if st.session_state.step == "login":
         # use aqui o seu "card" pequeno se você já tem (vou deixar simples)
@@ -4689,6 +4691,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
