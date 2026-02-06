@@ -1757,6 +1757,36 @@ def main():
     if st.session_state.step == "app" and st.session_state.lang is None:
         st.session_state.step = "lang"
 
+    st.markdown("""
+    <style>
+      .center-wrap{
+        min-height: 70vh;
+        display:flex;
+        justify-content:center;
+        align-items:center;
+      }
+      .login-card{
+        width: 380px;
+        background: white;
+        padding: 22px;
+        border-radius: 14px;
+        border: 1px solid rgba(0,0,0,0.08);
+        box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+      }
+      .login-title{
+        font-size: 20px;
+        font-weight: 800;
+        margin-bottom: 4px;
+      }
+      .login-sub{
+        font-size: 13px;
+        opacity: 0.8;
+        margin-bottom: 14px;
+      }
+    </style>
+    """, unsafe_allow_html=True)
+
+
     if st.session_state.step == "verify":
 
         st.markdown('<div class="center-wrap">', unsafe_allow_html=True)
@@ -4669,6 +4699,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
