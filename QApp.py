@@ -186,10 +186,7 @@ init_db()
 import random
 
 def generate_otp():
-    """Generate a 6-digit numeric OTP code"""
     return str(random.randint(100000, 999999))
-
-
 
 if "step" not in st.session_state:
     st.session_state.step = "login"
@@ -252,9 +249,6 @@ if st.session_state.step == "login":
             else:
                 otp = generate_otp()
 
-                # ✅ se quiser testar sem e-mail, descomente a linha abaixo e comente send_otp_email
-                # otp = "123456"
-
                 try:
                     send_otp_email(email_clean, otp)
                 except Exception:
@@ -273,18 +267,10 @@ if st.session_state.step == "login":
                 st.session_state.step = "verify"
                 st.rerun()
 
-
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
-
-import random
-
-def generate_otp():
-    return str(random.randint(100000, 999999))
-
-
-            
+        
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -1458,7 +1444,6 @@ def mostrar_cartoes_de_area(textos):
             </style>
         """, unsafe_allow_html=True)
 
-        # Lado a lado e próximos
         col1, col2, _, _, _ = st.columns([1, 1, 1, 1, 1])
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
@@ -1748,7 +1733,6 @@ def main():
     aplicar_css_botoes()
     mostrar_logos_parceiros()
 
-    # ---------------- STATE ----------------
     if "step" not in st.session_state:
         st.session_state.step = "login"   # login -> verify -> lang -> app
     if "otp_verified" not in st.session_state:
@@ -1763,59 +1747,85 @@ def main():
     if "otp_email" not in st.session_state:
         st.session_state.otp_email = None
 
-    # ---------------- GUARDS (fix stuck states) ----------------
-    # 1. step inválido
     valid_steps = {"login", "verify", "lang", "app"}
     if st.session_state.step not in valid_steps:
         st.session_state.step = "login"
     
-    # 2. não pode ir para lang/app sem OTP
     if st.session_state.step in ["lang", "app"] and not st.session_state.otp_verified:
         st.session_state.step = "login"
     
-    # 3. não pode ir para app sem idioma
     if st.session_state.step == "app" and st.session_state.lang is None:
         st.session_state.step = "lang"
 
-    # ---------------- STEP 2: VERIFY OTP ----------------
     if st.session_state.step == "verify":
-        st.markdown("## Email verification")
-        st.write(f"We sent a 6-digit code to: **{st.session_state.otp_email}**")
 
-        code_input = st.text_input("Enter the code", max_chars=6)
+    st.markdown('<div class="center-wrap">', unsafe_allow_html=True)
+    st.markdown('<div class="login-card">', unsafe_allow_html=True)
 
-        colA, colB = st.columns(2)
-        with colA:
-            verify_btn = st.button("Verify")
-        with colB:
-            resend_btn = st.button("Resend code")
+    st.markdown("<div class='login-title'>Email verification</div>", unsafe_allow_html=True)
+    st.markdown(
+        f"<div class='login-sub'>We sent a 6-digit code to<br><b>{st.session_state.otp_email}</b></div>",
+        unsafe_allow_html=True
+    )
 
-        if verify_btn:
-            if (code_input or "").strip() == (st.session_state.otp_code or ""):
-                st.session_state.otp_verified = True
-                st.session_state.user = st.session_state.pending_user  # agora vira usuário “real”
-                st.session_state.pending_user = None
-                st.session_state.step = "lang"
-                st.rerun()
-            else:
-                st.error("Invalid code.")
+    code_input = st.text_input(
+        "Verification code",
+        max_chars=6,
+        placeholder="Enter the 6-digit code"
+    )
 
-        if resend_btn:
-            otp = "123456"
-            #otp = generate_otp()
-            #try:
-            #send_otp_email(st.session_state.otp_email, otp)
-            #except Exception:
-                #st.error("Could not resend verification email.")
-                #st.stop()
+    col1, col2 = st.columns(2)
 
-            st.session_state.otp_code = otp
-            st.success("A new code was sent.")
+    with col1:
+        verify_btn = st.button("Verify", use_container_width=True)
+    with col2:
+        resend_btn = st.button("Resend code", use_container_width=True)
+
+    if verify_btn:
+        if (code_input or "").strip() == st.session_state.otp_code:
+            from datetime import datetime
+
+            user = st.session_state.pending_user
+            created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+            save_registration(
+                user["name"],
+                user["email"],
+                user["company"],
+                user["role"],
+                created_at
+            )
+            append_csv_log(
+                user["name"],
+                user["email"],
+                user["company"],
+                user["role"],
+                created_at
+            )
+
+            st.session_state.user = user
+            st.session_state.pending_user = None
+            st.session_state.otp_verified = True
+            st.session_state.step = "lang"
             st.rerun()
+        else:
+            st.error("Invalid verification code.")
 
-        st.stop()
+    if resend_btn:
+        otp = generate_otp()
+        try:
+            send_otp_email(st.session_state.otp_email, otp)
+        except Exception:
+            st.error("Could not resend verification email.")
+            st.stop()
 
-    # ---------------- STEP 3: LANGUAGE SCREEN ----------------
+        st.session_state.otp_code = otp
+        st.success("A new code was sent.")
+
+    st.markdown("</div></div>", unsafe_allow_html=True)
+    st.stop()
+
+
     if st.session_state.step == "lang":
         st.markdown(
             """
@@ -1868,7 +1878,6 @@ def main():
         st.markdown("</div>", unsafe_allow_html=True)
         st.stop()
 
-    # ---------------- STEP 4: APP ----------------
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
 
@@ -4660,6 +4669,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
