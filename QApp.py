@@ -1828,6 +1828,8 @@ def main():
             """,
             unsafe_allow_html=True
         )
+        st.markdown("<br>", unsafe_allow_html=True)
+
         
         col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
 
@@ -4637,6 +4639,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
