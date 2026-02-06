@@ -196,7 +196,7 @@ if st.session_state.step == "login":
 
     with mid:
         st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-        st.markdown("<div class='login-title'>Access QXplore</div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-title'><b>Access QXplore</b></div>",unsafe_allow_html=True)
         st.markdown("<div class='login-sub'>Please fill in the form to continue.</div>", unsafe_allow_html=True)
 
         with st.form("login_form", clear_on_submit=False):
@@ -4667,6 +4667,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
