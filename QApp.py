@@ -1726,35 +1726,6 @@ def main():
     if st.session_state.step == "app" and st.session_state.lang is None:
         st.session_state.step = "lang"
 
-    st.markdown("""
-    <style>
-      section[data-testid="stMain"] .block-container{
-        padding-top: 1rem !important;
-      }
-    
-      div[data-testid="column"] .login-card{
-        background: white;
-        border: 1px solid rgba(0,0,0,0.10);
-        border-radius: 14px;
-        padding: 22px 22px 16px 22px;
-        box-shadow: 0 10px 26px rgba(0,0,0,0.10);
-      }
-      .login-title{
-        font-size: 20px;
-        font-weight: 800;
-        margin-bottom: 4px;
-      }
-      .login-sub{
-        font-size: 13px;
-        opacity: 0.8;
-        margin-bottom: 14px;
-      }
-      .stButton>button{
-        width: 100%;
-      }
-    </style>
-    """, unsafe_allow_html=True)
-
     if st.session_state.step == "verify":
         left, mid, right = st.columns([1.2, 1.0, 1.2])
     
@@ -1821,8 +1792,6 @@ def main():
             st.markdown("</div>", unsafe_allow_html=True)
     
         st.stop()
-
-
 
     if st.session_state.step == "lang":
         st.markdown(
@@ -4667,6 +4636,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
