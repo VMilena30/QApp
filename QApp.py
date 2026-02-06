@@ -1815,7 +1815,8 @@ def main():
         )
 
         st.markdown('<div class="centered">', unsafe_allow_html=True)
-
+        mostrar_logos_parceiros()
+        
         st.markdown(
             """
             <div style="text-align: center;">
@@ -1827,7 +1828,7 @@ def main():
             """,
             unsafe_allow_html=True
         )
-        mostrar_logos_parceiros()
+        
         col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
 
         with col2:
@@ -4636,6 +4637,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
