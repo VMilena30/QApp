@@ -115,6 +115,36 @@ os.makedirs(LOG_DIR, exist_ok=True)
 DB_PATH = os.path.join(LOG_DIR, "qxplore_users.db")
 CSV_PATH = os.path.join(LOG_DIR, "acessos.csv")
 
+import smtplib
+from email.message import EmailMessage
+
+def send_otp_email(to_email, otp_code):
+    msg = EmailMessage()
+    msg["Subject"] = "qPrism – Verification Code"
+    msg["From"] = st.secrets["SMTP_FROM"]
+    msg["To"] = to_email
+
+    msg.set_content(f"""
+Hello,
+
+Your verification code to access qPrism is:
+
+{otp_code}
+
+This code is valid for a short time.
+If you did not request this, please ignore this email.
+
+— qPrism Team
+""")
+
+    with smtplib.SMTP(st.secrets["SMTP_HOST"], int(st.secrets["SMTP_PORT"])) as server:
+        server.starttls()
+        server.login(
+            st.secrets["SMTP_USER"],
+            st.secrets["SMTP_PASS"]
+        )
+        server.send_message(msg)
+
 def init_db():
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
@@ -245,6 +275,13 @@ if st.session_state.step == "login":
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
+
+import random
+
+def generate_otp():
+    return str(random.randint(100000, 999999))
+
+
             
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -1705,20 +1742,118 @@ def mostrar_inf(textos):
 def main():
     import streamlit as st
     import os
+
     aplicar_css_botoes()
     mostrar_logos_parceiros()
 
-    if 'lang' not in st.session_state:
+    # ---------------- STATE ----------------
+    if "step" not in st.session_state:
+        st.session_state.step = "login"   # login -> verify -> lang -> app
+    if "otp_verified" not in st.session_state:
+        st.session_state.otp_verified = False
+    if "lang" not in st.session_state:
         st.session_state.lang = None
-    
-    if st.session_state.lang is None:
+
+    # Guardar usuário ainda não verificado
+    if "pending_user" not in st.session_state:
+        st.session_state.pending_user = None
+    if "otp_code" not in st.session_state:
+        st.session_state.otp_code = None
+    if "otp_email" not in st.session_state:
+        st.session_state.otp_email = None
+
+    # ---------------- STEP 1: LOGIN ----------------
+    if st.session_state.step == "login":
+        # use aqui o seu "card" pequeno se você já tem (vou deixar simples)
+        st.markdown("## Access to qPrism")
+        st.write("Fill in your details to continue.")
+
+        with st.form("login_form"):
+            name = st.text_input("Name (optional)")
+            email = st.text_input("Email *")
+            company = st.text_input("Company / Institution *")
+            role = st.text_input("Role / Position (optional)")
+            submitted = st.form_submit_button("Continue")
+
+        if submitted:
+            name_clean = (name or "").strip()
+            email_clean = (email or "").strip().lower()
+            company_clean = (company or "").strip()
+            role_clean = (role or "").strip()
+
+            if not email_clean or not company_clean:
+                st.error("Please provide at least your email and company.")
+                st.stop()
+            if not is_valid_email(email_clean):
+                st.error("Invalid email address.")
+                st.stop()
+
+            otp = generate_otp()
+            try:
+                send_otp_email(email_clean, otp)
+            except Exception as e:
+                st.error("Could not send verification email. Check SMTP secrets.")
+                st.stop()
+
+            st.session_state.pending_user = {
+                "name": name_clean,
+                "email": email_clean,
+                "company": company_clean,
+                "role": role_clean,
+            }
+            st.session_state.otp_code = otp
+            st.session_state.otp_email = email_clean
+            st.session_state.step = "verify"
+            st.rerun()
+
+        st.stop()
+
+    # ---------------- STEP 2: VERIFY OTP ----------------
+    if st.session_state.step == "verify":
+        st.markdown("## Email verification")
+        st.write(f"We sent a 6-digit code to: **{st.session_state.otp_email}**")
+
+        code_input = st.text_input("Enter the code", max_chars=6)
+
+        colA, colB = st.columns(2)
+        with colA:
+            verify_btn = st.button("Verify")
+        with colB:
+            resend_btn = st.button("Resend code")
+
+        if verify_btn:
+            if (code_input or "").strip() == (st.session_state.otp_code or ""):
+                st.session_state.otp_verified = True
+                st.session_state.user = st.session_state.pending_user  # agora vira usuário “real”
+                st.session_state.pending_user = None
+                st.session_state.step = "lang"
+                st.rerun()
+            else:
+                st.error("Invalid code.")
+
+        if resend_btn:
+            otp = generate_otp()
+            try:
+                send_otp_email(st.session_state.otp_email, otp)
+            except Exception:
+                st.error("Could not resend verification email.")
+                st.stop()
+
+            st.session_state.otp_code = otp
+            st.success("A new code was sent.")
+            st.rerun()
+
+        st.stop()
+
+    # ---------------- STEP 3: LANGUAGE SCREEN ----------------
+    if st.session_state.step == "lang":
         st.markdown(
             """
             <style>
                 .centered {
                     display: flex;
                     flex-direction: column;
-                    margin-top: -10px;  
+                    margin-top: -10px;
                     align-items: center;
                     justify-content: start;
                 }
@@ -1731,71 +1866,40 @@ def main():
             """,
             unsafe_allow_html=True
         )
-    
-        st.markdown('<div class="centered">', unsafe_allow_html=True) 
-    
+
+        st.markdown('<div class="centered">', unsafe_allow_html=True)
+
         st.markdown(
             """
             <div style="text-align: center;">
                 <p style="font-size:36px; margin-bottom: 1px; font-weight: bold;">
-                    Explore Quantum Computing with com<br>
+                    Explore Quantum Computing with<br>
                     <span style="color:#0d4376;">QXplore!</span>
                 </p>
             </div>
             """,
             unsafe_allow_html=True
         )
-    
 
         col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
-        
-        with col1:
-            st.write("")
-        
+
         with col2:
             if st.button("English", key="botao_en"):
                 st.session_state.lang = "en"
+                st.session_state.step = "app"
                 st.rerun()
-        
-        with col3:
-            st.write("")
-        
+
         with col4:
             if st.button("Português", key="botao_pt"):
                 st.session_state.lang = "pt"
+                st.session_state.step = "app"
                 st.rerun()
-        
-        with col5:
-            st.write("")
-        
+
         st.markdown("</div>", unsafe_allow_html=True)
+        st.stop()
 
-        user_email = (st.session_state.get("user", {}).get("email") or "").lower()
-
-        if user_email in ADMIN_EMAILS:
-            st.subheader("Admin – Download logs")
-        
-            if os.path.exists(CSV_PATH):
-                with open(CSV_PATH, "rb") as f:
-                    st.download_button(
-                        "Download access log (CSV)",
-                        data=f,
-                        file_name="acessos.csv",
-                        mime="text/csv",
-                        use_container_width=True
-                    )
-        
-            if os.path.exists(DB_PATH):
-                with open(DB_PATH, "rb") as f:
-                    st.download_button(
-                        "Download database (SQLite)",
-                        data=f,
-                        file_name="qxplore_users.db",
-                        mime="application/octet-stream",
-                        use_container_width=True
-                    )
-
-    
+    # ---------------- STEP 4: APP ----------------
+    if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
 
     idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
@@ -4586,6 +4690,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
