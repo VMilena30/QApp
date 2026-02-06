@@ -1752,7 +1752,6 @@ def main():
     if "lang" not in st.session_state:
         st.session_state.lang = None
 
-    # Guardar usuário ainda não verificado
     if "pending_user" not in st.session_state:
         st.session_state.pending_user = None
     if "otp_code" not in st.session_state:
@@ -1760,7 +1759,23 @@ def main():
     if "otp_email" not in st.session_state:
         st.session_state.otp_email = None
 
-    st.write("DEBUG step:", st.session_state.step, "| otp_verified:", st.session_state.otp_verified, "| lang:", st.session_state.lang)
+    # ---------------- GUARDS (fix stuck states) ----------------
+    valid_steps = {"login", "verify", "lang", "app"}
+    if st.session_state.step not in valid_steps:
+        st.session_state.step = "login"
+
+    # Can't be in verify/lang/app without a pending user (or an authenticated user)
+    if st.session_state.step in ["verify", "lang", "app"] and st.session_state.pending_user is None and not st.session_state.get("user"):
+        st.session_state.step = "login"
+
+    # Can't be in lang/app if OTP not verified
+    if st.session_state.step in ["lang", "app"] and not st.session_state.otp_verified:
+        st.session_state.step = "login"
+
+    # Can't be in app without language selected
+    if st.session_state.step == "app" and st.session_state.lang is None:
+        st.session_state.step = "lang"
+
 
     # ---------------- STEP 1: LOGIN ----------------
     if st.session_state.step == "login":
@@ -4691,6 +4706,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
