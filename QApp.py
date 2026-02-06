@@ -85,7 +85,7 @@ st.markdown(
         }}
 
         section[data-testid="stMain"] {{
-            padding-top: {BAR_HEIGHT - 4}px;
+            padding-top: {BAR_HEIGHT - 15}px;
         }}
 
         aside[data-testid="stSidebar"] {{
@@ -4646,6 +4646,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
