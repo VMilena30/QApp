@@ -54,74 +54,49 @@ BAR_HEIGHT = 64
 st.markdown(
     f"""
     <style>
-      /* remove header padrão */
-      header[data-testid="stHeader"] {{
-          background: transparent;
-      }}
+        header[data-testid="stHeader"] {{
+            background: transparent;
+        }}
 
-      .qx-topbar {{
-          position: fixed;
-          top: 0;
-          left: 0;
-          right: 0;
-          height: {BAR_HEIGHT}px;
-          background-color: {BAR_COLOR};
-          display: flex;
-          align-items: center;
-          padding: 0 28px;
-          z-index: 2000;
-          box-sizing: border-box;
-      }}
+        .qx-topbar {{
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: {BAR_HEIGHT}px;
+            background-color: {BAR_COLOR};
+            display: flex;
+            align-items: center;
+            padding: 0 28px;
+            z-index: 1000;
+            box-sizing: border-box;
+        }}
 
-      .qx-topbar img {{
-          height: 36px;
-          margin-right: 12px;
-      }}
+        .qx-topbar img {{
+            height: 36px;
+            margin-right: 12px;
+        }}
 
-      .qx-title {{
-          color: white;
-          font-size: 32px;
-          font-weight: 700;
-          font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      }}
+        .qx-title {{
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+        }}
 
-      section[data-testid="stMain"] .block-container {{
-          padding-top: {BAR_HEIGHT + 12}px !important;
-      }}
+        section[data-testid="stMain"] {{
+            padding-top: {BAR_HEIGHT + 5}px;
+        }}
 
-      aside[data-testid="stSidebar"] {{
-          top: {BAR_HEIGHT}px;
-          height: calc(100vh - {BAR_HEIGHT}px);
-          z-index: 1000;
-      }}
+        aside[data-testid="stSidebar"] {{
+            top: {BAR_HEIGHT}px;
+            height: calc(100vh - {BAR_HEIGHT}px);
+            z-index: 1001;
+        }}
 
-      aside[data-testid="stSidebar"] > div {{
-          padding-top: 2px;
-      }}
-
-      .login-card {{
-          background: white;
-          border: 1px solid rgba(0,0,0,0.10);
-          border-radius: 14px;
-          padding: 22px 22px 16px 22px;
-          box-shadow: 0 10px 26px rgba(0,0,0,0.10);
-      }}
-
-      .login-title {{
-          font-size: 20px;
-          font-weight: 800;
-          margin-bottom: 4px;
-      }}
-
-      .login-sub {{
-          font-size: 13px;
-          opacity: 0.8;
-          margin-bottom: 14px;
-      }}
-
-      .stButton>button {{
-          width: 100%;
-      }}
+        aside[data-testid="stSidebar"] > div {{
+            padding-top: 2px;
+        }}
     </style>
 
     <div class="qx-topbar">
@@ -131,6 +106,7 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
+
 
 
 LOG_DIR = "registros"
@@ -4670,6 +4646,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
