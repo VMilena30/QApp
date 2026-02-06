@@ -191,85 +191,73 @@ def generate_otp():
 if "step" not in st.session_state:
     st.session_state.step = "login"
 
-
-st.markdown("""
-<style>
-  section[data-testid="stMain"] .block-container{
-    padding-top: 1rem !important;
-  }
-
-  div[data-testid="column"] .login-card{
-    background: white;
-    border: 1px solid rgba(0,0,0,0.10);
-    border-radius: 14px;
-    padding: 22px 22px 16px 22px;
-    box-shadow: 0 10px 26px rgba(0,0,0,0.10);
-  }
-  .login-title{
-    font-size: 20px;
-    font-weight: 800;
-    margin-bottom: 4px;
-  }
-  .login-sub{
-    font-size: 13px;
-    opacity: 0.8;
-    margin-bottom: 14px;
-  }
-  .stButton>button{
-    width: 100%;
-  }
-</style>
-""", unsafe_allow_html=True)
-
-if st.session_state.step == "login":
+if st.session_state.step == "verify":
     left, mid, right = st.columns([1.2, 1.0, 1.2])
 
     with mid:
         st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-        st.markdown("<div class='login-title'>Access QXplore</div>", unsafe_allow_html=True)
-        st.markdown("<div class='login-sub'>Please fill in the form to continue.</div>", unsafe_allow_html=True)
+        st.markdown("<div class='login-title'>Email verification</div>", unsafe_allow_html=True)
+        st.markdown(
+            f"<div class='login-sub'>We sent a 6-digit code to <b>{st.session_state.otp_email}</b>.</div>",
+            unsafe_allow_html=True
+        )
 
-        with st.form("login_form", clear_on_submit=False):
-            name = st.text_input("Name (optional)")
-            email = st.text_input("Email *")
-            company = st.text_input("Company / Institution *")
-            role = st.text_input("Role / Position (optional)")
-            submitted = st.form_submit_button("Continue")
+        code_input = st.text_input(
+            "Verification code",
+            max_chars=6,
+            placeholder="Enter the 6-digit code"
+        )
 
-        if submitted:
-            name_clean = (name or "").strip()
-            email_clean = (email or "").strip().lower()
-            company_clean = (company or "").strip()
-            role_clean = (role or "").strip()
+        verify_btn = st.button("Verify", key="verify_btn")
+        resend_btn = st.button("Resend code", key="resend_btn")
 
-            if not email_clean or not company_clean:
-                st.error("Please provide at least your email and company.")
-            elif not is_valid_email(email_clean):
-                st.error("Invalid email address.")
-            else:
-                otp = generate_otp()
+        if verify_btn:
+            if (code_input or "").strip() == (st.session_state.otp_code or ""):
+                from datetime import datetime
 
-                try:
-                    send_otp_email(email_clean, otp)
-                except Exception:
-                    st.error("Could not send verification email. Check SMTP secrets.")
-                    st.stop()
+                # salva APENAS após verificação
+                user = st.session_state.pending_user or {}
+                created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
-                st.session_state.pending_user = {
-                    "name": name_clean,
-                    "email": email_clean,
-                    "company": company_clean,
-                    "role": role_clean
-                }
-                st.session_state.otp_code = otp
-                st.session_state.otp_email = email_clean
+                save_registration(
+                    user.get("name", ""),
+                    user.get("email", ""),
+                    user.get("company", ""),
+                    user.get("role", ""),
+                    created_at
+                )
+                append_csv_log(
+                    user.get("name", ""),
+                    user.get("email", ""),
+                    user.get("company", ""),
+                    user.get("role", ""),
+                    created_at
+                )
 
-                st.session_state.step = "verify"
+                st.session_state.user = {**user, "created_at": created_at}
+                st.session_state.pending_user = None
+
+                st.session_state.otp_verified = True
+                st.session_state.step = "lang"
                 st.rerun()
+            else:
+                st.error("Invalid verification code.")
+
+        if resend_btn:
+            otp = generate_otp()
+            try:
+                send_otp_email(st.session_state.otp_email, otp)
+            except Exception:
+                st.error("Could not resend verification email. Check SMTP secrets.")
+                st.stop()
+
+            st.session_state.otp_code = otp
+            st.success("A new code was sent.")
 
         st.markdown("</div>", unsafe_allow_html=True)
 
     st.stop()
+
         
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -1786,62 +1774,73 @@ def main():
     </style>
     """, unsafe_allow_html=True)
 
-
     if st.session_state.step == "verify":
-        st.markdown('<div class="auth-wrap"><div class="auth-card">', unsafe_allow_html=True)
+        left, mid, right = st.columns([1.2, 1.0, 1.2])
     
-        st.markdown("<div class='auth-title'>Email verification</div>", unsafe_allow_html=True)
-        st.markdown(
-            f"<div class='auth-sub'>We sent a 6-digit code to <b>{st.session_state.otp_email}</b>.</div>",
-            unsafe_allow_html=True
-        )
+        with mid:
+            st.markdown("<div class='login-card'>", unsafe_allow_html=True)
+            st.markdown("<div class='login-title'>Email verification</div>", unsafe_allow_html=True)
+            st.markdown(
+                f"<div class='login-sub'>We sent a 6-digit code to <b>{st.session_state.otp_email}</b>.</div>",
+                unsafe_allow_html=True
+            )
     
-        code_input = st.text_input(
-            "Verification code",
-            max_chars=6,
-            placeholder="Enter the 6-digit code"
-        )
+            code_input = st.text_input(
+                "Verification code",
+                max_chars=6,
+                placeholder="Enter the 6-digit code"
+            )
     
-        st.markdown('<div class="auth-actions">', unsafe_allow_html=True)
+            verify_btn = st.button("Verify", key="verify_btn")
+            resend_btn = st.button("Resend code", key="resend_btn")
     
-        verify_btn = st.button("Verify", use_container_width=True)
-        resend_btn = st.button("Resend code", use_container_width=True)
+            if verify_btn:
+                if (code_input or "").strip() == (st.session_state.otp_code or ""):
+                    from datetime import datetime
     
-        st.markdown("</div>", unsafe_allow_html=True)
+                    # salva APENAS após verificação
+                    user = st.session_state.pending_user or {}
+                    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     
-        if verify_btn:
-            if (code_input or "").strip() == (st.session_state.otp_code or ""):
-                from datetime import datetime
+                    save_registration(
+                        user.get("name", ""),
+                        user.get("email", ""),
+                        user.get("company", ""),
+                        user.get("role", ""),
+                        created_at
+                    )
+                    append_csv_log(
+                        user.get("name", ""),
+                        user.get("email", ""),
+                        user.get("company", ""),
+                        user.get("role", ""),
+                        created_at
+                    )
     
-                user = st.session_state.pending_user
-                created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    st.session_state.user = {**user, "created_at": created_at}
+                    st.session_state.pending_user = None
     
-                # salva só aqui (após verificação)
-                save_registration(user["name"], user["email"], user["company"], user["role"], created_at)
-                append_csv_log(user["name"], user["email"], user["company"], user["role"], created_at)
+                    st.session_state.otp_verified = True
+                    st.session_state.step = "lang"
+                    st.rerun()
+                else:
+                    st.error("Invalid verification code.")
     
-                st.session_state.user = {**user, "created_at": created_at}
-                st.session_state.pending_user = None
+            if resend_btn:
+                otp = generate_otp()
+                try:
+                    send_otp_email(st.session_state.otp_email, otp)
+                except Exception:
+                    st.error("Could not resend verification email. Check SMTP secrets.")
+                    st.stop()
     
-                st.session_state.otp_verified = True
-                st.session_state.step = "lang"
-                st.rerun()
-            else:
-                st.error("Invalid verification code.")
+                st.session_state.otp_code = otp
+                st.success("A new code was sent.")
     
-        if resend_btn:
-            otp = generate_otp()
-            try:
-                send_otp_email(st.session_state.otp_email, otp)
-            except Exception:
-                st.error("Could not resend verification email.")
-                st.stop()
+            st.markdown("</div>", unsafe_allow_html=True)
     
-            st.session_state.otp_code = otp
-            st.success("A new code was sent.")
-    
-        st.markdown("</div></div>", unsafe_allow_html=True)
         st.stop()
+
 
 
     if st.session_state.step == "lang":
@@ -4687,6 +4686,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
