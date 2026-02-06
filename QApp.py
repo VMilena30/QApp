@@ -1760,22 +1760,18 @@ def main():
         st.session_state.otp_email = None
 
     # ---------------- GUARDS (fix stuck states) ----------------
+    # 1. step inválido
     valid_steps = {"login", "verify", "lang", "app"}
     if st.session_state.step not in valid_steps:
         st.session_state.step = "login"
-
-    # Can't be in verify/lang/app without a pending user (or an authenticated user)
-    if st.session_state.step in ["verify", "lang", "app"] and st.session_state.pending_user is None and not st.session_state.get("user"):
-        st.session_state.step = "login"
-
-    # Can't be in lang/app if OTP not verified
+    
+    # 2. não pode ir para lang/app sem OTP
     if st.session_state.step in ["lang", "app"] and not st.session_state.otp_verified:
         st.session_state.step = "login"
-
-    # Can't be in app without language selected
+    
+    # 3. não pode ir para app sem idioma
     if st.session_state.step == "app" and st.session_state.lang is None:
         st.session_state.step = "lang"
-
 
     # ---------------- STEP 1: LOGIN ----------------
     if st.session_state.step == "login":
@@ -4706,6 +4702,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
