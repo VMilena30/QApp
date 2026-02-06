@@ -1759,19 +1759,16 @@ def main():
 
     st.markdown("""
     <style>
-      .center-wrap{
-        min-height: 70vh;
-        display:flex;
-        justify-content:center;
-        align-items:center;
+      section[data-testid="stMain"] .block-container{
+        padding-top: 1rem !important;
       }
-      .login-card{
-        width: 380px;
+    
+      div[data-testid="column"] .login-card{
         background: white;
-        padding: 22px;
+        border: 1px solid rgba(0,0,0,0.10);
         border-radius: 14px;
-        border: 1px solid rgba(0,0,0,0.08);
-        box-shadow: 0 8px 22px rgba(0,0,0,0.10);
+        padding: 22px 22px 16px 22px;
+        box-shadow: 0 10px 26px rgba(0,0,0,0.10);
       }
       .login-title{
         font-size: 20px;
@@ -1782,6 +1779,9 @@ def main():
         font-size: 13px;
         opacity: 0.8;
         margin-bottom: 14px;
+      }
+      .stButton>button{
+        width: 100%;
       }
     </style>
     """, unsafe_allow_html=True)
@@ -4699,6 +4699,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
