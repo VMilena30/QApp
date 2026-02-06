@@ -1827,7 +1827,7 @@ def main():
             """,
             unsafe_allow_html=True
         )
-
+        mostrar_logos_parceiros()
         col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
 
         with col2:
@@ -1874,7 +1874,6 @@ def main():
         st.session_state['pagina'] = 'inicio'
     
     if st.session_state['pagina'] == 'inicio':
-        mostrar_logos_parceiros()
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
         
@@ -4637,6 +4636,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
