@@ -1358,87 +1358,20 @@ TEXTOS_INF = {
     },
 }
 
-def mostrar_rodape_logos(textos):
-    st.markdown(
-        """
-        <style>
-          .footer-simple{
-            margin-top: 50px;
-            padding: 18px 0 10px 0;
-            border-top: 1px solid rgba(0,0,0,0.08);
-            text-align: center;
-          }
-
-          .footer-title{
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            opacity: 0.85;
-          }
-
-          .footer-text{
-            font-size: 12px;
-            opacity: 0.7;
-            margin-top: 10px;
-          }
-
-          .footer-logos{
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 16px;
-            flex-wrap: wrap;
-          }
-
-          .footer-logos img{
-            height: 28px;
-            opacity: 0.85;
-          }
-        </style>
-        """,
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        f"""
-        <div class="footer-simple">
-            <div class="footer-title">{textos['apoio']}</div>
-
-            <div class="footer-logos">
-                <img src="1.png">
-                <img src="2.png">
-                <img src="3.png">
-                <img src="4.png">
-                <img src="5.png">
-                <img src="6.png">
-                <img src="7.png">
-                <img src="8.png">
-                <img src="9.png">
-                <img src="10.png">
-                <img src="11.png">
-            </div>
-
-            <div class="footer-text">{textos['apo']}</div>
-        </div>
-        """,
-        unsafe_allow_html=True
-    )
-
 def mostrar_rodape_logos2(textos):
     st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
     st.markdown("---")
     st.markdown(f"**{textos['apoio']}**")
 
-    # lista com seus arquivos reais (ajuste os nomes!)
     logos = [
         "1.png", "2.png", "3.png", "4.png", "5.png",
         "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
     ]
 
-    cols = st.columns(11)  # 11 lado a lado (em telas pequenas, pode ficar apertado)
+    cols = st.columns(11)  
     for i, path in enumerate(logos):
         with cols[i]:
-            st.image(path, width=42)  # logos pequenas
+            st.image(path, width=64)  
 
     st.markdown(f"<div style='opacity:.75;font-size:13px;margin-top:10px'>{textos['apo']}</div>",
                 unsafe_allow_html=True)
@@ -1968,7 +1901,6 @@ def main():
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
         
-        mostrar_rodape_logos(textos)
         mostrar_rodape_logos2(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
@@ -4730,6 +4662,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
