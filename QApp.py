@@ -1381,7 +1381,6 @@ def aplicar_css_botoes():
     st.markdown(
         """
         <style>
-        /* Aplica estilo aos botões de forma global */
         div.stButton > button {
             background-color: #0d4376 !important;
             color: white !important;
@@ -4662,6 +4661,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
