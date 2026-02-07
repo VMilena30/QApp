@@ -424,11 +424,15 @@ TEXTOS = {
         "inf1": "Estimação de Confiabilidade com QBN:",
         "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
         "inf3": "Método:",
+        "apoio": "Apoio:",
+        "apo": "Agradecimentos às seguintes agências brasileiras de fomento à pesquisa pelo apoio financeiro: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (processos 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5 e 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Código de Financiamento 001); Programa de Recursos Humanos 38 (PRH 38), intitulado “Gestão de Riscos, Confiabilidade e Sustentabilidade na Exploração e Produção de Petróleo, Gás Natural e Energias Renováveis”, financiado pela Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) e gerido pela Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (processo 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (processo APQ-0504-3.08/25); e a Financiadora de Estudos e Projetos (FINEP).",
         "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada a partir de medições de circuitos quânticos e amplificação de amplitudes, podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
         "pagina_otimizacao": "Quantum Optimization",
+        "apoio": "Support:",
+        "apo": "Acknowledgments are due to the following Brazilian research funding agencies for their financial support: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (grants 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5, and 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Finance Code 001); Human Resources Program 38 (PRH 38), entitled “Risk Management, Reliability and Sustainability in Oil, Natural Gas and Renewable Energy Exploration and Production”, financed by Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) and managed by Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (grant 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (grant APQ-0504-3.08/25); and Financiadora de Estudos e Projetos (FINEP).",
         "pagina_otimizacao2": "Quantum Optimization in Redundancy Allocation Problems",
         "pagina_inferencia": "Quantum Inference",
         "pagina_ml": "Quantum Machine Learning",
@@ -1354,7 +1358,71 @@ TEXTOS_INF = {
     },
 }
 
+def mostrar_rodape_logos(textos):
+    st.markdown(
+        """
+        <style>
+          .footer-simple{
+            margin-top: 50px;
+            padding: 18px 0 10px 0;
+            border-top: 1px solid rgba(0,0,0,0.08);
+            text-align: center;
+          }
 
+          .footer-title{
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            opacity: 0.85;
+          }
+
+          .footer-text{
+            font-size: 12px;
+            opacity: 0.7;
+            margin-top: 10px;
+          }
+
+          .footer-logos{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 16px;
+            flex-wrap: wrap;
+          }
+
+          .footer-logos img{
+            height: 28px;
+            opacity: 0.85;
+          }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        f"""
+        <div class="footer-simple">
+            <div class="footer-title">{textos['apoio']}</div>
+
+            <div class="footer-logos">
+                <img src="1.png">
+                <img src="2.png">
+                <img src="3.png">
+                <img src="4.png">
+                <img src="5.png">
+                <img src="6.png">
+                <img src="7.png">
+                <img src="8.png">
+                <img src="9.png">
+                <img src="10.png">
+                <img src="11.png">
+            </div>
+
+            <div class="footer-text">{textos['apo']}</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 def aplicar_css_botoes():
     st.markdown(
@@ -1879,6 +1947,7 @@ def main():
     if st.session_state['pagina'] == 'inicio':
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
+        mostrar_rodape_logos(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
         st.markdown(textos_otim["rap_descricao"])
@@ -4639,6 +4708,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
