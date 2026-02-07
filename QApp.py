@@ -1371,7 +1371,7 @@ def mostrar_rodape_logos2(textos):
     cols = st.columns(11)  
     for i, path in enumerate(logos):
         with cols[i]:
-            st.image(path, width=64)  
+            st.image(path, width=80)  
 
     st.markdown(f"<div style='opacity:.75;font-size:13px;margin-top:10px'>{textos['apo']}</div>",
                 unsafe_allow_html=True)
@@ -4662,6 +4662,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
