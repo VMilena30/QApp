@@ -1424,6 +1424,26 @@ def mostrar_rodape_logos(textos):
         unsafe_allow_html=True
     )
 
+def mostrar_rodape_logos2(textos):
+    st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
+    st.markdown("---")
+    st.markdown(f"**{textos['apoio']}**")
+
+    # lista com seus arquivos reais (ajuste os nomes!)
+    logos = [
+        "1.png", "2.png", "3.png", "4.png", "5.png",
+        "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
+    ]
+
+    cols = st.columns(11)  # 11 lado a lado (em telas pequenas, pode ficar apertado)
+    for i, path in enumerate(logos):
+        with cols[i]:
+            st.image(path, width=42)  # logos pequenas
+
+    st.markdown(f"<div style='opacity:.75;font-size:13px;margin-top:10px'>{textos['apo']}</div>",
+                unsafe_allow_html=True)
+
+
 def aplicar_css_botoes():
     st.markdown(
         """
@@ -1947,7 +1967,9 @@ def main():
     if st.session_state['pagina'] == 'inicio':
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
+        
         mostrar_rodape_logos(textos)
+        mostrar_rodape_logos2(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
         st.markdown(textos_otim["rap_descricao"])
@@ -4708,6 +4730,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
