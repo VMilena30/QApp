@@ -194,26 +194,47 @@ if "step" not in st.session_state:
     st.session_state.step = "login"
 
 if st.session_state.step == "login":
-    left, mid, right = st.columns([1.2, 1.0, 1.2])
+    if "lang" not in st.session_state or st.session_state.lang is None:
+        st.session_state.lang = "en"
 
-    with mid:
-        st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-        st.markdown(
-            "<div class='login-title'><b>Access qPrism</b></div>",
-            unsafe_allow_html=True
+    lang = st.session_state.lang
+    t = TEXTOS_LOGIN[lang]
+
+    left, right = st.columns([1.6, 1.0], gap="large")
+
+    with left:
+        st.image("assets/logo_qprism.png", width=230)
+
+        st.markdown(f"## {t['welcome']}")
+        st.markdown("Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning")
+        st.markdown("")
+
+        st.markdown(f"### {t['select_lang']}")
+        escolha = st.radio(
+            "",
+            ["English", "Português (Brasil)"],
+            index=0 if st.session_state.lang == "en" else 1,
+            horizontal=True,
+            key="lang_choice_login"
         )
-        st.markdown(
-            "<div class='login-sub'>Please fill in the form to continue.</div>",
-            unsafe_allow_html=True
-        )
+        new_lang = "pt" if "Português" in escolha else "en"
+        if new_lang != st.session_state.lang:
+            st.session_state.lang = new_lang
+            st.rerun()
+
+        st.markdown("**LOGOS: UFPE – CEERMA – PRH**")
+
+    with right:
+        st.markdown("### " + t["access_title"])
+        st.markdown(t["access_sub"])
 
         with st.form("login_form", clear_on_submit=False):
-            name = st.text_input("Name (optional)")
-            email = st.text_input("Email *")
-            country = st.text_input("Country *")
-            company = st.text_input("Company / Institution *")
-            role = st.text_input("Role / Position (optional)")
-            submitted = st.form_submit_button("Continue")
+            name = st.text_input(t["name_opt"])
+            email = st.text_input(t["email_req"])
+            country = st.text_input(t["country_req"])
+            company = st.text_input(t["company_req"])
+            role = st.text_input(t["role_opt"])
+            submitted = st.form_submit_button(t["continue"])
 
         if submitted:
             name_clean = (name or "").strip()
@@ -223,15 +244,15 @@ if st.session_state.step == "login":
             role_clean = (role or "").strip()
 
             if not email_clean or not company_clean or not country_clean:
-                st.error("Please provide email, country, and company.")
+                st.error(t["err_required"])
             elif not is_valid_email(email_clean):
-                st.error("Invalid email address.")
+                st.error(t["err_email"])
             else:
                 otp = generate_otp()
                 try:
                     send_otp_email(email_clean, otp)
                 except Exception:
-                    st.error("Could not send verification email. Check SMTP secrets.")
+                    st.error(t["err_send"])
                     st.stop()
 
                 st.session_state.pending_user = {
@@ -240,41 +261,38 @@ if st.session_state.step == "login":
                     "country": country_clean,
                     "company": company_clean,
                     "role": role_clean,
+                    "lang": st.session_state.lang,
                 }
                 st.session_state.otp_code = otp
                 st.session_state.otp_email = email_clean
                 st.session_state.step = "verify"
                 st.rerun()
 
-        st.markdown("</div>", unsafe_allow_html=True)
-
     st.stop()
 
 if st.session_state.step == "verify":
+    lang = st.session_state.lang or "en"
+    t = TEXTOS_LOGIN[lang]
+
     left, mid, right = st.columns([1.2, 1.0, 1.2])
 
     with mid:
-        st.markdown("<div class='login-card'>", unsafe_allow_html=True)
-        st.markdown("<div class='login-title'><b>Email verification<b/></div>", unsafe_allow_html=True)
-        st.markdown(
-            f"<div class='login-sub'>We sent a 6-digit code to <b>{st.session_state.otp_email}</b>.</div>",
-            unsafe_allow_html=True
-        )
+        st.markdown(f"### {t['verify_title']}")
+        st.markdown(f"{t['verify_sub']} **{st.session_state.otp_email}**.")
 
         code_input = st.text_input(
-            "Verification code",
+            t["code_label"],
             max_chars=6,
-            placeholder="Enter the 6-digit code"
+            placeholder=t["code_ph"]
         )
 
-        verify_btn = st.button("Verify", key="verify_btn")
-        resend_btn = st.button("Resend code", key="resend_btn")
+        c1, c2 = st.columns(2)
+        verify_btn = c1.button(t["verify_btn"])
+        resend_btn = c2.button(t["resend_btn"])
 
         if verify_btn:
             if (code_input or "").strip() == (st.session_state.otp_code or ""):
                 from datetime import datetime
-
-                # salva APENAS após verificação
                 user = st.session_state.pending_user or {}
                 created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
@@ -295,25 +313,22 @@ if st.session_state.step == "verify":
 
                 st.session_state.user = {**user, "created_at": created_at}
                 st.session_state.pending_user = None
-
                 st.session_state.otp_verified = True
-                st.session_state.step = "lang"
+                st.session_state.step = "app"
                 st.rerun()
             else:
-                st.error("Invalid verification code.")
+                st.error(t["err_code"])
 
         if resend_btn:
             otp = generate_otp()
             try:
                 send_otp_email(st.session_state.otp_email, otp)
             except Exception:
-                st.error("Could not resend verification email. Check SMTP secrets.")
+                st.error(t["err_send"])
                 st.stop()
 
             st.session_state.otp_code = otp
-            st.success("A new code was sent.")
-
-        st.markdown("</div>", unsafe_allow_html=True)
+            st.success(t["resend_ok"])
 
     st.stop()
 
@@ -1358,6 +1373,56 @@ TEXTOS_INF = {
     },
 }
 
+TEXTOS_LOGIN = {
+    "en": {
+        "welcome": "Welcome to qPrism",
+        "select_lang": "Select a language",
+        "access_title": "Access qPrism",
+        "access_sub": "Please fill in the form to continue.",
+        "name_opt": "Name (optional)",
+        "email_req": "Email *",
+        "country_req": "Country *",
+        "company_req": "Company / Institution *",
+        "role_opt": "Role / Position (optional)",
+        "continue": "Continue",
+        "err_required": "Please provide email, country, and company.",
+        "err_email": "Invalid email address.",
+        "verify_title": "Email verification",
+        "verify_sub": "We sent a 6-digit code to",
+        "code_label": "Verification code",
+        "code_ph": "Enter the 6-digit code",
+        "verify_btn": "Verify",
+        "resend_btn": "Resend code",
+        "resend_ok": "A new code was sent.",
+        "err_code": "Invalid verification code.",
+        "err_send": "Could not send verification email. Check SMTP secrets.",
+    },
+    "pt": {
+        "welcome": "Boas-vindas ao qPrism",
+        "select_lang": "Selecione um idioma",
+        "access_title": "Acessar o qPrism",
+        "access_sub": "Preencha o formulário para continuar.",
+        "name_opt": "Nome (opcional)",
+        "email_req": "E-mail *",
+        "country_req": "País *",
+        "company_req": "Empresa / Instituição *",
+        "role_opt": "Cargo / Função (opcional)",
+        "continue": "Continuar",
+        "err_required": "Informe e-mail, país e instituição.",
+        "err_email": "Endereço de e-mail inválido.",
+        "verify_title": "Verificação de e-mail",
+        "verify_sub": "Enviamos um código de 6 dígitos para",
+        "code_label": "Código de verificação",
+        "code_ph": "Digite o código de 6 dígitos",
+        "verify_btn": "Verificar",
+        "resend_btn": "Reenviar código",
+        "resend_ok": "Um novo código foi enviado.",
+        "err_code": "Código de verificação inválido.",
+        "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP.",
+    }
+}
+
+
 def mostrar_rodape_logos2(textos):
     st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
     st.markdown("---")
@@ -1888,6 +1953,7 @@ def main():
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
     textos_inf = TEXTOS_INF[lang]
+    t = TEXTOS_LOGIN[lang]
 
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
@@ -4661,6 +4727,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
