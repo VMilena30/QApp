@@ -2028,6 +2028,60 @@ def main():
         mostrar_rodape_logos2(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
+        # estado de página
+        if "pagina" not in st.session_state:
+            st.session_state.pagina = "inicio"
+        
+        # botão fixo na barra
+        st.markdown("""
+        <style>
+        .qx-btn {
+            position: fixed;
+            top: 12px;
+            right: 260px;
+            z-index: 1100;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        with st.container():
+            st.markdown('<div class="qx-btn">', unsafe_allow_html=True)
+            if st.button("Página inicial"):
+                st.session_state.pagina = "inicio"
+                st.rerun()
+            st.markdown('</div>', unsafe_allow_html=True)
+
+        if "lang" not in st.session_state:
+            st.session_state.lang = "pt"
+        
+        st.markdown("""
+        <style>
+        .qx-lang {
+            position: fixed;
+            top: 10px;
+            right: 28px;
+            z-index: 1100;
+            width: 200px;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+        
+        with st.container():
+            st.markdown('<div class="qx-lang">', unsafe_allow_html=True)
+            idioma = st.selectbox(
+                "Language / Idioma:",
+                ("🇧🇷 Português (BR)", "🇺🇸 English (US)"),
+                index=0 if st.session_state.lang == "pt" else 1,
+                label_visibility="collapsed"
+            )
+            st.markdown('</div>', unsafe_allow_html=True)
+        
+        if idioma.startswith("🇧🇷"):
+            st.session_state.lang = "pt"
+        else:
+            st.session_state.lang = "en"
+
+
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
@@ -4786,6 +4840,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
