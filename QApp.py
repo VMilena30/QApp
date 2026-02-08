@@ -58,6 +58,23 @@ TEXTOS_LOGIN = {
     "err_required": "Please provide email, country, and company.",
     "err_email": "Invalid email address.",
     "err_send": "Could not send verification email. Check SMTP secrets."
+    "verify_title": "Email verification",
+    "verify_sub": "We sent a 6-digit code to",
+    "code_label": "Verification code",
+    "code_ph": "Enter the 6-digit code",
+    "verify_btn": "Verify",
+    "resend_btn": "Resend code",
+    "resend_ok": "A new code was sent.",
+    "err_code": "Invalid verification code.",
+    "verify_title": "Verificação de e-mail",
+    "verify_sub": "Enviamos um código de 6 dígitos para",
+    "code_label": "Código de verificação",
+    "code_ph": "Digite o código de 6 dígitos",
+    "verify_btn": "Verificar",
+    "resend_btn": "Reenviar código",
+    "resend_ok": "Um novo código foi enviado.",
+    "err_code": "Código inválido.",
+      
   },
   "pt": {
     "welcome_msg": "Bem-vindo(a)!",
@@ -4769,6 +4786,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
