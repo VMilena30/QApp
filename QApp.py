@@ -131,7 +131,7 @@ st.markdown(
         }}
 
         aside[data-testid="stSidebar"] > div {{
-            padding-top: 2px;
+            padding-top: 0px;
         }}
     </style>
 
@@ -1727,27 +1727,38 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
+            from pathlib import Path
+        
+            BASE_DIR = Path(__file__).resolve().parent
+            LOGO = BASE_DIR / "qplog.png"   # ajuste se estiver em assets/
+            
             st.markdown(
-            """
-            <div style="
-                width:100%;
-                display:flex;
-                flex-direction:column;
-                align-items:center;
-                justify-content:center;
-                text-align:center;
-            ">
-                <img src="qplog.png" width="320"/>
-                <div style="font-size:42px; font-weight:800; margin-top:12px;">
-                    qPrism
-                </div>
-                <div style="font-size:16px; margin-top:8px; max-width:720px;">
-                    Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
-                </div>
+                """
+                <div style="
+                    width:100%;
+                    display:flex;
+                    flex-direction:column;
+                    align-items:center;
+                    justify-content:center;
+                    text-align:center;
+                ">
+                """,
+                unsafe_allow_html=True
+            )
+            
+            # imagem CENTRALIZADA de verdade
+            st.image(str(LOGO), width=320)
+            
+            # textos
+            st.markdown("""
+            <div style="font-size:42px; font-weight:800; margin-top:12px;">
+                qPrism
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+            <div style="font-size:16px; margin-top:8px; max-width:720px;">
+                Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
+            </div>
+            </div>
+            """, unsafe_allow_html=True)
 
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
@@ -4773,6 +4784,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
