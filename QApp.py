@@ -1738,7 +1738,7 @@ def main():
             )
         
             st.markdown(
-                f"<div style='text-align:center; font-size:22px; margin-top:4px;'>{t['tagline']}</div>",
+                f"<div style='text-align:center; font-size:20px; margin-top:4px;'>{t['tagline']}</div>",
                 unsafe_allow_html=True
             )
         
@@ -1820,7 +1820,7 @@ def main():
                 <div style="
                     text-align:center;
                     font-size:18px;
-                    font-weight:600;
+                    font-weight:400;
                     background: rgba(255,255,255,0.75);
                     padding:0px 5px;
                     border-radius:0px;
@@ -1846,9 +1846,16 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-        
-            st.markdown("<div class='qp-card'>", unsafe_allow_html=True)
-            st.markdown("### " + t["access_title"])
+
+            st.markdown(f"""
+            <div style="font-size:22px;font-weight:700;line-height:1.05;margin-bottom:4px;">
+              {t["access_title"]}
+            </div>
+            <div style="font-size:13px;margin-bottom:8px;">
+              {t["access_sub"]}
+            </div>
+            """, unsafe_allow_html=True)
+
             st.markdown(t["access_sub"])
         
             with st.form("login_form", clear_on_submit=False):
@@ -1857,6 +1864,9 @@ def main():
                 country = st.text_input(t["country_req"])
                 company = st.text_input(t["company_req"])
                 role = st.text_input(t["role_opt"])
+
+            st.markdown("<div style='height:6px;'></div>", unsafe_allow_html=True)
+            
                 submitted = st.form_submit_button(t["continue"])
 
             if submitted:
@@ -4758,6 +4768,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
