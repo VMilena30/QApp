@@ -1727,7 +1727,7 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
-            c1, c2, c3 = st.columns([1, 3, 1])
+            c1, c2, c3 = st.columns([1, 2, 1])
             
             with c2:
                 st.image("pesq.png", width=320)
@@ -1738,20 +1738,21 @@ def main():
             )
         
             st.markdown(
-                f"<div style='text-align:center; color:#5a5f66; font-size:48px; margin-top:4px;'>{t['tagline']}</div>",
+                f"<div style='text-align:center; font-size:30px; margin-top:4px;'>{t['tagline']}</div>",
                 unsafe_allow_html=True
             )
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
-            cA, cB, cC = st.columns(3)
+            c1, c2, c3, c4, c5 = st.columns([1, 0.6, 0.6, 0.6, 1])
             
-            with cA:
+            with c2:
                 st.image("1.png", width=90)
-            with cB:
+            with c3:
                 st.image("2.png", width=90)
-            with cC:
+            with c4:
                 st.image("4.png", width=90)
+
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
@@ -1774,26 +1775,35 @@ def main():
                 unsafe_allow_html=True
             )
             
-            st.markdown(
+           st.markdown(
                 """
-                <div style="
-                    text-align:center;
-                    font-size:18px;
-                    font-weight:600;
-                    background: rgba(255,255,255,0.75);
-                    display:inline-block;
-                    padding:8px 14px;
-                    border-radius:6px;
-                    margin-bottom:6px;">
-                    Select a language / Selecione um idioma
+                <div style="text-align:center; width:100%; margin-bottom:2px;">
+                    <div style="
+                        font-size:18px;
+                        font-weight:600;
+                        background: rgba(255,255,255,0.75);
+                        display:inline-block;
+                        padding:6px 12px;
+                        border-radius:6px;">
+                        Select a language / Selecione um idioma
+                    </div>
                 </div>
                 """,
                 unsafe_allow_html=True
             )
-
-        
-            c1, c2, c3 = st.columns([1, 2, 1])
             
+            # diminui espaço vertical do radio via CSS (opcional, mas ajuda MUITO)
+            st.markdown("""
+            <style>
+            div[role="radiogroup"]{
+                margin-top: -6px;
+                margin-bottom: -8px;
+                justify-content: center;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
                 escolha = st.radio(
                     "",
@@ -1802,13 +1812,13 @@ def main():
                     horizontal=True,
                     key="lang_choice_login"
                 )
-
+            
             new_lang = "pt" if "Português" in escolha else "en"
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
         
-            st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height:px;'></div>", unsafe_allow_html=True)
         
             st.markdown("<div class='qp-card'>", unsafe_allow_html=True)
             st.markdown("### " + t["access_title"])
@@ -4721,6 +4731,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
