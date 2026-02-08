@@ -159,43 +159,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-st.markdown(f"""
-<style>
-/* --- Controles fixos na barra --- */
-
-/* botão (é o PRIMEIRO st.button depois da barra) */
-div[data-testid="stButton"] {{
-  position: fixed;
-  top: 12px;
-  right: 260px;
-  z-index: 1101;
-  margin: 0 !important;
-}}
-
-/* selectbox (é o PRIMEIRO stSelectbox depois da barra) */
-div[data-testid="stSelectbox"] {{
-  position: fixed;
-  top: 10px;
-  right: 28px;
-  width: 220px;
-  z-index: 1101;
-  margin: 0 !important;
-}}
-
-/* deixa o botão com cara boa na barra */
-div[data-testid="stButton"] button {{
-  height: 40px;
-  padding: 0 18px;
-  border-radius: 10px;
-  font-weight: 600;
-}}
-
-/* reduz altura do selectbox */
-div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
-  min-height: 40px;
-}}
-</style>
-""", unsafe_allow_html=True)
 
 
 LOG_DIR = "registros"
@@ -4876,6 +4839,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
