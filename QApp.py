@@ -197,29 +197,6 @@ div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
 </style>
 """, unsafe_allow_html=True)
 
-# botão página inicial (normal)
-if st.button("Página inicial", key="top_home"):
-    st.session_state.pagina = "inicio"
-    st.rerun()
-
-# select de idioma (normal)
-idioma = st.selectbox(
-    "Language / Idioma:",
-    ("🇧🇷 Português (BR)", "🇺🇸 English (US)"),
-    index=0 if st.session_state.lang == "pt" else 1,
-    label_visibility="collapsed",
-    key="top_lang"
-)
-
-st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
-
-st.markdown("""
-<style>
-header[data-testid="stHeader"] { visibility: hidden; height: 0px; }
-</style>
-""", unsafe_allow_html=True)
-
-
 
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -4899,6 +4876,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
