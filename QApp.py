@@ -1727,29 +1727,31 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
-            # Logo principal (a que você fez)
-            st.image("pesq.png", width=520)  # ajuste width se quiser
-        
+            c1, c2, c3 = st.columns([1, 3, 1])
+            
+            with c2:
+                st.image("pesq.png", width=320)
+
             st.markdown(
                 "<div style='text-align:center; font-size:44px; font-weight:800; margin-top:-10px;'>qPrism</div>",
                 unsafe_allow_html=True
             )
         
             st.markdown(
-                f"<div style='text-align:center; color:#5a5f66; font-size:14px; margin-top:4px;'>{t['tagline']}</div>",
+                f"<div style='text-align:center; color:#5a5f66; font-size:48px; margin-top:4px;'>{t['tagline']}</div>",
                 unsafe_allow_html=True
             )
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
-            # Logos 1.png 2.png 3.png (linha)
-            cA, cB, cC = st.columns([1,1,1])
+            cA, cB, cC = st.columns(3)
+            
             with cA:
-                st.image("1.png", use_container_width=True)
+                st.image("1.png", width=90)
             with cB:
-                st.image("2.png", use_container_width=True)
+                st.image("2.png", width=90)
             with cC:
-                st.image("4.png", use_container_width=True)
+                st.image("4.png", width=90)
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
@@ -1759,7 +1761,7 @@ def main():
                 """
                 <div style="
                     text-align:center;
-                    font-size:28px;
+                    font-size:22px;
                     font-weight:700;
                     border:2px solid #333;
                     padding:10px 14px;
@@ -1776,7 +1778,7 @@ def main():
                 """
                 <div style="
                     text-align:center;
-                    font-size:22px;
+                    font-size:18px;
                     font-weight:600;
                     background: rgba(255,255,255,0.75);
                     display:inline-block;
@@ -1790,13 +1792,17 @@ def main():
             )
 
         
-            escolha = st.radio(
-                "",
-                ["English", "Português (Brasil)"],
-                index=0 if st.session_state.lang == "en" else 1,
-                horizontal=True,
-                key="lang_choice_login"
-            )
+            c1, c2, c3 = st.columns([1, 2, 1])
+            
+            with c2:
+                escolha = st.radio(
+                    "",
+                    ["English", "Português (Brasil)"],
+                    index=0 if st.session_state.lang == "en" else 1,
+                    horizontal=True,
+                    key="lang_choice_login"
+                )
+
             new_lang = "pt" if "Português" in escolha else "en"
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
@@ -4715,6 +4721,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
