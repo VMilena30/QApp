@@ -43,53 +43,40 @@ ADMIN_EMAILS = [
 ]
 
 TEXTOS_LOGIN = {
-    "en": {
-        "welcome": "Welcome to qPrism",
-        "select_lang": "Select a language",
-        "access_title": "Access qPrism",
-        "access_sub": "Please fill in the form to continue.",
-        "name_opt": "Name (optional)",
-        "email_req": "Email *",
-        "country_req": "Country *",
-        "company_req": "Company / Institution *",
-        "role_opt": "Role / Position (optional)",
-        "continue": "Continue",
-        "err_required": "Please provide email, country, and company.",
-        "err_email": "Invalid email address.",
-        "verify_title": "Email verification",
-        "verify_sub": "We sent a 6-digit code to",
-        "code_label": "Verification code",
-        "code_ph": "Enter the 6-digit code",
-        "verify_btn": "Verify",
-        "resend_btn": "Resend code",
-        "resend_ok": "A new code was sent.",
-        "err_code": "Invalid verification code.",
-        "err_send": "Could not send verification email. Check SMTP secrets.",
-    },
-    "pt": {
-        "welcome": "Boas-vindas ao qPrism",
-        "select_lang": "Selecione um idioma",
-        "access_title": "Acessar o qPrism",
-        "access_sub": "Preencha o formulário para continuar.",
-        "name_opt": "Nome (opcional)",
-        "email_req": "E-mail *",
-        "country_req": "País *",
-        "company_req": "Empresa / Instituição *",
-        "role_opt": "Cargo / Função (opcional)",
-        "continue": "Continuar",
-        "err_required": "Informe e-mail, país e instituição.",
-        "err_email": "Endereço de e-mail inválido.",
-        "verify_title": "Verificação de e-mail",
-        "verify_sub": "Enviamos um código de 6 dígitos para",
-        "code_label": "Código de verificação",
-        "code_ph": "Digite o código de 6 dígitos",
-        "verify_btn": "Verificar",
-        "resend_btn": "Reenviar código",
-        "resend_ok": "Um novo código foi enviado.",
-        "err_code": "Código de verificação inválido.",
-        "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP.",
-    }
+  "en": {
+    "welcome_msg": "Welcome!",
+    "select_lang": "Select a language",
+    "tagline": "Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning",
+    "access_title": "Access qPrism",
+    "access_sub": "Please fill in the form to continue.",
+    "name_opt": "Name (optional)",
+    "email_req": "Email *",
+    "country_req": "Country *",
+    "company_req": "Company / Institution *",
+    "role_opt": "Role / Position (optional)",
+    "continue": "Continue",
+    "err_required": "Please provide email, country, and company.",
+    "err_email": "Invalid email address.",
+    "err_send": "Could not send verification email. Check SMTP secrets."
+  },
+  "pt": {
+    "welcome_msg": "Bem-vindo(a)!",
+    "select_lang": "Selecione um idioma",
+    "tagline": "Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning",
+    "access_title": "Acessar o qPrism",
+    "access_sub": "Preencha o formulário para continuar.",
+    "name_opt": "Nome (opcional)",
+    "email_req": "E-mail *",
+    "country_req": "País *",
+    "company_req": "Empresa / Instituição *",
+    "role_opt": "Cargo / Função (opcional)",
+    "continue": "Continuar",
+    "err_required": "Informe e-mail, país e instituição.",
+    "err_email": "E-mail inválido.",
+    "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP."
+  }
 }
+
 
 def load_logo_base64(path):
     with open(path, "rb") as f:
@@ -4728,6 +4715,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
