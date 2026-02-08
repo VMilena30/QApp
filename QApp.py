@@ -1727,20 +1727,28 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
-            c1, c2, c3 = st.columns([1, 2, 1])
-            
-            with c2:
-                st.image("qplog.png", width=320)
+            st.markdown(
+            """
+            <div style="
+                width:100%;
+                display:flex;
+                flex-direction:column;
+                align-items:center;
+                justify-content:center;
+                text-align:center;
+            ">
+                <img src="qplog.png" width="320"/>
+                <div style="font-size:42px; font-weight:800; margin-top:12px;">
+                    qPrism
+                </div>
+                <div style="font-size:16px; margin-top:8px; max-width:720px;">
+                    Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-            st.markdown(
-                "<div style='text-align:center; font-size:48px; font-weight:800; margin-top:-10px;'>qPrism</div>",
-                unsafe_allow_html=True
-            )
-        
-            st.markdown(
-                f"<div style='text-align:center; font-size:20px; margin-top:4px;'>{t['tagline']}</div>",
-                unsafe_allow_html=True
-            )
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
@@ -1847,16 +1855,15 @@ def main():
                 st.session_state.lang = new_lang
                 st.rerun()
 
+            st.markdown("<div style='height:12px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
             <div style="font-size:22px;font-weight:700;line-height:1.05;margin-bottom:4px;">
               {t["access_title"]}
             </div>
-            <div style="font-size:13px;margin-bottom:8px;">
+            <div style="font-size:18px;margin-bottom:8px;">
               {t["access_sub"]}
             </div>
             """, unsafe_allow_html=True)
-
-            st.markdown(t["access_sub"])
         
             with st.form("login_form", clear_on_submit=False):
                 name = st.text_input(t["name_opt"])
@@ -4766,6 +4773,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
