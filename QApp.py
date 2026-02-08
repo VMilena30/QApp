@@ -82,7 +82,7 @@ def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-logo_base64 = load_logo_base64("barr.png")
+logo_base64 = load_logo_base64("qpb.png")
 
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
@@ -1730,7 +1730,7 @@ def main():
             c1, c2, c3 = st.columns([1, 2, 1])
             
             with c2:
-                st.image("pesq.png", width=320)
+                st.image("qplog.png", width=320)
 
             st.markdown(
                 "<div style='text-align:center; font-size:48px; font-weight:800; margin-top:-10px;'>qPrism</div>",
@@ -1864,9 +1864,7 @@ def main():
                 country = st.text_input(t["country_req"])
                 company = st.text_input(t["company_req"])
                 role = st.text_input(t["role_opt"])
-
-            st.markdown("<div style='height:6px;'></div>", unsafe_allow_html=True)
-            
+                st.markdown("<div style='height:6px;'></div>", unsafe_allow_html=True)
                 submitted = st.form_submit_button(t["continue"])
 
             if submitted:
@@ -4768,6 +4766,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
