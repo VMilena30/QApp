@@ -1868,70 +1868,12 @@ def main():
     if "otp_email" not in st.session_state:
         st.session_state.otp_email = None
 
-    valid_steps = {"login", "verify", "lang", "app"}
+    valid_steps = {"login", "verify", "app"}
     if st.session_state.step not in valid_steps:
         st.session_state.step = "login"
     
     if st.session_state.step in ["lang", "app"] and not st.session_state.otp_verified:
         st.session_state.step = "login"
-    
-    if st.session_state.step == "app" and st.session_state.lang is None:
-        st.session_state.step = "lang"
-
-    if st.session_state.step == "lang":
-        st.markdown(
-            """
-            <style>
-                .centered {
-                    display: flex;
-                    flex-direction: column;
-                    margin-top: -10px;
-                    align-items: center;
-                    justify-content: start;
-                }
-                .stButton > button {
-                    width: 200px;
-                    height: 50px;
-                    font-size: 18px;
-                }
-            </style>
-            """,
-            unsafe_allow_html=True
-        )
-
-        st.markdown('<div class="centered">', unsafe_allow_html=True)
-        mostrar_logos_parceiros()
-        
-        st.markdown(
-            """
-            <div style="text-align: center;">
-                <p style="font-size:36px; margin-bottom: 1px; font-weight: bold;">
-                    Explore Quantum Computing with<br>
-                    <span style="color:#0d4376;">qPrism!</span>
-                </p>
-            </div>
-            """,
-            unsafe_allow_html=True
-        )
-        st.markdown("<br>", unsafe_allow_html=True)
-
-        
-        col1, col2, col3, col4, col5 = st.columns([1.8, 0.7, 0.1, 0.7, 1.5])
-
-        with col2:
-            if st.button("English", key="botao_en"):
-                st.session_state.lang = "en"
-                st.session_state.step = "app"
-                st.rerun()
-
-        with col4:
-            if st.button("Português", key="botao_pt"):
-                st.session_state.lang = "pt"
-                st.session_state.step = "app"
-                st.rerun()
-
-        st.markdown("</div>", unsafe_allow_html=True)
-        st.stop()
 
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
@@ -1953,7 +1895,6 @@ def main():
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
     textos_inf = TEXTOS_INF[lang]
-    t = TEXTOS_LOGIN[lang]
 
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
@@ -4727,6 +4668,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
