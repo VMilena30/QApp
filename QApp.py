@@ -95,11 +95,15 @@ TEXTOS_LOGIN = {
 }
 
 
+import base64
+from pathlib import Path
+
 def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
-logo_base64 = load_logo_base64("qpb.png")
+BASE_DIR = Path(__file__).resolve().parent
+logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
@@ -120,9 +124,14 @@ st.markdown(
             background-color: {BAR_COLOR};
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 0 28px;
             z-index: 1000;
-            box-sizing: border-box;
+        }}
+
+        .qx-left {{
+            display: flex;
+            align-items: center;
         }}
 
         .qx-topbar img {{
@@ -132,33 +141,83 @@ st.markdown(
 
         .qx-title {{
             color: white;
-            font-size: 32px;
+            font-size: 28px;
             font-weight: 700;
-            font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
         }}
 
         section[data-testid="stMain"] {{
-            padding-top: {BAR_HEIGHT - 15}px;
-        }}
-
-        aside[data-testid="stSidebar"] {{
-            top: {BAR_HEIGHT}px;
-            height: calc(100vh - {BAR_HEIGHT}px);
-            z-index: 1001;
-        }}
-
-        aside[data-testid="stSidebar"] > div {{
-            padding-top: 0px;
+            padding-top: {BAR_HEIGHT + 10}px;
         }}
     </style>
 
     <div class="qx-topbar">
-        <img src="data:image/png;base64,{logo_base64}">
-        <div class="qx-title">qPrism</div>
+        <div class="qx-left">
+            <img src="data:image/png;base64,{logo_base64}">
+            <div class="qx-title">qPrism</div>
+        </div>
     </div>
     """,
     unsafe_allow_html=True
 )
+st.markdown(f"""
+<style>
+/* --- Controles fixos na barra --- */
+
+/* botão (é o PRIMEIRO st.button depois da barra) */
+div[data-testid="stButton"] {{
+  position: fixed;
+  top: 12px;
+  right: 260px;
+  z-index: 1101;
+  margin: 0 !important;
+}}
+
+/* selectbox (é o PRIMEIRO stSelectbox depois da barra) */
+div[data-testid="stSelectbox"] {{
+  position: fixed;
+  top: 10px;
+  right: 28px;
+  width: 220px;
+  z-index: 1101;
+  margin: 0 !important;
+}}
+
+/* deixa o botão com cara boa na barra */
+div[data-testid="stButton"] button {{
+  height: 40px;
+  padding: 0 18px;
+  border-radius: 10px;
+  font-weight: 600;
+}}
+
+/* reduz altura do selectbox */
+div[data-testid="stSelectbox"] div[data-baseweb="select"] {{
+  min-height: 40px;
+}}
+</style>
+""", unsafe_allow_html=True)
+
+# botão página inicial (normal)
+if st.button("Página inicial", key="top_home"):
+    st.session_state.pagina = "inicio"
+    st.rerun()
+
+# select de idioma (normal)
+idioma = st.selectbox(
+    "Language / Idioma:",
+    ("🇧🇷 Português (BR)", "🇺🇸 English (US)"),
+    index=0 if st.session_state.lang == "pt" else 1,
+    label_visibility="collapsed",
+    key="top_lang"
+)
+
+st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
+
+st.markdown("""
+<style>
+header[data-testid="stHeader"] { visibility: hidden; height: 0px; }
+</style>
+""", unsafe_allow_html=True)
 
 
 
@@ -4840,6 +4899,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
