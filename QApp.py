@@ -1727,6 +1727,10 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
+            from pathlib import Path
+            BASE_DIR = Path(__file__).resolve().parent
+            LOGO = BASE_DIR / "qplog.png"   
+            
             c1, c2, c3 = st.columns([1, 1, 1])
             with c2:
                 st.image(str(LOGO), width=320)
@@ -4765,6 +4769,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
