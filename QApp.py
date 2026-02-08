@@ -57,7 +57,7 @@ TEXTOS_LOGIN = {
     "continue": "Continue",
     "err_required": "Please provide email, country, and company.",
     "err_email": "Invalid email address.",
-    "err_send": "Could not send verification email. Check SMTP secrets."
+    "err_send": "Could not send verification email. Check SMTP secrets.",
     "verify_title": "Email verification",
     "verify_sub": "We sent a 6-digit code to",
     "code_label": "Verification code",
@@ -66,14 +66,6 @@ TEXTOS_LOGIN = {
     "resend_btn": "Resend code",
     "resend_ok": "A new code was sent.",
     "err_code": "Invalid verification code.",
-    "verify_title": "Verificação de e-mail",
-    "verify_sub": "Enviamos um código de 6 dígitos para",
-    "code_label": "Código de verificação",
-    "code_ph": "Digite o código de 6 dígitos",
-    "verify_btn": "Verificar",
-    "resend_btn": "Reenviar código",
-    "resend_ok": "Um novo código foi enviado.",
-    "err_code": "Código inválido.",
       
   },
   "pt": {
@@ -90,7 +82,15 @@ TEXTOS_LOGIN = {
     "continue": "Continuar",
     "err_required": "Informe e-mail, país e instituição.",
     "err_email": "E-mail inválido.",
-    "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP."
+    "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP.",
+    "verify_title": "Verificação de e-mail",
+    "verify_sub": "Enviamos um código de 6 dígitos para",
+    "code_label": "Código de verificação",
+    "code_ph": "Digite o código de 6 dígitos",
+    "verify_btn": "Verificar",
+    "resend_btn": "Reenviar código",
+    "resend_ok": "Um novo código foi enviado.",
+    "err_code": "Código inválido.",
   }
 }
 
@@ -4786,6 +4786,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
