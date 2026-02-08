@@ -42,6 +42,55 @@ ADMIN_EMAILS = [
     "lav@ufpe.br",
 ]
 
+TEXTOS_LOGIN = {
+    "en": {
+        "welcome": "Welcome to qPrism",
+        "select_lang": "Select a language",
+        "access_title": "Access qPrism",
+        "access_sub": "Please fill in the form to continue.",
+        "name_opt": "Name (optional)",
+        "email_req": "Email *",
+        "country_req": "Country *",
+        "company_req": "Company / Institution *",
+        "role_opt": "Role / Position (optional)",
+        "continue": "Continue",
+        "err_required": "Please provide email, country, and company.",
+        "err_email": "Invalid email address.",
+        "verify_title": "Email verification",
+        "verify_sub": "We sent a 6-digit code to",
+        "code_label": "Verification code",
+        "code_ph": "Enter the 6-digit code",
+        "verify_btn": "Verify",
+        "resend_btn": "Resend code",
+        "resend_ok": "A new code was sent.",
+        "err_code": "Invalid verification code.",
+        "err_send": "Could not send verification email. Check SMTP secrets.",
+    },
+    "pt": {
+        "welcome": "Boas-vindas ao qPrism",
+        "select_lang": "Selecione um idioma",
+        "access_title": "Acessar o qPrism",
+        "access_sub": "Preencha o formulário para continuar.",
+        "name_opt": "Nome (opcional)",
+        "email_req": "E-mail *",
+        "country_req": "País *",
+        "company_req": "Empresa / Instituição *",
+        "role_opt": "Cargo / Função (opcional)",
+        "continue": "Continuar",
+        "err_required": "Informe e-mail, país e instituição.",
+        "err_email": "Endereço de e-mail inválido.",
+        "verify_title": "Verificação de e-mail",
+        "verify_sub": "Enviamos um código de 6 dígitos para",
+        "code_label": "Código de verificação",
+        "code_ph": "Digite o código de 6 dígitos",
+        "verify_btn": "Verificar",
+        "resend_btn": "Reenviar código",
+        "resend_ok": "Um novo código foi enviado.",
+        "err_code": "Código de verificação inválido.",
+        "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP.",
+    }
+}
+
 def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
@@ -189,149 +238,6 @@ import random
 
 def generate_otp():
     return str(random.randint(100000, 999999))
-
-if "step" not in st.session_state:
-    st.session_state.step = "login"
-
-if st.session_state.step == "login":
-    if "lang" not in st.session_state or st.session_state.lang is None:
-        st.session_state.lang = "en"
-
-    lang = st.session_state.lang
-    t = TEXTOS_LOGIN[lang]
-
-    left, right = st.columns([1.6, 1.0], gap="large")
-
-    with left:
-        st.image("assets/logo_qprism.png", width=230)
-
-        st.markdown(f"## {t['welcome']}")
-        st.markdown("Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning")
-        st.markdown("")
-
-        st.markdown(f"### {t['select_lang']}")
-        escolha = st.radio(
-            "",
-            ["English", "Português (Brasil)"],
-            index=0 if st.session_state.lang == "en" else 1,
-            horizontal=True,
-            key="lang_choice_login"
-        )
-        new_lang = "pt" if "Português" in escolha else "en"
-        if new_lang != st.session_state.lang:
-            st.session_state.lang = new_lang
-            st.rerun()
-
-        st.markdown("**LOGOS: UFPE – CEERMA – PRH**")
-
-    with right:
-        st.markdown("### " + t["access_title"])
-        st.markdown(t["access_sub"])
-
-        with st.form("login_form", clear_on_submit=False):
-            name = st.text_input(t["name_opt"])
-            email = st.text_input(t["email_req"])
-            country = st.text_input(t["country_req"])
-            company = st.text_input(t["company_req"])
-            role = st.text_input(t["role_opt"])
-            submitted = st.form_submit_button(t["continue"])
-
-        if submitted:
-            name_clean = (name or "").strip()
-            email_clean = (email or "").strip().lower()
-            country_clean = (country or "").strip()
-            company_clean = (company or "").strip()
-            role_clean = (role or "").strip()
-
-            if not email_clean or not company_clean or not country_clean:
-                st.error(t["err_required"])
-            elif not is_valid_email(email_clean):
-                st.error(t["err_email"])
-            else:
-                otp = generate_otp()
-                try:
-                    send_otp_email(email_clean, otp)
-                except Exception:
-                    st.error(t["err_send"])
-                    st.stop()
-
-                st.session_state.pending_user = {
-                    "name": name_clean,
-                    "email": email_clean,
-                    "country": country_clean,
-                    "company": company_clean,
-                    "role": role_clean,
-                    "lang": st.session_state.lang,
-                }
-                st.session_state.otp_code = otp
-                st.session_state.otp_email = email_clean
-                st.session_state.step = "verify"
-                st.rerun()
-
-    st.stop()
-
-if st.session_state.step == "verify":
-    lang = st.session_state.lang or "en"
-    t = TEXTOS_LOGIN[lang]
-
-    left, mid, right = st.columns([1.2, 1.0, 1.2])
-
-    with mid:
-        st.markdown(f"### {t['verify_title']}")
-        st.markdown(f"{t['verify_sub']} **{st.session_state.otp_email}**.")
-
-        code_input = st.text_input(
-            t["code_label"],
-            max_chars=6,
-            placeholder=t["code_ph"]
-        )
-
-        c1, c2 = st.columns(2)
-        verify_btn = c1.button(t["verify_btn"])
-        resend_btn = c2.button(t["resend_btn"])
-
-        if verify_btn:
-            if (code_input or "").strip() == (st.session_state.otp_code or ""):
-                from datetime import datetime
-                user = st.session_state.pending_user or {}
-                created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-
-                save_registration(
-                    user.get("name", ""),
-                    user.get("email", ""),
-                    user.get("company", ""),
-                    user.get("role", ""),
-                    created_at
-                )
-                append_csv_log(
-                    user.get("name", ""),
-                    user.get("email", ""),
-                    user.get("company", ""),
-                    user.get("role", ""),
-                    created_at
-                )
-
-                st.session_state.user = {**user, "created_at": created_at}
-                st.session_state.pending_user = None
-                st.session_state.otp_verified = True
-                st.session_state.step = "app"
-                st.rerun()
-            else:
-                st.error(t["err_code"])
-
-        if resend_btn:
-            otp = generate_otp()
-            try:
-                send_otp_email(st.session_state.otp_email, otp)
-            except Exception:
-                st.error(t["err_send"])
-                st.stop()
-
-            st.session_state.otp_code = otp
-            st.success(t["resend_ok"])
-
-    st.stop()
-
         
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -1373,56 +1279,6 @@ TEXTOS_INF = {
     },
 }
 
-TEXTOS_LOGIN = {
-    "en": {
-        "welcome": "Welcome to qPrism",
-        "select_lang": "Select a language",
-        "access_title": "Access qPrism",
-        "access_sub": "Please fill in the form to continue.",
-        "name_opt": "Name (optional)",
-        "email_req": "Email *",
-        "country_req": "Country *",
-        "company_req": "Company / Institution *",
-        "role_opt": "Role / Position (optional)",
-        "continue": "Continue",
-        "err_required": "Please provide email, country, and company.",
-        "err_email": "Invalid email address.",
-        "verify_title": "Email verification",
-        "verify_sub": "We sent a 6-digit code to",
-        "code_label": "Verification code",
-        "code_ph": "Enter the 6-digit code",
-        "verify_btn": "Verify",
-        "resend_btn": "Resend code",
-        "resend_ok": "A new code was sent.",
-        "err_code": "Invalid verification code.",
-        "err_send": "Could not send verification email. Check SMTP secrets.",
-    },
-    "pt": {
-        "welcome": "Boas-vindas ao qPrism",
-        "select_lang": "Selecione um idioma",
-        "access_title": "Acessar o qPrism",
-        "access_sub": "Preencha o formulário para continuar.",
-        "name_opt": "Nome (opcional)",
-        "email_req": "E-mail *",
-        "country_req": "País *",
-        "company_req": "Empresa / Instituição *",
-        "role_opt": "Cargo / Função (opcional)",
-        "continue": "Continuar",
-        "err_required": "Informe e-mail, país e instituição.",
-        "err_email": "Endereço de e-mail inválido.",
-        "verify_title": "Verificação de e-mail",
-        "verify_sub": "Enviamos um código de 6 dígitos para",
-        "code_label": "Código de verificação",
-        "code_ph": "Digite o código de 6 dígitos",
-        "verify_btn": "Verificar",
-        "resend_btn": "Reenviar código",
-        "resend_ok": "Um novo código foi enviado.",
-        "err_code": "Código de verificação inválido.",
-        "err_send": "Não foi possível enviar o e-mail. Verifique as secrets SMTP.",
-    }
-}
-
-
 def mostrar_rodape_logos2(textos):
     st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
     st.markdown("---")
@@ -1854,12 +1710,13 @@ def main():
 
     aplicar_css_botoes()
 
+    # estados
     if "step" not in st.session_state:
-        st.session_state.step = "login"   # login -> verify -> lang -> app
+        st.session_state.step = "login"   # login -> verify -> app
     if "otp_verified" not in st.session_state:
         st.session_state.otp_verified = False
-    if "lang" not in st.session_state:
-        st.session_state.lang = None
+    if "lang" not in st.session_state or st.session_state.lang is None:
+        st.session_state.lang = "en"
 
     if "pending_user" not in st.session_state:
         st.session_state.pending_user = None
@@ -1871,30 +1728,177 @@ def main():
     valid_steps = {"login", "verify", "app"}
     if st.session_state.step not in valid_steps:
         st.session_state.step = "login"
-    
-    if st.session_state.step in ["lang", "app"] and not st.session_state.otp_verified:
+
+    # não deixa entrar no app sem OTP
+    if st.session_state.step == "app" and not st.session_state.otp_verified:
         st.session_state.step = "login"
 
+        # ---------- LOGIN ----------
+    if st.session_state.step == "login":
+        lang = st.session_state.lang
+        t = TEXTOS_LOGIN[lang]
+
+        left, right = st.columns([1.6, 1.0], gap="large")
+
+        with left:
+            st.image("assets/logo_qprism.png", width=230)
+            st.markdown(f"## {t['welcome']}")
+            st.markdown("Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning")
+            st.markdown("")
+
+            st.markdown(f"### {t['select_lang']}")
+            escolha = st.radio(
+                "",
+                ["English", "Português (Brasil)"],
+                index=0 if st.session_state.lang == "en" else 1,
+                horizontal=True,
+                key="lang_choice_login"
+            )
+            new_lang = "pt" if "Português" in escolha else "en"
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+
+            st.markdown("**LOGOS: UFPE – CEERMA – PRH**")
+
+        with right:
+            st.markdown("### " + t["access_title"])
+            st.markdown(t["access_sub"])
+
+            with st.form("login_form", clear_on_submit=False):
+                name = st.text_input(t["name_opt"])
+                email = st.text_input(t["email_req"])
+                country = st.text_input(t["country_req"])
+                company = st.text_input(t["company_req"])
+                role = st.text_input(t["role_opt"])
+                submitted = st.form_submit_button(t["continue"])
+
+            if submitted:
+                name_clean = (name or "").strip()
+                email_clean = (email or "").strip().lower()
+                country_clean = (country or "").strip()
+                company_clean = (company or "").strip()
+                role_clean = (role or "").strip()
+
+                if not email_clean or not company_clean or not country_clean:
+                    st.error(t["err_required"])
+                elif not is_valid_email(email_clean):
+                    st.error(t["err_email"])
+                else:
+                    otp = generate_otp()
+                    try:
+                        send_otp_email(email_clean, otp)
+                    except Exception:
+                        st.error(t["err_send"])
+                        st.stop()
+
+                    st.session_state.pending_user = {
+                        "name": name_clean,
+                        "email": email_clean,
+                        "country": country_clean,
+                        "company": company_clean,
+                        "role": role_clean,
+                        "lang": st.session_state.lang,
+                    }
+                    st.session_state.otp_code = otp
+                    st.session_state.otp_email = email_clean
+                    st.session_state.step = "verify"
+                    st.rerun()
+
+        st.stop()
+
+    # ---------- VERIFY ----------
+    if st.session_state.step == "verify":
+        lang = st.session_state.lang or "en"
+        t = TEXTOS_LOGIN[lang]
+
+        left, mid, right = st.columns([1.2, 1.0, 1.2])
+        with mid:
+            st.markdown(f"### {t['verify_title']}")
+            st.markdown(f"{t['verify_sub']} **{st.session_state.otp_email}**.")
+
+            code_input = st.text_input(
+                t["code_label"],
+                max_chars=6,
+                placeholder=t["code_ph"]
+            )
+
+            c1, c2 = st.columns(2)
+            verify_btn = c1.button(t["verify_btn"])
+            resend_btn = c2.button(t["resend_btn"])
+
+            if verify_btn:
+                if (code_input or "").strip() == (st.session_state.otp_code or ""):
+                    from datetime import datetime
+                    user = st.session_state.pending_user or {}
+                    created_at = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+
+                    save_registration(
+                        user.get("name", ""),
+                        user.get("email", ""),
+                        user.get("company", ""),
+                        user.get("role", ""),
+                        created_at
+                    )
+                    append_csv_log(
+                        user.get("name", ""),
+                        user.get("email", ""),
+                        user.get("company", ""),
+                        user.get("role", ""),
+                        created_at
+                    )
+
+                    st.session_state.user = {**user, "created_at": created_at}
+                    st.session_state.pending_user = None
+                    st.session_state.otp_verified = True
+                    st.session_state.step = "app"
+                    st.rerun()
+                else:
+                    st.error(t["err_code"])
+
+            if resend_btn:
+                otp = generate_otp()
+                try:
+                    send_otp_email(st.session_state.otp_email, otp)
+                except Exception:
+                    st.error(t["err_send"])
+                    st.stop()
+
+                st.session_state.otp_code = otp
+                st.success(t["resend_ok"])
+
+        st.stop()
+
+        # ---------- APP ----------
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
 
+    # sidebar idioma (com rerun)
     idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
     idioma_selecionado = st.sidebar.selectbox(
         "Language / Idioma:",
         ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-        index=0 if idioma_atual == "English"  else 1
+        index=0 if idioma_atual == "English" else 1
     )
 
+    changed = False
     if idioma_selecionado == "🇧🇷 Português (BR)" and st.session_state.lang != "pt":
         st.session_state.lang = "pt"
+        changed = True
     elif idioma_selecionado == "🇺🇸 English (US)" and st.session_state.lang != "en":
         st.session_state.lang = "en"
+        changed = True
+
+    if changed:
+        st.rerun()
 
     lang = st.session_state.lang
     textos = TEXTOS[lang]
     textos_otim = TEXTOS_OPT[lang]
     textos_ml = TEXTOS_ML[lang]
     textos_inf = TEXTOS_INF[lang]
+
+
 
     mostrar_otim(textos_otim)
     mostrar_ml(textos_ml)
@@ -4668,6 +4672,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
