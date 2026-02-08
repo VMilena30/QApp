@@ -1727,45 +1727,20 @@ def main():
         left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
-            from pathlib import Path
-        
-            BASE_DIR = Path(__file__).resolve().parent
-            LOGO = BASE_DIR / "qplog.png"   # ajuste se estiver em assets/
+            c1, c2, c3 = st.columns([1, 1, 1])
+            with c2:
+                st.image(str(LOGO), width=320)
             
-            st.markdown(
-                """
-                <div style="
-                    width:100%;
-                    display:flex;
-                    flex-direction:column;
-                    align-items:center;
-                    justify-content:center;
-                    text-align:center;
-                ">
-                """,
-                unsafe_allow_html=True
-            )
-            
-            st.markdown(
-                f"""
-                <img src="data:image/png;base64,{LOGO.read_bytes().hex()}"
-                     style="width:320px; display:block; margin:0 auto;" />
-                """,
-                unsafe_allow_html=True
-            )
-
-            
-            # textos
             st.markdown("""
-            <div style="font-size:42px; font-weight:800; margin-top:12px;">
-                qPrism
-            </div>
-            <div style="font-size:16px; margin-top:8px; max-width:720px;">
-                Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
-            </div>
+            <div style="text-align:center;">
+                <div style="font-size:42px; font-weight:800; margin-top:12px;">
+                    qPrism
+                </div>
+                <div style="font-size:16px; margin-top:8px; max-width:720px; margin-left:auto; margin-right:auto;">
+                    Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
+                </div>
             </div>
             """, unsafe_allow_html=True)
-
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
         
@@ -4790,6 +4765,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
