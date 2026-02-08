@@ -1860,7 +1860,7 @@ def main():
             <div style="font-size:22px;font-weight:700;line-height:1.05;margin-bottom:4px;">
               {t["access_title"]}
             </div>
-            <div style="font-size:18px;margin-bottom:8px;">
+            <div style="font-size:16px;margin-bottom:8px;">
               {t["access_sub"]}
             </div>
             """, unsafe_allow_html=True)
@@ -4773,6 +4773,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
