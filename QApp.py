@@ -1769,7 +1769,6 @@ def main():
                 justify-content: center;
             }
             
-            /* Remove margem extra do container do markdown acima */
             .element-container:has(div[role="radiogroup"]) {
                 margin-top: 0 !important;
                 margin-bottom: 0 !important;
@@ -1784,10 +1783,10 @@ def main():
                     font-size:22px;
                     font-weight:700;
                     border:2px solid #333;
-                    padding:10px 14px;
+                    padding:2px 14px;
                     background: rgba(255,255,255,0.75);
                     border-radius:6px;
-                    margin-bottom:14px;">
+                    margin-bottom:0px;">
                     Welcome to qPrism / Boas Vindas ao qPrism
                 </div>
                 """,
@@ -1801,7 +1800,7 @@ def main():
                     font-size:18px;
                     font-weight:600;
                     background: rgba(255,255,255,0.75);
-                    padding:4px 10px;
+                    padding:2px 10px;
                     border-radius:6px;
                     margin-bottom:2px;
                 ">
@@ -4739,6 +4738,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
