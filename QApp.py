@@ -1821,6 +1821,38 @@ def main():
             }
             </style>
             """, unsafe_allow_html=True)
+
+            st.markdown("""
+            <style>
+            /* Aperta o componente Radio (container + opções) */
+            div[data-testid="stRadio"] {
+              margin-top: -12px !important;
+              margin-bottom: -14px !important;
+              padding-top: 0 !important;
+              padding-bottom: 0 !important;
+            }
+            div[data-testid="stRadio"] div[role="radiogroup"]{
+              gap: 16px !important;          /* aproxima as opções */
+              margin: 0 !important;
+              padding: 0 !important;
+              justify-content: center !important;
+            }
+            
+            /* Remove o "buraco" que vem dos títulos markdown (h1/h2/h3) */
+            div[data-testid="stMarkdownContainer"] h1,
+            div[data-testid="stMarkdownContainer"] h2,
+            div[data-testid="stMarkdownContainer"] h3 {
+              margin-top: 6px !important;
+              margin-bottom: 6px !important;
+            }
+            
+            /* Remove espaçamento extra dos blocos (markdown/elementos) */
+            div[data-testid="stVerticalBlock"] > div {
+              gap: 0px !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
             
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -4750,6 +4782,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
