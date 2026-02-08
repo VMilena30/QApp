@@ -1733,12 +1733,12 @@ def main():
                 st.image("pesq.png", width=320)
 
             st.markdown(
-                "<div style='text-align:center; font-size:44px; font-weight:800; margin-top:-10px;'>qPrism</div>",
+                "<div style='text-align:center; font-size:48px; font-weight:800; margin-top:-10px;'>qPrism</div>",
                 unsafe_allow_html=True
             )
         
             st.markdown(
-                f"<div style='text-align:center; font-size:30px; margin-top:4px;'>{t['tagline']}</div>",
+                f"<div style='text-align:center; font-size:24px; margin-top:4px;'>{t['tagline']}</div>",
                 unsafe_allow_html=True
             )
         
@@ -1747,7 +1747,7 @@ def main():
             c1, c2, c3, c4, c5 = st.columns([1, 0.6, 0.6, 0.6, 1])
             
             with c2:
-                st.image("1.png", width=90)
+                st.image("1.png", width=80)
             with c3:
                 st.image("2.png", width=90)
             with c4:
@@ -1758,6 +1758,25 @@ def main():
         
 
         with right:
+            st.markdown("""
+            <style>
+            /* Remove espaço exagerado do radio */
+            div[role="radiogroup"] {
+                margin-top: -12px !important;
+                margin-bottom: -14px !important;
+                padding-top: 0 !important;
+                padding-bottom: 0 !important;
+                justify-content: center;
+            }
+            
+            /* Remove margem extra do container do markdown acima */
+            .element-container:has(div[role="radiogroup"]) {
+                margin-top: 0 !important;
+                margin-bottom: 0 !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
             st.markdown(
                 """
                 <div style="
@@ -1777,16 +1796,16 @@ def main():
             
             st.markdown(
                 """
-                <div style="text-align:center; width:100%; margin-bottom:2px;">
-                    <div style="
-                        font-size:18px;
-                        font-weight:600;
-                        background: rgba(255,255,255,0.75);
-                        display:inline-block;
-                        padding:6px 12px;
-                        border-radius:6px;">
-                        Select a language / Selecione um idioma
-                    </div>
+                <div style="
+                    text-align:center;
+                    font-size:18px;
+                    font-weight:600;
+                    background: rgba(255,255,255,0.75);
+                    padding:4px 10px;
+                    border-radius:6px;
+                    margin-bottom:2px;
+                ">
+                    Select a language / Selecione um idioma
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -4731,6 +4750,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
