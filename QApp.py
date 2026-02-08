@@ -1746,8 +1746,14 @@ def main():
                 unsafe_allow_html=True
             )
             
-            # imagem CENTRALIZADA de verdade
-            st.image(str(LOGO), width=320)
+            st.markdown(
+                f"""
+                <img src="data:image/png;base64,{LOGO.read_bytes().hex()}"
+                     style="width:320px; display:block; margin:0 auto;" />
+                """,
+                unsafe_allow_html=True
+            )
+
             
             # textos
             st.markdown("""
@@ -4784,6 +4790,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
