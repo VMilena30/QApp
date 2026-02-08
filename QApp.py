@@ -1738,7 +1738,7 @@ def main():
             )
         
             st.markdown(
-                f"<div style='text-align:center; font-size:24px; margin-top:4px;'>{t['tagline']}</div>",
+                f"<div style='text-align:center; font-size:22px; margin-top:4px;'>{t['tagline']}</div>",
                 unsafe_allow_html=True
             )
         
@@ -1775,6 +1775,28 @@ def main():
             }
             </style>
             """, unsafe_allow_html=True)
+
+            st.markdown("""
+            <style>
+            /* Remove espaço que o Streamlit adiciona a CADA markdown */
+            div[data-testid="stMarkdownContainer"] {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Remove o wrapper invisível que cria o "buraco" */
+            .element-container {
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            /* Remove gap entre elementos empilhados */
+            div[data-testid="stVerticalBlock"] {
+                gap: 0 !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
 
             st.markdown(
                 """
@@ -4736,6 +4758,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
