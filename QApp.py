@@ -1741,7 +1741,7 @@ def main():
         left, right = st.columns([1.6, 1.0], gap="large")
 
         with left:
-            st.image("assets/logo_qprism.png", width=230)
+            st.image("pesq.png", width=230)
             st.markdown(f"## {t['welcome']}")
             st.markdown("Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning")
             st.markdown("")
@@ -4672,6 +4672,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
