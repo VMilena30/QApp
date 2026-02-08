@@ -1851,7 +1851,7 @@ def main():
                 st.session_state.lang = new_lang
                 st.rerun()
 
-            st.markdown("<div style='height:12px;'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height:20px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
             <div style="font-size:22px;font-weight:700;line-height:1.05;margin-bottom:4px;">
               {t["access_title"]}
@@ -4769,6 +4769,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
