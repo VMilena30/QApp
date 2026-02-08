@@ -1733,20 +1733,76 @@ def main():
     if st.session_state.step == "app" and not st.session_state.otp_verified:
         st.session_state.step = "login"
 
-        # ---------- LOGIN ----------
     if st.session_state.step == "login":
         lang = st.session_state.lang
         t = TEXTOS_LOGIN[lang]
 
-        left, right = st.columns([1.6, 1.0], gap="large")
+        left, right = st.columns([1.4, 1.0], gap="large")
 
         with left:
-            st.image("pesq.png", width=230)
-            st.markdown(f"## {t['welcome']}")
-            st.markdown("Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning")
-            st.markdown("")
+            # Logo principal (a que você fez)
+            st.image("pesq.png", width=520)  # ajuste width se quiser
+        
+            st.markdown(
+                "<div style='text-align:center; font-size:44px; font-weight:800; margin-top:-10px;'>qPrism</div>",
+                unsafe_allow_html=True
+            )
+        
+            st.markdown(
+                f"<div style='text-align:center; color:#5a5f66; font-size:14px; margin-top:4px;'>{t['tagline']}</div>",
+                unsafe_allow_html=True
+            )
+        
+            st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+        
+            # Logos 1.png 2.png 3.png (linha)
+            cA, cB, cC = st.columns([1,1,1])
+            with cA:
+                st.image("1.png", use_container_width=True)
+            with cB:
+                st.image("2.png", use_container_width=True)
+            with cC:
+                st.image("4.png", use_container_width=True)
+        
+            st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+        
 
-            st.markdown(f"### {t['select_lang']}")
+        with right:
+            st.markdown(
+                """
+                <div style="
+                    text-align:center;
+                    font-size:28px;
+                    font-weight:700;
+                    border:2px solid #333;
+                    padding:10px 14px;
+                    background: rgba(255,255,255,0.75);
+                    border-radius:6px;
+                    margin-bottom:14px;">
+                    Welcome to qPrism / Boas Vindas ao qPrism
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+            
+            st.markdown(
+                """
+                <div style="
+                    text-align:center;
+                    font-size:22px;
+                    font-weight:600;
+                    background: rgba(255,255,255,0.75);
+                    display:inline-block;
+                    padding:8px 14px;
+                    border-radius:6px;
+                    margin-bottom:6px;">
+                    Select a language / Selecione um idioma
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
+        
             escolha = st.radio(
                 "",
                 ["English", "Português (Brasil)"],
@@ -1758,13 +1814,13 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-
-            st.markdown("**LOGOS: UFPE – CEERMA – PRH**")
-
-        with right:
+        
+            st.markdown("<div style='height:10px;'></div>", unsafe_allow_html=True)
+        
+            st.markdown("<div class='qp-card'>", unsafe_allow_html=True)
             st.markdown("### " + t["access_title"])
             st.markdown(t["access_sub"])
-
+        
             with st.form("login_form", clear_on_submit=False):
                 name = st.text_input(t["name_opt"])
                 email = st.text_input(t["email_req"])
@@ -4672,6 +4728,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
