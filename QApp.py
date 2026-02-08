@@ -1764,8 +1764,8 @@ def main():
             div[role="radiogroup"] {
                 margin-top: -12px !important;
                 margin-bottom: -14px !important;
-                padding-top: 2 !important;
-                padding-bottom: 0 !important;
+                padding-top: 4 !important;
+                padding-bottom: 4 !important;
                 justify-content: center;
             }
             
@@ -1783,9 +1783,9 @@ def main():
                     font-size:22px;
                     font-weight:700;
                     border:0x solid #333;
-                    padding:2px 14px;
+                    padding:0px 5px;
                     background: rgba(255,255,255,0.75);
-                    border-radius:6px;
+                    border-radius:0px;
                     margin-bottom:0px;">
                     Welcome to qPrism / Boas Vindas ao qPrism
                 </div>
@@ -1800,7 +1800,7 @@ def main():
                     font-size:18px;
                     font-weight:600;
                     background: rgba(255,255,255,0.75);
-                    padding:2px 10px;
+                    padding:0px 5px;
                     border-radius:0px;
                     margin-bottom:0px;
                 ">
@@ -1824,8 +1824,6 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-        
-            st.markdown("<div style='height:px;'></div>", unsafe_allow_html=True)
         
             st.markdown("<div class='qp-card'>", unsafe_allow_html=True)
             st.markdown("### " + t["access_title"])
@@ -4738,6 +4736,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
