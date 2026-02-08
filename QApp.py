@@ -1764,7 +1764,7 @@ def main():
             div[role="radiogroup"] {
                 margin-top: -12px !important;
                 margin-bottom: -14px !important;
-                padding-top: 0 !important;
+                padding-top: 2 !important;
                 padding-bottom: 0 !important;
                 justify-content: center;
             }
@@ -1782,7 +1782,7 @@ def main():
                     text-align:center;
                     font-size:22px;
                     font-weight:700;
-                    border:2px solid #333;
+                    border:0x solid #333;
                     padding:2px 14px;
                     background: rgba(255,255,255,0.75);
                     border-radius:6px;
@@ -1801,8 +1801,8 @@ def main():
                     font-weight:600;
                     background: rgba(255,255,255,0.75);
                     padding:2px 10px;
-                    border-radius:6px;
-                    margin-bottom:2px;
+                    border-radius:0px;
+                    margin-bottom:0px;
                 ">
                     Select a language / Selecione um idioma
                 </div>
@@ -4738,6 +4738,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
