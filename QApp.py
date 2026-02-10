@@ -278,8 +278,6 @@ with st.popover(label_btn, use_container_width=False):
 
 st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
 
-
-
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -4905,6 +4903,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
