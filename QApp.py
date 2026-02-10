@@ -116,6 +116,16 @@ if "go" in qp and qp.get("go") == "inicio":
 
 import streamlit.components.v1 as components
 
+def load_logo_base64(path):
+    with open(path, "rb") as f:
+        return base64.b64encode(f.read()).decode()
+
+BASE_DIR = Path(__file__).resolve().parent
+logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
+
+BAR_COLOR = "#0d4376"
+BAR_HEIGHT = 64
+
 def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt", show_controls=True):
     # valores
     selected_pt = "selected" if lang == "pt" else ""
@@ -4926,6 +4936,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
