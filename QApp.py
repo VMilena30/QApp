@@ -195,23 +195,26 @@ st.markdown(
 st.markdown(
     """
     <style>
-      /* Encontra o bloco que CONTÉM o marker e fixa o popover que está dentro dele */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
-        position: fixed !important;
-        top: 12px !important;
-        right: 28px !important;
-        z-index: 10002 !important;
+      /* 1) A BARRA NÃO CAPTURA CLIQUES (passa o clique para o que estiver por cima) */
+      .qx-topbar {
+        pointer-events: none !important;
       }
 
-      /* Estilo do botão do popover */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button{
-        height: 40px !important;
-        padding: 0 14px !important;
-        border-radius: 8px !important;
-        border: 1px solid rgba(255,255,255,.35) !important;
-        background: rgba(255,255,255,.10) !important;
-        color: white !important;
-        font-weight: 600 !important;
+      /* 2) Se você quiser que o logo/título ainda seja clicável, reativa só nele */
+      .qx-topbar .qx-left {
+        pointer-events: auto !important;
+      }
+
+      /* 3) GARANTE que o popover (e o botão) aceitam clique */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] {
+        pointer-events: auto !important;
+        z-index: 20000 !important;
+      }
+
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button {
+        pointer-events: auto !important;
+        position: relative !important;
+        z-index: 20001 !important;
       }
     </style>
     """,
@@ -4874,6 +4877,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
