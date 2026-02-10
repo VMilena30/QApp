@@ -268,12 +268,10 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-
-
 label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
 
 with st.popover(label_btn, use_container_width=False):
-    idioma = st.selectbox(
+    idioma = st.radio(
         "Language",
         ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
         index=0 if st.session_state.get("lang", "pt") == "en" else 1,
@@ -4908,6 +4906,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
