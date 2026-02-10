@@ -155,28 +155,32 @@ st.markdown(
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* ===== fixa SOMENTE o selectbox de idioma (pela key via marker) ===== */
-      div#lang_marker + div[data-testid="stSelectbox"] {{
-        position: fixed !important;
-        top: 10px !important;
-        right: 28px !important;
-        z-index: 1001 !important;
-        width: 260px !important;
-        background: transparent !important;
-        margin: 0 !important;
-        padding: 0 !important;
-      }}
+        /* pega qualquer selectbox que venha depois do marker (não precisa ser irmão direto) */
+        div#lang_marker ~ div[data-testid="stSelectbox"] {
+          position: fixed !important;
+          top: 10px !important;
+          right: 28px !important;
+          z-index: 1001 !important;
+          width: 260px !important;
+          background: transparent !important;
+          margin: 0 !important;
+          padding: 0 !important;
+        }
+        
+        /* label branco */
+        div#lang_marker ~ div[data-testid="stSelectbox"] label {
+          color: white !important;
+          font-weight: 600 !important;
+          font-size: 12px !important;
+          margin: 0 0 2px 0 !important;
+          padding: 0 !important;
+        }
+        
+        /* altura do select */
+        div#lang_marker ~ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {
+          min-height: 40px !important;
+        }
 
-      div#lang_marker + div[data-testid="stSelectbox"] label {{
-        color: white !important;
-        font-weight: 600 !important;
-        font-size: 12px !important;
-        margin: 0 0 2px 0 !important;
-        padding: 0 !important;
-      }}
-
-      div#lang_marker + div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
-        min-height: 40px !important;
       }}
     </style>
 
@@ -4834,6 +4838,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
