@@ -234,38 +234,43 @@ st.markdown(
 st.markdown(
     """
     <style>
-      /* container do popover: NÃO mexe */
-      /* fixar somente o BOTÃO do popover */
-      div[data-testid="stPopover"] > button {
+      /* prende no topo-direita sem ocupar a barra toda */
+      div[data-testid="stPopover"]{
         position: fixed !important;
         top: 12px !important;
         right: 28px !important;
-        z-index: 1002 !important;
+        left: auto !important;
 
+        width: fit-content !important;
+        max-width: 260px !important;
+        display: inline-block !important;
+        z-index: 1002 !important;
+      }
+
+      /* evita wrappers internos esticarem */
+      div[data-testid="stPopover"] > div{
+        width: fit-content !important;
+        display: inline-block !important;
+      }
+
+      /* botão do popover não pode virar 100% */
+      div[data-testid="stPopover"] > button{
         width: auto !important;
         min-width: 0 !important;
         white-space: nowrap !important;
 
         background: white !important;
         color: #0d4376 !important;
-        border: 0 !important;
         border-radius: 10px !important;
-        padding: 8px 14px !important;
         font-weight: 700 !important;
-      }
-
-      /* garante que o painel do popover NÃO fique fixo */
-      div[data-testid="stPopover"] div[role="dialog"] {
-        position: absolute !important;
-        top: auto !important;
-        right: auto !important;
-        left: auto !important;
-        z-index: 1003 !important;
+        border: 0 !important;
+        padding: 8px 14px !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 
 label_btn = "PT 🇧🇷" if st.session_state.lang == "pt" else "EN 🇺🇸"
 
@@ -4879,6 +4884,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
