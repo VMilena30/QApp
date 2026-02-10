@@ -1284,109 +1284,121 @@ TEXTOS_INF = {
 
 import streamlit as st
 
-def render_topbar_nav(logo_base64: str, textos: dict):
-    """
-    Mostra botão Início + seletor de idioma na barra superior.
-    Use apenas nas páginas internas (não na página inicial).
-    """
-    BAR_COLOR = "#0d4376"
-    BAR_HEIGHT = 64
+# --- TOPBAR (logo + título) ---
+st.markdown(
+    f"""
+    <style>
+      header[data-testid="stHeader"] {{ background: transparent; }}
 
-    st.markdown(
-        f"""
-        <style>
-            header[data-testid="stHeader"] {{
-                background: transparent;
-            }}
+      .qx-topbar {{
+        position: fixed;
+        top: 0; left: 0; right: 0;
+        height: {BAR_HEIGHT}px;
+        background: {BAR_COLOR};
+        display: flex;
+        align-items: center;
+        padding: 0 28px;
+        z-index: 1000;
+        box-sizing: border-box;
+      }}
 
-            .qx-topbar {{
-                position: fixed;
-                top: 0;
-                left: 0;
-                right: 0;
-                height: {BAR_HEIGHT}px;
-                background-color: {BAR_COLOR};
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 0 28px;
-                z-index: 1000;
-                box-sizing: border-box;
-            }}
+      .qx-left {{
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }}
 
-            .qx-left {{
-                display: flex;
-                align-items: center;
-                gap: 12px;
-            }}
+      .qx-topbar img {{ height: 36px; }}
+      .qx-title {{
+        color: #fff;
+        font-size: 28px;
+        font-weight: 700;
+        line-height: 1;
+      }}
 
-            .qx-topbar img {{
-                height: 36px;
-            }}
+      section[data-testid="stMain"] {{
+        padding-top: {BAR_HEIGHT + 10}px;
+      }}
 
-            .qx-title {{
-                color: white;
-                font-size: 28px;
-                font-weight: 700;
-                line-height: 1;
-            }}
+      /* ====== CONTROLES DENTRO DA TOPBAR ====== */
 
-            section[data-testid="stMain"] {{
-                padding-top: {BAR_HEIGHT + 10}px;
-            }}
+      /* container do botão (pela key) */
+      div[data-testid="stButton"]:has(button#home_btn) {{
+        position: fixed;
+        top: 12px;              /* centraliza verticalmente na barra */
+        right: 310px;           /* deixa espaço pro selectbox */
+        z-index: 1002;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }}
 
-            /* ---- Controles fixos no topo (direita) ---- */
-            div[data-testid="stButton"]:has(button#home_btn) {{
-                position: fixed;
-                top: 10px;
-                right: 270px;
-                z-index: 1001;
-            }}
+      /* estilo do botão pra combinar */
+      button#home_btn {{
+        height: 40px !important;
+        padding: 0 14px !important;
+        border-radius: 8px !important;
+        border: 1px solid rgba(255,255,255,.35) !important;
+        background: rgba(255,255,255,.10) !important;
+        color: white !important;
+        font-weight: 600 !important;
+      }}
 
-            div[data-testid="stRadio"]:has(input#lang_nav_en) {{
-                position: fixed;
-                top: 6px;
-                right: 28px;
-                z-index: 1001;
-                background: rgba(255,255,255,0.0);
-                padding: 0;
-                margin: 0;
-            }}
+      /* container do selectbox (pela key) */
+      div[data-testid="stSelectbox"]:has(input#lang_nav) {{
+        position: fixed;
+        top: 10px;              /* levemente acima pra caber label + select */
+        right: 28px;
+        z-index: 1002;
+        width: 260px;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: transparent !important;
+      }}
 
-            /* Deixa o texto do radio branco e alinhado */
-            div[data-testid="stRadio"]:has(input#lang_nav_en) label,
-            div[data-testid="stRadio"]:has(input#lang_nav_en) span {{
-                color: white !important;
-                font-weight: 600;
-            }}
-        </style>
+      /* deixa o label “Language / Idioma” branco e compacto */
+      div[data-testid="stSelectbox"]:has(input#lang_nav) label {{
+        color: white !important;
+        font-weight: 600 !important;
+        font-size: 12px !important;
+        margin: 0 0 2px 0 !important;
+        padding: 0 !important;
+      }}
 
-        <div class="qx-topbar">
-            <div class="qx-left">
-                <img src="data:image/png;base64,{logo_base64}">
-                <div class="qx-title">qPrism</div>
-            </div>
-        </div>
-        """,
-        unsafe_allow_html=True,
-    )
+      /* ajusta a altura do select (baseweb) */
+      div[data-testid="stSelectbox"]:has(input#lang_nav) div[data-baseweb="select"] > div {{
+        min-height: 40px !important;
+      }}
+    </style>
 
-    # --- BOTÃO INÍCIO ---
-    if st.button(f"🏠 {textos.get('ini', 'Início')}", key="home_btn"):
+    <div class="qx-topbar">
+      <div class="qx-left">
+        <img src="data:image/png;base64,{logo_base64}">
+        <div class="qx-title">qPrism</div>
+      </div>
+    </div>
+    """,
+    unsafe_allow_html=True,
+)
+
+# ===== MOSTRAR CONTROLES SÓ FORA DA PÁGINA INICIAL =====
+if st.session_state.get("pagina") != "inicio":
+
+    # Botão "Página inicial"
+    if st.button("Página inicial", key="home_btn"):
         st.session_state["pagina"] = "inicio"
         st.rerun()
 
-    # --- IDIOMA (versão NAV, diferente da página inicial) ---
-    # usamos radio pra ficar parecido com o seu login
-    escolha = st.radio(
-        "",
-        ["English", "Português (Brasil)"],
-        index=0 if st.session_state.lang == "en" else 1,
-        horizontal=True,
-        key="lang_choice_nav",
+    # Select de idioma (NAV), sem conflitar com o radio do login
+    idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
+    idioma_selecionado = st.selectbox(
+        "Language / Idioma:",
+        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
+        index=0 if idioma_atual == "English" else 1,
+        key="lang_nav",
     )
 
-    new_lang = "pt" if "Português" in escolha else "en"
+    new_lang = "pt" if "Português" in idioma_selecionado else "en"
     if new_lang != st.session_state.lang:
         st.session_state.lang = new_lang
         st.rerun()
@@ -2137,9 +2149,6 @@ def main():
         mostrar_rodape_logos2(textos)
         
     elif st.session_state['pagina'] == 'otimizacao':
-
-        if st.session_state.get("pagina") != "inicio":
-            render_topbar_nav(logo_base64, textos)
         
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -4899,6 +4908,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
