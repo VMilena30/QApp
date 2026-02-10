@@ -268,7 +268,7 @@ st.markdown(
 label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
 
 with st.popover(label_btn, use_container_width=False):
-    idioma = st.radio(
+    idioma = st.selectbox(
         "Language",
         ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
         index=0 if st.session_state.get("lang", "pt") == "en" else 1,
@@ -277,6 +277,7 @@ with st.popover(label_btn, use_container_width=False):
     )
 
 st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
+
 
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -4903,6 +4904,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
