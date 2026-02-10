@@ -1282,6 +1282,116 @@ TEXTOS_INF = {
     },
 }
 
+import streamlit as st
+
+def render_topbar_nav(logo_base64: str, textos: dict):
+    """
+    Mostra botão Início + seletor de idioma na barra superior.
+    Use apenas nas páginas internas (não na página inicial).
+    """
+    BAR_COLOR = "#0d4376"
+    BAR_HEIGHT = 64
+
+    st.markdown(
+        f"""
+        <style>
+            header[data-testid="stHeader"] {{
+                background: transparent;
+            }}
+
+            .qx-topbar {{
+                position: fixed;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: {BAR_HEIGHT}px;
+                background-color: {BAR_COLOR};
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 28px;
+                z-index: 1000;
+                box-sizing: border-box;
+            }}
+
+            .qx-left {{
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }}
+
+            .qx-topbar img {{
+                height: 36px;
+            }}
+
+            .qx-title {{
+                color: white;
+                font-size: 28px;
+                font-weight: 700;
+                line-height: 1;
+            }}
+
+            section[data-testid="stMain"] {{
+                padding-top: {BAR_HEIGHT + 10}px;
+            }}
+
+            /* ---- Controles fixos no topo (direita) ---- */
+            div[data-testid="stButton"]:has(button#home_btn) {{
+                position: fixed;
+                top: 10px;
+                right: 270px;
+                z-index: 1001;
+            }}
+
+            div[data-testid="stRadio"]:has(input#lang_nav_en) {{
+                position: fixed;
+                top: 6px;
+                right: 28px;
+                z-index: 1001;
+                background: rgba(255,255,255,0.0);
+                padding: 0;
+                margin: 0;
+            }}
+
+            /* Deixa o texto do radio branco e alinhado */
+            div[data-testid="stRadio"]:has(input#lang_nav_en) label,
+            div[data-testid="stRadio"]:has(input#lang_nav_en) span {{
+                color: white !important;
+                font-weight: 600;
+            }}
+        </style>
+
+        <div class="qx-topbar">
+            <div class="qx-left">
+                <img src="data:image/png;base64,{logo_base64}">
+                <div class="qx-title">qPrism</div>
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
+    # --- BOTÃO INÍCIO ---
+    if st.button(f"🏠 {textos.get('ini', 'Início')}", key="home_btn"):
+        st.session_state["pagina"] = "inicio"
+        st.rerun()
+
+    # --- IDIOMA (versão NAV, diferente da página inicial) ---
+    # usamos radio pra ficar parecido com o seu login
+    escolha = st.radio(
+        "",
+        ["English", "Português (Brasil)"],
+        index=0 if st.session_state.lang == "en" else 1,
+        horizontal=True,
+        key="lang_choice_nav",
+    )
+
+    new_lang = "pt" if "Português" in escolha else "en"
+    if new_lang != st.session_state.lang:
+        st.session_state.lang = new_lang
+        st.rerun()
+
+
 def mostrar_rodape_logos2(textos):
     st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
     st.markdown("---")
@@ -2028,6 +2138,9 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
+        if st.session_state.get("pagina") != "inicio":
+            render_topbar_nav(logo_base64, textos)
+        
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
         
@@ -4786,6 +4899,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
