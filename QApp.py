@@ -24,6 +24,7 @@ import sqlite3
 from datetime import datetime
 import os
 from datetime import datetime
+from pathlib import Path
 import csv
 #Adicionado por Lavínia - comentário para controle
 import itertools
@@ -4936,6 +4937,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
