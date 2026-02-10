@@ -266,7 +266,18 @@ st.markdown(
 
 
 label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
+
+with st.popover(label_btn, use_container_width=False):
+    idioma = st.selectbox(
+        "Language",
+        ("🇺🇸", "🇧🇷"),
+        index=0 if st.session_state.get("lang", "pt") == "en" else 1,
+        label_visibility="collapsed",
+        key="lang_nav_select_inside",
+    )
+
 st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
+
 
 
 LOG_DIR = "registros"
@@ -4894,6 +4905,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
