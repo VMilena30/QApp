@@ -195,16 +195,16 @@ st.markdown(
 st.markdown(
     """
     <style>
-      /* fixa o popover logo após o marker na barra */
-      div#lang_pop_anchor + div[data-testid="stPopover"] {
+      /* Encontra o bloco que CONTÉM o marker e fixa o popover que está dentro dele */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
         position: fixed !important;
         top: 12px !important;
         right: 28px !important;
-        z-index: 1002 !important;
+        z-index: 10002 !important;
       }
 
-      /* estilo do botão do popover */
-      div#lang_pop_anchor + div[data-testid="stPopover"] button {
+      /* Estilo do botão do popover */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button{
         height: 40px !important;
         padding: 0 14px !important;
         border-radius: 8px !important;
@@ -217,6 +217,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
 
 st.markdown('<div id="lang_pop_anchor"></div>', unsafe_allow_html=True)
 with st.popover("🌐 Language / Idioma", use_container_width=False):
@@ -4873,6 +4874,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
