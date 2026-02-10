@@ -266,7 +266,6 @@ st.markdown(
 
 
 label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
-
 st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
 
 
@@ -4895,6 +4894,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
