@@ -1289,7 +1289,6 @@ import streamlit as st
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-# --- TOPBAR (logo + título) ---
 st.markdown(
     f"""
     <style>
@@ -1302,6 +1301,7 @@ st.markdown(
         background: {BAR_COLOR};
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 0 28px;
         z-index: 1000;
         box-sizing: border-box;
@@ -1325,21 +1325,33 @@ st.markdown(
         padding-top: {BAR_HEIGHT + 10}px;
       }}
 
-      /* ====== CONTROLES DENTRO DA TOPBAR ====== */
-
-      /* container do botão (pela key) */
-      div[data-testid="stButton"]:has(button#home_btn) {{
-        position: fixed;
-        top: 12px;              /* centraliza verticalmente na barra */
-        right: 310px;           /* deixa espaço pro selectbox */
-        z-index: 1002;
-        margin: 0 !important;
+      /* ====== AQUI: move o BLOCO que contém o marker pra dentro da barra ====== */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) {{
+        position: fixed !important;
+        top: 10px !important;
+        right: 28px !important;
+        z-index: 1002 !important;
+        width: 560px;               /* controla espaço total */
         padding: 0 !important;
+        margin: 0 !important;
         background: transparent !important;
       }}
 
-      /* estilo do botão pra combinar */
-      button#home_btn {{
+      /* faz os controles ficarem lado a lado */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) > div {{
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 14px !important;
+      }}
+
+      /* esconde o marker */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) .stMarkdown {{
+        display: none !important;
+      }}
+
+      /* estiliza o botão */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) .stButton > button {{
         height: 40px !important;
         padding: 0 14px !important;
         border-radius: 8px !important;
@@ -1349,20 +1361,8 @@ st.markdown(
         font-weight: 600 !important;
       }}
 
-      /* container do selectbox (pela key) */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) {{
-        position: fixed;
-        top: 10px;              /* levemente acima pra caber label + select */
-        right: 28px;
-        z-index: 1002;
-        width: 260px;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: transparent !important;
-      }}
-
-      /* deixa o label “Language / Idioma” branco e compacto */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) label {{
+      /* label branco do select */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) label {{
         color: white !important;
         font-weight: 600 !important;
         font-size: 12px !important;
@@ -1370,8 +1370,8 @@ st.markdown(
         padding: 0 !important;
       }}
 
-      /* ajusta a altura do select (baseweb) */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) div[data-baseweb="select"] > div {{
+      /* altura do select */
+      div[data-testid="stVerticalBlock"]:has(div#qx-controls-marker) div[data-baseweb="select"] > div {{
         min-height: 40px !important;
       }}
     </style>
@@ -1381,32 +1381,39 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">qPrism</div>
       </div>
+      <!-- slot da direita: só visual, os widgets vão ser "puxados" por CSS -->
+      <div id="qx-controls"></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# ===== MOSTRAR CONTROLES SÓ FORA DA PÁGINA INICIAL =====
 if st.session_state.get("pagina") != "inicio":
 
-    # Botão "Página inicial"
-    if st.button("Página inicial", key="home_btn"):
-        st.session_state["pagina"] = "inicio"
-        st.rerun()
+    # marker que o CSS usa pra "agarrar" este bloco e fixar na topbar
+    st.markdown('<div id="qx-controls-marker"></div>', unsafe_allow_html=True)
 
-    # Select de idioma (NAV), sem conflitar com o radio do login
-    idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
-    idioma_selecionado = st.selectbox(
-        "Language / Idioma:",
-        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-        index=0 if idioma_atual == "English" else 1,
-        key="lang_nav",
-    )
+    c_btn, c_lang = st.columns([1, 2])
 
-    new_lang = "pt" if "Português" in idioma_selecionado else "en"
-    if new_lang != st.session_state.lang:
-        st.session_state.lang = new_lang
-        st.rerun()
+    with c_btn:
+        if st.button("Página inicial"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+
+    with c_lang:
+        idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
+        idioma_selecionado = st.selectbox(
+            "Language / Idioma:",
+            ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
+            index=0 if idioma_atual == "English" else 1,
+            key="lang_nav",  # key ok aqui, mas não depende dela
+        )
+
+        new_lang = "pt" if "Português" in idioma_selecionado else "en"
+        if new_lang != st.session_state.lang:
+            st.session_state.lang = new_lang
+            st.rerun()
+
 
 def mostrar_rodape_logos2(textos):
     st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
@@ -4912,6 +4919,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
