@@ -181,7 +181,7 @@ st.markdown(
       min-height: 40px !important;
     }
 
-      }}
+      }
     </style>
 
     <div class="qx-topbar">
@@ -4838,6 +4838,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
