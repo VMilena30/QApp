@@ -194,8 +194,23 @@ st.markdown(
 )
 
 
+
 # marker -> garante que o CSS pega este selectbox e só este
 st.markdown('<div id="lang_marker"></div>', unsafe_allow_html=True)
+
+with st.popover("🌐 Language / Idioma", use_container_width=False):
+    idioma = st.selectbox(
+        "Choose:",
+        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
+        index=0 if st.session_state.lang == "en" else 1,
+        key="lang_nav_select_inside",
+        label_visibility="collapsed",
+    )
+
+new_lang = "en" if "English" in idioma else "pt"
+if new_lang != st.session_state.lang:
+    st.session_state.lang = new_lang
+    st.rerun()
 
 # --- SELECTBOX FUNCIONAL ---
 idioma = st.selectbox(
@@ -4837,6 +4852,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
