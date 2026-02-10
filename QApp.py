@@ -2103,6 +2103,12 @@ def main():
         st.session_state['pagina'] = 'inicio'
     
     if st.session_state['pagina'] == 'inicio':
+                
+        mostrar_introducao_e_titulo(textos)
+        mostrar_cartoes_de_area(textos)
+        
+        mostrar_rodape_logos2(textos)
+
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -2120,11 +2126,7 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-        mostrar_introducao_e_titulo(textos)
-        mostrar_cartoes_de_area(textos)
-        
-        mostrar_rodape_logos2(textos)
-        
+                
     elif st.session_state['pagina'] == 'otimizacao':
         
         st.markdown(textos_otim["rap_descricao"])
@@ -4885,6 +4887,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
