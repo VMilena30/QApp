@@ -191,30 +191,45 @@ st.markdown(
     unsafe_allow_html=True,
 )
 st.markdown(
-    f"""
+    """
     <style>
-      /* ...seu CSS da topbar... */
-
-      /* força QUALQUER popover para o topo-direita */
-      div[data-testid="stPopover"] {{
+      /* prende no topo-direita sem ocupar a barra toda */
+      div[data-testid="stPopover"]{
         position: fixed !important;
         top: 12px !important;
         right: 28px !important;
-        z-index: 1002 !important;
-      }}
+        left: auto !important;
 
-      div[data-testid="stPopover"] > button {{
+        width: fit-content !important;
+        max-width: 260px !important;
+        display: inline-block !important;
+        z-index: 1002 !important;
+      }
+
+      /* evita wrappers internos esticarem */
+      div[data-testid="stPopover"] > div{
+        width: fit-content !important;
+        display: inline-block !important;
+      }
+
+      /* botão do popover não pode virar 100% */
+      div[data-testid="stPopover"] > button{
+        width: auto !important;
+        min-width: 0 !important;
+        white-space: nowrap !important;
+
         background: white !important;
         color: #0d4376 !important;
         border-radius: 10px !important;
         font-weight: 700 !important;
         border: 0 !important;
         padding: 8px 14px !important;
-      }}
+      }
     </style>
     """,
     unsafe_allow_html=True,
 )
+
 
 
 label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
@@ -4881,6 +4896,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
