@@ -2099,6 +2099,12 @@ def main():
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
 
+    lang = st.session_state.lang
+    textos = TEXTOS[lang]
+    textos_otim = TEXTOS_OPT[lang]
+    textos_ml = TEXTOS_ML[lang]
+    textos_inf = TEXTOS_INF[lang]
+
     if 'pagina' not in st.session_state:
         st.session_state['pagina'] = 'inicio'
     
@@ -4893,6 +4899,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
