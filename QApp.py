@@ -192,12 +192,33 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+st.markdown(
+    """
+    <style>
+      /* fixa o popover logo após o marker na barra */
+      div#lang_pop_anchor + div[data-testid="stPopover"] {
+        position: fixed !important;
+        top: 12px !important;
+        right: 28px !important;
+        z-index: 1002 !important;
+      }
 
+      /* estilo do botão do popover */
+      div#lang_pop_anchor + div[data-testid="stPopover"] button {
+        height: 40px !important;
+        padding: 0 14px !important;
+        border-radius: 8px !important;
+        border: 1px solid rgba(255,255,255,.35) !important;
+        background: rgba(255,255,255,.10) !important;
+        color: white !important;
+        font-weight: 600 !important;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
 
-
-# marker -> garante que o CSS pega este selectbox e só este
-st.markdown('<div id="lang_marker"></div>', unsafe_allow_html=True)
-
+st.markdown('<div id="lang_pop_anchor"></div>', unsafe_allow_html=True)
 with st.popover("🌐 Language / Idioma", use_container_width=False):
     idioma = st.selectbox(
         "Choose:",
@@ -4852,6 +4873,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
