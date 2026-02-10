@@ -38,6 +38,12 @@ st.set_page_config(
     layout="wide"
 )
 
+import time
+import streamlit as st
+
+st.write(" DEBUG:", time.time())
+
+
 st.markdown(
     """
     <style>
@@ -4875,6 +4881,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
