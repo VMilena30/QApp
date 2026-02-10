@@ -100,11 +100,13 @@ import streamlit as st
 import base64
 from pathlib import Path
 
-# ---------- init ----------
+import streamlit as st
+import base64
+from pathlib import Path
+
+# init
 if "lang" not in st.session_state:
     st.session_state.lang = "pt"
-if "pagina" not in st.session_state:
-    st.session_state.pagina = "inicio"
 
 def load_logo_base64(path: Path) -> str:
     with open(path, "rb") as f:
@@ -116,7 +118,7 @@ logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-# ---------- TOPBAR (UMA SÓ) ----------
+# --- TOPBAR ---
 st.markdown(
     f"""
     <style>
@@ -129,9 +131,8 @@ st.markdown(
         background: {BAR_COLOR};
         display: flex;
         align-items: center;
-        justify-content: space-between;
         padding: 0 28px;
-        z-index: 10000;
+        z-index: 1000;
         box-sizing: border-box;
       }}
 
@@ -149,51 +150,25 @@ st.markdown(
         line-height: 1;
       }}
 
-      /* empurra o conteúdo pra baixo */
       section[data-testid="stMain"] {{
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* ====== CONTROLES FIXOS DENTRO DA BARRA (anchor) ====== */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) {{
+      /* ===== fixa APENAS o selectbox logo depois do marker ===== */
+      div#qx-lang-marker + div[data-testid="stSelectbox"] {{
         position: fixed !important;
         top: 10px !important;
         right: 28px !important;
-        z-index: 10001 !important;
-
-        width: 560px !important;          /* ajuste se quiser */
+        z-index: 1001 !important;
+        width: 260px !important;
         background: transparent !important;
         margin: 0 !important;
         padding: 0 !important;
       }}
 
-      /* deixa em linha: botão + select */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) > div {{
-        display: flex !important;
-        justify-content: flex-end !important;
-        align-items: center !important;
-        gap: 14px !important;
-      }}
-
-      /* esconde só o anchor */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) .stMarkdown {{
-        display: none !important;
-      }}
-
-      /* botão estilo topbar */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) .stButton > button {{
-        height: 40px !important;
-        padding: 0 14px !important;
-        border-radius: 8px !important;
-        border: 1px solid rgba(255,255,255,.35) !important;
-        background: rgba(255,255,255,.10) !important;
-        color: #fff !important;
-        font-weight: 600 !important;
-      }}
-
-      /* label do select branco */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) label {{
-        color: #fff !important;
+      /* label branco */
+      div#qx-lang-marker + div[data-testid="stSelectbox"] label {{
+        color: white !important;
         font-weight: 600 !important;
         font-size: 12px !important;
         margin: 0 0 2px 0 !important;
@@ -201,7 +176,7 @@ st.markdown(
       }}
 
       /* altura do select */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) div[data-baseweb="select"] > div {{
+      div#qx-lang-marker + div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
         min-height: 40px !important;
       }}
     </style>
@@ -211,37 +186,27 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">qPrism</div>
       </div>
-      <div></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# ---------- CONTROLES (funcionais) ----------
-# Mostra apenas fora da página inicial:
-if st.session_state.pagina != "inicio":
-    # Anchor que o CSS usa pra fixar esse bloco na barra
-    st.markdown('<div id="qx_nav_anchor"></div>', unsafe_allow_html=True)
+# marker (não aparece; só serve pro CSS pegar o selectbox certo)
+st.markdown('<div id="qx-lang-marker"></div>', unsafe_allow_html=True)
 
-    c_btn, c_lang = st.columns([1, 2])
+# SELECTBOX (idioma) — normal, funcional, sem sidebar
+idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
+idioma = st.selectbox(
+    "Language / Idioma:",
+    ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
+    index=0 if idioma_atual == "English" else 1,
+    key="lang_nav",
+)
 
-    with c_btn:
-        if st.button("Página inicial", key="nav_home_btn"):
-            st.session_state.pagina = "inicio"
-            st.rerun()
-
-    with c_lang:
-        idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
-        idioma = st.selectbox(
-            "Language / Idioma:",
-            ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-            index=0 if idioma_atual == "English" else 1,
-            key="nav_lang_select",
-        )
-        new_lang = "pt" if "Português" in idioma else "en"
-        if new_lang != st.session_state.lang:
-            st.session_state.lang = new_lang
-            st.rerun()
+new_lang = "pt" if "Português" in idioma else "en"
+if new_lang != st.session_state.lang:
+    st.session_state.lang = new_lang
+    st.rerun()
 
 
 
@@ -4870,6 +4835,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
