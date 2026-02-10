@@ -265,8 +265,6 @@ st.markdown(
 )
 
 
-label_btn = "PT 🇧🇷" if st.session_state.lang == "pt" else "EN 🇺🇸"
-
 with st.popover(label_btn, use_container_width=False):
     # use opções claras pra não depender de startswith
     opt = st.selectbox(
@@ -4877,6 +4875,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
