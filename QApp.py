@@ -117,18 +117,10 @@ logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-BASE_DIR = Path(__file__).resolve().parent
-logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
-
-BAR_COLOR = "#0d4376"
-BAR_HEIGHT = 64
-
 st.markdown(
     f"""
     <style>
-      header[data-testid="stHeader"] {{
-        background: transparent;
-      }}
+      header[data-testid="stHeader"] {{ background: transparent; }}
 
       .qx-topbar {{
         position: fixed;
@@ -149,9 +141,7 @@ st.markdown(
         gap: 12px;
       }}
 
-      .qx-topbar img {{
-        height: 36px;
-      }}
+      .qx-topbar img {{ height: 36px; }}
 
       .qx-title {{
         color: white;
@@ -160,25 +150,33 @@ st.markdown(
         line-height: 1;
       }}
 
-      /* espaço pro conteúdo */
       section[data-testid="stMain"] {{
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* ancora do idioma */
-      #lang_anchor {{
-        position: fixed;
-        top: 12px;
-        right: 28px;
-        z-index: 1001;
+      /* ======= POPOVER DO IDIOMA “Puxado” pro topo ======= */
+
+      /* marker “invisível” */
+      div#lang_marker {{
+        height: 0px;
+      }}
+
+      /* o container do popover que vem depois do marker */
+      div#lang_marker ~ div[data-testid="stPopover"] {{
+        position: fixed !important;
+        top: 12px !important;
+        right: 28px !important;
+        z-index: 1001 !important;
       }}
 
       /* botão do popover */
-      #lang_anchor button {{
+      div#lang_marker ~ div[data-testid="stPopover"] > button {{
         background: white !important;
         color: #0d4376 !important;
         border-radius: 10px !important;
-        font-weight: 600 !important;
+        font-weight: 700 !important;
+        border: 0 !important;
+        padding: 8px 14px !important;
       }}
     </style>
 
@@ -187,30 +185,27 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">qPrism</div>
       </div>
-
-      <!-- ÂNCORA DO IDIOMA -->
-      <div id="lang_anchor"></div>
+      <div></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
+# tem que vir IMEDIATAMENTE antes do popover
+st.markdown('<div id="lang_marker"></div>', unsafe_allow_html=True)
 
-
-
-
-
-st.markdown('<div id="lang_pop_anchor"></div>', unsafe_allow_html=True)
-
-label_btn = "PT 🇧🇷" if st.session_state.lang == "pt" else "EN 🇺🇸"
+label_btn = "PT 🇧🇷" if st.session_state.get("lang", "pt") == "pt" else "EN 🇺🇸"
 
 with st.popover(label_btn, use_container_width=False):
     idioma = st.selectbox(
         "Language",
         ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-        index=0 if st.session_state.lang == "en" else 1,
-        key="lang_nav_select_inside",
+        index=0 if st.session_state.get("lang", "pt") == "en" else 1,
         label_visibility="collapsed",
+        key="lang_nav_select_inside",
     )
+
+st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
+
 
 new_lang = "en" if "English" in idioma else "pt"
 if new_lang != st.session_state.lang:
@@ -4862,6 +4857,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
