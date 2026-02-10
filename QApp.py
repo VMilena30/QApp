@@ -96,13 +96,27 @@ TEXTOS_LOGIN = {
 }
 
 
-# ---------- init ----------
+# --- init ---
 if "lang" not in st.session_state:
     st.session_state.lang = "pt"
 if "pagina" not in st.session_state:
     st.session_state.pagina = "inicio"
 
-def load_logo_base64(path: Path) -> str:
+# --- read query params (Streamlit >= 1.30 tem st.query_params) ---
+qp = st.query_params
+
+if "lang" in qp:
+    val = qp.get("lang")
+    if val in ["pt", "en"] and val != st.session_state.lang:
+        st.session_state.lang = val
+
+if "go" in qp and qp.get("go") == "inicio":
+    if st.session_state.pagina != "inicio":
+        st.session_state.pagina = "inicio"
+
+import streamlit.components.v1 as components
+
+def load_logo_base64(path):
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
@@ -112,128 +126,124 @@ logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-# ---------- TOPBAR (UMA SÓ) ----------
-st.markdown(
-    f"""
-    <style>
-      header[data-testid="stHeader"] {{ background: transparent; }}
+def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt", show_controls=True):
+    # valores
+    selected_pt = "selected" if lang == "pt" else ""
+    selected_en = "selected" if lang == "en" else ""
 
+    controls = ""
+    if show_controls:
+        controls = f"""
+        <div class="qx-controls">
+          <a class="qx-home" href="?go=inicio">Página inicial</a>
+
+          <div class="qx-lang">
+            <div class="qx-label">Language / Idioma:</div>
+            <select onchange="window.location.search='lang='+this.value" aria-label="Language">
+              <option value="en" {selected_en}>🇺🇸 English (US)</option>
+              <option value="pt" {selected_pt}>🇧🇷 Português (BR)</option>
+            </select>
+          </div>
+        </div>
+        """
+
+    html = f"""
+    <style>
       .qx-topbar {{
         position: fixed;
         top: 0; left: 0; right: 0;
-        height: {BAR_HEIGHT}px;
-        background: {BAR_COLOR};
+        height: {bar_height}px;
+        background: {bar_color};
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 0 28px;
-        z-index: 1000;
         box-sizing: border-box;
+        z-index: 999999;
       }}
-
       .qx-left {{
         display: flex;
         align-items: center;
         gap: 12px;
       }}
-
-      .qx-topbar img {{ height: 36px; }}
+      .qx-left img {{ height: 36px; }}
       .qx-title {{
-        color: white;
+        color: #fff;
         font-size: 28px;
         font-weight: 700;
         line-height: 1;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
 
-      section[data-testid="stMain"] {{
-        padding-top: {BAR_HEIGHT + 10}px;
+      .qx-controls {{
+        display: flex;
+        align-items: center;
+        gap: 14px;
       }}
 
-      /* ===== CONTROLES NA BARRA (anchor) ===== */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) {{
-        position: fixed !important;
-        top: 10px !important;
-        right: 28px !important;
-        z-index: 1002 !important;
-        width: 560px !important;
-        background: transparent !important;
-        margin: 0 !important;
-        padding: 0 !important;
+      .qx-home {{
+        height: 40px;
+        display: inline-flex;
+        align-items: center;
+        padding: 0 14px;
+        border-radius: 8px;
+        border: 1px solid rgba(255,255,255,.35);
+        background: rgba(255,255,255,.10);
+        color: white;
+        font-weight: 600;
+        text-decoration: none;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
+      .qx-home:hover {{ background: rgba(255,255,255,.18); }}
 
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) > div {{
-        display: flex !important;
-        justify-content: flex-end !important;
-        align-items: center !important;
-        gap: 14px !important;
+      .qx-lang {{
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+        min-width: 260px;
       }}
-
-      /* esconde o anchor */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) .stMarkdown {{
-        display: none !important;
+      .qx-label {{
+        color: white;
+        font-weight: 600;
+        font-size: 12px;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
-
-      /* botão estilo */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) .stButton > button {{
-        height: 40px !important;
-        padding: 0 14px !important;
-        border-radius: 8px !important;
-        border: 1px solid rgba(255,255,255,.35) !important;
-        background: rgba(255,255,255,.10) !important;
-        color: white !important;
-        font-weight: 600 !important;
-      }}
-
-      /* label do select branco */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) label {{
-        color: white !important;
-        font-weight: 600 !important;
-        font-size: 12px !important;
-        margin: 0 0 2px 0 !important;
-        padding: 0 !important;
-      }}
-
-      /* altura do select */
-      div[data-testid="stVerticalBlock"]:has(div#qx_nav_anchor) div[data-baseweb="select"] > div {{
-        min-height: 40px !important;
+      .qx-lang select {{
+        height: 40px;
+        border-radius: 10px;
+        border: 1px solid rgba(255,255,255,.25);
+        padding: 0 12px;
+        background: rgba(255,255,255,.92);
+        font-size: 14px;
+        outline: none;
       }}
     </style>
 
     <div class="qx-topbar">
       <div class="qx-left">
-        <img src="data:image/png;base64,{logo_base64}">
+        <img src="data:image/png;base64,{logo_base64}" />
         <div class="qx-title">qPrism</div>
       </div>
-      <div></div>
+      {controls}
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
+    # altura do iframe = altura da barra (sem espaço extra)
+    components.html(html, height=bar_height, scrolling=False)
+
+# barra sempre
+topbar_html(
+    logo_base64=logo_base64,
+    bar_color=BAR_COLOR,
+    bar_height=BAR_HEIGHT,
+    lang=st.session_state.lang,
+    show_controls=(st.session_state.pagina != "inicio")
 )
 
-# ---------- CONTROLES (só fora do início) ----------
-if st.session_state.pagina != "inicio":
-    st.markdown('<div id="qx_nav_anchor"></div>', unsafe_allow_html=True)
-
-    c_btn, c_lang = st.columns([1, 2])
-
-    with c_btn:
-        if st.button("Página inicial", key="nav_home_btn"):
-            st.session_state.pagina = "inicio"
-            st.rerun()
-
-    with c_lang:
-        idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
-        idioma = st.selectbox(
-            "Language / Idioma:",
-            ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-            index=0 if idioma_atual == "English" else 1,
-            key="nav_lang_select",
-        )
-        new_lang = "pt" if "Português" in idioma else "en"
-        if new_lang != st.session_state.lang:
-            st.session_state.lang = new_lang
-            st.rerun()
-
+# empurra o conteúdo pra baixo (pra não ficar atrás da barra)
+st.markdown(
+    f"<div style='height:{BAR_HEIGHT + 10}px;'></div>",
+    unsafe_allow_html=True
+)
 
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -4860,6 +4870,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
