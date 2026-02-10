@@ -117,11 +117,18 @@ logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-# --- TOPBAR ---
+BASE_DIR = Path(__file__).resolve().parent
+logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
+
+BAR_COLOR = "#0d4376"
+BAR_HEIGHT = 64
+
 st.markdown(
     f"""
     <style>
-      header[data-testid="stHeader"] {{ background: transparent; }}
+      header[data-testid="stHeader"] {{
+        background: transparent;
+      }}
 
       .qx-topbar {{
         position: fixed;
@@ -142,7 +149,9 @@ st.markdown(
         gap: 12px;
       }}
 
-      .qx-topbar img {{ height: 36px; }}
+      .qx-topbar img {{
+        height: 36px;
+      }}
 
       .qx-title {{
         color: white;
@@ -151,34 +160,25 @@ st.markdown(
         line-height: 1;
       }}
 
+      /* espaço pro conteúdo */
       section[data-testid="stMain"] {{
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* pega qualquer selectbox que venha depois do marker */
-      div#lang_marker ~ div[data-testid="stSelectbox"] {{
-        position: fixed !important;
-        top: 10px !important;
-        right: 28px !important;
-        z-index: 1001 !important;
-        width: 260px !important;
-        background: transparent !important;
-        margin: 0 !important;
-        padding: 0 !important;
+      /* ancora do idioma */
+      #lang_anchor {{
+        position: fixed;
+        top: 12px;
+        right: 28px;
+        z-index: 1001;
       }}
 
-      /* label branco */
-      div#lang_marker ~ div[data-testid="stSelectbox"] label {{
-        color: white !important;
+      /* botão do popover */
+      #lang_anchor button {{
+        background: white !important;
+        color: #0d4376 !important;
+        border-radius: 10px !important;
         font-weight: 600 !important;
-        font-size: 12px !important;
-        margin: 0 0 2px 0 !important;
-        padding: 0 !important;
-      }}
-
-      /* altura do select */
-      div#lang_marker ~ div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
-        min-height: 40px !important;
       }}
     </style>
 
@@ -187,11 +187,14 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">qPrism</div>
       </div>
-      <div></div>
+
+      <!-- ÂNCORA DO IDIOMA -->
+      <div id="lang_anchor"></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
+
 
 
 
@@ -4859,6 +4862,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
