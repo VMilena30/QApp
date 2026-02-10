@@ -99,7 +99,6 @@ TEXTOS_LOGIN = {
 import streamlit as st
 import base64
 from pathlib import Path
-
 import streamlit as st
 import base64
 from pathlib import Path
@@ -131,6 +130,7 @@ st.markdown(
         background: {BAR_COLOR};
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 0 28px;
         z-index: 1000;
         box-sizing: border-box;
@@ -143,8 +143,9 @@ st.markdown(
       }}
 
       .qx-topbar img {{ height: 36px; }}
+
       .qx-title {{
-        color: #fff;
+        color: white;
         font-size: 28px;
         font-weight: 700;
         line-height: 1;
@@ -154,8 +155,8 @@ st.markdown(
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* ===== fixa APENAS o selectbox logo depois do marker ===== */
-      div#qx-lang-marker + div[data-testid="stSelectbox"] {{
+      /* ===== fixa SOMENTE o selectbox de idioma (pela key via marker) ===== */
+      div#lang_marker + div[data-testid="stSelectbox"] {{
         position: fixed !important;
         top: 10px !important;
         right: 28px !important;
@@ -166,8 +167,7 @@ st.markdown(
         padding: 0 !important;
       }}
 
-      /* label branco */
-      div#qx-lang-marker + div[data-testid="stSelectbox"] label {{
+      div#lang_marker + div[data-testid="stSelectbox"] label {{
         color: white !important;
         font-weight: 600 !important;
         font-size: 12px !important;
@@ -175,8 +175,7 @@ st.markdown(
         padding: 0 !important;
       }}
 
-      /* altura do select */
-      div#qx-lang-marker + div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
+      div#lang_marker + div[data-testid="stSelectbox"] div[data-baseweb="select"] > div {{
         min-height: 40px !important;
       }}
     </style>
@@ -186,24 +185,24 @@ st.markdown(
         <img src="data:image/png;base64,{logo_base64}">
         <div class="qx-title">qPrism</div>
       </div>
+      <div></div>
     </div>
     """,
     unsafe_allow_html=True,
 )
 
-# marker (não aparece; só serve pro CSS pegar o selectbox certo)
-st.markdown('<div id="qx-lang-marker"></div>', unsafe_allow_html=True)
+# marker -> garante que o CSS pega este selectbox e só este
+st.markdown('<div id="lang_marker"></div>', unsafe_allow_html=True)
 
-# SELECTBOX (idioma) — normal, funcional, sem sidebar
-idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
+# --- SELECTBOX FUNCIONAL ---
 idioma = st.selectbox(
     "Language / Idioma:",
     ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-    index=0 if idioma_atual == "English" else 1,
+    index=0 if st.session_state.lang == "en" else 1,
     key="lang_nav",
 )
 
-new_lang = "pt" if "Português" in idioma else "en"
+new_lang = "en" if "English" in idioma else "pt"
 if new_lang != st.session_state.lang:
     st.session_state.lang = new_lang
     st.rerun()
@@ -4835,6 +4834,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
