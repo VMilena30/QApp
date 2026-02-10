@@ -195,22 +195,40 @@ st.markdown(
 st.markdown(
     """
     <style>
-      /* garante que a barra não roube clique do popover */
+      /* barra não rouba clique */
       .qx-topbar { pointer-events: none !important; }
       .qx-topbar .qx-left { pointer-events: auto !important; }
 
-      /* popover (container) no canto direito da barra */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
+      /* pega o bloco que contém o anchor */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor){
         position: fixed !important;
-        top: 14px !important;
-        right: 18px !important;   /* <<< colado no final */
+        top: 12px !important;
+        right: 12px !important;
         left: auto !important;
-        z-index: 30000 !important;
+        z-index: 40000 !important;
+
+        width: fit-content !important;
+        max-width: fit-content !important;
+        display: inline-block !important;
         pointer-events: auto !important;
       }
 
-      /* botão menor */
+      /* encolhe wrappers internos */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) *{
+        max-width: fit-content !important;
+      }
+
+      /* popover não pode ocupar 100% */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
+        width: fit-content !important;
+        display: inline-block !important;
+        flex: 0 0 auto !important;
+      }
+
+      /* botão pequeno */
       div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button{
+        width: fit-content !important;
+        min-width: 0 !important;
         height: 28px !important;
         padding: 0 8px !important;
         border-radius: 999px !important;
@@ -220,17 +238,10 @@ st.markdown(
         font-weight: 700 !important;
         font-size: 12px !important;
         line-height: 1 !important;
-        min-width: 0 !important;
       }
 
-      /* reduz o espaço interno do botão (tira “ar” extra) */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button > div{
-        padding: 0 !important;
-        margin: 0 !important;
-      }
-
-      /* popover body pequeno */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopoverBody"]{
+      /* conteúdo do popover (dropdown) pequeno */
+      div[data-testid="stPopoverBody"]{
         min-width: 170px !important;
         width: 170px !important;
       }
@@ -238,6 +249,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+
 
 
 st.markdown('<div id="lang_pop_anchor"></div>', unsafe_allow_html=True)
@@ -4903,6 +4915,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
