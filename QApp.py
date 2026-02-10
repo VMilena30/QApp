@@ -1284,7 +1284,12 @@ TEXTOS_INF = {
 
 import streamlit as st
 
-# --- TOPBAR (logo + título) ---
+import streamlit as st
+
+BAR_COLOR = "#0d4376"
+BAR_HEIGHT = 64
+
+# --- TOPBAR HTML (com área direita reservada) ---
 st.markdown(
     f"""
     <style>
@@ -1297,6 +1302,7 @@ st.markdown(
         background: {BAR_COLOR};
         display: flex;
         align-items: center;
+        justify-content: space-between;
         padding: 0 28px;
         z-index: 1000;
         box-sizing: border-box;
@@ -1310,7 +1316,7 @@ st.markdown(
 
       .qx-topbar img {{ height: 36px; }}
       .qx-title {{
-        color: #fff;
+        color: white;
         font-size: 28px;
         font-weight: 700;
         line-height: 1;
@@ -1320,21 +1326,33 @@ st.markdown(
         padding-top: {BAR_HEIGHT + 10}px;
       }}
 
-      /* ====== CONTROLES DENTRO DA TOPBAR ====== */
-
-      /* container do botão (pela key) */
-      div[data-testid="stButton"]:has(button#home_btn) {{
-        position: fixed;
-        top: 12px;              /* centraliza verticalmente na barra */
-        right: 310px;           /* deixa espaço pro selectbox */
-        z-index: 1002;
-        margin: 0 !important;
-        padding: 0 !important;
+      /* ====== O PULO DO GATO: FIXAR O BLOCO QUE VEM DEPOIS DO ANCHOR ====== */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) {{
+        position: fixed !important;
+        top: 8px !important;
+        right: 28px !important;
+        z-index: 1002 !important;
+        width: 520px;                 /* espaço pro botão + select */
         background: transparent !important;
+        padding: 0 !important;
+        margin: 0 !important;
       }}
 
-      /* estilo do botão pra combinar */
-      button#home_btn {{
+      /* deixa os elementos em linha */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) > div {{
+        display: flex !important;
+        justify-content: flex-end !important;
+        align-items: center !important;
+        gap: 14px !important;
+      }}
+
+      /* remove espaços chatos */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) .stMarkdown {{
+        display: none !important; /* esconde o anchor */
+      }}
+
+      /* botão estilo */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) .stButton > button {{
         height: 40px !important;
         padding: 0 14px !important;
         border-radius: 8px !important;
@@ -1344,29 +1362,16 @@ st.markdown(
         font-weight: 600 !important;
       }}
 
-      /* container do selectbox (pela key) */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) {{
-        position: fixed;
-        top: 10px;              /* levemente acima pra caber label + select */
-        right: 28px;
-        z-index: 1002;
-        width: 260px;
-        margin: 0 !important;
-        padding: 0 !important;
-        background: transparent !important;
-      }}
-
-      /* deixa o label “Language / Idioma” branco e compacto */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) label {{
+      /* label do select branco */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) label {{
         color: white !important;
         font-weight: 600 !important;
         font-size: 12px !important;
-        margin: 0 0 2px 0 !important;
-        padding: 0 !important;
+        margin-bottom: 2px !important;
       }}
 
-      /* ajusta a altura do select (baseweb) */
-      div[data-testid="stSelectbox"]:has(input#lang_nav) div[data-baseweb="select"] > div {{
+      /* altura do select */
+      div[data-testid="stVerticalBlock"]:has(div#qx-topbar-controls-anchor) div[data-baseweb="select"] > div {{
         min-height: 40px !important;
       }}
     </style>
@@ -1381,27 +1386,34 @@ st.markdown(
     unsafe_allow_html=True,
 )
 
-# ===== MOSTRAR CONTROLES SÓ FORA DA PÁGINA INICIAL =====
+# ===== Controles só fora da página inicial =====
 if st.session_state.get("pagina") != "inicio":
 
-    # Botão "Página inicial"
-    if st.button("Página inicial", key="home_btn"):
-        st.session_state["pagina"] = "inicio"
-        st.rerun()
+    # ANCHOR (serve só pra CSS "achar" este bloco)
+    st.markdown('<div id="qx-topbar-controls-anchor"></div>', unsafe_allow_html=True)
 
-    # Select de idioma (NAV), sem conflitar com o radio do login
-    idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
-    idioma_selecionado = st.selectbox(
-        "Language / Idioma:",
-        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-        index=0 if idioma_atual == "English" else 1,
-        key="lang_nav",
-    )
+    # Agora sim: tudo que vier aqui dentro será "puxado" pra barra pelo CSS acima
+    c_btn, c_lang = st.columns([1, 2])
 
-    new_lang = "pt" if "Português" in idioma_selecionado else "en"
-    if new_lang != st.session_state.lang:
-        st.session_state.lang = new_lang
-        st.rerun()
+    with c_btn:
+        if st.button("Página inicial", key="home_btn"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+
+    with c_lang:
+        idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
+        idioma_selecionado = st.selectbox(
+            "Language / Idioma:",
+            ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
+            index=0 if idioma_atual == "English" else 1,
+            key="lang_nav",
+        )
+
+        new_lang = "pt" if "Português" in idioma_selecionado else "en"
+        if new_lang != st.session_state.lang:
+            st.session_state.lang = new_lang
+            st.rerun()
+
 
 
 def mostrar_rodape_logos2(textos):
@@ -4908,6 +4920,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
