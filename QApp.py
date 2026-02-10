@@ -38,6 +38,44 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown(
+    """
+    <style>
+      /* remove header padrão */
+      header[data-testid="stHeader"] {
+        display: none;
+      }
+
+      /* remove menu (☰) */
+      #MainMenu {
+        visibility: hidden;
+      }
+
+      /* remove footer */
+      footer {
+        visibility: hidden;
+      }
+
+      /* remove botão "Deploy / Share / Settings" */
+      div[data-testid="stToolbar"] {
+        display: none;
+      }
+
+      /* remove botão flutuante inferior (quando aparece) */
+      div[data-testid="stDecoration"] {
+        display: none;
+      }
+
+      /* remove espaço extra do topo */
+      section[data-testid="stMain"] {
+        padding-top: 0px;
+      }
+    </style>
+    """,
+    unsafe_allow_html=True,
+)
+
+
 ADMIN_EMAILS = [
     "vmilena3010@gmail.com",
     "lav@ufpe.br",
@@ -4896,6 +4934,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
