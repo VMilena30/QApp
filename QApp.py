@@ -2103,37 +2103,6 @@ def main():
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
 
-    # sidebar idioma (com rerun)
-    idioma_atual = "Português" if st.session_state.lang == "pt" else "English"
-    idioma_selecionado = st.sidebar.selectbox(
-        "Language / Idioma:",
-        ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-        index=0 if idioma_atual == "English" else 1
-    )
-
-    changed = False
-    if idioma_selecionado == "🇧🇷 Português (BR)" and st.session_state.lang != "pt":
-        st.session_state.lang = "pt"
-        changed = True
-    elif idioma_selecionado == "🇺🇸 English (US)" and st.session_state.lang != "en":
-        st.session_state.lang = "en"
-        changed = True
-
-    if changed:
-        st.rerun()
-
-    lang = st.session_state.lang
-    textos = TEXTOS[lang]
-    textos_otim = TEXTOS_OPT[lang]
-    textos_ml = TEXTOS_ML[lang]
-    textos_inf = TEXTOS_INF[lang]
-
-
-
-    mostrar_otim(textos_otim)
-    mostrar_ml(textos_ml)
-    mostrar_inf(textos)
-
     if 'pagina' not in st.session_state:
         st.session_state['pagina'] = 'inicio'
     
@@ -4903,6 +4872,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
