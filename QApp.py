@@ -283,32 +283,6 @@ with st.popover(label_btn, use_container_width=False):
 
 st.session_state.lang = "pt" if idioma.startswith("🇧🇷") else "en"
 
-
-new_lang = "en" if "English" in idioma else "pt"
-if new_lang != st.session_state.lang:
-    st.session_state.lang = new_lang
-    st.rerun()
-
-new_lang = "en" if "English" in idioma else "pt"
-if new_lang != st.session_state.lang:
-    st.session_state.lang = new_lang
-    st.rerun()
-
-# --- SELECTBOX FUNCIONAL ---
-idioma = st.selectbox(
-    "Language / Idioma:",
-    ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
-    index=0 if st.session_state.lang == "en" else 1,
-    key="lang_nav",
-)
-
-new_lang = "en" if "English" in idioma else "pt"
-if new_lang != st.session_state.lang:
-    st.session_state.lang = new_lang
-    st.rerun()
-
-
-
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
 
@@ -4934,6 +4908,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
