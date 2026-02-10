@@ -96,27 +96,34 @@ TEXTOS_LOGIN = {
 }
 
 
+import streamlit as st
+import streamlit.components.v1 as components
+import base64
+from pathlib import Path
+
 # --- init ---
 if "lang" not in st.session_state:
     st.session_state.lang = "pt"
 if "pagina" not in st.session_state:
     st.session_state.pagina = "inicio"
 
-# --- read query params (Streamlit >= 1.30 tem st.query_params) ---
+# --- read query params (Streamlit >= 1.30) ---
 qp = st.query_params
 
+# idioma via URL -> atualiza estado e recarrega
 if "lang" in qp:
     val = qp.get("lang")
     if val in ["pt", "en"] and val != st.session_state.lang:
         st.session_state.lang = val
+        st.rerun()
 
-if "go" in qp and qp.get("go") == "inicio":
+# navegação para início via URL -> atualiza estado e recarrega
+if qp.get("go") == "inicio":
     if st.session_state.pagina != "inicio":
         st.session_state.pagina = "inicio"
+        st.rerun()
 
-import streamlit.components.v1 as components
-
-def load_logo_base64(path):
+def load_logo_base64(path: Path) -> str:
     with open(path, "rb") as f:
         return base64.b64encode(f.read()).decode()
 
@@ -126,8 +133,7 @@ logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
 
-def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt", show_controls=True):
-    # valores
+def topbar_html(logo_b64: str, bar_color: str, bar_height: int, lang: str, show_controls: bool):
     selected_pt = "selected" if lang == "pt" else ""
     selected_en = "selected" if lang == "en" else ""
 
@@ -135,11 +141,11 @@ def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt",
     if show_controls:
         controls = f"""
         <div class="qx-controls">
-          <a class="qx-home" href="?go=inicio">Página inicial</a>
+          <a class="qx-home" href="javascript:void(0)" onclick="nav({{go:'inicio'}})">Página inicial</a>
 
           <div class="qx-lang">
             <div class="qx-label">Language / Idioma:</div>
-            <select onchange="window.location.search='lang='+this.value" aria-label="Language">
+            <select onchange="nav({{lang:this.value}})" aria-label="Language">
               <option value="en" {selected_en}>🇺🇸 English (US)</option>
               <option value="pt" {selected_pt}>🇧🇷 Português (BR)</option>
             </select>
@@ -160,19 +166,22 @@ def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt",
         padding: 0 28px;
         box-sizing: border-box;
         z-index: 999999;
+        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
+
       .qx-left {{
         display: flex;
         align-items: center;
         gap: 12px;
       }}
+
       .qx-left img {{ height: 36px; }}
+
       .qx-title {{
         color: #fff;
         font-size: 28px;
         font-weight: 700;
         line-height: 1;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
 
       .qx-controls {{
@@ -192,7 +201,6 @@ def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt",
         color: white;
         font-weight: 600;
         text-decoration: none;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
       .qx-home:hover {{ background: rgba(255,255,255,.18); }}
 
@@ -202,12 +210,13 @@ def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt",
         gap: 2px;
         min-width: 260px;
       }}
+
       .qx-label {{
         color: white;
         font-weight: 600;
         font-size: 12px;
-        font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
       }}
+
       .qx-lang select {{
         height: 40px;
         border-radius: 10px;
@@ -219,31 +228,47 @@ def topbar_html(logo_base64: str, bar_color="#0d4376", bar_height=64, lang="pt",
       }}
     </style>
 
+    <script>
+      function nav(params) {{
+        // navega no APP (parent do iframe). Mantém params existentes.
+        try {{
+          const url = new URL(window.parent.location.href);
+          Object.keys(params).forEach((k) => {{
+            url.searchParams.set(k, params[k]);
+          }});
+          window.parent.location.href = url.toString();
+        }} catch (e) {{
+          // fallback
+          const qs = new URLSearchParams(window.location.search);
+          Object.keys(params).forEach((k) => qs.set(k, params[k]));
+          window.location.search = qs.toString();
+        }}
+      }}
+    </script>
+
     <div class="qx-topbar">
       <div class="qx-left">
-        <img src="data:image/png;base64,{logo_base64}" />
+        <img src="data:image/png;base64,{logo_b64}" />
         <div class="qx-title">qPrism</div>
       </div>
       {controls}
     </div>
     """
-    # altura do iframe = altura da barra (sem espaço extra)
+
     components.html(html, height=bar_height, scrolling=False)
 
 # barra sempre
 topbar_html(
-    logo_base64=logo_base64,
+    logo_b64=logo_base64,
     bar_color=BAR_COLOR,
     bar_height=BAR_HEIGHT,
     lang=st.session_state.lang,
-    show_controls=(st.session_state.pagina != "inicio")
+    show_controls=(st.session_state.pagina != "inicio"),
 )
 
-# empurra o conteúdo pra baixo (pra não ficar atrás da barra)
-st.markdown(
-    f"<div style='height:{BAR_HEIGHT + 10}px;'></div>",
-    unsafe_allow_html=True
-)
+# empurra o conteúdo pra baixo
+st.markdown(f"<div style='height:{BAR_HEIGHT + 10}px;'></div>", unsafe_allow_html=True)
+
 
 LOG_DIR = "registros"
 os.makedirs(LOG_DIR, exist_ok=True)
@@ -4870,6 +4895,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
