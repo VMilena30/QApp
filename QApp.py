@@ -192,63 +192,7 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
-st.markdown(
-    """
-    <style>
-      /* barra não rouba clique */
-      .qx-topbar { pointer-events: none !important; }
-      .qx-topbar .qx-left { pointer-events: auto !important; }
 
-      /* pega o bloco que contém o anchor */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor){
-        position: fixed !important;
-        top: 12px !important;
-        right: 12px !important;
-        left: auto !important;
-        z-index: 40000 !important;
-
-        width: fit-content !important;
-        max-width: fit-content !important;
-        display: inline-block !important;
-        pointer-events: auto !important;
-      }
-
-      /* encolhe wrappers internos */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) *{
-        max-width: fit-content !important;
-      }
-
-      /* popover não pode ocupar 100% */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
-        width: fit-content !important;
-        display: inline-block !important;
-        flex: 0 0 auto !important;
-      }
-
-      /* botão pequeno */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button{
-        width: fit-content !important;
-        min-width: 0 !important;
-        height: 28px !important;
-        padding: 0 8px !important;
-        border-radius: 999px !important;
-        border: 1px solid rgba(255,255,255,.30) !important;
-        background: rgba(255,255,255,.10) !important;
-        color: white !important;
-        font-weight: 700 !important;
-        font-size: 12px !important;
-        line-height: 1 !important;
-      }
-
-      /* conteúdo do popover (dropdown) pequeno */
-      div[data-testid="stPopoverBody"]{
-        min-width: 170px !important;
-        width: 170px !important;
-      }
-    </style>
-    """,
-    unsafe_allow_html=True,
-)
 
 
 
@@ -4915,6 +4859,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
