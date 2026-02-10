@@ -195,42 +195,61 @@ st.markdown(
 st.markdown(
     """
     <style>
-      /* 1) A BARRA NÃO CAPTURA CLIQUES (passa o clique para o que estiver por cima) */
-      .qx-topbar {
-        pointer-events: none !important;
-      }
-
-      /* 2) Se você quiser que o logo/título ainda seja clicável, reativa só nele */
-      .qx-topbar .qx-left {
-        pointer-events: auto !important;
-      }
-
-      /* 3) GARANTE que o popover (e o botão) aceitam clique */
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] {
-        pointer-events: auto !important;
+      /* coloca o popover no canto direito da barra */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"]{
+        position: fixed !important;
+        top: 12px !important;
+        right: 28px !important;
         z-index: 20000 !important;
+        pointer-events: auto !important;
       }
 
-      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button {
-        pointer-events: auto !important;
-        position: relative !important;
-        z-index: 20001 !important;
+      /* botão pequeno (chip) */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopover"] button{
+        height: 34px !important;
+        padding: 0 10px !important;
+        border-radius: 999px !important;
+        border: 1px solid rgba(255,255,255,.35) !important;
+        background: rgba(255,255,255,.10) !important;
+        color: white !important;
+        font-weight: 700 !important;
+        font-size: 13px !important;
+        line-height: 1 !important;
+        min-width: 0 !important;
+      }
+
+      /* deixa o conteúdo do popover mais estreito */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopoverBody"]{
+        min-width: 180px !important;
+        width: 180px !important;
+      }
+
+      /* select compacto */
+      div[data-testid="stVerticalBlock"]:has(div#lang_pop_anchor) div[data-testid="stPopoverBody"] div[data-baseweb="select"] > div{
+        min-height: 36px !important;
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
 
-
 st.markdown('<div id="lang_pop_anchor"></div>', unsafe_allow_html=True)
-with st.popover("🌐 Language / Idioma", use_container_width=False):
+
+label_btn = "PT 🇧🇷" if st.session_state.lang == "pt" else "EN 🇺🇸"
+
+with st.popover(label_btn, use_container_width=False):
     idioma = st.selectbox(
-        "Choose:",
+        "Language",
         ("🇺🇸 English (US)", "🇧🇷 Português (BR)"),
         index=0 if st.session_state.lang == "en" else 1,
         key="lang_nav_select_inside",
         label_visibility="collapsed",
     )
+
+new_lang = "en" if "English" in idioma else "pt"
+if new_lang != st.session_state.lang:
+    st.session_state.lang = new_lang
+    st.rerun()
 
 new_lang = "en" if "English" in idioma else "pt"
 if new_lang != st.session_state.lang:
@@ -4877,6 +4896,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
