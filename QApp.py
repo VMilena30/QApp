@@ -2103,6 +2103,12 @@ def main():
         st.session_state['pagina'] = 'inicio'
     
     if st.session_state['pagina'] == 'inicio':
+
+        lang = st.session_state.lang
+        textos = TEXTOS[lang]
+        textos_otim = TEXTOS_OPT[lang]
+        textos_ml = TEXTOS_ML[lang]
+        textos_inf = TEXTOS_INF[lang]
                 
         mostrar_introducao_e_titulo(textos)
         mostrar_cartoes_de_area(textos)
@@ -4887,6 +4893,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
