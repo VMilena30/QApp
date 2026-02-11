@@ -2213,13 +2213,13 @@ def main():
             BASE_DIR = Path(__file__).resolve().parent
             LOGO = BASE_DIR / "qplog.png"   
             
-            c1, c2, c3 = st.columns([1, 2, 1])
+            c1, c2, c3 = st.columns([1, 1, 1])
             with c2:
                 st.image(str(LOGO), width=340)
         
             st.markdown("""
             <div style="text-align:center; font-size:42px; font-weight:600; margin-top:1px;">
-                <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
+                <span style="color:#0e3360;">q</span><span style="color:#0e3360;">Prism</span>
             </div>
             """, unsafe_allow_html=True)
             
@@ -2246,7 +2246,7 @@ def main():
             with c3:
                 st.image("2.png", width=90)
             with c4:
-                st.image("12.png", width=90)
+                st.image("12.png", width=100)
 
         
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
@@ -2299,6 +2299,7 @@ def main():
                     text-align:center;
                     font-size:22px;
                     font-weight:700;
+                    color:#0e3360;
                     border:0x solid #333;
                     padding:0px 5px;
                     background: rgba(255,255,255,0.75);
@@ -2344,7 +2345,7 @@ def main():
 
             st.markdown("<div style='height:20px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
-            <div style="font-size:22px;font-weight:700;line-height:1.05;margin-bottom:4px;">
+            <div style="font-size:22px;font-weight:700;color:#0e3360; line-height:1.05;margin-bottom:4px;">
               {t["access_title"]}
             </div>
             <div style="font-size:16px;margin-bottom:8px;">
@@ -5502,6 +5503,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
