@@ -4929,28 +4929,67 @@ def main():
                 st.rerun()
                 
     elif st.session_state['pagina'] == 'otim_ref':
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
         mostrar_referencias(textos, textos_otim)
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
                 
     elif st.session_state['pagina'] == 'ml_ref':
         st.subheader(textos["pagina_referencias"])
         st.write(oie)
 
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
 
     elif st.session_state['pagina'] == 'inf_ref':
         st.subheader(textos["pagina_referencias"])
-
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
+        
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
                 
     elif st.session_state['pagina'] == 'agard':
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
         st.subheader(textos["pagina_agrad"])
-        st.write(textos[apo])
+        st.write(textos["apo"])
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
 
 if __name__ == "__main__":
     main()
+
