@@ -354,6 +354,16 @@ def append_csv_log(name, email, company, role, created_at):
 
 init_db()
 
+import pandas as pd
+import sqlite3
+
+def get_all_registrations():
+    con = sqlite3.connect(DB_PATH)
+    df = pd.read_sql_query("SELECT * FROM registrations", con)
+    con.close()
+    return df
+
+
 import random
 
 def generate_otp():
@@ -2479,6 +2489,28 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
+
+        if "user" in st.session_state:
+            user_email = st.session_state.user.get("email", "").lower()
+        
+            if user_email in [e.lower() for e in ADMIN_EMAILS]:
+        
+                st.markdown("<br><br>", unsafe_allow_html=True)
+                st.markdown("### Admin Area")
+        
+                df = get_all_registrations()
+        
+                if not df.empty:
+                    csv = df.to_csv(index=False).encode("utf-8")
+        
+                    st.download_button(
+                        label="Download Registrations",
+                        data=csv,
+                        file_name="registrations_export.csv",
+                        mime="text/csv",
+                    )
+                else:
+                    st.info("No registrations found.")
         
     elif st.session_state['pagina'] == 'otimizacao':
 
@@ -5459,6 +5491,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
