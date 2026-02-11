@@ -2139,20 +2139,19 @@ def main():
                 st.session_state.lang = new_lang
                 st.rerun()
 
-    if st.session_state["pagina"] != "inicio":
+    if st.session_state.get("pagina") != "inicio":
+    
         st.markdown(
             """
             <style>
-              /* fixa APENAS este botão */
-              div[data-testid="stButton"]:has(button[data-key="home_fixed_btn"]) {
-                position: fixed !important;
-                top: 12px !important;
-                right: 6px !important;  /* ajuste fino à direita */
-                z-index: 1005 !important;
-                width: fit-content !important;
+              .qx-home-fixed {
+                position: fixed;
+                top: 12px;
+                right: 6px;   /* ajuste fino */
+                z-index: 1005;
               }
     
-              div[data-testid="stButton"]:has(button[data-key="home_fixed_btn"]) button {
+              .qx-home-fixed .stButton > button {
                 background: white !important;
                 color: #0d4376 !important;
                 border-radius: 10px !important;
@@ -2162,6 +2161,8 @@ def main():
                 white-space: nowrap !important;
               }
             </style>
+    
+            <div class="qx-home-fixed">
             """,
             unsafe_allow_html=True,
         )
@@ -2169,8 +2170,9 @@ def main():
         if st.button("🏠 Página inicial", key="home_fixed_btn"):
             st.session_state["pagina"] = "inicio"
             st.rerun()
-
-                
+    
+        st.markdown("</div>", unsafe_allow_html=True)  
+        
     elif st.session_state['pagina'] == 'otimizacao':
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
@@ -4951,6 +4953,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
