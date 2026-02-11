@@ -458,7 +458,7 @@ TEXTOS = {
         "pagina_referencias": "Referências",
         "pagina_info": "Ajuda",
         "pagina_agrad": "Agradecimentos",
-        "inf_ref": "Ajuda, Referências e Agradeciemntos",
+        "inf_ref": "Ajuda, Referências e Agradecimentos",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info2": "Ajuda",
         "ajud2": "Selecione um módulo para acessar o Guia do Usuário.",
@@ -5431,6 +5431,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
