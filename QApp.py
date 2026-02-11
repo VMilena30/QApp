@@ -2141,10 +2141,37 @@ def main():
                 
     elif st.session_state['pagina'] == 'otimizacao':
 
-        with st.popover("🏠 Página inicial"):
-            if st.button("Ir para Home", use_container_width=True):
-                st.session_state.pagina = "home"
-                st.rerun()
+        st.markdown(
+            """
+            <style>
+              .qx-home-fixed{
+                position: fixed;
+                top: 12px;
+                right: 28px;
+                z-index: 1003;
+              }
+              .qx-home-fixed .stButton > button{
+                width: auto !important;
+                min-width: 0 !important;
+                white-space: nowrap !important;
+        
+                background: white !important;
+                color: #0d4376 !important;
+                border-radius: 10px !important;
+                font-weight: 700 !important;
+                border: 0 !important;
+                padding: 8px 14px !important;
+              }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+        
+        st.markdown('<div class="qx-home-fixed">', unsafe_allow_html=True)
+        if st.button("🏠 Home", key="home_top_btn"):
+            st.session_state.pagina = "home"   # <- troque pelo seu “nome” da página inicial
+            st.rerun()
+        st.markdown("</div>", unsafe_allow_html=True)
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4924,6 +4951,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
