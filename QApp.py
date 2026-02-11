@@ -2098,11 +2098,7 @@ def main():
         # ---------- APP ----------
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
-
-    if "pagina" not in st.session_state:
-        st.session_state["pagina"] = "inicio"
     
-    # 🔹 Lê a rota vinda da URL (?pagina=...)
     params = st.query_params
     if "pagina" in params:
         st.session_state["pagina"] = params["pagina"]
@@ -2115,7 +2111,7 @@ def main():
               .qx-home-fixed{
                 position: fixed;
                 top: 12px;
-                right: 150px;   /* mais pra direita */
+                right: 180px;   /* mais pra direita */
                 z-index: 1005;
               }
               .qx-home-fixed a{
@@ -4959,6 +4955,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
