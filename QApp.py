@@ -5425,14 +5425,38 @@ def main():
         st.subheader(textos["pagina_agrad"])
         st.write(textos["apo"])
 
+        logos = [
+            "1.png","2.png","3.png","12.png","5.png",
+            "6.png","7.png","13.png","14.png","10.png","11.png"
+        ]
+    
+        # Dividir em duas linhas
+        linha1 = logos[:6]
+        linha2 = logos[6:]
+    
+        # Primeira linha
+        cols1 = st.columns(len(linha1))
+        for col, img in zip(cols1, linha1):
+            with col:
+                st.image(f"imgs/{img}", use_container_width=True)
+    
+        st.markdown("<br>", unsafe_allow_html=True)
+    
+        # Segunda linha
+        cols2 = st.columns(len(linha2))
+        for col, img in zip(cols2, linha2):
+            with col:
+                st.image(f"imgs/{img}", use_container_width=True)
+    
+        st.markdown("<br><br>", unsafe_allow_html=True)
+
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
             st.rerun()
-        
-        mostrar_rodape_s2(textos)
 
 if __name__ == "__main__":
     main()
+
 
 
 
