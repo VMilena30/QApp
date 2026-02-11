@@ -1691,7 +1691,7 @@ def mostrar_rodape_logos2(textos):
 
     BASE_DIR = Path(__file__).resolve().parent
 
-    s = [
+    logos = [
         "1.png","2.png","3.png","12.png","5.png",
         "6.png","7.png","13.png","14.png","10.png","11.png"
     ]
@@ -5456,6 +5456,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
