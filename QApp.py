@@ -2140,45 +2140,6 @@ def main():
                 st.rerun()
         
     elif st.session_state['pagina'] == 'otimizacao':
-        BAR_HEIGHT = 64  # use o MESMO valor da sua topbar
-        
-        st.markdown(
-            f"""
-            <style>
-              /* "encaixa" o botão DENTRO da faixa da barra */
-              .qx-home-top {{
-                position: fixed;
-                top: 0px;                 /* começa no topo da barra */
-                right: 28px;              /* mesmo padding que você usa na barra */
-                height: {BAR_HEIGHT}px;   /* mesma altura da barra */
-                display: flex;
-                align-items: center;      /* centraliza verticalmente */
-                z-index: 1002;            /* maior que .qx-topbar (1000) */
-              }}
-    
-              .qx-home-top .stButton > button {{
-                background: white !important;
-                color: #0d4376 !important;
-                border-radius: 10px !important;
-                font-weight: 700 !important;
-                border: 0 !important;
-                padding: 8px 14px !important;
-                white-space: nowrap !important;
-              }}
-            </style>
-    
-            <div class="qx-home-top">
-            """,
-            unsafe_allow_html=True,
-        )
-    
-        if st.button("🏠 Página inicial", key="btn_home_top"):
-            st.session_state["pagina"] = "inicio"
-            st.rerun()
-    
-        st.markdown("</div>", unsafe_allow_html=True)
-
-
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4958,6 +4919,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
