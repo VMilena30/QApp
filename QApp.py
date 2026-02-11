@@ -253,24 +253,28 @@ st.markdown(
         display: inline-block !important;
       }
 
-      /* botão do popover não pode virar 100% */
+      /* BOTÃO do popover — agora azul e sutil */
       div[data-testid="stPopover"] > button{
         width: auto !important;
         min-width: 0 !important;
         white-space: nowrap !important;
 
-        background: white !important;
-        color: #0d4376 !important;
+        background: #0d4376 !important;   /* azul da barra */
+        color: white !important;           /* ícone/texto branco */
         border-radius: 10px !important;
         font-weight: 700 !important;
-        border: 0 !important;
+        border: 1px solid rgba(255,255,255,0.35) !important; /* contorno sutil */
         padding: 8px 14px !important;
+      }
+
+      /* hover bem discreto */
+      div[data-testid="stPopover"] > button:hover{
+        filter: brightness(1.08);
       }
     </style>
     """,
     unsafe_allow_html=True,
 )
-
 
 
 
@@ -2680,10 +2684,6 @@ def main():
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
         
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
                     
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
@@ -4925,6 +4925,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
