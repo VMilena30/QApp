@@ -2328,20 +2328,19 @@ def main():
                 unsafe_allow_html=True
             )
 
-            st.markdown("""
-            <style>
-            
-            /* Cor da bolinha selecionada */
-            div[data-testid="stRadio"] input[type="radio"] {
-                accent-color: #03518C !important;
-            }
-            
-            </style>
-            """, unsafe_allow_html=True)
-
-
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
+                st.markdown("""
+                <style>
+                
+                /* Cor da bolinha selecionada */
+                div[data-testid="stRadio"] input[type="radio"] {
+                    accent-color: #03518C !important;
+                }
+                
+                </style>
+                """, unsafe_allow_html=True)
+                
                 escolha = st.radio(
                     "",
                     ["English", "Português (Brasil)"],
@@ -5513,6 +5512,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
