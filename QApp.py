@@ -1424,7 +1424,7 @@ def mostrar_rodape_logos2(textos):
         if caminho.exists():
             src = img_to_data_uri(caminho)
             imgs.append(
-                f'<img src="{src}" style="height:45px; margin:0 8px;">'
+                f'<img src="{src}" style="height:80px; margin:0 8px;">'
             )
         else:
             print("Arquivo não encontrado:", caminho)
@@ -4968,6 +4968,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
