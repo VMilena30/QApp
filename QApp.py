@@ -2318,7 +2318,7 @@ def main():
                 """,
                 unsafe_allow_html=True
             )
-            st.markdown("<div style='height:25px'></div>", unsafe_allow_html=True)
+            st.markdown("<div style='height:15px'></div>", unsafe_allow_html=True)
             st.markdown(
                 """
                 <div style="
@@ -5537,6 +5537,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
