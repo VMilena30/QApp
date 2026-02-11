@@ -2141,54 +2141,29 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        BAR_HEIGHT = -264  # o mesmo da sua topbar
-        
-        # --- grupo fixo no canto direito da barra ---
-        st.markdown(
-            f"""
-            <style>
-              .qx-top-actions {{
-                position: fixed;
-                top: 0px;
-                right: 28px;
-                height: {BAR_HEIGHT}px;
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                z-index: 2000;
-                width: fit-content;
-              }}
-        
-              /* estilo consistente pros botões/gatilhos dentro do grupo */
-              .qx-top-actions .stButton > button,
-              .qx-top-actions div[data-testid="stPopover"] > button {{
-                background: white !important;
-                color: #0d4376 !important;
-                border-radius: 10px !important;
-                font-weight: 700 !important;
-                border: 0 !important;
-                padding: 8px 12px !important;
-                white-space: nowrap !important;
-                width: auto !important;
-                min-width: 0 !important;
-              }}
-        
-              /* deixa o HOME menorzinho (só ícone) */
-              .qx-top-actions .stButton > button {{
-                padding: 8px 10px !important;
-              }}
-            </style>
-            <div class="qx-top-actions">
-            """,
-            unsafe_allow_html=True,
-        )
-        
-        # --- HOME (1 clique, não recarrega, não volta pro login) ---
-        if st.session_state.get("pagina") != "inicio":
-            if st.button("🏠", key="home_top_btn"):
-                st.session_state["pagina"] = "inicio"
-                st.rerun()
+        c_home, c_pt, c_br = st.columns([0.2, 0.4, 0.4])
 
+        with c_home:
+            go_home = st.button("HOME_BTN", key="home_btn")
+        
+        with c_pt:
+            with st.popover(label_btn, use_container_width=False):
+                opt = st.selectbox(
+                    "Language",
+                    [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                    format_func=lambda x: x[1],
+                    index=0 if st.session_state.lang == "en" else 1,
+                    label_visibility="collapsed",
+                    key="lang_nav_select_inside",
+                )
+                new_lang = opt[0]
+                if new_lang != st.session_state.lang:
+                    st.session_state.lang = new_lang
+                    st.rerun()
+
+        if go_home:
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4968,6 +4943,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
