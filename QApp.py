@@ -1704,7 +1704,7 @@ def mostrar_rodape_logos2(textos):
         if caminho.exists():
             src = img_to_data_uri(caminho)
             imgs.append(
-                f'<img src="{src}" style="height:80px; margin:0 8px;">'
+                f'<img src="{src}" style="height:72px; margin:0 8px;">'
             )
         else:
             print("Arquivo não encontrado:", caminho)
@@ -5424,6 +5424,9 @@ def main():
             
         st.subheader(textos["pagina_agrad"])
         st.write(textos["apo"])
+        st.markdown("<br>", unsafe_allow_html=True)
+        st.markdown(f"##### **{textos['apoio']}**")
+
 
         logos2 = [
         "1.png","2.png","3.png","12.png","5.png",
@@ -5446,7 +5449,7 @@ def main():
         cols2 = st.columns(5)
         for col, img in zip(cols2, linha2):
             with col:
-                st.image(img, use_container_width=True)
+                st.image(img, width=130)
     
         st.markdown("<br><br>", unsafe_allow_html=True)
     
@@ -5456,6 +5459,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
