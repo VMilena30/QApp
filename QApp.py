@@ -1684,7 +1684,7 @@ def img_to_data_uri(path: Path):
         b64 = base64.b64encode(f.read()).decode()
     return f"data:image/png;base64,{b64}"
 
-def mostrar_rodape_s2(textos):
+def mostrar_rodape_logos2(textos):
 
     if st.session_state.get("pagina") != "inicio":
         return
@@ -5456,6 +5456,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
