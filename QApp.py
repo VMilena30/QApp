@@ -460,7 +460,8 @@ TEXTOS = {
         "pagina_agrad": "Agradecimentos",
         "inf_ref": "Ajuda, Referências e Agradeciemntos",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
-        "pagina_info2": "Informação sobre conceitos nas três áreas",
+        "pagina_info2": "Ajuda",
+        "ajud2": "Selecione um módulo para acessar o Guia do Usuário.",
         "inf1": "Estimação de Confiabilidade com QBN:",
         "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
         "inf3": "Método:",
@@ -496,7 +497,8 @@ TEXTOS = {
         "pagina_referencias": "References",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info": "Help",
-        "pagina_info2": "Information about concepts in the three areas",
+        "pagina_info2": "Help",
+        "ajud2": "Select a module to access the User Guide.",
         "inf1": "Reliability Assessment with QBN:",
         "inf2": "Module designed for reliability assessment using Quantum Bayesian Networks (QBNs). It allows the integration of both discrete and continuous variables into a single model, representing events and their probabilistic dependencies in a unified way.",
         "inf3": "Method:",
@@ -5215,6 +5217,8 @@ def main():
     
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
+        st.write(textos["ajud2"])
+        
         mostrar_cartoes_de_info(textos)
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
@@ -5427,6 +5431,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
