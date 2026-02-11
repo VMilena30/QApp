@@ -2142,39 +2142,39 @@ def main():
     elif st.session_state['pagina'] == 'otimizacao':
 
         st.markdown(
-                """
-                <style>
-                  /* força o botão a ser relativo à JANELA */
-                  body > div.qx-home-bottom {
-                    position: fixed;
-                    bottom: 12px;
-                    right: 12px;
-                    z-index: 9999;
-                  }
-        
-                  body > div.qx-home-bottom .stButton > button {
-                    background: #0d4376 !important;
-                    color: white !important;
-                    border-radius: 999px !important;
-                    font-weight: 600 !important;
-                    border: 0 !important;
-                    padding: 6px 9px !important;
-                    font-size: 12px !important;
-                    line-height: 1 !important;
-                    box-shadow: 0 2px 6px rgba(0,0,0,0.25);
-                  }
-                </style>
-        
-                <div class="qx-home-bottom">
-                """,
-                unsafe_allow_html=True,
-            )
-        
-            if st.button("🏠", key="home_bottom_btn"):
-                st.session_state["pagina"] = "inicio"
-                st.rerun()
-        
-            st.markdown("</div>", unsafe_allow_html=True)
+            """
+            <style>
+              /* força o botão a ser relativo à JANELA */
+              body > div.qx-home-bottom {
+                position: fixed;
+                bottom: 12px;
+                right: 12px;
+                z-index: 9999;
+              }
+    
+              body > div.qx-home-bottom .stButton > button {
+                background: #0d4376 !important;
+                color: white !important;
+                border-radius: 999px !important;
+                font-weight: 600 !important;
+                border: 0 !important;
+                padding: 6px 9px !important;
+                font-size: 12px !important;
+                line-height: 1 !important;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+              }
+            </style>
+    
+            <div class="qx-home-bottom">
+            """,
+            unsafe_allow_html=True,
+        )
+    
+        if st.button("🏠", key="home_bottom_btn"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+    
+        st.markdown("</div>", unsafe_allow_html=True)
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4954,6 +4954,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
