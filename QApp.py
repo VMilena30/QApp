@@ -5006,7 +5006,7 @@ def main():
 
     elif st.session_state['pagina'] == 'inf_ref':
         
-         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
             # use opções claras pra não depender de startswith
@@ -5059,6 +5059,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
