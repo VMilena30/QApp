@@ -2327,7 +2327,7 @@ def main():
         with col1:
             st.subheader(textos_otim["aplicacao"])
         with col2:
-             = st.button("?", key="botao_ajuda")
+            st.button("?", key="botao_ajuda")
         
         st.markdown("""
             <style>
@@ -5187,6 +5187,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
