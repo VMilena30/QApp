@@ -363,7 +363,7 @@ st.markdown(
       .qx-home-fixed{
         position: fixed;
         top: 12px;
-        right: 28px;
+        right: 20px;
         z-index: 1005;
       }
       .qx-home-fixed a{
@@ -2180,11 +2180,9 @@ def main():
                 
     elif st.session_state['pagina'] == 'otimizacao':
 
-        with st.popover("Página inicial"):
-            if st.button(" ", use_container_width=True):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
-
+        params = st.query_params
+        if "pagina" in params:
+            st.session_state.pagina = params["pagina"]
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4964,6 +4962,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
