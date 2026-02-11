@@ -1589,8 +1589,8 @@ TEXTOS_INF = {
             "### 1) What this page does\n\n"
             "On this page, you build a Bayesian Network (nodes + relationships + probabilities), "
             "define evidence (what you observed), and choose queries (what you want to estimate). "
-            "Then, the software runs inference and compares methods (e.g., Exact / Monte Carlo / Quantum / Quantum+AA, "
-            "depending on what is enabled)."
+            "Then, the software runs inference and compares methods "
+            "(e.g., Exact / Monte Carlo / Quantum / Quantum+AA, depending on what is enabled)."
         ),
     
         "info2_titulo": "2) Step-by-step (recommended workflow)",
@@ -1600,32 +1600,33 @@ TEXTOS_INF = {
             "1. Go to Node definition.\n"
             "2. Under Node name, use a short, unique identifier (e.g., Failure, Cause, Sensor).\n"
             "3. Set the Number of states (e.g., 2 → {s0, s1}).\n\n"
-            "Practical tip: start with the main concepts and then refine (e.g., Failure → Cause → Sensor).\n\n"
+            "Practical tip: start with the main concepts and then refine "
+            "(e.g., Failure → Cause → Sensor).\n\n"
             "### Step B — Node editing (parents + probabilities)\n\n"
             "1. Under Node editing, select a node.\n"
             "2. Define the node’s Parents (what influences this node / incoming edges).\n"
             "3. Fill in:\n"
-            "   o Marginal probabilities (root node) if the node has no parents, or\n"
+            "   o Marginal probabilities (root node) if the node has no parents\n"
             "   o the CPT if the node has parents.\n\n"
-            "Rule of thumb:\n"
-            "• Each row (the marginal, or each parent-state combination in the conditional table) must sum to 1.\n\n"
+            "- Each row (the marginal, or each parent-state combination in the conditional table) "
+            "must sum to 1.\n\n"
             "### Step C — Review the network before running\n\n"
-            "Use the Bayesian network built section to check:\n"
-            "• the graph (structure), and\n"
-            "• the Entered probabilities panel (marginals and conditionals).\n\n"
+            "Use the Bayesian network built section to check:\n\n"
+            "- the graph (structure),\n\n"
+            "- the Entered probabilities panel (marginals and conditionals).\n\n"
             "This helps avoid running inference with wrong parents, incomplete CPTs, etc.\n\n"
             "### Step D — Evidence vs Query (why are there two options?)\n\n"
             "In the Evidence and query section:\n\n"
-            "Evidence (observed nodes)\n"
-            "• What you already know/measured.\n"
-            "• Example: Sensor = alarm or Inspection = failed.\n"
+            "Evidence (observed nodes)\n\n"
+            "- What you already know/measured.\n\n"
+            "- Example: Sensor = alarm or Inspection = failed.\n\n"
             "You select the node and then select its observed state.\n\n"
-            "Query (query nodes)\n"
-            "• What you want as output (the posterior).\n"
-            "• Example: “What is the probability of Failure in each state given the sensor?”\n\n"
-            "In Bayesian inference terms:\n"
-            "• evidence = conditioning information\n"
-            "• query = target variable(s) of the posterior"
+            "Query (query nodes)\n\n"
+            "- What you want as output (the posterior).\n\n"
+            "- Example: “What is the probability of Failure in each state given the sensor?”\n\n"
+            "In Bayesian inference terms:\n\n"
+            "- evidence = conditioning information\n\n"
+            "- query = target variable(s) of the posterior"
         ),
     
         "info21": "",
@@ -1635,37 +1636,40 @@ TEXTOS_INF = {
         "info3": (
             "In the Execution section, you control how the sampling/quantum methods run.\n\n"
             "### Shots (Quantum / Monte Carlo)\n\n"
-            "• Number of samples/measurements.\n"
-            "• More shots → more stable results, but slower.\n\n"
+            "- Number of samples/measurements.\n"
+            "- More shots → more stable results, but slower.\n\n"
             "### Seed (Monte Carlo)\n\n"
-            "• Seed for Monte Carlo reproducibility (same seed = same pseudo-random results).\n\n"
+            "- Seed for Monte Carlo reproducibility "
+            "(same seed = same pseudo-random results).\n\n"
             "### Top-N outcomes (0 = all)\n\n"
-            "• Limits how many outcomes (bitstrings/outcomes) are displayed in plots/tables.\n\n"
+            "- Limits how many outcomes (bitstrings/outcomes) are displayed in plots/tables.\n\n"
             "### Annotate bars (%)\n\n"
-            "• Shows the percentage value above each bar in the plot."
+            "- Shows the percentage value above each bar in the plot."
         ),
     
         "info4_titulo": "4) Amplitude Amplification (AA): when does it make sense?",
     
         "info4": (
-            "The Amplitude Amplification section is optional and aims to increase the chance of measuring rare events (small probabilities).\n\n"
-            "• Enable AA: runs the quantum variant with AA in addition to “Quantum Shots”.\n"
-            "• k (manual): if checked, you choose k; otherwise, the app attempts to use an automatic value.\n\n"
-            "Important:\n"
-            "• AA usually makes more sense when there is evidence, because you are amplifying the subset of states "
-            "“compatible” with that evidence."
+            "The Amplitude Amplification section is optional and aims to increase the chance "
+            "of measuring rare events (small probabilities).\n\n"
+            "- Enable AA: runs the quantum variant with AA in addition to “Quantum Shots”.\n\n"
+            "- k (manual): if checked, you choose k; otherwise, the app attempts to use an automatic value.\n\n"
+            "Important:\n\n"
+            "- AA usually makes more sense when there is evidence "
+            "(because you are amplifying the subset of states “compatible” with that evidence)."
         ),
     
         "info5_titulo": "5) What should I look at in the results?",
     
         "info5": (
             "You will typically see:\n"
-            "• A comparison table (Exact vs MC vs Quantum) and/or (Quantum Shots vs Quantum + AA)\n"
-            "• Outcome plots for Quantum Shots and Quantum + AA (if enabled).\n\n"
-            "Practical reading:\n"
-            "• If Exact is available, use it as a reference.\n"
-            "• Monte Carlo provides a stable baseline with high shots.\n"
-            "• Quantum Shots and Quantum+AA are useful to compare behavior and limitations "
+            "- A comparison table (Exact vs MC vs Quantum) and/or "
+            "(Quantum Shots vs Quantum + AA)\n"
+            "- Outcome plots for Quantum Shots and Quantum + AA (if enabled).\n\n"
+            "Practical reading:\n\n"
+            "- If Exact is available, use it as a reference.\n"
+            "- Monte Carlo provides a stable baseline with high shots.\n"
+            "- Quantum Shots and Quantum+AA are useful to compare behavior and limitations "
             "(e.g., acceptance/acc_rate, chosen k, etc.)."
         ),
     
@@ -5185,6 +5189,28 @@ def main():
         
         # Render QBN inference page
         pagina_inferencia_qbn(textos, textos_inf)
+
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
         
     
     elif st.session_state['pagina'] == 'info':
@@ -5401,6 +5427,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
