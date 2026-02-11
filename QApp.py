@@ -2214,7 +2214,7 @@ def main():
             LOGO = BASE_DIR / "qplog.png"   
             
             c1, c2, c3 = st.columns([1, 1, 1])
-            with col2:
+            with c2:
                 st.image(str(LOGO), width=380)
         
                 st.markdown("""
@@ -5502,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
