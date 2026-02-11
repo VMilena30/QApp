@@ -2333,7 +2333,7 @@ def main():
                 
                 escolha = st.radio(
                     "",
-                    ["English", "Português (Brasil)"],
+                    ["English(US)", "Português(BR)"],
                     index=0 if st.session_state.lang == "en" else 1,
                     horizontal=True,
                     key="lang_choice_login"
@@ -5502,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
