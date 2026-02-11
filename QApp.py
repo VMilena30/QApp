@@ -4979,10 +4979,25 @@ def main():
         st.write(textos["ref"])
         mostrar_ref(textos)
 
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
                 st.rerun()
+                
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
                 
     elif st.session_state['pagina'] == 'otim_ref':
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
@@ -5072,6 +5087,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
