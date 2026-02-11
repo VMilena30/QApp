@@ -2099,42 +2099,6 @@ def main():
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
     
-    params = st.query_params
-    if "pagina" in params:
-        st.session_state["pagina"] = params["pagina"]
-
-
-    if st.session_state.step == "app" and st.session_state.otp_verified and st.session_state["pagina"] != "inicio":
-        st.markdown(
-            """
-            <style>
-              .qx-home-fixed{
-                position: fixed;
-                top: 12px;
-                right: 180px;   /* mais pra direita */
-                z-index: 1005;
-              }
-              .qx-home-fixed a{
-                display: inline-block;
-                background: white;
-                color: #0d4376;
-                border-radius: 10px;
-                font-weight: 700;
-                padding: 8px 14px;
-                text-decoration: none;
-                white-space: nowrap;
-                font-family: inherit;
-              }
-              .qx-home-fixed a:hover{ filter: brightness(0.97); }
-            </style>
-    
-            <div class="qx-home-fixed">
-              <a href="?pagina=inicio" target="_self">Página inicial</a>
-            </div>
-            """,
-            unsafe_allow_html=True,
-        )
-
     lang = st.session_state.lang
     textos = TEXTOS[lang]
     textos_otim = TEXTOS_OPT[lang]
@@ -4955,6 +4919,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
