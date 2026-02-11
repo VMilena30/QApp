@@ -2330,14 +2330,33 @@ def main():
 
             st.markdown("""
             <style>
+            /* Remove qualquer fundo “highlight” no texto/label quando selecionado */
+            div[data-testid="stRadio"] label {
+              background: transparent !important;
+            }
+            div[data-testid="stRadio"] label:has(input:checked),
+            div[data-testid="stRadio"] label:focus,
+            div[data-testid="stRadio"] label:focus-within {
+              background: transparent !important;
+              outline: none !important;
+            }
             
-            /* Bolinha selecionada */
-            div[data-testid="stRadio"] input:checked + div {
-                background-color: #0e3360 !important;
-                border-color: #0e3360 !important;
-            }   
+            /* Pinta e reduz a bolinha sem criar esse retângulo */
+            div[data-testid="stRadio"] input[type="radio"]{
+              accent-color: #0e3360 !important; /* azul */
+              transform: scale(0.75);
+            }
+            
+            /* Ajusta espaçamento/alinhamento */
+            div[data-testid="stRadio"] label{
+              display:flex;
+              align-items:center;
+              gap:8px;
+              padding:0 !important;
+            }
             </style>
             """, unsafe_allow_html=True)
+
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
                 escolha = st.radio(
@@ -5513,6 +5532,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
