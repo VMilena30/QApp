@@ -4972,7 +4972,7 @@ def main():
             st.session_state['pagina'] = 'inicio'
             st.rerun()
                 
-    elif st.session_state['pagina'] == 'agard':
+    elif st.session_state['pagina'] == 'agrad':
         
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -5001,6 +5001,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
