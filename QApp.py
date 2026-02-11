@@ -1110,7 +1110,7 @@ TEXTOS_ML = {
         "info4": "Quantum computers do not process data in the same way as classical computers. For data to be used in a quantum model, it must be converted into a language understandable by qubits. This conversion is called quantum encoding. Each method has its particularities and may influence the model’s performance.",
         "info5_titulo": "4. Parameterized Quantum Circuits (PQC)",
         "info5": "Parameterized Quantum Circuits, also known as PQCs, are the core of Quantum Machine Learning models. They act as the “brain” of the algorithm, being responsible for learning patterns from the input data. The central idea is that the circuit contains quantum gates adjustable by numerical parameters, which are modified during training to find the best configurations.",
-        "info5.1": "These parameters are analogous to the “weights” of a classical neural network. During learning, the model adjusts the values of these gates to minimize classification or prediction errors.",
+        "info5.1": "These parameters are anaus to the “weights” of a classical neural network. During learning, the model adjusts the values of these gates to minimize classification or prediction errors.",
         "info6_titulo": "4.1. Euler Rotations",
         "info6": "An essential part of PQCs are the so-called Euler rotations, which are operations applied to each qubit individually. They change the state of the qubit based on parameterizable angles (for example: Rx(θ), Ry(θ), Rz(θ)), allowing the circuit to represent a wide range of transformations.",
         "info6.1": "You can configure the number of Euler rotations applied in each layer of the circuit. Increasing this number makes the circuit more expressive (capable of representing more complex patterns), but it can also increase execution time and the risk of overfitting.",
@@ -1684,14 +1684,14 @@ def img_to_data_uri(path: Path):
         b64 = base64.b64encode(f.read()).decode()
     return f"data:image/png;base64,{b64}"
 
-def mostrar_rodape_logos2(textos):
+def mostrar_rodape_s2(textos):
 
     if st.session_state.get("pagina") != "inicio":
         return
 
     BASE_DIR = Path(__file__).resolve().parent
 
-    logos = [
+    s = [
         "1.png","2.png","3.png","12.png","5.png",
         "6.png","7.png","13.png","14.png","10.png","11.png"
     ]
@@ -5428,9 +5428,12 @@ def main():
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
             st.rerun()
+        
+        mostrar_rodape_s2(textos)
 
 if __name__ == "__main__":
     main()
+
 
 
 
