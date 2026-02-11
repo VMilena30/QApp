@@ -363,7 +363,7 @@ st.markdown(
       .qx-home-fixed{
         position: fixed;
         top: 12px;
-        right: 50px;   /* mais à direita */
+        right: 150px;   /* mais à direita */
         z-index: 1005;
       }
       .qx-home-fixed a{
@@ -4957,6 +4957,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
