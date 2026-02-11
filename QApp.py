@@ -363,7 +363,7 @@ st.markdown(
       .qx-home-fixed{
         position: fixed;
         top: 12px;
-        right: 20px;
+        right: 8px;   /* mais à direita */
         z-index: 1005;
       }
       .qx-home-fixed a{
@@ -372,22 +372,21 @@ st.markdown(
         color: #0d4376;
         border-radius: 10px;
         font-weight: 700;
-        border: 0;
         padding: 8px 14px;
         text-decoration: none;
         white-space: nowrap;
         font-family: inherit;
       }
-      .qx-home-fixed a:hover{ filter: brightness(0.98); }
-      .qx-home-fixed a:active{ transform: translateY(1px); }
+      .qx-home-fixed a:hover{ filter: brightness(0.97); }
     </style>
 
     <div class="qx-home-fixed">
-      <a href="?page=home">Página inicial</a>
+      <a href="?pagina=inicio" target="_self">🏠 Página inicial</a>
     </div>
     """,
     unsafe_allow_html=True,
 )
+
 
 
 parametros_treino=[
@@ -4958,6 +4957,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
