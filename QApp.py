@@ -1328,26 +1328,26 @@ TEXTOS_INF = {
             "2. Defina os Pais do nó (quem influencia esse nó / arestas de entrada).\n"
             "3. Preencha:\n"
             "   o Probabilidades marginais (nó raiz) se o nó não tem pais\n"
-            "   o ou a CPT se o nó tem pais\n"
-            "• Cada linha (marginal ou cada combinação de estados dos pais na probabilidade condicional) "
+            "   o ou a CPT se o nó tem pais\n\n"
+            "- Cada linha (marginal ou cada combinação de estados dos pais na probabilidade condicional) "
             "tem que somar 1.\n\n"
             "### Passo C — Revisar a rede antes de rodar\n\n"
-            "Use a seção Rede Bayesiana montada para conferir:\n"
-            "• o grafo (estrutura),\n"
-            "• e o painel de Probabilidades inseridas (marginais e condicionais).\n\n"
+            "Use a seção Rede Bayesiana montada para conferir:\n\n"
+            "- o grafo (estrutura),\n\n"
+            "- e o painel de Probabilidades inseridas (marginais e condicionais).\n\n"
             "Isso evita rodar inferências com o pai errado, condicionais incompletas etc.\n\n"
             "### Passo D — Evidência vs Consulta (por que existem essas duas opções?)\n\n"
             "Na seção Evidência e consulta:\n\n"
-            "Evidência (nós observados)\n"
-            "• É o que você já sabe/mediu.\n"
-            "• Ex.: Sensor = alarm ou Inspection = failed\n"
+            "Evidência (nós observados)\n\n"
+            "- É o que você já sabe/mediu.\n\n"
+            "- Ex.: Sensor = alarm ou Inspection = failed\n\n"
             "Você escolhe o nó e depois escolhe o estado observado para ele.\n\n"
-            "Consulta (nós de consulta)\n"
-            "• É o que você quer como saída (posterior).\n"
-            "• Ex.: “qual a probabilidade de Failure em cada estado dado o sensor?”\n\n"
-            "Em termos de inferência Bayesiana:\n"
-            "• evidência = condicionamento\n"
-            "• consulta = variável(veis) alvo do posterior"
+            "Consulta (nós de consulta)\n\n"
+            "- É o que você quer como saída (posterior).\n\n"
+            "- Ex.: “qual a probabilidade de Failure em cada estado dado o sensor?”\n\n"
+            "Em termos de inferência Bayesiana:\n\n"
+            "- evidência = condicionamento\n\n"
+            "- consulta = variável(veis) alvo do posterior"
         ),
     
         "info21": "",
@@ -1357,15 +1357,15 @@ TEXTOS_INF = {
         "info3": (
             "Na seção Execução, você controla como os métodos amostrais/quânticos rodam.\n\n"
             "### Shots (Quântico / Monte Carlo)\n\n"
-            "• Número de amostras/medições.\n"
-            "• Mais shots → mais estabilidade, porém mais lento.\n\n"
+            "- Número de amostras/medições.\n"
+            "- Mais shots → mais estabilidade, porém mais lento.\n\n"
             "### Seed (Monte Carlo)\n\n"
-            "• Semente para reprodutibilidade do Monte Carlo "
+            "- Semente para reprodutibilidade do Monte Carlo "
             "(mesma seed = mesmos resultados “pseudoaleatórios”).\n\n"
             "### Top-N outcomes (0 = todos)\n\n"
-            "• Limita o número de resultados (bitstrings/outcomes) exibidos nos gráficos/tabelas.\n\n"
+            "- Limita o número de resultados (bitstrings/outcomes) exibidos nos gráficos/tabelas.\n\n"
             "### Annotate bars (%)\n\n"
-            "• Mostra o valor percentual em cima de cada barra do gráfico."
+            "- Mostra o valor percentual em cima de cada barra do gráfico."
         ),
     
         "info4_titulo": "4) Amplitude Amplification (AA): quando faz sentido?",
@@ -1373,10 +1373,10 @@ TEXTOS_INF = {
         "info4": (
             "A seção Amplitude Amplification é opcional e serve para tentar aumentar a chance "
             "de medir eventos raros (probabilidades pequenas).\n\n"
-            "• Habilitar AA: roda a variante quântica com AA além do “Quantum Shots”.\n"
-            "• k (manual): se marcado, você escolhe k; se não, o app tenta usar um valor automático.\n\n"
-            "Importante:\n"
-            "• AA costuma fazer mais sentido quando existe evidência "
+            "- Habilitar AA: roda a variante quântica com AA além do “Quantum Shots”.\n\n"
+            "- k (manual): se marcado, você escolhe k; se não, o app tenta usar um valor automático.\n\n"
+            "Importante:\n\n"
+            "- AA costuma fazer mais sentido quando existe evidência "
             "(porque você está tentando amplificar o subconjunto “compatível” com a evidência)."
         ),
     
@@ -1384,13 +1384,13 @@ TEXTOS_INF = {
     
         "info5": (
             "Você normalmente vai ver:\n"
-            "• Tabela comparativa (Exata vs MC vs Quantum) e/ou "
+            "- Tabela comparativa (Exata vs MC vs Quantum) e/ou "
             "(Quantum Shots vs Quantum + AA)\n"
-            "• Gráficos de outcomes do Quantum Shots e do Quantum + AA (se habilitado).\n\n"
-            "Leitura prática:\n"
-            "• Se Exata estiver disponível, use como referência.\n"
-            "• Monte Carlo dá baseline estável com shots altos.\n"
-            "• Quantum Shots e Quantum+AA são úteis para comparar comportamento e limitações "
+            "- Gráficos de outcomes do Quantum Shots e do Quantum + AA (se habilitado).\n\n"
+            "Leitura prática:\n\n"
+            "- Se Exata estiver disponível, use como referência.\n"
+            "- Monte Carlo dá baseline estável com shots altos.\n"
+            "- Quantum Shots e Quantum+AA são úteis para comparar comportamento e limitações "
             "(ex.: aceitação/acc_rate, k usado etc.)."
         ),
 
@@ -5401,6 +5401,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
