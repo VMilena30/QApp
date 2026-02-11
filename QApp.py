@@ -2145,18 +2145,6 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-         with st.popover("🏠", use_container_width=False):
-            choice = st.selectbox(
-                "",
-                ["Ir para Home"],
-                label_visibility="collapsed",
-                key="home_select"
-            )
-        
-            if choice == "Ir para Home":
-                st.session_state["pagina"] = "inicio"
-                st.rerun()
-
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -4931,6 +4919,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
