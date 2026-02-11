@@ -827,9 +827,8 @@ TEXTOS_OPT = {
             "- Maximum cost limit: total budget available for component allocation."
         ),
         "info21": (
-            "1.2 File Upload (.txt)\n"
-            "You may import data from a structured .txt file formatted according to the platform's specifications. "
-            "Recommended for large-scale problems or when reusing predefined configurations."
+            "### **1.2 File Upload (.txt)**\n\n"
+            "You may import data from a structured .txt file formatted according to the platform's specifications.\n\n"
         ),
     
         "info3_titulo": "2. Quantum Optimization Algorithms",
@@ -4948,6 +4947,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
