@@ -317,16 +317,18 @@ If you did not request this, please ignore this email.
 def init_db():
     con = sqlite3.connect(DB_PATH)
     cur = con.cursor()
+
     cur.execute("""
-    CREATE TABLE IF NOT EXISTS registrations (
-        id INTEGER PRIMARY KEY AUTOINCREMENT,
-        name TEXT,
-        email TEXT NOT NULL,
-        company TEXT NOT NULL,
-        role TEXT,
-        created_at TEXT NOT NULL
-    )
+        CREATE TABLE IF NOT EXISTS registrations (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            name TEXT,
+            email TEXT,
+            company TEXT,
+            role TEXT,
+            created_at TEXT
+        )
     """)
+
     con.commit()
     con.close()
 
@@ -5491,6 +5493,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
