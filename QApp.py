@@ -1399,30 +1399,37 @@ TEXTOS_INF = {
     },
 }
 
-def _img_to_data_uri(path: str) -> str:
+def img_to_data_uri(path: Path):
     with open(path, "rb") as f:
-        b64 = base64.b64encode(f.read()).decode("utf-8")
+        b64 = base64.b64encode(f.read()).decode()
     return f"data:image/png;base64,{b64}"
 
-def mostrar_rodape_logos2(textos, pasta_logos="logos"):
+def mostrar_rodape_logos2(textos):
+
     if st.session_state.get("pagina") != "inicio":
         return
 
-    logos = ["1.png","2.png","3.png","4.png","5.png",
-             "6.png","7.png","8.png","9.png","10.png","11.png"]
+    BASE_DIR = Path(__file__).resolve().parent
 
-    tags = []
+    logos = [
+        "1.png","2.png","3.png","4.png","5.png",
+        "6.png","7.png","8.png","9.png","10.png","11.png"
+    ]
+
+    imgs = []
+
     for nome in logos:
-        path = os.path.join(pasta_logos, nome)
-        if os.path.exists(path):
-            src = _img_to_data_uri(path)
-            tags.append(f'<img src="{src}" style="height:50px; margin:0 8px; vertical-align:middle;">')
-        else:
-            # opcional: se quiser “debug” quando faltar arquivo
-            # tags.append(f'<span style="color:#999; font-size:12px;">{nome} não encontrado</span>')
-            pass
+        caminho = BASE_DIR / nome  # ← se estiverem na mesma pasta
 
-    logos_html = "".join(tags)
+        if caminho.exists():
+            src = img_to_data_uri(caminho)
+            imgs.append(
+                f'<img src="{src}" style="height:45px; margin:0 8px;">'
+            )
+        else:
+            print("Arquivo não encontrado:", caminho)
+
+    logos_html = "".join(imgs)
 
     st.markdown(
         f"""
@@ -1438,7 +1445,7 @@ def mostrar_rodape_logos2(textos, pasta_logos="logos"):
             text-align: center;
             z-index: 9999;
         }}
-        /* evita o footer "tapar" conteúdo */
+
         .block-container {{
             padding-bottom: 120px;
         }}
@@ -1446,7 +1453,7 @@ def mostrar_rodape_logos2(textos, pasta_logos="logos"):
 
         <div class="qx-footer">
             <div><strong>{textos['apoio']}</strong></div>
-            <div style="margin-top:8px; white-space:nowrap; overflow-x:auto;">
+            <div style="margin-top:8px;">
                 {logos_html}
             </div>
         </div>
@@ -4961,6 +4968,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
