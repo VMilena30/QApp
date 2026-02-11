@@ -1508,8 +1508,6 @@ def mostrar_introducao_e_titulo(textos):
             <h1 style="font-size: 36px; margin-bottom: 2px;">{titulo}</h1>
             <p style="font-size: 16px; line-height: 1.5; margin-top: 0;">
                 {corpo}
-            </p>
-        </div>
         """,
         unsafe_allow_html=True
     )
@@ -1555,7 +1553,7 @@ def mostrar_referencias(textos, textos_otim):
 def mostrar_cartoes_de_area(textos):
 
     # Espaço lateral proporcional
-    col_esq, col2, col3, col4, col_dir = st.columns([3, 1, 1, 1, 3])
+    col_esq, col2, col3, col4, col_dir = st.columns([2.7, 1, 1, 1, 2.7])
 
     with col2:
         st.image("opt3.png", width=150)
@@ -4950,6 +4948,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
