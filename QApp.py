@@ -3133,6 +3133,7 @@ def main():
                 
         if st.button(textos_otim["aplicacao"]):
             st.session_state['pagina'] = 'otimizacao'
+            st.rerun()
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
@@ -5389,6 +5390,7 @@ def main():
                 
         if st.button(textos_otim["aplicacao"]):
             st.session_state['pagina'] = 'inferencia'
+            st.rerun()
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
@@ -5537,6 +5539,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
