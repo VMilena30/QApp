@@ -1399,42 +1399,35 @@ TEXTOS_INF = {
     },
 }
 
-def _img_to_data_uri(path: Path) -> str:
-    data = path.read_bytes()
-    b64 = base64.b64encode(data).decode("utf-8")
-    # se algum logo for .jpg, troque image/png por image/jpeg
+def _img_to_data_uri(path: str) -> str:
+    with open(path, "rb") as f:
+        b64 = base64.b64encode(f.read()).decode("utf-8")
     return f"data:image/png;base64,{b64}"
 
-def mostrar_rodape_logos2(textos):
-    # só na página inicial
+def mostrar_rodape_logos2(textos, pasta_logos="logos"):
     if st.session_state.get("pagina") != "inicio":
         return
 
-    # pasta do arquivo .py (ajuste se seus pngs estiverem em subpasta)
-    BASE_DIR = Path(__file__).resolve().parent
+    logos = ["1.png","2.png","3.png","4.png","5.png",
+             "6.png","7.png","8.png","9.png","10.png","11.png"]
 
-    logos = [
-        "1.png", "2.png", "3.png", "4.png", "5.png",
-        "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
-    ]
-
-    # monta as tags <img> com base64
-    imgs = []
-    for name in logos:
-        p = BASE_DIR / name
-        if p.exists():
-            src = _img_to_data_uri(p)
-            imgs.append(f'<img src="{src}" style="height:50px; margin:0 8px;" />')
+    tags = []
+    for nome in logos:
+        path = os.path.join(pasta_logos, nome)
+        if os.path.exists(path):
+            src = _img_to_data_uri(path)
+            tags.append(f'<img src="{src}" style="height:50px; margin:0 8px; vertical-align:middle;">')
         else:
-            # se algum arquivo não existir, você vai perceber pelo "missing"
-            imgs.append(f'<span style="color:#999; font-size:12px;">{name} (missing)</span>')
+            # opcional: se quiser “debug” quando faltar arquivo
+            # tags.append(f'<span style="color:#999; font-size:12px;">{nome} não encontrado</span>')
+            pass
 
-    logos_html = "\n".join(imgs)
+    logos_html = "".join(tags)
 
     st.markdown(
         f"""
         <style>
-          .qx-footer {{
+        .qx-footer {{
             position: fixed;
             bottom: 0;
             left: 0;
@@ -1444,18 +1437,23 @@ def mostrar_rodape_logos2(textos):
             border-top: 1px solid #ddd;
             text-align: center;
             z-index: 9999;
-          }}
+        }}
+        /* evita o footer "tapar" conteúdo */
+        .block-container {{
+            padding-bottom: 120px;
+        }}
         </style>
 
         <div class="qx-footer">
-          <div><strong>{textos['apoio']}</strong></div>
-          <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;">
-            {logos_html}
-          </div>
+            <div><strong>{textos['apoio']}</strong></div>
+            <div style="margin-top:8px; white-space:nowrap; overflow-x:auto;">
+                {logos_html}
+            </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
+
 
 def aplicar_css_botoes():
     st.markdown(
@@ -4963,6 +4961,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
