@@ -4913,19 +4913,32 @@ def main():
         # Render QBN inference page
         pagina_inferencia_qbn(textos, textos_inf)
         
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
-
     
     elif st.session_state['pagina'] == 'info':
         st.subheader(textos["pagina_info2"])
         mostrar_cartoes_de_info(textos)
 
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
     
     elif st.session_state['pagina'] == 'otimizacao_info':
         st.title(textos.get("pagina_referencias_titulo", "Referências"))
@@ -5059,6 +5072,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
