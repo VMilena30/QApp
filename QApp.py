@@ -2141,24 +2141,27 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        BAR_HEIGHT = 64
-
+        BAR_HEIGHT = 64  # o mesmo da sua topbar
+        
+        # --- grupo fixo no canto direito da barra ---
         st.markdown(
             f"""
             <style>
-              .qx-fixed-actions {{
+              .qx-top-actions {{
                 position: fixed;
-                top: 0;
+                top: 0px;
                 right: 28px;
                 height: {BAR_HEIGHT}px;
                 display: flex;
                 align-items: center;
                 gap: 10px;
                 z-index: 2000;
+                width: fit-content;
               }}
         
-              /* só os botões dentro do grupo */
-              .qx-fixed-actions .stButton > button {{
+              /* estilo consistente pros botões/gatilhos dentro do grupo */
+              .qx-top-actions .stButton > button,
+              .qx-top-actions div[data-testid="stPopover"] > button {{
                 background: white !important;
                 color: #0d4376 !important;
                 border-radius: 10px !important;
@@ -2166,20 +2169,25 @@ def main():
                 border: 0 !important;
                 padding: 8px 12px !important;
                 white-space: nowrap !important;
+                width: auto !important;
+                min-width: 0 !important;
+              }}
+        
+              /* deixa o HOME menorzinho (só ícone) */
+              .qx-top-actions .stButton > button {{
+                padding: 8px 10px !important;
               }}
             </style>
-            <div class="qx-fixed-actions">
+            <div class="qx-top-actions">
             """,
             unsafe_allow_html=True,
         )
         
-        # aparece só fora da home
+        # --- HOME (1 clique, não recarrega, não volta pro login) ---
         if st.session_state.get("pagina") != "inicio":
             if st.button("🏠", key="home_top_btn"):
                 st.session_state["pagina"] = "inicio"
                 st.rerun()
-        
-        st.markdown("</div>", unsafe_allow_html=True)
 
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
@@ -4960,6 +4968,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
