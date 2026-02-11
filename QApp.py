@@ -2218,20 +2218,16 @@ def main():
                 st.image(str(LOGO), width=380)
         
             st.markdown("""
-            <div style="text-align:center;">
-                
-                <div style="font-size:42px; font-weight:800; margin-top:12px;">
-                    qPrism
-                </div>
-            
-                <div style="font-size:16px; margin-top:8px; max-width:720px; margin-left:auto; margin-right:auto;">
-                    Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
-                </div>
-            
+            <div style="text-align:center; font-size:42px; font-weight:800; margin-top:12px;">
+                qPrism
             </div>
             """, unsafe_allow_html=True)
-
-
+            
+            st.markdown("""
+            <div style="text-align:center; font-size:16px; margin-top:8px; max-width:720px; margin-left:auto; margin-right:auto;">
+                Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
+            </div>
+            """, unsafe_allow_html=True)
     
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
 
@@ -5498,6 +5494,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
