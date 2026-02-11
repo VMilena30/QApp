@@ -2328,7 +2328,7 @@ def main():
                 unsafe_allow_html=True
             )
 
-             st.markdown("""
+            st.markdown("""
             <style>
             
             /* Cor da bolinha selecionada */
@@ -5513,6 +5513,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
