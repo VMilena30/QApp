@@ -810,70 +810,76 @@ TEXTOS_OPT = {
         "aplicacao": "Application",
         "info1_titulo": "User Guide – Quantum Optimization for Redundancy Allocation",
         "info1": (
-            "This guide is designed to help you correctly fill out all fields of the quantum optimization platform, "
-            "applied to the problem of redundancy allocation in systems with multiple subsystems, under cost and reliability constraints. "
-            "The platform transforms your problem into a QUBO (Quadratic Unconstrained Binary Optimization) formulation and solves it using "
-            "variational quantum algorithms, which rely on parameterized circuits and classical optimizers."
+            "This guide aims to help you correctly fill in all fields of the quantum optimization platform, "
+            "applied to the redundancy allocation problem in systems with multiple subsystems, "
+            "while respecting cost and reliability constraints. "
+            "The platform transforms your problem into a QUBO (Quadratic Unconstrained Binary Optimization) formulation, "
+            "and solves it using variational quantum algorithms, which rely on parameterized circuits and classical optimizers."
         ),
-    
+        
         "info2_titulo": "1. Data Input Mode",
         "info2": (
-            "1.1 Manual Input\n"
-            "You can directly fill in all the required fields on the screen. Provide:\n"
-            "- Number of subsystems: parts of the system where redundancy can be allocated.\n"
+            "### 1.1 Manual Input\n\n"
+            "You can fill in all problem data directly on the screen. Provide:\n"
+            "- Number of subsystems: number of system parts where redundancy can be allocated.\n"
             "- Minimum and maximum number of components per subsystem.\n"
-            "- Number of component types available: different models with specific cost and reliability values.\n"
-            "- Reliability and cost for each component.\n"
-            "- Maximum cost limit: total budget available for component allocation."
+            "- Number of available component types: different models with distinct costs and reliabilities.\n"
+            "- Reliability and cost of each component.\n"
+            "- Maximum cost limit: total available budget for allocation."
         ),
+        
         "info21": (
             "### **1.2 File Upload (.txt)**\n\n"
-            "You may import data from a structured .txt file formatted according to the platform's specifications.\n\n"
+            "You can import the data using a structured .txt file following the format required by the platform.\n\n"
         ),
-    
+        
         "info3_titulo": "2. Quantum Optimization Algorithms",
         "info3": (
             "You can choose between two variational quantum algorithms:\n\n"
-            "2.1 QAOA (Quantum Approximate Optimization Algorithm):\n"
-            "An algorithm designed for combinatorial problems expressed as QUBO. It uses parameterized layers composed of cost and mixing operations. "
-            "These layers are tuned via classical optimization routines.\n\n"
-            "2.2 VQE (Variational Quantum Eigensolver):\n"
-            "Originally developed for quantum chemistry, VQE can also solve optimization problems by adjusting a quantum circuit called an ansatz. "
-            "The ansatz structure defines how qubits are manipulated and how expressively the solution space is represented.\n\n"
-            "If using VQE, you must configure:\n"
-            "- Type of circuit (ansatz):\n"
-            "  - Real Amplitudes: simple circuit using Ry rotations only.\n"
-            "  - Two Local: more flexible and expressive structure, suitable for complex problems.\n"
+            "### **2.1 QAOA (Quantum Approximate Optimization Algorithm):**\n\n"
+            "An algorithm designed for combinatorial problems formulated as QUBO. "
+            "It uses parameterized layers composed of operations that encode the problem and others that explore the solution space. "
+            "These layers are adjusted through numerical parameters optimized by classical algorithms.\n\n"
+            "### **2.2 VQE (Variational Quantum Eigensolver):**\n\n"
+            "Originally developed for quantum chemistry, it can also be applied to optimization problems. "
+            "It requires defining an ansatz circuit — a structure of quantum gates representing the solution space. "
+            "VQE adjusts the parameters of this circuit to minimize the expected value of the objective function.\n\n"
+            "When using VQE, you must configure:\n"
+            "- Circuit type (ansatz):\n"
+            "  - Real Amplitudes: uses only Ry rotations. Simple, efficient, and ideal for cases with few qubits.\n"
+            "  - Two Local: more complex and expressive. Provides greater flexibility but requires more time and resources.\n"
             "- Available rotation gates: Rx, Ry, Rz — define single-qubit transformations.\n"
-            "- Available entanglement gates: CX (CNOT), CZ, CRX, CRY, CRZ — define inter-qubit interactions."
+            "- Available entanglement gates: CX (CNOT), CZ, CRX, CRY, CRZ — define how qubits interact with each other."
         ),
-    
+        
         "info4_titulo": "3. Customizable Parameters",
         "info4": (
-            "3.1 Classical Optimizer:\n"
+            "### **3.1 Classical Optimizer:**\n"
             "- COBYLA (Constrained Optimization By Linear Approximations):\n"
-            "  A gradient-free optimizer based on linear approximations. Lightweight and efficient for problems with few variables.\n"
+            "  A derivative-free method based on linear approximations. Performs well for low-dimensional problems.\n"
             "- SPSA (Simultaneous Perturbation Stochastic Approximation):\n"
-            "  A robust optimizer for noisy environments. It estimates gradients with just two evaluations per iteration.\n\n"
-    
-            "3.2 Initialization Method:\n"
-            "- Random: parameters are initialized randomly.\n"
-            "- LHS (Latin Hypercube Sampling): samples the parameter space in a balanced and distributed way.\n"
-            "- Clustering: uses data grouping to propose an informed initial point.\n"
-            "- Fixed Point: manually set the initial parameter values.\n\n"
-    
-            "3.3 Number of Shots:\n"
-            "-Defines how many times the quantum circuit will be executed."
-            "-Since quantum circuits are probabilistic, more shots yield better statistical estimates. Suggested values: between 1000 and 8192.\n\n"
-    
-            "3.4 Number of Layers (Circuit Depth):\n"
-            "Represents how many times the block of operations is repeated in the circuit. More layers allow capturing complex patterns "
-            "but increase runtime and overfitting risk.\n\n"
-    
-            "3.5 Number of Iterations (Rounds):\n"
-            "Defines how many times the optimizer will update the circuit parameters. Start with 5 to 10 for initial testing, "
-            "and increase if needed for better convergence."
-        ), 
+            "  A noise-robust optimizer. Estimates gradients using only two evaluations per iteration, making it suitable for quantum environments.\n\n"
+        
+            "### **3.2 Initialization Method:**\n"
+            "- Random: initial parameters are chosen randomly.\n"
+            "- LHS (Latin Hypercube Sampling): generates representative and well-distributed samples of the search space.\n"
+            "- Clustering: uses data grouping as a more structured starting point.\n"
+            "- Fixed Point: the user manually provides the initial values.\n\n"
+        
+            "### **3.3 Number of Shots:**\n\n"
+            "- Defines how many times the quantum circuit will be executed.\n"
+            "- Quantum circuits are probabilistic, so more executions provide a more accurate estimate.\n\n"
+            "- Recommended values range between 1000 and 8192.\n\n"
+        
+            "### **3.4 Number of Layers (Circuit Depth):**\n\n"
+            "- Determines how many times the block of operations is repeated in the circuit.\n"
+            "- Increasing this number allows capturing more complex patterns but also increases execution time.\n\n"
+        
+            "### **3.5 Number of Rounds (Iterations):**\n\n"
+            "- Defines how many times the optimizer updates the circuit parameters.\n\n"
+            "- More difficult problems may require more rounds to achieve good convergence."
+        ),
+
         "help1": "How would you like to provide your system data to the tool?",
         "help2": "OI", 
         "help3": "OI", 
@@ -5001,6 +5007,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
