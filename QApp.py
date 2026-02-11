@@ -2138,42 +2138,41 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
+        
+    elif st.session_state['pagina'] == 'otimizacao':
 
-    if st.session_state.get("pagina") != "inicio":
-    
         st.markdown(
             """
             <style>
-              .qx-home-fixed {
+              .qx-home-bottom {
                 position: fixed;
-                top: 12px;
-                right: 6px;   /* ajuste fino */
+                bottom: 16px;
+                right: 16px;
                 z-index: 1005;
               }
     
-              .qx-home-fixed .stButton > button {
-                background: white !important;
-                color: #0d4376 !important;
-                border-radius: 10px !important;
+              .qx-home-bottom .stButton > button {
+                background: #0d4376 !important;
+                color: white !important;
+                border-radius: 999px !important;
                 font-weight: 700 !important;
                 border: 0 !important;
-                padding: 8px 14px !important;
+                padding: 10px 16px !important;
                 white-space: nowrap !important;
+                box-shadow: 0 6px 16px rgba(0,0,0,0.25);
               }
             </style>
     
-            <div class="qx-home-fixed">
+            <div class="qx-home-bottom">
             """,
             unsafe_allow_html=True,
         )
     
-        if st.button("🏠 Página inicial", key="home_fixed_btn"):
+        if st.button("🏠 Home", key="home_bottom_btn"):
             st.session_state["pagina"] = "inicio"
             st.rerun()
     
-        st.markdown("</div>", unsafe_allow_html=True)  
-        
-    elif st.session_state['pagina'] == 'otimizacao':
+        st.markdown("</div>", unsafe_allow_html=True)
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4953,6 +4952,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
