@@ -2328,15 +2328,14 @@ def main():
                 unsafe_allow_html=True
             )
 
-            st.markdown("""
+             st.markdown("""
             <style>
-            .st-Radio > div > label {
-                color: #03518C !important;
+            
+            /* Cor da bolinha selecionada */
+            div[data-testid="stRadio"] input[type="radio"] {
+                accent-color: #03518C !important;
             }
             
-            .st-Radio > div > div {
-                border-color: #03518C !important;
-            }
             </style>
             """, unsafe_allow_html=True)
 
@@ -5514,6 +5513,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
