@@ -453,13 +453,12 @@ TEXTOS = {
         "corpo": (
             "O qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) é uma interface web interativa que integra três módulos: (i) Aprendizado de Máquina Quântico para problemas de classificação em confiabilidade, (ii) otimização de confiabilidade via alocação de redundâncias com algoritmos quânticos baseados em circuitos, e (iii) inferência por Redes Bayesianas Quânticas. A plataforma foi criada para testes e demonstrações, permitindo explorar os métodos com dados reais ou simulados e apoiar a disseminação e aplicação prática das soluções desenvolvidas nas pesquisas do CEERMA.\n\n"
             "Navegue pelos módulos abaixo para realizar experimentos com dados reais ou simulados.\n\n"
-
         ),
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
         "pagina_info": "Ajuda",
         "pagina_agrad": "Agradecimentos",
-        "inf_ref": "Ajuda e Referências",
+        "inf_ref": "Ajuda, Referências e Agradeciemntos",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info2": "Informação sobre conceitos nas três áreas",
         "inf1": "Estimação de Confiabilidade com QBN:",
@@ -483,7 +482,7 @@ TEXTOS = {
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
         "referencias_titulo": "References",
-        "inf_ref": "Help and References",
+        "inf_ref": "Help, References and Acknowledgments",
         "ref": "Choose a module to access its references and related materials.",
         "referencias_intro": "To learn more about our work in this areas, check the references below:", 
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
@@ -1506,7 +1505,7 @@ def mostrar_introducao_e_titulo(textos):
     st.markdown(
         f"""
         <div style="text-align: justify; max-width: 700px; margin: auto;">
-            <h1 style="font-size: 32px; margin-bottom: 2px;">{titulo}</h1>
+            <h1 style="font-size: 36px; margin-bottom: 2px;">{titulo}</h1>
             <p style="font-size: 16px; line-height: 1.5; margin-top: 0;">
                 {corpo}
             </p>
@@ -1556,7 +1555,7 @@ def mostrar_referencias(textos, textos_otim):
 def mostrar_cartoes_de_area(textos):
 
     # Espaço lateral proporcional
-    col_esq, col2, col3, col4, col_dir = st.columns([1, 2, 2, 2, 1])
+    col_esq, col2, col3, col4, col_dir = st.columns([3, 1, 1, 1, 3])
 
     with col2:
         st.image("opt3.png", width=150)
@@ -1579,7 +1578,7 @@ def mostrar_cartoes_de_area(textos):
     # Expander separado abaixo (não dentro da grid principal)
     with st.expander(textos["inf_ref"], expanded=False):
 
-        col1, col2, col3 = st.columns(3)
+        col_esq, col2, col3, col4, col_dir = st.columns([3, 1, 1, 1, 3])
 
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
@@ -4951,6 +4950,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
