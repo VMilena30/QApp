@@ -826,7 +826,7 @@ TEXTOS_OPT = {
             "- Reliability and cost for each component.\n"
             "- Maximum cost limit: total budget available for component allocation."
         ),
-        "info2.1": (
+        "info21": (
             "1.2 File Upload (.txt)\n"
             "You may import data from a structured .txt file formatted according to the platform's specifications. "
             "Recommended for large-scale problems or when reusing predefined configurations."
@@ -4948,6 +4948,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
