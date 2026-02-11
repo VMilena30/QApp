@@ -1577,7 +1577,7 @@ def mostrar_cartoes_de_area(textos):
     # Expander separado abaixo (não dentro da grid principal)
     with st.expander(textos["inf_ref"], expanded=False):
 
-        col1, col2 = st.columns(3)
+        col1, col2, col3 = st.columns(3)
 
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
@@ -4949,6 +4949,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
