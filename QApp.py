@@ -2219,15 +2219,23 @@ def main():
         
             st.markdown("""
             <div style="text-align:center; font-size:42px; font-weight:800; margin-top:12px;">
-                qPrism
+                <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
             </div>
             """, unsafe_allow_html=True)
             
             st.markdown("""
-            <div style="text-align:center; font-size:16px; margin-top:8px; max-width:720px; margin-left:auto; margin-right:auto;">
-                Quantum Platform for Reliability: Inference, Systems modeling, and Machine learning
+            <div style="text-align:center; 
+                        font-size:20px; 
+                        font-weight:700; 
+                        color:#0e3360; 
+                        margin-top:8px; 
+                        max-width:720px; 
+                        margin-left:auto; 
+                        margin-right:auto;">
+                Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning
             </div>
             """, unsafe_allow_html=True)
+
     
             st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
 
@@ -5494,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
