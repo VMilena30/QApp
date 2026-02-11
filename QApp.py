@@ -2140,39 +2140,45 @@ def main():
                 st.rerun()
         
     elif st.session_state['pagina'] == 'otimizacao':
-        st.markdown(
-            """
-            <style>
-              .qx-home-fixed{
-                position: fixed;
-                bottom: 12px;
-                right: 12px;
-                z-index: 1005;
-              }
-              .qx-home-fixed a{
-                display: inline-block;
-                background: white;
-                color: #0d4376;
-                border-radius: 10px;
-                font-weight: 700;
-                padding: 6px 10px;
-                text-decoration: none;
-                white-space: nowrap;
-                font-family: inherit;
-              }
-              .qx-home-fixed a:hover{ filter: brightness(0.97); }
-            </style>
+        BAR_HEIGHT = 64  # use o MESMO valor da sua topbar
         
-            <div class="qx-home-fixed">
-              <a href="?pagina=inicio" target="_self">🏠</a>
-            </div>
+        st.markdown(
+            f"""
+            <style>
+              /* "encaixa" o botão DENTRO da faixa da barra */
+              .qx-home-top {{
+                position: fixed;
+                top: 0px;                 /* começa no topo da barra */
+                right: 28px;              /* mesmo padding que você usa na barra */
+                height: {BAR_HEIGHT}px;   /* mesma altura da barra */
+                display: flex;
+                align-items: center;      /* centraliza verticalmente */
+                z-index: 1002;            /* maior que .qx-topbar (1000) */
+              }}
+    
+              .qx-home-top .stButton > button {{
+                background: white !important;
+                color: #0d4376 !important;
+                border-radius: 10px !important;
+                font-weight: 700 !important;
+                border: 0 !important;
+                padding: 8px 14px !important;
+                white-space: nowrap !important;
+              }}
+            </style>
+    
+            <div class="qx-home-top">
             """,
             unsafe_allow_html=True,
         )
+    
+        if st.button("🏠 Página inicial", key="btn_home_top"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+    
+        st.markdown("</div>", unsafe_allow_html=True)
 
-        params = st.query_params
-        if "pagina" in params:
-            st.session_state["pagina"] = params["pagina"]
+
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4952,6 +4958,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
