@@ -2217,28 +2217,28 @@ def main():
             with c2:
                 st.image(str(LOGO), width=380)
         
-                st.markdown("""
-                <div style="text-align:center; margin-top:20px;">
-                
-                    <div style="font-size:42px; font-weight:800;">
-                        <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
-                    </div>
-                
-                    <div style="
-                        font-size:20px;
-                        font-weight:700;
-                        color:#0e3360;
-                        margin-top:12px;
-                        letter-spacing:0.5px;
-                    ">
-                        Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning
-                    </div>
-                
+            st.markdown("""
+            <div style="text-align:center; margin-top:20px;">
+            
+                <div style="font-size:42px; font-weight:800;">
+                    <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
                 </div>
-                """, unsafe_allow_html=True)
-        
-                st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
-        
+            
+                <div style="
+                    font-size:20px;
+                    font-weight:700;
+                    color:#0e3360;
+                    margin-top:12px;
+                    letter-spacing:0.5px;
+                ">
+                    Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning
+                </div>
+            
+            </div>
+            """, unsafe_allow_html=True)
+    
+            st.markdown("<div style='height:18px'></div>", unsafe_allow_html=True)
+
             c1, c2, c3, c4, c5 = st.columns([1, 0.6, 0.6, 0.6, 1])
             
             with c2:
@@ -5502,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
