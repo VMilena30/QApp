@@ -2332,6 +2332,21 @@ def main():
             with c2:
                 st.markdown("""
                 <style>
+                /* Selecionado (preenchimento) */
+                div[data-testid="stRadio"] input[type="radio"]{
+                  accent-color: #03518C !important;
+                }
+                
+                /* Não-selecionado (contorno) e ajustes finos */
+                div[data-testid="stRadio"] input[type="radio"]{
+                  width: 14px;
+                  height: 14px;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
+                st.markdown("""
+                <style>
                 
                 /* Cor da bolinha selecionada */
                 div[data-testid="stRadio"] input[type="radio"] {
@@ -5512,6 +5527,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
