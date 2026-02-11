@@ -682,11 +682,18 @@ TEXTOS_OPT = {
             "- Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
         ),
         "help1": "Como você prefere informar os dados do seu sistema para a ferramenta?",
-        "help2": "OI", 
-        "help3": "OI", 
-        "help4": "OI",
-        "help5": "OI",
-        "help6": "OI",
+        "help2": "Seleciona o método quântico usado para resolver a formulação QUBO.", 
+        "help3": "Seleciona o ansatz (estrutura do circuito quântico) utilizado no VQE.",
+        "help4": "Seleciona as portas de rotação de um qubit utilizadas na construção do circuito VQE.",
+        "help5": "Define as portas de dois qubits responsáveis pelo emaranhamento no circuito VQE.",
+        "help6": "Define como os parâmetros iniciais do circuito VQE serão gerados.",
+        "help7": "Informe o valor fixo usado como ponto inicial dos parâmetros.",
+        "help8": "Define como os parâmetros iniciais do QAOA serão escolhidos.",
+        "help9": "Informe o valor fixo usado como ponto inicial dos parâmetros.",
+        "help10": "Escolha o otimizador clássico que ajustará os parâmetros do circuito.",
+        "help11": "Número de camadas (profundidade) do circuito variacional.",
+        "help12": "Número de iterações do otimizador para atualizar os parâmetros.",
+        "help13": "Número de execuções do circuito para estimar os resultados (shots).",
 
         
     },
@@ -882,12 +889,18 @@ TEXTOS_OPT = {
         ),
 
         "help1": "How would you like to provide your system data to the tool?",
-        "help2": "OI", 
-        "help3": "OI", 
-        "help4": "OI",
-        "help5": "OI",
-        "help6": "OI",
-        
+        "help2": "Selects the quantum method used to solve the QUBO formulation.", 
+        "help3": "Selects the ansatz (quantum circuit structure) used in VQE.", 
+        "help4": "Selects the single-qubit rotation gates used in the construction of the VQE circuit.",
+        "help5": "Defines the two-qubit entanglement gates used to connect qubits in the VQE circuit.",
+        "help6": "Defines how the initial parameters of the VQE circuit are generated.",
+        "help7": "Enter the fixed value used as the initial point for the parameters.",
+        "help8": "Defines how the initial parameters for QAOA are chosen.",
+        "help9": "Enter the fixed value used as the initial point for the parameters.",
+        "help10": "Choose the classical optimizer that updates the circuit parameters.",
+        "help11": "Number of layers (circuit depth) of the variational circuit.",
+        "help12": "Number of optimizer iterations to update the parameters.",
+        "help13": "Number of circuit executions used to estimate the results (shots).",
 
     }
 }
@@ -2355,33 +2368,33 @@ def main():
         
                         if tipo_inicializacao in ['Ponto Fixo', 'Fixed Point']:
                             numero_ponto_fixo = st.number_input(
-                                textos_otim["inserir_ponto_fixo"], step=0.1, help=textos_otim["help6"]
+                                textos_otim["inserir_ponto_fixo"], step=0.1, help=textos_otim["help7"]
                             )
         
                     elif modo_algoritmo == 'QAOA':
                         tipo_inicializacao = st.radio(
                             textos_otim["tipo_inicializacao"],
-                            textos_otim["tipos_inicializacao_qaoa"],  help=textos_otim["help6"]
+                            textos_otim["tipos_inicializacao_qaoa"],  help=textos_otim["help8"]
                         )
         
                         if tipo_inicializacao in ['Ponto Fixo', 'Fixed Point']:
                             numero_ponto_fixo = st.number_input(
-                                textos_otim["inserir_ponto_fixo"], step=0.1,  help=textos_otim["help6"]
+                                textos_otim["inserir_ponto_fixo"], step=0.1,  help=textos_otim["help9"]
                             )
         
                 with col_param:
                     otimizador = st.radio(
                         textos_otim["selecionar_otimizador"],
-                        textos_otim["opcoes_otimizadores"], help=textos_otim["help5"]
+                        textos_otim["opcoes_otimizadores"], help=textos_otim["help10"]
                     )
                     camadas = st.number_input(
-                        textos_otim["inserir_camadas"], min_value=1, max_value=3, value=1, help=textos_otim["help5"]
+                        textos_otim["inserir_camadas"], min_value=1, max_value=3, value=1, help=textos_otim["help11"]
                     )
                     rodadas = st.number_input(
-                        textos_otim["inserir_rodadas"], min_value=1, value=1, help=textos_otim["help5"]
+                        textos_otim["inserir_rodadas"], min_value=1, value=1, help=textos_otim["help12"]
                     )
                     shots = st.number_input(
-                        textos_otim["inserir_shots"], min_value=100, value=1000, help=textos_otim["help5"]
+                        textos_otim["inserir_shots"], min_value=100, value=1000, help=textos_otim["help13"]
                     )
                 
         if st.button(textos_otim['executar']):
@@ -5008,6 +5021,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
