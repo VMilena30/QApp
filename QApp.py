@@ -2327,6 +2327,33 @@ def main():
                 """,
                 unsafe_allow_html=True
             )
+            st.markdown("""
+            <style>
+            /* Cor do círculo (o "bullet") */
+            div[role="radiogroup"] label > div:first-child{
+                border-color: #03518C !important;
+            }
+            
+            /* Quando estiver selecionado, pinta por dentro */
+            div[role="radiogroup"] label:has(input:checked) > div:first-child{
+                background: #03518C !important;
+                border-color: #03518C !important;
+            }
+            
+            /* Deixa a bolinha menor */
+            div[role="radiogroup"] label > div:first-child{
+                width: 14px !important;
+                height: 14px !important;
+                border-radius: 50% !important;
+            }
+            
+            /* Texto (opcional) */
+            div[role="radiogroup"] label {
+                color: #0e3360 !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+
 
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -5502,6 +5529,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
