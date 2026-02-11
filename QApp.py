@@ -2141,6 +2141,15 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
+        label = "🏠"  # gatilho bem pequeno
+
+        with st.popover(label, use_container_width=False):
+            # botão único dentro (sem outros elementos)
+            if st.button("Ir para Home", use_container_width=True, key="go_home"):
+                st.session_state["pagina"] = "inicio"   # seu nome correto é "inicio"
+                st.rerun()
+
+
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -4919,6 +4928,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
