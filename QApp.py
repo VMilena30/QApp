@@ -458,6 +458,7 @@ TEXTOS = {
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
         "pagina_info": "Ajuda",
+        "pagina_agrad": "Agradecimentos",
         "inf_ref": "Ajuda e Referências",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info2": "Informação sobre conceitos nas três áreas",
@@ -475,6 +476,7 @@ TEXTOS = {
         "apo": "Acknowledgments are due to the following Brazilian research funding agencies for their financial support: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (grants 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5, and 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Finance Code 001); Human Resources Program 38 (PRH 38), entitled “Risk Management, Reliability and Sustainability in Oil, Natural Gas and Renewable Energy Exploration and Production”, financed by Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) and managed by Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (grant 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (grant APQ-0504-3.08/25); and Financiadora de Estudos e Projetos (FINEP).",
         "pagina_otimizacao2": "Quantum Optimization in Redundancy Allocation Problems",
         "pagina_inferencia": "Quantum Inference",
+        "pagina_agrad": "Acknowledgments",
         "pagina_ml": "Quantum Machine Learning",
         "pagina_ml2": "Quantum Machine Learning in classification problems and failure prediction",
         "instancia_input": "Type something to test the instance:",
@@ -1590,8 +1592,8 @@ def mostrar_cartoes_de_area(textos):
                 st.rerun()
 
         with col3:
-            if st.button(textos["pagina_referencias"], key="btn_ref"):
-                st.session_state['pagina'] = 'ref'
+            if st.button(textos["pagina_agrad"], key="btn_agrad"):
+                st.session_state['pagina'] = 'agrad'
                 st.rerun()
             
 
@@ -4949,6 +4951,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
