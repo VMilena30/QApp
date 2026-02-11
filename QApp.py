@@ -2141,21 +2141,46 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        home_label = "🏠"
+        BAR_HEIGHT = 64
+
+        st.markdown(
+            f"""
+            <style>
+              .qx-fixed-actions {{
+                position: fixed;
+                top: 0;
+                right: 28px;
+                height: {BAR_HEIGHT}px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                z-index: 2000;
+              }}
         
-        with st.popover(home_label, use_container_width=False):
-            go = st.selectbox(
-                "Home",
-                [("stay", "—"), ("home", "🏠 Ir para Home")],
-                format_func=lambda x: x[1],
-                index=0,
-                label_visibility="collapsed",
-                key="home_nav_select",
-            )
+              /* só os botões dentro do grupo */
+              .qx-fixed-actions .stButton > button {{
+                background: white !important;
+                color: #0d4376 !important;
+                border-radius: 10px !important;
+                font-weight: 700 !important;
+                border: 0 !important;
+                padding: 8px 12px !important;
+                white-space: nowrap !important;
+              }}
+            </style>
+            <div class="qx-fixed-actions">
+            """,
+            unsafe_allow_html=True,
+        )
         
-            if go[0] == "home":
+        # aparece só fora da home
+        if st.session_state.get("pagina") != "inicio":
+            if st.button("🏠", key="home_top_btn"):
                 st.session_state["pagina"] = "inicio"
                 st.rerun()
+        
+        st.markdown("</div>", unsafe_allow_html=True)
+
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4935,6 +4960,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
