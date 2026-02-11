@@ -2218,7 +2218,7 @@ def main():
                 st.image(str(LOGO), width=340)
         
             st.markdown("""
-            <div style="text-align:center; font-size:42px; font-weight:550; margin-top:1px;">
+            <div style="text-align:center; font-size:42px; font-weight:600; margin-top:1px;">
                 <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
             </div>
             """, unsafe_allow_html=True)
@@ -5502,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
