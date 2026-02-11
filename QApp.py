@@ -2255,21 +2255,25 @@ def main():
         with right:
             st.markdown("""
             <style>
-            /* Remove espaço exagerado do radio */
-            div[role="radiogroup"] {
-                margin-top: -12px !important;
-                margin-bottom: -14px !important;
-                padding-top: 1 !important;
-                padding-bottom: 1 !important;
-                justify-content: center;
+            /* tira espaço acima/abaixo do grupo de rádio */
+            div[role="radiogroup"]{
+              margin-top: -6px !important;
+              margin-bottom: 0px !important;
+              padding-top: 0px !important;
+              padding-bottom: 0px !important;
+              justify-content: center;
             }
             
-            .element-container:has(div[role="radiogroup"]) {
-                margin-top: 0 !important;
-                margin-bottom: 0 !important;
+            /* tira o “buraco” do container do widget (mais certeiro que zerar tudo) */
+            div[data-testid="stVerticalBlock"] > div:has(div[role="radiogroup"]) {
+              margin-top: 0px !important;
+              margin-bottom: 0px !important;
+              padding-top: 0px !important;
+              padding-bottom: 0px !important;
             }
             </style>
             """, unsafe_allow_html=True)
+
 
             st.markdown("""
             <style>
@@ -5529,6 +5533,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
