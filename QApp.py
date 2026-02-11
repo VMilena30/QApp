@@ -2327,7 +2327,17 @@ def main():
                 """,
                 unsafe_allow_html=True
             )
+
+            st.markdown("""
+            <style>
             
+            /* Bolinha selecionada */
+            div[data-testid="stRadio"] input:checked + div {
+                background-color: #0e3360 !important;
+                border-color: #0e3360 !important;
+            }   
+            </style>
+            """, unsafe_allow_html=True)
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
                 escolha = st.radio(
@@ -2342,23 +2352,6 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-
-            st.markdown("""
-            <style>
-            
-            /* Bolinha selecionada */
-            div[data-testid="stRadio"] input:checked + div {
-                background-color: #0e3360 !important;
-                border-color: #0e3360 !important;
-            }
-            
-            /* Texto menor */
-            div[data-testid="stRadio"] label {
-                font-size: 14px !important;
-            }
-            
-            </style>
-            """, unsafe_allow_html=True)
 
             st.markdown("<div style='height:20px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
@@ -5520,6 +5513,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
