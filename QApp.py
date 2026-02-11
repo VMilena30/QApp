@@ -5401,27 +5401,6 @@ def main():
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
             st.rerun()
-
-    BASE_DIR = Path(__file__).resolve().parent
-    IMG_DIR = BASE_DIR / "imgs"
-    
-    def render_logos_2_linhas(logos):
-        linha1 = logos[:6]
-        linha2 = logos[6:]
-    
-        def render_row(row):
-            cols = st.columns(len(row))
-            for col, img_name in zip(cols, row):
-                img_path = IMG_DIR / img_name
-                with col:
-                    if img_path.exists():
-                        st.image(str(img_path), use_container_width=True)
-                    else:
-                        st.caption(f"Arquivo não encontrado: {img_name}")
-    
-        render_row(linha1)
-        st.markdown("<br>", unsafe_allow_html=True)
-        render_row(linha2)
                 
     elif st.session_state['pagina'] == 'agrad':
         
@@ -5446,22 +5425,13 @@ def main():
         st.subheader(textos["pagina_agrad"])
         st.write(textos["apo"])
 
-
-        logos = [
-            "1.png","2.png","3.png","12.png","5.png",
-            "6.png","7.png","13.png","14.png","10.png","11.png"
-        ]
-    
-        render_logos_2_linhas(logos)
-    
-        st.markdown("<br><br>", unsafe_allow_html=True)
-
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
             st.rerun()
 
 if __name__ == "__main__":
     main()
+
 
 
 
