@@ -613,7 +613,7 @@ TEXTOS_OPT = {
             "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites inferior e superior para redundâncias  \n"
 
         ),
-        "aplicacao": "\n\n Aplicação",
+        "aplicacao": "Aplicação",
         "info1_titulo": "Guia de Uso – Otimização Quântica para Alocação de Redundâncias",
         "info1": (
             "Este guia tem como objetivo orientar você a preencher corretamente todos os campos da plataforma de otimização quântica, "
@@ -2224,7 +2224,7 @@ def main():
         col1, col2 = st.columns([9, 2])
         
         with col1:
-            st.subheader("Aplicação")
+            st.subheader(textos_otim["aplicação"])
         with col2:
             ajuda = st.button("?", key="botao_ajuda")
         
@@ -5021,6 +5021,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
