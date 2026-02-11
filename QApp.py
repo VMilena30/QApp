@@ -2141,30 +2141,6 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        c_home, c_pt, c_br = st.columns([0.2, 0.4, 0.4])
-
-        with c_home:
-            go_home = st.button("HOME_BTN", key="home_btn")
-        
-        with c_pt:
-            with st.popover(label_btn, use_container_width=False):
-                opt = st.selectbox(
-                    "Language",
-                    [("en", "🇺🇸"), ("pt", "🇧🇷")],
-                    format_func=lambda x: x[1],
-                    index=0 if st.session_state.lang == "en" else 1,
-                    label_visibility="collapsed",
-                    key="lang_nav_select_inside",
-                )
-                new_lang = opt[0]
-                if new_lang != st.session_state.lang:
-                    st.session_state.lang = new_lang
-                    st.rerun()
-
-        if go_home:
-            st.session_state["pagina"] = "inicio"
-            st.rerun()
-
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -4943,6 +4919,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
