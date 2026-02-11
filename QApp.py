@@ -2213,22 +2213,22 @@ def main():
             BASE_DIR = Path(__file__).resolve().parent
             LOGO = BASE_DIR / "qplog.png"   
             
-            c1, c2, c3 = st.columns([1, 1, 1])
+            c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
                 st.image(str(LOGO), width=380)
         
             st.markdown("""
-            <div style="text-align:center; font-size:42px; font-weight:800; margin-top:12px;">
+            <div style="text-align:center; font-size:42px; font-weight:700; margin-top:1px;">
                 <span style="color:#0e3360;">q</span><span style="color:#9a9a98;">Prism</span>
             </div>
             """, unsafe_allow_html=True)
             
             st.markdown("""
             <div style="text-align:center; 
-                        font-size:20px; 
-                        font-weight:700; 
+                        font-size:19px; 
+                        font-weight:500; 
                         color:#0e3360; 
-                        margin-top:8px; 
+                        margin-top:3px; 
                         max-width:720px; 
                         margin-left:auto; 
                         margin-right:auto;">
@@ -5502,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
