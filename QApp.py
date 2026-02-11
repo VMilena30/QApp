@@ -614,72 +614,115 @@ TEXTOS_OPT = {
 
         ),
         "aplicacao": "Aplicação",
-        "info1_titulo": "Guia de Uso – Otimização Quântica para Alocação de Redundâncias",
+            "info1_titulo": "Guia do Usuário — Otimização Quântica para Alocação de Redundâncias",
+
         "info1": (
-            "Este guia tem como objetivo orientar você a preencher corretamente todos os campos da plataforma de otimização quântica, "
-            "aplicada ao problema de alocação de redundâncias em sistemas com múltiplos subsistemas, respeitando restrições de custo e confiabilidade. "
-            "A plataforma transforma seu problema em uma formulação do tipo QUBO (Quadratic Unconstrained Binary Optimization), "
-            "e resolve essa formulação usando algoritmos quânticos variacionais, que dependem de circuitos parametrizados e otimizadores clássicos."
+            "### 1) O que essa página faz\n\n"
+            "Nesta página, você define um problema de Alocação de Redundâncias (RAP) informando:\n"
+            "- Estrutura do sistema (subsistemas e limites).\n"
+            "- Tipos de componentes disponíveis (custos e confiabilidades).\n"
+            "- Restrição de custo total.\n\n"
+            "A plataforma converte automaticamente o problema para uma formulação "
+            "QUBO (Quadratic Unconstrained Binary Optimization) e resolve essa formulação "
+            "utilizando algoritmos quânticos variacionais (QAOA ou VQE), conforme selecionado."
         ),
     
-        "info2_titulo": "1. Modo de Entrada dos Dados",
+        "info2_titulo": "2) Passo a passo (fluxo recomendado)",
+    
         "info2": (
-            "### 1.1 Inserção Manual\n\n"
-            "Você pode preencher todos os dados do problema diretamente na tela. Informe:\n"
-            "- Número de subsistemas: quantidade de partes no sistema onde você pode alocar redundância.\n"
-            "- Valor mínimo e máximo de componentes por subsistema.\n"
-            "- Quantidade de tipos de componentes disponíveis: diferentes modelos com custos e confiabilidades distintas.\n"
-            "- Confiabilidade e custo de cada componente.\n"
-            "- Limite máximo de custo: valor total disponível para uso na alocação."
+            "### Passo A — Modo de entrada dos dados\n\n"
+            "1. Escolha como informar os dados: inserção manual ou upload de arquivo (.txt).\n"
+            "2. Se optar por inserção manual, preencha:\n"
+            "   - Número de subsistemas.\n"
+            "   - Número mínimo e máximo de componentes por subsistema.\n"
+            "   - Quantidade de tipos de componentes.\n"
+            "   - Confiabilidade e custo de cada tipo.\n"
+            "   - Limite máximo de custo.\n\n"
+            "Dica prática: comece com instâncias pequenas antes de aumentar a complexidade.\n\n"
+            "### Passo B — Revisar o problema antes de rodar\n\n"
+            "Antes de executar a otimização:\n"
+            "- Verifique se todos os subsistemas possuem limites coerentes.\n"
+            "- Confirme se todos os custos e confiabilidades foram preenchidos.\n"
+            "- Garanta que o custo máximo permita ao menos uma solução viável.\n\n"
+            "Isso evita executar o algoritmo com dados inconsistentes ou inviáveis.\n\n"
+            "### Passo C — Escolha do algoritmo (por que existem duas opções?)\n\n"
+            "**QAOA**\n"
+            "- Indicado para problemas combinatórios em QUBO.\n"
+            "- Controlado por número de camadas (profundidade).\n"
+            "- Estrutura mais direta para otimização discreta.\n\n"
+            "**VQE**\n"
+            "- Mais flexível e dependente da escolha do ansatz.\n"
+            "- Requer configuração de portas de rotação e emaranhamento.\n\n"
+            "Em termos práticos:\n"
+            "- QAOA é geralmente a escolha mais direta para QUBO.\n"
+            "- VQE permite maior customização do circuito."
         ),
+    
         "info21": (
-            "### **1.2 Upload de Arquivo (.txt)**\n\n"
-            "Você pode importar os dados por meio de um arquivo .txt estruturado conforme o formato exigido pela plataforma.\n\n"
+            "### Observação sobre Upload (.txt)\n\n"
+            "Ao utilizar arquivo, mantenha o formato exigido pela plataforma. "
+            "Essa opção é indicada para instâncias maiores ou estudos comparativos.\n\n"
+            "Caso ocorra erro de leitura, revise:\n"
+            "- Ordem das informações.\n"
+            "- Separadores utilizados.\n"
+            "- Quantidade de valores por linha."
         ),
     
-        "info3_titulo": "2. Algoritmos Quânticos de Otimização",
+        "info3_titulo": "3) Execução (como interpretar os botões e sliders)",
+    
         "info3": (
-            "Você pode escolher entre dois algoritmos quânticos variacionais:\n\n"
-            "### **2.1 QAOA (Quantum Approximate Optimization Algorithm):**\n\n"
-            "Algoritmo ideal para problemas combinatórios formulados como QUBO. Utiliza camadas parametrizadas compostas por operações que codificam o problema e outras que exploram o espaço de soluções. "
-            "Essas camadas são ajustadas por parâmetros numéricos otimizados por algoritmos clássicos.\n\n"
-            "### **2.2 VQE (Variational Quantum Eigensolver):**\n\n"
-            "Inicialmente usado na química quântica, também pode ser aplicado a problemas de otimização. Exige a definição de um circuito ansatz — uma estrutura de portas quânticas que representa o espaço de soluções. "
-            "O VQE ajusta os parâmetros desse circuito para minimizar o valor esperado da função objetivo.\n\n"
-            "Ao utilizar o VQE, você deverá configurar:\n"
-            "- Tipo de circuito (ansatz):\n"
-            "  - Real Amplitudes: utiliza apenas rotações Ry. Simples, eficiente e ideal para casos com poucos qubits.\n"
-            "  - Two Local: mais complexo e expressivo. Permite maior controle, mas requer mais tempo e recursos.\n"
-            "- Portas de rotação disponíveis: Rx, Ry, Rz — definem as transformações unárias dos qubits.\n"
-            "- Portas de emaranhamento disponíveis: CX (CNOT), CZ, CRX, CRY, CRZ — definem como os qubits interagem entre si."
+            "### Otimizador Clássico\n\n"
+            "- **COBYLA**: método sem derivadas, adequado para problemas menores.\n"
+            "- **SPSA**: método estocástico robusto a ruído, recomendado para hardware.\n\n"
+            "### Método de Inicialização\n\n"
+            "- Randômica.\n"
+            "- LHS (Latin Hypercube Sampling).\n"
+            "- Clusterização.\n"
+            "- Ponto fixo (definido manualmente).\n\n"
+            "Inicializações diferentes podem levar a soluções distintas.\n\n"
+            "### Shots\n\n"
+            "- Número de execuções do circuito quântico.\n"
+            "- Mais shots aumentam estabilidade estatística.\n"
+            "- Também aumentam o tempo de execução.\n\n"
+            "### Número de Camadas (Profundidade)\n\n"
+            "- Controla a expressividade do circuito.\n"
+            "- Mais camadas podem melhorar a solução.\n"
+            "- Também aumentam custo computacional e sensibilidade a ruído.\n\n"
+            "### Número de Iterações\n\n"
+            "- Define quantas atualizações o otimizador realizará.\n"
+            "- Poucas iterações podem interromper antes da convergência.\n"
+            "- Muitas iterações aumentam o tempo total."
         ),
     
-        "info4_titulo": "3. Parâmetros Personalizáveis",
+        "info4_titulo": "4) Ajustes avançados: quando faz sentido alterar parâmetros?",
+    
         "info4": (
-            "### **3.1 Otimizador Clássico:**\n"
-            "- COBYLA (Constrained Optimization By Linear Approximations):\n"
-            "  Método que não utiliza derivadas, baseado em aproximações lineares. Funciona bem em problemas de baixa dimensão.\n"
-            "- SPSA (Simultaneous Perturbation Stochastic Approximation):\n"
-            "  Otimizador robusto contra ruído. Estima gradientes com apenas duas avaliações por iteração, sendo útil em ambientes quânticos.\n\n"
+            "### Variação de Inicialização\n\n"
+            "Pode ser útil quando:\n"
+            "- Há grande variação entre execuções.\n"
+            "- O algoritmo parece ficar preso em mínimos locais.\n\n"
+            "### Aumento de Profundidade\n\n"
+            "Pode ser útil quando:\n"
+            "- A solução encontrada é estável, mas de baixa qualidade.\n"
+            "- O problema é estruturalmente mais complexo.\n\n"
+            "Importante:\n"
+            "- Em hardware real, profundidades altas podem piorar resultados devido ao ruído.\n"
+            "- Recomenda-se testar profundidades crescentes de forma gradual."
+        ),
     
-            "### **3.2 Método de Inicialização:**\n"
-            "- Randômica: os parâmetros iniciais são escolhidos aleatoriamente.\n"
-            "- LHS (Latin Hypercube Sampling): gera amostras representativas e bem distribuídas do espaço de busca.\n"
-            "- Clusterização: usa agrupamento dos dados como ponto de partida mais estruturado.\n"
-            "- Ponto Fixo: o usuário informa manualmente os valores iniciais.\n\n"
+        "info5_titulo": "5) O que devo analisar nos resultados?",
     
-            "### **3.3 Número de Shots:**\n\n"
-            "- Define quantas vezes o circuito quântico será executado."
-            "- Circuitos são probabilísticos, então mais execuções fornecem uma estimativa mais precisa. \n\n"
-            "- Recomenda-se usar valores entre 1000 e 8192.\n\n"
-    
-            "### **3.4 Número de Camadas (Profundidade do Circuito):**\n\n"
-            "- Determina quantas vezes o bloco de operações é repetido no circuito."
-            "- Aumentar esse número permite capturar padrões mais complexos, mas também aumenta o tempo de execução.\n\n"
-    
-            "### **3.5 Número de Rodadas (Iterações):**\n\n"
-            "- Define o número de vezes que o otimizador irá atualizar os parâmetros do circuito.\n\n"
-            "- Problemas mais difíceis podem requerer mais rodadas para alcançar boa convergência."
+        "info5": (
+            "### Elementos principais\n\n"
+            "- Configuração ótima encontrada (componentes por subsistema).\n"
+            "- Custo total obtido.\n"
+            "- Confiabilidade final do sistema.\n"
+            "- Valor da função objetivo (energia QUBO), quando exibido.\n\n"
+            "### Leitura prática\n\n"
+            "- Verifique primeiro se a solução respeita o custo máximo.\n"
+            "- Compare execuções com diferentes inicializações.\n"
+            "- Se houver instabilidade, aumente shots ou reduza profundidade.\n"
+            "- Se houver estagnação, aumente iterações ou teste outro otimizador."
         ),
         "help1": "Como você prefere informar os dados do seu sistema para a ferramenta?",
         "help2": "Seleciona o método quântico usado para resolver a formulação QUBO.", 
@@ -816,76 +859,115 @@ TEXTOS_OPT = {
         "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: lower and upper bounds for redundancy allocation  \n"
     ),
         "aplicacao": "Application",
-        "info1_titulo": "User Guide – Quantum Optimization for Redundancy Allocation",
+        "info1_titulo": "User Guide — Quantum Optimization for Redundancy Allocation",
+    
         "info1": (
-            "This guide aims to help you correctly fill in all fields of the quantum optimization platform, "
-            "applied to the redundancy allocation problem in systems with multiple subsystems, "
-            "while respecting cost and reliability constraints. "
-            "The platform transforms your problem into a QUBO (Quadratic Unconstrained Binary Optimization) formulation, "
-            "and solves it using variational quantum algorithms, which rely on parameterized circuits and classical optimizers."
+            "### 1) What does this page do?\n\n"
+            "On this page, you define and solve a Redundancy Allocation Problem (RAP) by specifying:\n"
+            "- System structure (subsystems and limits).\n"
+            "- Available component types (costs and reliabilities).\n"
+            "- Total cost constraint.\n\n"
+            "The platform automatically converts the problem into a "
+            "QUBO (Quadratic Unconstrained Binary Optimization) formulation and solves it "
+            "using variational quantum algorithms (QAOA or VQE), depending on your selection."
         ),
-        
-        "info2_titulo": "1. Data Input Mode",
+    
+        "info2_titulo": "2) Step-by-step (recommended workflow)",
+    
         "info2": (
-            "### 1.1 Manual Input\n\n"
-            "You can fill in all problem data directly on the screen. Provide:\n"
-            "- Number of subsystems: number of system parts where redundancy can be allocated.\n"
-            "- Minimum and maximum number of components per subsystem.\n"
-            "- Number of available component types: different models with distinct costs and reliabilities.\n"
-            "- Reliability and cost of each component.\n"
-            "- Maximum cost limit: total available budget for allocation."
+            "### Step A — Data input mode\n\n"
+            "1. Choose how to provide the data: manual input or file upload (.txt).\n"
+            "2. If using manual input, define:\n"
+            "   - Number of subsystems.\n"
+            "   - Minimum and maximum number of components per subsystem.\n"
+            "   - Number of component types.\n"
+            "   - Reliability and cost of each type.\n"
+            "   - Maximum total cost constraint.\n\n"
+            "Practical tip: start with small instances before increasing complexity.\n\n"
+            "### Step B — Review the problem before running\n\n"
+            "Before executing the optimization:\n"
+            "- Check that subsystem limits are consistent.\n"
+            "- Confirm that all costs and reliabilities are properly filled.\n"
+            "- Ensure that the maximum cost allows at least one feasible solution.\n\n"
+            "This prevents running the algorithm with inconsistent or infeasible data.\n\n"
+            "### Step C — Algorithm selection (why are there two options?)\n\n"
+            "**QAOA**\n"
+            "- Designed for combinatorial QUBO problems.\n"
+            "- Controlled by the number of layers (depth).\n"
+            "- More direct structure for discrete optimization.\n\n"
+            "**VQE**\n"
+            "- More flexible and dependent on ansatz selection.\n"
+            "- Requires configuration of rotation and entanglement gates.\n\n"
+            "In practical terms:\n"
+            "- QAOA is typically the most direct choice for QUBO problems.\n"
+            "- VQE allows greater circuit customization."
         ),
-        
+    
         "info21": (
-            "### **1.2 File Upload (.txt)**\n\n"
-            "You can import the data using a structured .txt file following the format required by the platform.\n\n"
+            "### Note on File Upload (.txt)\n\n"
+            "When using file upload, ensure the format matches the platform requirements. "
+            "This option is recommended for larger instances or comparative studies.\n\n"
+            "If a parsing error occurs, verify:\n"
+            "- The order of the data.\n"
+            "- The separators used.\n"
+            "- The number of values per line."
         ),
-        
-        "info3_titulo": "2. Quantum Optimization Algorithms",
+    
+        "info3_titulo": "3) Execution (how to interpret buttons and sliders)",
+    
         "info3": (
-            "You can choose between two variational quantum algorithms:\n\n"
-            "### **2.1 QAOA (Quantum Approximate Optimization Algorithm):**\n\n"
-            "An algorithm designed for combinatorial problems formulated as QUBO. "
-            "It uses parameterized layers composed of operations that encode the problem and others that explore the solution space. "
-            "These layers are adjusted through numerical parameters optimized by classical algorithms.\n\n"
-            "### **2.2 VQE (Variational Quantum Eigensolver):**\n\n"
-            "Originally developed for quantum chemistry, it can also be applied to optimization problems. "
-            "It requires defining an ansatz circuit — a structure of quantum gates representing the solution space. "
-            "VQE adjusts the parameters of this circuit to minimize the expected value of the objective function.\n\n"
-            "When using VQE, you must configure:\n"
-            "- Circuit type (ansatz):\n"
-            "  - Real Amplitudes: uses only Ry rotations. Simple, efficient, and ideal for cases with few qubits.\n"
-            "  - Two Local: more complex and expressive. Provides greater flexibility but requires more time and resources.\n"
-            "- Available rotation gates: Rx, Ry, Rz — define single-qubit transformations.\n"
-            "- Available entanglement gates: CX (CNOT), CZ, CRX, CRY, CRZ — define how qubits interact with each other."
+            "### Classical Optimizer\n\n"
+            "- **COBYLA**: derivative-free method, suitable for lower-dimensional problems.\n"
+            "- **SPSA**: stochastic and noise-robust method, recommended for hardware execution.\n\n"
+            "### Initialization Method\n\n"
+            "- Random.\n"
+            "- LHS (Latin Hypercube Sampling).\n"
+            "- Clustering-based initialization.\n"
+            "- Fixed point (manually defined).\n\n"
+            "Different initializations may lead to different local minima.\n\n"
+            "### Shots\n\n"
+            "- Number of circuit executions (measurements).\n"
+            "- More shots increase statistical stability.\n"
+            "- Also increase execution time.\n\n"
+            "### Number of Layers (Depth)\n\n"
+            "- Controls circuit expressiveness.\n"
+            "- More layers may improve solution quality.\n"
+            "- Also increase computational cost and noise sensitivity.\n\n"
+            "### Number of Iterations\n\n"
+            "- Defines how many updates the optimizer performs.\n"
+            "- Too few iterations may stop before convergence.\n"
+            "- More iterations increase total runtime."
         ),
-        
-        "info4_titulo": "3. Customizable Parameters",
+    
+        "info4_titulo": "4) Advanced tuning: when should parameters be adjusted?",
+    
         "info4": (
-            "### **3.1 Classical Optimizer:**\n"
-            "- COBYLA (Constrained Optimization By Linear Approximations):\n"
-            "  A derivative-free method based on linear approximations. Performs well for low-dimensional problems.\n"
-            "- SPSA (Simultaneous Perturbation Stochastic Approximation):\n"
-            "  A noise-robust optimizer. Estimates gradients using only two evaluations per iteration, making it suitable for quantum environments.\n\n"
-        
-            "### **3.2 Initialization Method:**\n"
-            "- Random: initial parameters are chosen randomly.\n"
-            "- LHS (Latin Hypercube Sampling): generates representative and well-distributed samples of the search space.\n"
-            "- Clustering: uses data grouping as a more structured starting point.\n"
-            "- Fixed Point: the user manually provides the initial values.\n\n"
-        
-            "### **3.3 Number of Shots:**\n\n"
-            "- Defines how many times the quantum circuit will be executed.\n"
-            "- Quantum circuits are probabilistic, so more executions provide a more accurate estimate.\n\n"
-            "- Recommended values range between 1000 and 8192.\n\n"
-        
-            "### **3.4 Number of Layers (Circuit Depth):**\n\n"
-            "- Determines how many times the block of operations is repeated in the circuit.\n"
-            "- Increasing this number allows capturing more complex patterns but also increases execution time.\n\n"
-        
-            "### **3.5 Number of Rounds (Iterations):**\n\n"
-            "- Defines how many times the optimizer updates the circuit parameters.\n\n"
-            "- More difficult problems may require more rounds to achieve good convergence."
+            "### Varying Initialization\n\n"
+            "Useful when:\n"
+            "- There is high variability between runs.\n"
+            "- The optimizer appears trapped in local minima.\n\n"
+            "### Increasing Circuit Depth\n\n"
+            "Useful when:\n"
+            "- The solution is stable but suboptimal.\n"
+            "- The problem is structurally more complex.\n\n"
+            "Important:\n"
+            "- On real hardware, deeper circuits may degrade performance due to noise.\n"
+            "- It is recommended to increase depth gradually."
+        ),
+    
+        "info5_titulo": "5) What should I analyze in the results?",
+    
+        "info5": (
+            "### Main elements\n\n"
+            "- Best configuration found (components per subsystem).\n"
+            "- Total system cost.\n"
+            "- Final system reliability.\n"
+            "- Objective function value (QUBO energy), when available.\n\n"
+            "### Practical interpretation\n\n"
+            "- First, verify that the solution satisfies the cost constraint.\n"
+            "- Compare results under different initializations.\n"
+            "- If unstable, increase shots or reduce depth.\n"
+            "- If stagnating, increase iterations or try a different optimizer."
         ),
 
         "help1": "How would you like to provide your system data to the tool?",
@@ -1163,7 +1245,7 @@ TEXTOS_INF = {
         "aa_desc": "Opcional. Use AA para tentar aumentar a chance de medir eventos raros. Em geral, vale a pena quando as probabilidades são pequenas.",
         "aa_enable_help": "Ative para rodar também a versão quântica com Amplitude Amplification (além de shots padrão).",
         "aa_k_manual_help": "Se marcado, você escolhe k. Se desmarcado, o software usa um valor automático.",
-        "aa_k_help": "Número de iterações de AA. k maior pode ajudar, mas também pode piorar se passar do ponto.",
+        "aa_k_help": "Número de iterações de AA. k maior pode r, mas também pode piorar se passar do ponto.",
         "aa_tip": "Dica: se você não sabe qual k usar, deixe o modo automático.",
 
         # Ação
@@ -2245,7 +2327,7 @@ def main():
         with col1:
             st.subheader(textos_otim["aplicacao"])
         with col2:
-            ajuda = st.button("?", key="botao_ajuda")
+             = st.button("?", key="botao_ajuda")
         
         st.markdown("""
             <style>
@@ -2768,7 +2850,28 @@ def main():
         
         st.header(textos_otim["info4_titulo"])
         st.write(textos_otim["info4"])
+
+        st.header(textos_otim["info5_titulo"])
+        st.write(textos_otim["info5"])
         
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
         if st.button(textos_otim["aplicacao"]):
             st.session_state['pagina'] = 'otimizacao'
 
@@ -3132,11 +3235,6 @@ def main():
         if st.button("⬅ Voltar para a página inicial"):
             st.session_state["pagina"] = "inicio"
             st.rerun()
-        
-        with st.sidebar:
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
 
     elif st.session_state['pagina'] == 'inferencia':
         st.subheader(textos["pagina_inferencia"])
@@ -5089,6 +5187,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
