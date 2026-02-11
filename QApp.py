@@ -1859,10 +1859,6 @@ def main():
     import streamlit as st
     import os
 
-
-    page = st.query_params.get("page", "inicio")  # default home
-    st.session_state.pagina = page
-
     aplicar_css_botoes()
 
     # estados
@@ -4962,6 +4958,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
