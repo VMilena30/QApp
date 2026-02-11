@@ -2141,6 +2141,46 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
+        BAR_HEIGHT = 64
+        
+        st.markdown(
+            f"""
+            <style>
+              /* Fixar o botão HOME pelo aria-label (que é o texto do botão) */
+              button[aria-label="QX_HOME"] {{
+                position: fixed !important;
+                top: 0px !important;
+                right: 120px !important;      /* deixa espaço pro PT/BR */
+                height: {BAR_HEIGHT}px !important;
+                display: inline-flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                z-index: 3000 !important;
+        
+                background: white !important;
+                color: transparent !important;   /* esconde o texto QX_HOME */
+                border: 0 !important;
+                border-radius: 10px !important;
+                padding: 0 12px !important;
+                font-weight: 800 !important;
+              }}
+        
+              /* coloca o ícone no lugar do texto */
+              button[aria-label="QX_HOME"]::after {{
+                content: "🏠";
+                color: #0d4376;
+                font-size: 18px;
+                line-height: 1;
+              }}
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+
+        if st.button("QX_HOME", key="home_btn"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -4919,6 +4959,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
