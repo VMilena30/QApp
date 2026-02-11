@@ -1304,6 +1304,96 @@ TEXTOS_INF = {
         "dist_root_autofill": "Preencher automaticamente a marginal (apenas nó raiz)",
         "dist_root_autofill_help": "Se o nó não tiver pais, você pode preencher a marginal automaticamente a partir da discretização.",
 
+        "info1_titulo": "Guia do Usuário — Inferência Quântica via QBN",
+
+        "info1": (
+            "### 1) O que essa página faz\n\n"
+            "Nesta página, você monta uma Rede Bayesiana (nós + relações + probabilidades), "
+            "define evidências (o que você observou) e escolhe consultas (o que você quer estimar). "
+            "Em seguida, o software roda a inferência e compara métodos "
+            "(ex.: Exato/Monte Carlo/Quântico/Quântico+AA, conforme habilitado)."
+        ),
+    
+        "info2_titulo": "2) Passo a passo (fluxo recomendado)",
+    
+        "info2": (
+            "### Passo A — Definição dos nós\n\n"
+            "1. Vá em Definição dos nós.\n"
+            "2. Em Nome do nó, use um identificador curto e único (ex.: Failure, Cause, Sensor).\n"
+            "3. Defina a Quantidade de estados (ex.: 2 → {s0, s1}).\n\n"
+            "Dica prática: comece pelos conceitos principais e depois detalhe "
+            "(ex.: Failure → Cause → Sensor).\n\n"
+            "### Passo B — Edição do nó (pais + probabilidades)\n\n"
+            "1. Em Edição do nó, selecione um nó.\n"
+            "2. Defina os Pais do nó (quem influencia esse nó / arestas de entrada).\n"
+            "3. Preencha:\n"
+            "   o Probabilidades marginais (nó raiz) se o nó não tem pais\n"
+            "   o ou a CPT se o nó tem pais\n"
+            "• Cada linha (marginal ou cada combinação de estados dos pais na probabilidade condicional) "
+            "tem que somar 1.\n\n"
+            "### Passo C — Revisar a rede antes de rodar\n\n"
+            "Use a seção Rede Bayesiana montada para conferir:\n"
+            "• o grafo (estrutura),\n"
+            "• e o painel de Probabilidades inseridas (marginais e condicionais).\n\n"
+            "Isso evita rodar inferências com o pai errado, condicionais incompletas etc.\n\n"
+            "### Passo D — Evidência vs Consulta (por que existem essas duas opções?)\n\n"
+            "Na seção Evidência e consulta:\n\n"
+            "Evidência (nós observados)\n"
+            "• É o que você já sabe/mediu.\n"
+            "• Ex.: Sensor = alarm ou Inspection = failed\n"
+            "Você escolhe o nó e depois escolhe o estado observado para ele.\n\n"
+            "Consulta (nós de consulta)\n"
+            "• É o que você quer como saída (posterior).\n"
+            "• Ex.: “qual a probabilidade de Failure em cada estado dado o sensor?”\n\n"
+            "Em termos de inferência Bayesiana:\n"
+            "• evidência = condicionamento\n"
+            "• consulta = variável(veis) alvo do posterior"
+        ),
+    
+        "info21": "",
+    
+        "info3_titulo": "3) Execução (como interpretar os botões e sliders)",
+    
+        "info3": (
+            "Na seção Execução, você controla como os métodos amostrais/quânticos rodam.\n\n"
+            "### Shots (Quântico / Monte Carlo)\n\n"
+            "• Número de amostras/medições.\n"
+            "• Mais shots → mais estabilidade, porém mais lento.\n\n"
+            "### Seed (Monte Carlo)\n\n"
+            "• Semente para reprodutibilidade do Monte Carlo "
+            "(mesma seed = mesmos resultados “pseudoaleatórios”).\n\n"
+            "### Top-N outcomes (0 = todos)\n\n"
+            "• Limita o número de resultados (bitstrings/outcomes) exibidos nos gráficos/tabelas.\n\n"
+            "### Annotate bars (%)\n\n"
+            "• Mostra o valor percentual em cima de cada barra do gráfico."
+        ),
+    
+        "info4_titulo": "4) Amplitude Amplification (AA): quando faz sentido?",
+    
+        "info4": (
+            "A seção Amplitude Amplification é opcional e serve para tentar aumentar a chance "
+            "de medir eventos raros (probabilidades pequenas).\n\n"
+            "• Habilitar AA: roda a variante quântica com AA além do “Quantum Shots”.\n"
+            "• k (manual): se marcado, você escolhe k; se não, o app tenta usar um valor automático.\n\n"
+            "Importante:\n"
+            "• AA costuma fazer mais sentido quando existe evidência "
+            "(porque você está tentando amplificar o subconjunto “compatível” com a evidência)."
+        ),
+    
+        "info5_titulo": "5) O que eu devo olhar nos resultados?",
+    
+        "info5": (
+            "Você normalmente vai ver:\n"
+            "• Tabela comparativa (Exata vs MC vs Quantum) e/ou "
+            "(Quantum Shots vs Quantum + AA)\n"
+            "• Gráficos de outcomes do Quantum Shots e do Quantum + AA (se habilitado).\n\n"
+            "Leitura prática:\n"
+            "• Se Exata estiver disponível, use como referência.\n"
+            "• Monte Carlo dá baseline estável com shots altos.\n"
+            "• Quantum Shots e Quantum+AA são úteis para comparar comportamento e limitações "
+            "(ex.: aceitação/acc_rate, k usado etc.)."
+        ),
+
 
     },
 
@@ -1493,7 +1583,92 @@ TEXTOS_INF = {
         "dist_root_autofill": "Auto-fill marginal (root node only)",
         "dist_root_autofill_help": "If the node has no parents, you can auto-fill its marginal from the discretization.",
 
-
+        "info1_titulo": "User Guide — Quantum Inference via QBN",
+    
+        "info1": (
+            "### 1) What this page does\n\n"
+            "On this page, you build a Bayesian Network (nodes + relationships + probabilities), "
+            "define evidence (what you observed), and choose queries (what you want to estimate). "
+            "Then, the software runs inference and compares methods (e.g., Exact / Monte Carlo / Quantum / Quantum+AA, "
+            "depending on what is enabled)."
+        ),
+    
+        "info2_titulo": "2) Step-by-step (recommended workflow)",
+    
+        "info2": (
+            "### Step A — Node definition\n\n"
+            "1. Go to Node definition.\n"
+            "2. Under Node name, use a short, unique identifier (e.g., Failure, Cause, Sensor).\n"
+            "3. Set the Number of states (e.g., 2 → {s0, s1}).\n\n"
+            "Practical tip: start with the main concepts and then refine (e.g., Failure → Cause → Sensor).\n\n"
+            "### Step B — Node editing (parents + probabilities)\n\n"
+            "1. Under Node editing, select a node.\n"
+            "2. Define the node’s Parents (what influences this node / incoming edges).\n"
+            "3. Fill in:\n"
+            "   o Marginal probabilities (root node) if the node has no parents, or\n"
+            "   o the CPT if the node has parents.\n\n"
+            "Rule of thumb:\n"
+            "• Each row (the marginal, or each parent-state combination in the conditional table) must sum to 1.\n\n"
+            "### Step C — Review the network before running\n\n"
+            "Use the Bayesian network built section to check:\n"
+            "• the graph (structure), and\n"
+            "• the Entered probabilities panel (marginals and conditionals).\n\n"
+            "This helps avoid running inference with wrong parents, incomplete CPTs, etc.\n\n"
+            "### Step D — Evidence vs Query (why are there two options?)\n\n"
+            "In the Evidence and query section:\n\n"
+            "Evidence (observed nodes)\n"
+            "• What you already know/measured.\n"
+            "• Example: Sensor = alarm or Inspection = failed.\n"
+            "You select the node and then select its observed state.\n\n"
+            "Query (query nodes)\n"
+            "• What you want as output (the posterior).\n"
+            "• Example: “What is the probability of Failure in each state given the sensor?”\n\n"
+            "In Bayesian inference terms:\n"
+            "• evidence = conditioning information\n"
+            "• query = target variable(s) of the posterior"
+        ),
+    
+        "info21": "",
+    
+        "info3_titulo": "3) Execution (how to interpret buttons and sliders)",
+    
+        "info3": (
+            "In the Execution section, you control how the sampling/quantum methods run.\n\n"
+            "### Shots (Quantum / Monte Carlo)\n\n"
+            "• Number of samples/measurements.\n"
+            "• More shots → more stable results, but slower.\n\n"
+            "### Seed (Monte Carlo)\n\n"
+            "• Seed for Monte Carlo reproducibility (same seed = same pseudo-random results).\n\n"
+            "### Top-N outcomes (0 = all)\n\n"
+            "• Limits how many outcomes (bitstrings/outcomes) are displayed in plots/tables.\n\n"
+            "### Annotate bars (%)\n\n"
+            "• Shows the percentage value above each bar in the plot."
+        ),
+    
+        "info4_titulo": "4) Amplitude Amplification (AA): when does it make sense?",
+    
+        "info4": (
+            "The Amplitude Amplification section is optional and aims to increase the chance of measuring rare events (small probabilities).\n\n"
+            "• Enable AA: runs the quantum variant with AA in addition to “Quantum Shots”.\n"
+            "• k (manual): if checked, you choose k; otherwise, the app attempts to use an automatic value.\n\n"
+            "Important:\n"
+            "• AA usually makes more sense when there is evidence, because you are amplifying the subset of states "
+            "“compatible” with that evidence."
+        ),
+    
+        "info5_titulo": "5) What should I look at in the results?",
+    
+        "info5": (
+            "You will typically see:\n"
+            "• A comparison table (Exact vs MC vs Quantum) and/or (Quantum Shots vs Quantum + AA)\n"
+            "• Outcome plots for Quantum Shots and Quantum + AA (if enabled).\n\n"
+            "Practical reading:\n"
+            "• If Exact is available, use it as a reference.\n"
+            "• Monte Carlo provides a stable baseline with high shots.\n"
+            "• Quantum Shots and Quantum+AA are useful to compare behavior and limitations "
+            "(e.g., acceptance/acc_rate, chosen k, etc.)."
+        ),
+    
 
     },
 }
@@ -5070,7 +5245,46 @@ def main():
         st.write(textos_ml["info7.1"])
         
     elif st.session_state['pagina'] == 'inferencia_info':
-        st.subheader(textos["pagina_info"])
+        st.title(textos_inf["info1_titulo"])
+        st.write(textos_inf["info1"])
+        
+        st.header(textos_inf["info2_titulo"])
+        st.write(textos_inf["info2"])
+        st.write(textos_inf["info21"])
+        
+        st.header(textos_inf["info3_titulo"])
+        st.write(textos_inf["info3"])
+        
+        st.header(textos_inf["info4_titulo"])
+        st.write(textos_inf["info4"])
+
+        st.header(textos_inf["info5_titulo"])
+        st.write(textos_inf["info5"])
+        
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
+        if st.button(textos_otim["aplicacao"]):
+            st.session_state['pagina'] = 'inferencia'
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
 
     elif st.session_state['pagina'] == 'ref':
         st.subheader(textos["pagina_referencias"])
@@ -5187,6 +5401,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
