@@ -1230,7 +1230,7 @@ TEXTOS_INF = {
         "pagina_inf": "Quantum Bayesian Networks",
         #"titulo_app": "CQBN Inference",
         #"subtitulo_app": "Build the network and run classical and quantum inference.",
-        "intro_qbn_en": r"""
+        "intro_qbn_en": """
         ### Bayesian Networks
         
         Bayesian Networks (BNs) are directed acyclic graphs (DAGs) that represent probabilistic dependencies among variables.  
@@ -5021,6 +5021,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
