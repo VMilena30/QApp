@@ -2141,42 +2141,42 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
         st.markdown(
-                """
-                <style>
-                  .qx-home-fixed{
-                    position: fixed;
-                    bottom: 12px;   /* canto inferior */
-                    right: 12px;
-                    z-index: 1005;
-                  }
-        
-                  .qx-home-fixed .stButton > button{
-                    display: inline-block;
-                    background: white !important;
-                    color: #0d4376 !important;
-                    border-radius: 10px !important;
-                    font-weight: 700 !important;
-                    padding: 6px 10px !important;   /* botão MENOR */
-                    border: 0 !important;
-                    white-space: nowrap !important;
-                    font-family: inherit !important;
-                  }
-        
-                  .qx-home-fixed .stButton > button:hover{
-                    filter: brightness(0.97);
-                  }
-                </style>
-        
-                <div class="qx-home-fixed">
-                """,
-                unsafe_allow_html=True,
-            )
-        
-            if st.button("🏠", key="home_fixed_btn"):
-                st.session_state["pagina"] = "inicio"
-                st.rerun()
-        
-            st.markdown("</div>", unsafe_allow_html=True)
+            """
+            <style>
+              .qx-home-fixed{
+                position: fixed;
+                bottom: 12px;   /* canto inferior */
+                right: 12px;
+                z-index: 1005;
+              }
+    
+              .qx-home-fixed .stButton > button{
+                display: inline-block;
+                background: white !important;
+                color: #0d4376 !important;
+                border-radius: 10px !important;
+                font-weight: 700 !important;
+                padding: 6px 10px !important;   /* botão MENOR */
+                border: 0 !important;
+                white-space: nowrap !important;
+                font-family: inherit !important;
+              }
+    
+              .qx-home-fixed .stButton > button:hover{
+                filter: brightness(0.97);
+              }
+            </style>
+    
+            <div class="qx-home-fixed">
+            """,
+            unsafe_allow_html=True,
+        )
+    
+        if st.button("🏠", key="home_fixed_btn"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
+    
+        st.markdown("</div>", unsafe_allow_html=True)
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4956,6 +4956,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
