@@ -2140,41 +2140,36 @@ def main():
                 st.rerun()
 
     if st.session_state["pagina"] != "inicio":
-
-        # CSS fixo inspirado no popover
         st.markdown(
             """
             <style>
-              /* fixa APENAS o botão cujo aria-label é "Página inicial" */
-              div[data-testid="stButton"]:has(button[aria-label="Página inicial"]) {
+              /* fixa APENAS este botão */
+              div[data-testid="stButton"]:has(button[data-key="home_fixed_btn"]) {
                 position: fixed !important;
                 top: 12px !important;
-                right: 6px !important;  /* mais pra direita */
+                right: 6px !important;  /* ajuste fino à direita */
                 z-index: 1005 !important;
                 width: fit-content !important;
               }
     
-              div[data-testid="stButton"]:has(button[aria-label="Página inicial"]) button {
-                width: auto !important;
-                min-width: 0 !important;
-                white-space: nowrap !important;
-    
+              div[data-testid="stButton"]:has(button[data-key="home_fixed_btn"]) button {
                 background: white !important;
                 color: #0d4376 !important;
                 border-radius: 10px !important;
                 font-weight: 700 !important;
                 border: 0 !important;
                 padding: 8px 14px !important;
+                white-space: nowrap !important;
               }
             </style>
             """,
             unsafe_allow_html=True,
         )
     
-        # 1 clique: navegação interna (não recarrega a página inteira)
-        if st.button("Página inicial", key="btn_home_top"):
+        if st.button("🏠 Página inicial", key="home_fixed_btn"):
             st.session_state["pagina"] = "inicio"
             st.rerun()
+
                 
     elif st.session_state['pagina'] == 'otimizacao':
 
@@ -4956,6 +4951,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
