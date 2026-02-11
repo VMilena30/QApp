@@ -2141,14 +2141,21 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        label = "🏠"  # gatilho bem pequeno
-
-        with st.popover(label, use_container_width=False):
-            # botão único dentro (sem outros elementos)
-            if st.button("Ir para Home", use_container_width=True, key="go_home"):
-                st.session_state["pagina"] = "inicio"   # seu nome correto é "inicio"
+        home_label = "🏠"
+        
+        with st.popover(home_label, use_container_width=False):
+            go = st.selectbox(
+                "Home",
+                [("stay", "—"), ("home", "🏠 Ir para Home")],
+                format_func=lambda x: x[1],
+                index=0,
+                label_visibility="collapsed",
+                key="home_nav_select",
+            )
+        
+            if go[0] == "home":
+                st.session_state["pagina"] = "inicio"
                 st.rerun()
-
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4928,6 +4935,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
