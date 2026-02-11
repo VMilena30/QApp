@@ -2257,10 +2257,10 @@ def main():
             <style>
             /* Remove espaço padrão do bloco do widget do radio */
             .element-container:has(div[role="radiogroup"]) {
-                margin-top: -20px !important;
-                margin-bottom: -25px !important;
-                padding-top: -15px !important;
-                padding-bottom: -10px !important;
+                margin-top: -25px !important;
+                margin-bottom: -30px !important;
+                padding-top: -20px !important;
+                padding-bottom: -15px !important;
             }
             
             /* Remove o espaço interno do radiogroup */
@@ -5537,6 +5537,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
