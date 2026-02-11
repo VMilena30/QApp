@@ -2146,8 +2146,8 @@ def main():
             <style>
               .qx-home-bottom {
                 position: fixed;
-                bottom: 16px;
-                right: 16px;
+                bottom: 10px;
+                right: 10px;
                 z-index: 1005;
               }
     
@@ -2155,11 +2155,13 @@ def main():
                 background: #0d4376 !important;
                 color: white !important;
                 border-radius: 999px !important;
-                font-weight: 700 !important;
+                font-weight: 600 !important;
                 border: 0 !important;
-                padding: 10px 16px !important;
+                padding: 6px 10px !important;   /* MENOR */
+                font-size: 13px !important;     /* MENOR */
+                line-height: 1 !important;
                 white-space: nowrap !important;
-                box-shadow: 0 6px 16px rgba(0,0,0,0.25);
+                box-shadow: 0 3px 8px rgba(0,0,0,0.25);
               }
             </style>
     
@@ -2168,7 +2170,7 @@ def main():
             unsafe_allow_html=True,
         )
     
-        if st.button("🏠 Home", key="home_bottom_btn"):
+        if st.button("🏠", key="home_bottom_btn"):
             st.session_state["pagina"] = "inicio"
             st.rerun()
     
@@ -4952,6 +4954,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
