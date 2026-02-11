@@ -34,7 +34,7 @@ import pandas as pd
 
 st.set_page_config(
     page_title="qPrism",
-    page_icon="pesq.png",
+    page_icon="qplog.png",
     layout="wide"
 )
 
@@ -5493,6 +5493,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
