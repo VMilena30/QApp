@@ -2145,38 +2145,34 @@ def main():
             <style>
               .qx-home-fixed{
                 position: fixed;
-                bottom: 12px;   /* canto inferior */
+                bottom: 12px;
                 right: 12px;
                 z-index: 1005;
               }
-    
-              .qx-home-fixed .stButton > button{
+              .qx-home-fixed a{
                 display: inline-block;
-                background: white !important;
-                color: #0d4376 !important;
-                border-radius: 10px !important;
-                font-weight: 700 !important;
-                padding: 6px 10px !important;   /* botão MENOR */
-                border: 0 !important;
-                white-space: nowrap !important;
-                font-family: inherit !important;
+                background: white;
+                color: #0d4376;
+                border-radius: 10px;
+                font-weight: 700;
+                padding: 6px 10px;
+                text-decoration: none;
+                white-space: nowrap;
+                font-family: inherit;
               }
-    
-              .qx-home-fixed .stButton > button:hover{
-                filter: brightness(0.97);
-              }
+              .qx-home-fixed a:hover{ filter: brightness(0.97); }
             </style>
-    
+        
             <div class="qx-home-fixed">
+              <a href="?pagina=inicio" target="_self">🏠</a>
+            </div>
             """,
             unsafe_allow_html=True,
         )
-    
-        if st.button("🏠", key="home_fixed_btn"):
-            st.session_state["pagina"] = "inicio"
-            st.rerun()
-    
-        st.markdown("</div>", unsafe_allow_html=True)
+
+        params = st.query_params
+        if "pagina" in params:
+            st.session_state["pagina"] = params["pagina"]
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
@@ -4956,6 +4952,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
