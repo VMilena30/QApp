@@ -2675,8 +2675,11 @@ def main():
                 st.subheader(textos_otim['medidas_energia'])
                 st.markdown(f"**{textos_otim['media_energia']}:** {round(media_energia, 4)}")
                 st.markdown(f"**{textos_otim['desvio_padrao_energia']}:** {round(desvio_padrao_energia, 4)}")
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
         
-                    
 
     elif st.session_state['pagina'] == 'explicacao_otimizacao':
         st.title(textos_otim["info1_titulo"])
@@ -4921,6 +4924,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
