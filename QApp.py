@@ -2138,6 +2138,43 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
+
+    if st.session_state["pagina"] != "inicio":
+
+        # CSS fixo inspirado no popover
+        st.markdown(
+            """
+            <style>
+              /* fixa APENAS o botão cujo aria-label é "Página inicial" */
+              div[data-testid="stButton"]:has(button[aria-label="Página inicial"]) {
+                position: fixed !important;
+                top: 12px !important;
+                right: 6px !important;  /* mais pra direita */
+                z-index: 1005 !important;
+                width: fit-content !important;
+              }
+    
+              div[data-testid="stButton"]:has(button[aria-label="Página inicial"]) button {
+                width: auto !important;
+                min-width: 0 !important;
+                white-space: nowrap !important;
+    
+                background: white !important;
+                color: #0d4376 !important;
+                border-radius: 10px !important;
+                font-weight: 700 !important;
+                border: 0 !important;
+                padding: 8px 14px !important;
+              }
+            </style>
+            """,
+            unsafe_allow_html=True,
+        )
+    
+        # 1 clique: navegação interna (não recarrega a página inteira)
+        if st.button("Página inicial", key="btn_home_top"):
+            st.session_state["pagina"] = "inicio"
+            st.rerun()
                 
     elif st.session_state['pagina'] == 'otimizacao':
 
@@ -4919,6 +4956,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
