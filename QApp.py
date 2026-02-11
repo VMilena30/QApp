@@ -451,10 +451,9 @@ TEXTOS = {
         "info_inf": "Seção para descrever as técnicas de Inferância Quântica usadas.",
         "titulo": "Seja bem-vindo ao <span style='color:#0d4376;'>qPrism</span>!",
         "corpo": (
-            "O qPrism é um aplicativo focado em apoiar o estudo e a experimentação com computação quântica aplicada a problemas comuns da engenharia da confiabilidade.\n\n"
-            "Ele oferece três áreas principais onde você pode explorar como métodos quânticos podem ser usados para modelar e analisar desafios em sistemas e processos de confiabilidade.\n\n"
-            "Embora a tecnologia quântica ainda esteja em desenvolvimento, este aplicativo traz ferramentas e exemplos que ajudam a entender seu funcionamento e seu potencial, mesmo que ainda de forma exploratória, para problemas de engenharia.\n\n"
-            "Explore as áreas disponíveis para conhecer melhor essa tecnologia e como ela pode ser aplicada a casos reais."
+            "O qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) é uma interface web interativa que integra três módulos: (i) Aprendizado de Máquina Quântico para problemas de classificação em confiabilidade, (ii) otimização de confiabilidade via alocação de redundâncias com algoritmos quânticos baseados em circuitos, e (iii) inferência por Redes Bayesianas Quânticas. A plataforma foi criada para testes e demonstrações, permitindo explorar os métodos com dados reais ou simulados e apoiar a disseminação e aplicação prática das soluções desenvolvidas nas pesquisas do CEERMA.\n\n"
+            "Navegue pelos módulos abaixo para realizar experimentos com dados reais ou simulados.\n\n"
+
         ),
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
@@ -489,10 +488,8 @@ TEXTOS = {
         "info_inf": "Section describing the Quantum Inference techniques used.",
         "titulo": "Welcome to <span style='color:#0d4376;'>qPrism</span>!",
         "corpo": (
-            "qPrism is an application focused on supporting the study and experimentation of quantum computing applied to common problems in reliability engineering.\n\n"
-            "It offers three main areas where you can explore how quantum methods can be used to model and analyze challenges in system and process reliability.\n\n"
-            "Although quantum technology is still under development, this app provides tools and examples to help you understand its operation and potential, even if exploratory, in engineering problems.\n\n"
-            "Explore the available areas to better understand this technology and how it can be applied to real cases."
+            "qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) is an interactive web-based interface that integrates three modules: (i) reliability optimization via redundancy allocation using circuit-based quantum algorithms, (ii) Quantum Machine Learning for classification problems, and (iii) inference through Quantum Bayesian Networks. The platform is designed for testing and demonstration purposes, enabling users to explore the methods with real or simulated data and supporting the dissemination and practical application of research outcomes developed at CEERMA.\n\n"
+            "Browse the modules below to run experiments with real or simulated data.\n\n"
         ),
         "ini": "Homepage",
         "pagina_referencias": "References",
@@ -1412,8 +1409,8 @@ def mostrar_rodape_logos2(textos):
     BASE_DIR = Path(__file__).resolve().parent
 
     logos = [
-        "1.png","2.png","3.png","4.png","5.png",
-        "6.png","7.png","8.png","9.png","10.png","11.png"
+        "1.png","2.png","3.png","12.png","5.png",
+        "6.png","7.png","13.png","14.png","10.png","11.png"
     ]
 
     imgs = []
@@ -1506,7 +1503,7 @@ def mostrar_introducao_e_titulo(textos):
 
     st.markdown(
         f"""
-        <div style="text-align: center; max-width: 700px; margin: auto;">
+        <div style="text-align: justify; max-width: 700px; margin: auto;">
             <h1 style="font-size: 32px; margin-bottom: 2px;">{titulo}</h1>
             <p style="font-size: 16px; line-height: 1.5; margin-top: 0;">
                 {corpo}
@@ -1555,10 +1552,9 @@ def mostrar_referencias(textos, textos_otim):
         """)
         
 def mostrar_cartoes_de_area(textos):
-    col1, col2, col3, col4, col5 = st.columns(5)
 
-    with col1:
-        st.write("")
+    # Espaço lateral proporcional
+    col_esq, col2, col3, col4, col_dir = st.columns([1, 2, 2, 2, 1])
 
     with col2:
         st.image("opt3.png", width=150)
@@ -1572,47 +1568,32 @@ def mostrar_cartoes_de_area(textos):
             st.session_state['pagina'] = 'ml'
             st.rerun()
 
-    with st.expander(textos["inf_ref"], expanded=False):
-
-        st.markdown("""
-            <style>
-            div[data-testid="stExpander"] div.stButton {
-                display: inline-block;
-                margin-right: 6px; /* aproxima os botões */
-            }
-            div[data-testid="stExpander"] button {
-                background-color: white !important;
-                color: #333333 !important;
-                font-size: 13px !important;
-                padding: 4px 10px !important;
-                border-radius: 6px !important;
-                border: 1px solid #cccccc !important;
-                transition: 0.2s ease-in-out;
-            }
-            div[data-testid="stExpander"] button:hover {
-                background-color: #f2f2f2 !important;
-                border-color: #999999 !important;
-            }
-            </style>
-        """, unsafe_allow_html=True)
-
-        col1, col2, _, _, _ = st.columns([1, 1, 1, 1, 1])
-        with col1:
-            if st.button(textos["pagina_info"], key="btn_info"):
-                st.session_state['pagina'] = 'info'
-                st.rerun()
-        with col2:
-            if st.button(textos["pagina_referencias"], key="btn_ref"):
-                st.session_state['pagina'] = 'ref'
-                st.rerun()
     with col4:
         st.image("infer3.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia'
             st.rerun()
 
-    with col5:
-        st.write("")
+    # Expander separado abaixo (não dentro da grid principal)
+    with st.expander(textos["inf_ref"], expanded=False):
+
+        col1, col2 = st.columns(3)
+
+        with col1:
+            if st.button(textos["pagina_info"], key="btn_info"):
+                st.session_state['pagina'] = 'info'
+                st.rerun()
+
+        with col2:
+            if st.button(textos["pagina_referencias"], key="btn_ref"):
+                st.session_state['pagina'] = 'ref'
+                st.rerun()
+
+        with col3:
+            if st.button(textos["pagina_referencias"], key="btn_ref"):
+                st.session_state['pagina'] = 'ref'
+                st.rerun()
+            
 
 def mostrar_cartoes_de_info(textos):
     col1, col2, col3, col4, col5 = st.columns(5)
@@ -4968,6 +4949,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
