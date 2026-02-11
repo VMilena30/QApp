@@ -2162,8 +2162,6 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-
-
         
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -2696,6 +2694,10 @@ def main():
         
         if st.button("Aplicação"):
             st.session_state['pagina'] = 'otimizacao'
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
 
     elif st.session_state['pagina'] == 'ml':
         import pandas as pd
@@ -4919,6 +4921,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
