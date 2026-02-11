@@ -2330,32 +2330,16 @@ def main():
 
             st.markdown("""
             <style>
-            /* Remove qualquer fundo “highlight” no texto/label quando selecionado */
-            div[data-testid="stRadio"] label {
-              background: transparent !important;
-            }
-            div[data-testid="stRadio"] label:has(input:checked),
-            div[data-testid="stRadio"] label:focus,
-            div[data-testid="stRadio"] label:focus-within {
-              background: transparent !important;
-              outline: none !important;
+            .st-Radio > div > label {
+                color: #03518C !important;
             }
             
-            /* Pinta e reduz a bolinha sem criar esse retângulo */
-            div[data-testid="stRadio"] input[type="radio"]{
-              accent-color: #0e3360 !important; /* azul */
-              transform: scale(0.75);
-            }
-            
-            /* Ajusta espaçamento/alinhamento */
-            div[data-testid="stRadio"] label{
-              display:flex;
-              align-items:center;
-              gap:8px;
-              padding:0 !important;
+            .st-Radio > div > div {
+                border-color: #03518C !important;
             }
             </style>
             """, unsafe_allow_html=True)
+
 
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -2425,7 +2409,6 @@ def main():
 
         st.stop()
 
-    # ---------- VERIFY ----------
     if st.session_state.step == "verify":
         lang = st.session_state.lang or "en"
         t = TEXTOS_LOGIN[lang]
@@ -2487,7 +2470,6 @@ def main():
 
         st.stop()
 
-        # ---------- APP ----------
     if st.session_state.step != "app" or not st.session_state.otp_verified:
         st.stop()
     
@@ -5532,6 +5514,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
