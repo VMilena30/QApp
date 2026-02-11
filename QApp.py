@@ -2218,7 +2218,7 @@ def main():
                 st.image(str(LOGO), width=340)
         
             st.markdown("""
-            <div style="text-align:center; font-size:42px; font-weight:600; margin-top:1px;">
+            <div style="text-align:center; font-size:42px; font-weight:700; margin-top:1px;">
                 <span style="color:#0e3360;">q</span><span style="color:#0e3360;">Prism</span>
             </div>
             """, unsafe_allow_html=True)
@@ -2343,9 +2343,26 @@ def main():
                 st.session_state.lang = new_lang
                 st.rerun()
 
+            st.markdown("""
+            <style>
+            
+            /* Bolinha selecionada */
+            div[data-testid="stRadio"] input:checked + div {
+                background-color: #0e3360 !important;
+                border-color: #0e3360 !important;
+            }
+            
+            /* Texto menor */
+            div[data-testid="stRadio"] label {
+                font-size: 14px !important;
+            }
+            
+            </style>
+            """, unsafe_allow_html=True)
+
             st.markdown("<div style='height:20px;'></div>", unsafe_allow_html=True)
             st.markdown(f"""
-            <div style="font-size:22px;font-weight:700;color:#0e3360; line-height:1.05;margin-bottom:4px;">
+            <div style="font-size:20px;font-weight:700;color:#0e3360; line-height:1.05;margin-bottom:4px;">
               {t["access_title"]}
             </div>
             <div style="font-size:16px;margin-bottom:8px;">
@@ -5503,6 +5520,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
