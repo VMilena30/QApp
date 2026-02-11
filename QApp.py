@@ -5421,16 +5421,42 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
-                
+            
         st.subheader(textos["pagina_agrad"])
         st.write(textos["apo"])
 
-        if st.button(textos["ini"]):
-            st.session_state['pagina'] = 'inicio'
-            st.rerun()
+         logos2 = [
+        "1.png","2.png","3.png","12.png","5.png",
+        "6.png","7.png","13.png","14.png","10.png","11.png"
+        ]
+    
+        # dividir em duas linhas
+        linha1 = logos2[:6]
+        linha2 = logos2[6:]
+    
+        # primeira linha
+        cols1 = st.columns(6)
+        for col, img in zip(cols1, linha1):
+            with col:
+                st.image(img, use_container_width=True)
+    
+        st.markdown("<br>", unsafe_allow_html=True)
+    
+        # segunda linha
+        cols2 = st.columns(5)
+        for col, img in zip(cols2, linha2):
+            with col:
+                st.image(img, use_container_width=True)
+    
+        st.markdown("<br><br>", unsafe_allow_html=True)
+    
+            if st.button(textos["ini"]):
+                st.session_state['pagina'] = 'inicio'
+                st.rerun()
 
 if __name__ == "__main__":
     main()
+
 
 
 
