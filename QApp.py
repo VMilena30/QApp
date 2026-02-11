@@ -2259,8 +2259,8 @@ def main():
             div[role="radiogroup"] {
                 margin-top: -12px !important;
                 margin-bottom: -14px !important;
-                padding-top: 4 !important;
-                padding-bottom: 4 !important;
+                padding-top: 1 !important;
+                padding-bottom: 1 !important;
                 justify-content: center;
             }
             
@@ -5529,6 +5529,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
