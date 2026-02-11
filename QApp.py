@@ -2355,6 +2355,17 @@ def main():
                 
                 </style>
                 """, unsafe_allow_html=True)
+
+                st.markdown("""
+                <style>
+                div[data-testid="stRadio"] label:focus,
+                div[data-testid="stRadio"] label:focus-within{
+                  outline: none !important;
+                  box-shadow: none !important;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+
                 
                 escolha = st.radio(
                     "",
@@ -5527,6 +5538,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
