@@ -2224,7 +2224,7 @@ def main():
         col1, col2 = st.columns([9, 2])
         
         with col1:
-            st.subheader(textos_otim["aplicação"])
+            st.subheader(textos_otim["aplicacao"])
         with col2:
             ajuda = st.button("?", key="botao_ajuda")
         
@@ -2750,7 +2750,7 @@ def main():
         st.header(textos_otim["info4_titulo"])
         st.write(textos_otim["info4"])
         
-        if st.button("Aplicação"):
+        if st.button(textos_otim["aplicacao"]):
             st.session_state['pagina'] = 'otimizacao'
 
         if st.button(textos["ini"]):
@@ -5021,6 +5021,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
