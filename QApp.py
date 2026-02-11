@@ -2141,7 +2141,11 @@ def main():
                 
     elif st.session_state['pagina'] == 'otimizacao':
 
-        
+        with st.popover("🏠 Página inicial"):
+            if st.button("Ir para Home", use_container_width=True):
+                st.session_state.pagina = "home"
+                st.rerun()
+
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
         
         with st.popover(label_btn, use_container_width=False):
@@ -2159,6 +2163,8 @@ def main():
             if new_lang != st.session_state.lang:
                 st.session_state.lang = new_lang
                 st.rerun()
+
+
         
         st.markdown(textos_otim["rap_descricao"])
         st.divider()
@@ -4918,6 +4924,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
