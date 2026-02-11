@@ -1516,6 +1516,10 @@ def mostrar_referencias(textos, textos_otim):
 
     st.header(textos_otim["pagina_otimizacao"])
     st.markdown("""
+    - **Lins, I. D., Araújo, L. M. M., Maior, C. B. S., Teixeira, E. S., Bezerra, P. T. L., Moura, M. J. D. C., & Droguett, E. L. (2025).**  
+      *Quantum-based optimization methods for the linear redundancy allocation problem: A comparative analysis.*  
+      Reliability Engineering & System Safety, 111153.
+
     - **Araújo, L. M. M., Lins, I., Aichele, D., Maior, C., Moura, M., & Droguett, E. (2022).**  
       *Review of Quantum(-Inspired) Optimization Methods for System Reliability Problems.*  
       16th International Probabilistic Safety Assessment and Management Conference - PSAM 16.
@@ -4997,5 +5001,6 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
