@@ -1230,7 +1230,7 @@ TEXTOS_INF = {
         "pagina_inf": "Quantum Bayesian Networks",
         #"titulo_app": "CQBN Inference",
         #"subtitulo_app": "Build the network and run classical and quantum inference.",
-        "intro_qbn_en": """
+        "intro_qbn_en": r"""
         ### Bayesian Networks
         
         Bayesian Networks (BNs) are directed acyclic graphs (DAGs) that represent probabilistic dependencies among variables.  
@@ -1572,6 +1572,25 @@ def mostrar_referencias(textos, textos_otim):
       *Quantum Optimization for Redundancy Allocation Problem Considering Various Subsystems.*  
       33th European Safety and Reliability (ESREL) Conference.
         """)
+    
+def mostrar_referencias2(textos, textos_inf):
+    st.title(textos.get("pagina_referencias_titulo", "Referências"))
+    
+    st.header(textos["pagina_inferencia"])
+    st.markdown("""
+    - **Araújo, L. M. M., Silva, G. S. M., Droguett, E. L., Lins, I. D., & Moura, M. J. C. (2025).**  
+      *Incorporating Continuous Distributions in Quantum Bayesian Networks for Reliability Assessment.*  
+      Proceedings of the 35th European Safety and Reliability & the 33rd Society for Risk Analysis Europe Conference.
+
+    - **Araújo, L. M. M., Lins, I. D., Droguett, E. L., & Moura, M. J. C. (2025).**  
+      *Reliability Inference via Quantum Bayesian Networks with Exponential Distribution Modeling.*  
+      Anais do LVII Simpósio Brasileiro de Pesquisa Operacional.
+
+    - **Araújo, L. M. M., Raupp, L. S., Lins, I. D., & Moura, M. J. C. (2024).**  
+      *Quantum Approaches for Reliability Estimation: A Systematic Literature Review.*  
+      34th European Safety and Reliability Conference (ESREL 2024).
+    """)
+
         
 def mostrar_cartoes_de_area(textos):
 
@@ -4986,7 +5005,26 @@ def main():
             st.rerun()
 
     elif st.session_state['pagina'] == 'inf_ref':
-        st.subheader(textos["pagina_referencias"])
+        
+         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
+        mostrar_referencias2(textos, textos_inf)
         
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
@@ -5021,6 +5059,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
