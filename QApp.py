@@ -1400,8 +1400,41 @@ TEXTOS_INF = {
 }
 
 def mostrar_rodape_logos2(textos):
-    st.markdown("<div style='margin-top:40px'></div>", unsafe_allow_html=True)
-    st.markdown("---")
+
+    if st.session_state.get("pagina") != "inicio":
+        return  # só aparece na página inicial
+
+    st.markdown(
+        """
+        <style>
+        .qx-footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 12px 0;
+            border-top: 1px solid #e5e5e5;
+            z-index: 1000;
+        }
+
+        .qx-footer-content {
+            width: 95%;
+            margin: auto;
+            text-align: center;
+        }
+
+        .qx-footer-content img {
+            margin: 0 6px;
+        }
+        </style>
+
+        <div class="qx-footer">
+            <div class="qx-footer-content">
+        """,
+        unsafe_allow_html=True,
+    )
+
     st.markdown(f"**{textos['apoio']}**")
 
     logos = [
@@ -1409,13 +1442,19 @@ def mostrar_rodape_logos2(textos):
         "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
     ]
 
-    cols = st.columns(11)  
+    cols = st.columns(11)
     for i, path in enumerate(logos):
         with cols[i]:
-            st.image(path, width=80)  
+            st.image(path, width=90)
 
-    st.markdown(f"<div style='opacity:.75;font-size:13px;margin-top:10px'>{textos['apo']}</div>",
-                unsafe_allow_html=True)
+    st.markdown(
+        """
+            </div>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+
 
 
 def aplicar_css_botoes():
@@ -4924,6 +4963,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
