@@ -355,40 +355,6 @@ import random
 def generate_otp():
     return str(random.randint(100000, 999999))
 
-import streamlit as st
-
-st.markdown(
-    """
-    <style>
-      .qx-home-fixed{
-        position: fixed;
-        top: 12px;
-        right: 150px;   /* mais à direita */
-        z-index: 1005;
-      }
-      .qx-home-fixed a{
-        display: inline-block;
-        background: white;
-        color: #0d4376;
-        border-radius: 10px;
-        font-weight: 700;
-        padding: 8px 14px;
-        text-decoration: none;
-        white-space: nowrap;
-        font-family: inherit;
-      }
-      .qx-home-fixed a:hover{ filter: brightness(0.97); }
-    </style>
-
-    <div class="qx-home-fixed">
-      <a href="?pagina=inicio" target="_self">🏠 Página inicial</a>
-    </div>
-    """,
-    unsafe_allow_html=True,
-)
-
-
-
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -4993,6 +4959,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
