@@ -1402,53 +1402,38 @@ TEXTOS_INF = {
 def mostrar_rodape_logos2(textos):
 
     if st.session_state.get("pagina") != "inicio":
-        return  # só aparece na página inicial
-
-    st.markdown(
-        """
-        <style>
-        .qx-footer {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            width: 100%;
-            background: white;
-            padding: 12px 0;
-            border-top: 1px solid #e5e5e5;
-            z-index: 1000;
-        }
-
-        .qx-footer-content {
-            width: 95%;
-            margin: auto;
-            text-align: center;
-        }
-
-        .qx-footer-content img {
-            margin: 0 6px;
-        }
-        </style>
-
-        <div class="qx-footer">
-            <div class="qx-footer-content">
-        """,
-        unsafe_allow_html=True,
-    )
-
-    st.markdown(f"**{textos['apoio']}**")
+        return
 
     logos = [
         "1.png", "2.png", "3.png", "4.png", "5.png",
         "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
     ]
 
-    cols = st.columns(11)
-    for i, path in enumerate(logos):
-        with cols[i]:
-            st.image(path, width=90)
+    logos_html = "".join(
+        [f'<img src="{logo}" style="height:50px; margin:0 8px;">'
+         for logo in logos]
+    )
 
     st.markdown(
-        """
+        f"""
+        <style>
+        .qx-footer {{
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            background: white;
+            padding: 10px 0;
+            border-top: 1px solid #ddd;
+            text-align: center;
+            z-index: 9999;
+        }}
+        </style>
+
+        <div class="qx-footer">
+            <div><strong>{textos['apoio']}</strong></div>
+            <div style="margin-top:8px;">
+                {logos_html}
             </div>
         </div>
         """,
@@ -4963,6 +4948,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
