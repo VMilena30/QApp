@@ -2327,35 +2327,6 @@ def main():
                 """,
                 unsafe_allow_html=True
             )
-            st.markdown("""
-            <style>
-            /* RADIO (Streamlit novo): força cor do selecionado e do contorno via SVG */
-            div[data-testid="stRadio"] svg {
-              width: 14px !important;
-              height: 14px !important;
-            }
-            
-            /* Contorno (não selecionado) */
-            div[data-testid="stRadio"] svg circle {
-              stroke: #03518C !important;
-            }
-            
-            /* Ponto preenchido (selecionado) */
-            div[data-testid="stRadio"] svg circle[fill] {
-              fill: #03518C !important;
-              stroke: #03518C !important;
-            }
-            
-            /* remove highlight/foco que pode parecer “vermelho/rosa” */
-            div[data-testid="stRadio"] label:focus,
-            div[data-testid="stRadio"] label:focus-within{
-              outline: none !important;
-              box-shadow: none !important;
-              background: transparent !important;
-            }
-            </style>
-            """, unsafe_allow_html=True)
-
 
             c1, c2, c3 = st.columns([1, 2, 1])
             with c2:
@@ -5531,6 +5502,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
