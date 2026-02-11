@@ -1399,25 +1399,42 @@ TEXTOS_INF = {
     },
 }
 
-def mostrar_rodape_logos2(textos):
+def _img_to_data_uri(path: Path) -> str:
+    data = path.read_bytes()
+    b64 = base64.b64encode(data).decode("utf-8")
+    # se algum logo for .jpg, troque image/png por image/jpeg
+    return f"data:image/png;base64,{b64}"
 
+def mostrar_rodape_logos2(textos):
+    # só na página inicial
     if st.session_state.get("pagina") != "inicio":
         return
+
+    # pasta do arquivo .py (ajuste se seus pngs estiverem em subpasta)
+    BASE_DIR = Path(__file__).resolve().parent
 
     logos = [
         "1.png", "2.png", "3.png", "4.png", "5.png",
         "6.png", "7.png", "8.png", "9.png", "10.png", "11.png",
     ]
 
-    logos_html = "".join(
-        [f'<img src="{logo}" style="height:50px; margin:0 8px;">'
-         for logo in logos]
-    )
+    # monta as tags <img> com base64
+    imgs = []
+    for name in logos:
+        p = BASE_DIR / name
+        if p.exists():
+            src = _img_to_data_uri(p)
+            imgs.append(f'<img src="{src}" style="height:50px; margin:0 8px;" />')
+        else:
+            # se algum arquivo não existir, você vai perceber pelo "missing"
+            imgs.append(f'<span style="color:#999; font-size:12px;">{name} (missing)</span>')
+
+    logos_html = "\n".join(imgs)
 
     st.markdown(
         f"""
         <style>
-        .qx-footer {{
+          .qx-footer {{
             position: fixed;
             bottom: 0;
             left: 0;
@@ -1427,20 +1444,18 @@ def mostrar_rodape_logos2(textos):
             border-top: 1px solid #ddd;
             text-align: center;
             z-index: 9999;
-        }}
+          }}
         </style>
 
         <div class="qx-footer">
-            <div><strong>{textos['apoio']}</strong></div>
-            <div style="margin-top:8px;">
-                {logos_html}
-            </div>
+          <div><strong>{textos['apoio']}</strong></div>
+          <div style="margin-top:8px; display:flex; flex-wrap:wrap; gap:8px; justify-content:center; align-items:center;">
+            {logos_html}
+          </div>
         </div>
         """,
         unsafe_allow_html=True,
     )
-
-
 
 def aplicar_css_botoes():
     st.markdown(
@@ -4948,6 +4963,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
