@@ -5450,12 +5450,13 @@ def main():
     
         st.markdown("<br><br>", unsafe_allow_html=True)
     
-            if st.button(textos["ini"]):
-                st.session_state['pagina'] = 'inicio'
-                st.rerun()
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
 
 if __name__ == "__main__":
     main()
+
 
 
 
