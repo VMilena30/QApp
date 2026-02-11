@@ -449,7 +449,7 @@ TEXTOS = {
         "referencias_intro": "Para conhecer mais sobre nossos trabalhos nas áreas, consulte as referências abaixo:",
         "info_ml": "Seção para descrever as técnicas de Machine Learning Quântico usadas.",
         "info_inf": "Seção para descrever as técnicas de Inferância Quântica usadas.",
-        "titulo": "Seja bem-vindo ao <span style='color:#0d4376;'>qPrism</span>!",
+        "titulo": "Visão Geral do <span style='color:#0d4376;'>qPrism</span>",
         "corpo": (
             "O qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) é uma interface web interativa que integra três módulos: (i) Aprendizado de Máquina Quântico para problemas de classificação em confiabilidade, (ii) otimização de confiabilidade via alocação de redundâncias com algoritmos quânticos baseados em circuitos, e (iii) inferência por Redes Bayesianas Quânticas. A plataforma foi criada para testes e demonstrações, permitindo explorar os métodos com dados reais ou simulados e apoiar a disseminação e aplicação prática das soluções desenvolvidas nas pesquisas do CEERMA.\n\n"
             "Navegue pelos módulos abaixo para realizar experimentos com dados reais ou simulados.\n\n"
@@ -487,7 +487,7 @@ TEXTOS = {
         "referencias_intro": "To learn more about our work in this areas, check the references below:", 
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
         "info_inf": "Section describing the Quantum Inference techniques used.",
-        "titulo": "Welcome to <span style='color:#0d4376;'>qPrism</span>!",
+        "titulo": "<span style='color:#0d4376;'>qPrism</span> Overview",
         "corpo": (
             "qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) is an interactive web-based interface that integrates three modules: (i) reliability optimization via redundancy allocation using circuit-based quantum algorithms, (ii) Quantum Machine Learning for classification problems, and (iii) inference through Quantum Bayesian Networks. The platform is designed for testing and demonstration purposes, enabling users to explore the methods with real or simulated data and supporting the dissemination and practical application of research outcomes developed at CEERMA.\n\n"
             "Browse the modules below to run experiments with real or simulated data.\n\n"
@@ -1556,19 +1556,19 @@ def mostrar_cartoes_de_area(textos):
     col_esq, col2, col3, col4, col_dir = st.columns([2.7, 1, 1, 1, 2.7])
 
     with col2:
-        st.image("opt3.png", width=150)
+        st.image("16.png", width=150)
         if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
             st.session_state['pagina'] = 'otimizacao'
             st.rerun()
 
     with col3:
-        st.image("ml3.png", width=150)
+        st.image("17.png", width=150)
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml'
             st.rerun()
 
     with col4:
-        st.image("infer3.png", width=150)
+        st.image("18.png", width=150)
         if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
             st.session_state['pagina'] = 'inferencia'
             st.rerun()
@@ -1576,7 +1576,7 @@ def mostrar_cartoes_de_area(textos):
     # Expander separado abaixo (não dentro da grid principal)
     with st.expander(textos["inf_ref"], expanded=False):
 
-        col_esq, col2, col3, col4, col_dir = st.columns([3, 1, 1, 1, 3])
+        col1, col2, col3, col4 = st.columns([1, 1, 1, 5])
 
         with col1:
             if st.button(textos["pagina_info"], key="btn_info"):
@@ -4948,6 +4948,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
