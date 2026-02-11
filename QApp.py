@@ -2141,7 +2141,7 @@ def main():
         
     elif st.session_state['pagina'] == 'otimizacao':
 
-        BAR_HEIGHT = 64  # o mesmo da sua topbar
+        BAR_HEIGHT = -264  # o mesmo da sua topbar
         
         # --- grupo fixo no canto direito da barra ---
         st.markdown(
@@ -4968,6 +4968,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
