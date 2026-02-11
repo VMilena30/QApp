@@ -2142,7 +2142,7 @@ def main():
     elif st.session_state['pagina'] == 'otimizacao':
 
         with st.popover("🏠", use_container_width=False):
-            if st.button("Ir para Home", use_container_width=True):
+            if st.button("Ir para Home", use_container_width=False):
                 st.session_state["pagina"] = "inicio"
                 st.rerun()
 
@@ -4925,6 +4925,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
