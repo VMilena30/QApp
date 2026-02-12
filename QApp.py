@@ -1936,6 +1936,26 @@ def mostrar_cartoes_de_info(textos):
         st.write("")
 
 def mostrar_ref(textos):
+    st.markdown("""
+    <style>
+    /* Estilo do botão pelo ID do widget (key) — robusto mesmo com help */
+    div[data-testid="stButton"]:has(button[kind]) button {
+        background-color: #0e3360 !important;
+        color: white !important;
+        border: 1px solid #0e3360 !important;
+        border-radius: 12px !important;
+        padding: 12px 18px !important;
+        font-weight: 700 !important;
+    }
+    
+    /* Hover */
+    div[data-testid="stButton"]:has(button[kind]) button:hover {
+        background-color: #02416B !important;
+        border-color: #02416B !important;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
     col1, col2, col3, col4, col5 = st.columns(5)
 
     with col1:
@@ -5541,6 +5561,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
