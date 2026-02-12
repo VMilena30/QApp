@@ -1774,7 +1774,18 @@ def aplicar_css_botoes():
         div.stButton > button:hover {
             background-color: #07294a !important;
         }
-        
+        /* Botões normais */
+        div.stButton button {
+            background-color: #0d4376 !important;
+            color: white !important;
+            width: 150px !important;
+            height: 80px !important;
+            border-radius: 8px !important;
+            font-size: 16px !important;
+            font-weight: 600 !important;
+            transition: background-color 0.1s ease !important;
+            margin-top: 10px !important;
+        }
         /* Aplica o mesmo estilo ao botão de download */
         div.stDownloadButton > button {
             background-color: #0d4376 !important;
@@ -5561,6 +5572,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
