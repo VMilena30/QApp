@@ -3526,11 +3526,9 @@ def main():
                 acc = accuracy_score(y_test, y_pred)
     
                 st.success(f"{textos_ml['acc']} {acc:.3f}")
-    
-        # botão pra voltar mesmo se der erro
-        st.divider()
-        if st.button("⬅ Voltar para a página inicial"):
-            st.session_state["pagina"] = "inicio"
+
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
             st.rerun()
 
     elif st.session_state['pagina'] == 'inferencia':
@@ -5576,6 +5574,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
