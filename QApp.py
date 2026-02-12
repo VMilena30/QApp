@@ -5505,7 +5505,7 @@ def main():
                 
     elif st.session_state['pagina'] == 'ml_ref':
         st.subheader(textos["pagina_referencias"])
-        st.write(oie)
+        st.write("Artigos de ML do CEERMA")
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
@@ -5594,6 +5594,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
