@@ -5589,22 +5589,29 @@ def main():
         # dividir em duas linhas
         linha1 = logos2[:6]
         linha2 = logos2[6:]
-    
-        # primeira linha
-        cols1 = st.columns(6)
-        for col, img in zip(cols1, linha1):
-            with col:
-                st.image(img, width=140)
-    
+        
+        # ---------- PRIMEIRA LINHA ----------
+        col_left, col_center, col_right = st.columns([1, 6, 1])
+        
+        with col_center:
+            cols1 = st.columns(len(linha1))
+            for col, img in zip(cols1, linha1):
+                with col:
+                    st.image(img, width=140)
+        
         st.markdown("<br>", unsafe_allow_html=True)
-    
-        # segunda linha
-        cols2 = st.columns(5)
-        for col, img in zip(cols2, linha2):
-            with col:
-                st.image(img, width=140)
-    
+        
+        # ---------- SEGUNDA LINHA ----------
+        col_left2, col_center2, col_right2 = st.columns([1, 5, 1])
+        
+        with col_center2:
+            cols2 = st.columns(len(linha2))
+            for col, img in zip(cols2, linha2):
+                with col:
+                    st.image(img, width=140)
+        
         st.markdown("<br><br>", unsafe_allow_html=True)
+
     
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
@@ -5612,6 +5619,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
