@@ -480,7 +480,7 @@ TEXTOS = {
         "apoio": "Apoio:",
         "apo": "Agradecimentos às seguintes agências brasileiras de fomento à pesquisa pelo apoio financeiro: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (processos 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5 e 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Código de Financiamento 001); Programa de Recursos Humanos 38 (PRH 38), intitulado “Gestão de Riscos, Confiabilidade e Sustentabilidade na Exploração e Produção de Petróleo, Gás Natural e Energias Renováveis”, financiado pela Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) e gerido pela Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (processo 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (processo APQ-0504-3.08/25); e a Financiadora de Estudos e Projetos (FINEP).",
         "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada a partir de medições de circuitos quânticos e amplificação de amplitudes, podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
-        "help_area1": "Módulo dedicado à resolução de problemas combinatórios por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO. Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando a superposição, interferência e o paralelismo quântico para buscar soluções ótimas.",
+        "help_area1": "Módulo dedicado à resolução de problemas de alocação de redundâncias por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO. Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando características da computação quântica para maximizar a confiabilidade de sistemas.",
         "help_area2": "Módulo dedicado ao aprendizado de máquina quântico, combinando processamento clássico de dados com métodos configuráveis de codificação e parametrização de circuitos quânticos, permitindo representação eficiente de características e suporte a tarefas de classificação e previsão.",
         "help_area3": "Módulo voltado à estimação de confiabilidade por meio de Quantum Bayesian Networks (QBNs), integrando variáveis discretas e contínuas em um modelo probabilístico unificado. As dependências são implementadas com portas quânticas controladas, e a probabilidade de falha é estimada a partir de medições de circuitos quânticos, com possibilidade de comparação com métodos clássicos como Monte Carlo.",
     },
@@ -519,7 +519,7 @@ TEXTOS = {
         "inf3": "Method:",
         "ref": "Choose a module to access its references and related materials.",
         "inf4": "Probabilistic dependencies between nodes are implemented with controlled quantum gates. Failure probability is estimated using Quantum Amplitude Estimation (QAE) and can be compared with classical methods, such as Monte Carlo simulation.",
-        "help_area1": "Module dedicated to solving combinatorial problems through quantum optimization algorithms, using QUBO-based formulations. This approach enables the representation of objective functions and constraints as quantum operators, leveraging superposition, interference, and quantum parallelism to search for optimal solutions.",
+        "help_area1": "Module dedicated to solving redundancy allocation problems through quantum optimization algorithms, using QUBO-based formulations. This approach enables the representation of objective functions and constraints as quantum operators, leveraging characteristics of quantum computing to maximize system reliability.",
         "help_area2": "Module dedicated to quantum machine learning applications, combining classical data processing with configurable quantum encoding techniques and circuit parameterization, enabling efficient feature representation and supporting classification and predictive tasks.",
         "help_area3": "Module focused on reliability estimation using Quantum Bayesian Networks (QBNs), integrating discrete and continuous variables within a unified probabilistic framework. Dependencies are implemented through controlled quantum gates, and failure probabilities are estimated from quantum circuit measurements, with the possibility of comparison to classical methods such as Monte Carlo simulation."
     }
@@ -5576,6 +5576,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
