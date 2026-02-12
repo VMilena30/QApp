@@ -1824,7 +1824,7 @@ def mostrar_introducao_e_titulo(textos):
     )
     
 def mostrar_referencias(textos, textos_otim):
-    st.title(textos.get("pagina_referencias_titulo", "Referências"))
+    st.title(textos["referencias_titulo"])
 
     st.header(textos_otim["pagina_otimizacao"])
     st.markdown("""
@@ -1866,7 +1866,7 @@ def mostrar_referencias(textos, textos_otim):
         """)
     
 def mostrar_referencias2(textos, textos_inf):
-    st.title(textos.get("pagina_referencias_titulo", "Referências"))
+    st.title(textos["referencias_titulo"])
     
     st.header(textos["pagina_inferencia"])
     st.markdown("""
@@ -5356,7 +5356,7 @@ def main():
             st.rerun()
     
     elif st.session_state['pagina'] == 'otimizacao_info':
-        st.title(textos.get("pagina_referencias_titulo", "Referências"))
+        st.title(textos["referencias_titulo"])
         st.header(textos_otim["pagina_otimizacao"])
 
     elif st.session_state['pagina'] == 'ml_info':
@@ -5594,6 +5594,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
