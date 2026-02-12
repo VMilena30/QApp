@@ -1939,8 +1939,6 @@ def mostrar_cartoes_de_info(textos):
     with col3:
         if st.button(textos["pagina_ml"], key="ml_btn"):
             st.session_state['pagina'] = 'ml_info'
-            st.title(textos_ml["info1_titulo"])
-            st.header(textos_ml["info1"])
             st.rerun()
             
     with col4:
@@ -5596,6 +5594,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
