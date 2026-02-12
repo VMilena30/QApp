@@ -480,6 +480,7 @@ TEXTOS = {
         "apoio": "Apoio:",
         "apo": "Agradecimentos às seguintes agências brasileiras de fomento à pesquisa pelo apoio financeiro: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (processos 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5 e 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Código de Financiamento 001); Programa de Recursos Humanos 38 (PRH 38), intitulado “Gestão de Riscos, Confiabilidade e Sustentabilidade na Exploração e Produção de Petróleo, Gás Natural e Energias Renováveis”, financiado pela Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) e gerido pela Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (processo 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (processo APQ-0504-3.08/25); e a Financiadora de Estudos e Projetos (FINEP).",
         "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada a partir de medições de circuitos quânticos e amplificação de amplitudes, podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
+        "help_area1": "Ajudinha",
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -516,6 +517,7 @@ TEXTOS = {
         "inf3": "Method:",
         "ref": "Choose a module to access its references and related materials.",
         "inf4": "Probabilistic dependencies between nodes are implemented with controlled quantum gates. Failure probability is estimated using Quantum Amplitude Estimation (QAE) and can be compared with classical methods, such as Monte Carlo simulation.",
+        "help_area1": "Ajudinha",
     }
 }
 
@@ -1874,7 +1876,7 @@ def mostrar_cartoes_de_area(textos):
 
     with col2:
         st.image("16.png", width=150)
-        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn"):
+        if st.button(textos["pagina_otimizacao"], key="otimizacao_btn", help=textos["help_area1"]):
             st.session_state['pagina'] = 'otimizacao'
             st.rerun()
 
@@ -5539,6 +5541,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
