@@ -5387,6 +5387,28 @@ def main():
         st.subheader(textos_ml["info7_titulo"])
         st.write(textos_ml["info7"])
         st.write(textos_ml["info7.1"])
+
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+                
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
         
     elif st.session_state['pagina'] == 'inferencia_info':
         st.title(textos_inf["info1_titulo"])
@@ -5574,6 +5596,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
