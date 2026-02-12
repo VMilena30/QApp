@@ -1897,13 +1897,13 @@ def mostrar_cartoes_de_area(textos):
 
     with col3:
         st.image("17.png", width=150)
-        if st.button(textos["pagina_ml"], key="ml_btn"):
+        if st.button(textos["pagina_ml"], key="ml_btn", help=textos["help_area2"]):
             st.session_state['pagina'] = 'ml'
             st.rerun()
 
     with col4:
         st.image("18.png", width=150)
-        if st.button(textos["pagina_inferencia"], key="inferencia_btn"):
+        if st.button(textos["pagina_inferencia"], key="inferencia_btn", help=textos["help_area3"]):
             st.session_state['pagina'] = 'inferencia'
             st.rerun()
 
@@ -5576,6 +5576,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
