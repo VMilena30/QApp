@@ -5594,7 +5594,7 @@ def main():
         cols1 = st.columns(6)
         for col, img in zip(cols1, linha1):
             with col:
-                st.image(img, width=130)
+                st.image(img, width=140)
     
         st.markdown("<br>", unsafe_allow_html=True)
     
@@ -5612,6 +5612,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
