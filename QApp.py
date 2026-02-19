@@ -2673,7 +2673,14 @@ def main():
                         created_at
                     )
                     init_sheet_headers()
-                    save_registration_to_sheets(name, email, company, role, created_at)
+                    save_registration_to_sheets(
+                        user.get("name", ""),
+                        user.get("email", ""),
+                        user.get("company", ""),
+                        user.get("role", ""),
+                        created_at
+                    )
+
 
 
                     st.session_state.user = {**user, "created_at": created_at}
@@ -5611,6 +5618,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
