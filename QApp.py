@@ -3175,6 +3175,7 @@ def main():
             st.rerun()
 
     elif st.session_state['pagina'] == 'ml':
+
         import pandas as pd
         import numpy as np
         import streamlit as st
@@ -3192,7 +3193,44 @@ def main():
         textos_ml = TEXTOS_ML[st.session_state.lang]
         textos = TEXTOS[st.session_state.lang]
     
-        st.subheader(textos["pagina_ml2"])
+        # ========= TÍTULO + BOTÃO DE AJUDA =========
+        col1, col2 = st.columns([9, 2])
+    
+        with col1:
+            st.subheader(textos["pagina_ml2"])
+    
+        with col2:
+            ajuda_ml = st.button("?", key="botao_ajuda_ml")
+    
+        # Estilo do botão (igual otimização)
+        st.markdown("""
+        <style>
+        div[data-testid="stButton"] > button[kind="secondary"],
+        div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button {
+            background-color: white !important;
+            border: 1.5px solid #03518C !important;
+            border-radius: 50% !important;
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 14px !important;
+            font-weight: bold !important;
+            color: #03518C !important;
+            padding: 0 !important;
+            margin-top: 2px !important;
+            cursor: pointer !important;
+        }
+    
+        div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button:hover {
+            background-color: #f5f9ff !important;
+            color: #02416B !important;
+            border-color: #02416B !important;
+        }
+        </style>
+        """, unsafe_allow_html=True)
+    
+        if ajuda_ml:
+            st.session_state["pagina"] = "explicacao_ml"
+            st.rerun()
     
         # ========= 1) PERGUNTA INICIAL: usar base do app ou subir arquivo =========
         modo_dataset = st.radio(
@@ -3525,6 +3563,53 @@ def main():
     
                 st.success(f"{textos_ml['acc']} {acc:.3f}")
 
+        if st.button(textos["ini"]):
+            st.session_state['pagina'] = 'inicio'
+            st.rerun()
+
+    elif st.session_state['pagina'] == 'explicacao_ml':
+
+        textos_ml = TEXTOS_ML[st.session_state.lang]
+        textos = TEXTOS[st.session_state.lang]
+    
+        st.title(textos_ml["info1_titulo"])
+        st.write(textos_ml["info1"])
+    
+        st.header(textos_ml["info2_titulo"])
+        st.write(textos_ml["info2"])
+    
+        st.header(textos_ml["info3_titulo"])
+        st.write(textos_ml["info3"])
+    
+        st.header(textos_ml["info4_titulo"])
+        st.write(textos_ml["info4"])
+    
+        st.header(textos_ml["info5_titulo"])
+        st.write(textos_ml["info5"])
+    
+        # seletor de idioma (igual otimização)
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+    
+        with st.popover(label_btn, use_container_width=False):
+    
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside_ml",
+            )
+    
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+    
+        if st.button(textos["pagina_ml2"]):
+            st.session_state['pagina'] = 'ml'
+            st.rerun()
+    
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
             st.rerun()
@@ -5619,6 +5704,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
