@@ -3594,7 +3594,9 @@ def main():
         # ============================================================
         # QBN — Classical + Quantum (shots + AA) inference helpers
         # ============================================================
-        
+        def _qbn_init_state():
+            if "qbn" not in st.session_state:
+                st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
         
         def _qbn_states_from_card(card: int) -> List[str]:
             card = int(card)
@@ -5358,6 +5360,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
