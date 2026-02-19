@@ -3205,22 +3205,19 @@ def main():
         # Estilo do botão (igual otimização)
         st.markdown("""
         <style>
-        div[data-testid="stButton"] > button[kind="secondary"],
-        div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button {
+        button[data-testid="baseButton-secondary"][id*="botao_ajuda_ml"] {
             background-color: white !important;
             border: 1.5px solid #03518C !important;
             border-radius: 50% !important;
-            width: 26px !important;
-            height: 26px !important;
+            width: 28px !important;
+            height: 28px !important;
             font-size: 14px !important;
             font-weight: bold !important;
             color: #03518C !important;
             padding: 0 !important;
-            margin-top: 2px !important;
-            cursor: pointer !important;
         }
-    
-        div[data-testid="stButton"]:has(button[data-testid="baseButton-secondary"]) button:hover {
+        
+        button[data-testid="baseButton-secondary"][id*="botao_ajuda_ml"]:hover {
             background-color: #f5f9ff !important;
             color: #02416B !important;
             border-color: #02416B !important;
@@ -5704,6 +5701,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
