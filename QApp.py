@@ -453,7 +453,7 @@ TEXTOS = {
         "pagina_otimizacao2": "Otimização Quântica em Problemas de Alocação de Redundâncias",
         "pagina_inferencia": "Inferência Quântica",
         "pagina_ml": "Aprendizagem de Máquina Quântica",
-        "pagina_ml2": "Aplicação",
+        "pagina_ml2": "Executar modelo de aprendizagem de máquina quântica",
         "instancia_input": "Digite alguma coisa para testar a instância:",
         "instancia_recebida": "Instância recebida:",
         "idioma": "Escolha o idioma:", 
@@ -493,7 +493,7 @@ TEXTOS = {
         "pagina_inferencia": "Quantum Inference",
         "pagina_agrad": "Acknowledgments",
         "pagina_ml": "Quantum Machine Learning",
-        "pagina_ml2": "Application",
+        "pagina_ml2": "Run quantum machine learning model",
         "instancia_input": "Type something to test the instance:",
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
@@ -3202,7 +3202,7 @@ def main():
         with col2:
             ajuda_ml = st.button("?", key="botao_ajuda_ml")
     
-        # Estilo do botão (igual otimização)
+        
         st.markdown("""
         <style>
         button[data-testid="baseButton-secondary"][id*="botao_ajuda_ml"] {
@@ -3602,7 +3602,7 @@ def main():
                 st.session_state.lang = new_lang
                 st.rerun()
     
-        if st.button(textos["pagina_ml2"]):
+        if st.button(textos_otim["aplicacao"]):
             st.session_state['pagina'] = 'ml'
             st.rerun()
     
