@@ -371,6 +371,33 @@ import random
 def generate_otp():
     return str(random.randint(100000, 999999))
 
+import streamlit as st
+import gspread
+from google.oauth2.service_account import Credentials
+
+SHEET_ID = "1RWjNe16uHsfuPGaOIOsSU2gzK1VwKALpKkkJkJiUsJU"
+TAB_NAME = "QAPP_REGISTRATIONS"
+
+def get_worksheet():
+    creds_info = st.secrets["gcp_service_account"]
+    scopes = ["https://www.googleapis.com/auth/spreadsheets"]
+    creds = Credentials.from_service_account_info(creds_info, scopes=scopes)
+
+    gc = gspread.authorize(creds)
+    sh = gc.open_by_key(SHEET_ID)
+    ws = sh.worksheet(TAB_NAME)
+    return ws
+
+def init_sheet_headers():
+    ws = get_worksheet()
+    first_row = ws.row_values(1)
+    if not first_row:
+        ws.append_row(["created_at", "name", "email", "company", "role"], value_input_option="RAW")
+
+def save_registration_to_sheets(name, email, company, role, created_at):
+    ws = get_worksheet()
+    ws.append_row([created_at, name, email, company, role], value_input_option="RAW")
+
 parametros_treino=[
     [5.64955258, 5.13768523],
     [3.61058585, 1.50012797],
@@ -2645,6 +2672,9 @@ def main():
                         user.get("role", ""),
                         created_at
                     )
+                    init_sheet_headers()
+                    save_registration_to_sheets(name, email, company, role, created_at)
+
 
                     st.session_state.user = {**user, "created_at": created_at}
                     st.session_state.pending_user = None
@@ -5581,6 +5611,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
