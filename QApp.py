@@ -453,7 +453,7 @@ TEXTOS = {
         "pagina_otimizacao2": "Otimização Quântica em Problemas de Alocação de Redundâncias",
         "pagina_inferencia": "Inferência Quântica",
         "pagina_ml": "Aprendizagem de Máquina Quântica",
-        "pagina_ml2": "Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas",
+        "pagina_ml2": "Aplicação",
         "instancia_input": "Digite alguma coisa para testar a instância:",
         "instancia_recebida": "Instância recebida:",
         "idioma": "Escolha o idioma:", 
@@ -493,7 +493,7 @@ TEXTOS = {
         "pagina_inferencia": "Quantum Inference",
         "pagina_agrad": "Acknowledgments",
         "pagina_ml": "Quantum Machine Learning",
-        "pagina_ml2": "Quantum Machine Learning in classification problems and failure prediction",
+        "pagina_ml2": "Application",
         "instancia_input": "Type something to test the instance:",
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
@@ -3409,7 +3409,6 @@ def main():
                     eixos.append(eixo_i)
     
         with col2:
-            # aqui vem a correção da professora: QCNN não é porta
             tipo_circuito = st.selectbox(
                 "Selecione o tipo de circuito / arquitetura quântica:",
                 [" - ", "Camada parametrizada", "Real Amplitudes", "QCNN (experimental)"]
@@ -5701,6 +5700,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
