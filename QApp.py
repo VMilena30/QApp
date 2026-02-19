@@ -475,14 +475,14 @@ TEXTOS = {
         "pagina_info2": "Ajuda",
         "ajud2": "Selecione um módulo para acessar o Guia do Usuário.",
         "inf1": "Estimação de Confiabilidade com QBN:",
-        "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas e contínuas em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
+        "inf2": "Módulo voltado para análise de confiabilidade utilizando Quantum Bayesian Networks (QBNs). Permite integrar variáveis discretas (multi-estados) em um mesmo modelo, representando eventos e suas dependências probabilísticas de forma unificada.",
         "inf3": "Método:",
         "apoio": "Apoio:",
         "apo": "Agradecimentos às seguintes agências brasileiras de fomento à pesquisa pelo apoio financeiro: Conselho Nacional de Desenvolvimento Científico e Tecnológico (CNPq) (processos 409701/2022-0, 305198/2025-4, 310892/2022-8, 402761/2023-5 e 201271/2024-9); Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES) (Código de Financiamento 001); Programa de Recursos Humanos 38 (PRH 38), intitulado “Gestão de Riscos, Confiabilidade e Sustentabilidade na Exploração e Produção de Petróleo, Gás Natural e Energias Renováveis”, financiado pela Agência Nacional do Petróleo, Gás Natural e Biocombustíveis (ANP) e gerido pela Fundação de Amparo à Pesquisa do Estado de São Paulo (FAPESP) (processo 2025/03497-0); Fundação de Amparo à Ciência e Tecnologia do Estado de Pernambuco (FACEPE) (processo APQ-0504-3.08/25); e a Financiadora de Estudos e Projetos (FINEP).",
         "inf4": "As relações probabilísticas entre nós são implementadas com portas quânticas controladas. A probabilidade de falha é estimada a partir de medições de circuitos quânticos e amplificação de amplitudes, podendo ser comparada com métodos clássicos, como a simulação de Monte Carlo.",
         "help_area1": "Módulo dedicado à resolução de problemas de alocação de redundâncias por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO. Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando características da computação quântica para maximizar a confiabilidade de sistemas.",
         "help_area2": "Módulo dedicado ao aprendizado de máquina quântico, combinando processamento clássico de dados com métodos configuráveis de codificação e parametrização de circuitos quânticos, permitindo representação eficiente de características e suporte a tarefas de classificação e previsão.",
-        "help_area3": "Módulo voltado à estimação de confiabilidade por meio de Quantum Bayesian Networks (QBNs), integrando variáveis discretas e contínuas em um modelo probabilístico unificado. As dependências são implementadas com portas quânticas controladas, e a probabilidade de falha é estimada a partir de medições de circuitos quânticos, com possibilidade de comparação com métodos clássicos como Monte Carlo.",
+        "help_area3": "Módulo voltado à estimação de confiabilidade por meio de Quantum Bayesian Networks (QBNs), integrando variáveis discretas (multi-estados) em um modelo probabilístico unificado. As dependências são implementadas com portas quânticas controladas, e a probabilidade de falha é estimada a partir de medições de circuitos quânticos, com possibilidade de comparação com métodos clássicos como Monte Carlo.",
     },
     "en": {
         "intro": "This application was developed to promote the use of quantum computing in three distinct areas, described below.\nSelect the area you want to explore and discover the possibilities offered by this innovative technology.",
@@ -515,13 +515,13 @@ TEXTOS = {
         "pagina_info2": "Help",
         "ajud2": "Select a module to access the User Guide.",
         "inf1": "Reliability Assessment with QBN:",
-        "inf2": "Module designed for reliability assessment using Quantum Bayesian Networks (QBNs). It allows the integration of both discrete and continuous variables into a single model, representing events and their probabilistic dependencies in a unified way.",
+        "inf2": "Module designed for reliability assessment using Quantum Bayesian Networks (QBNs). It allows the integration of both discrete *multi-state) variables into a single model, representing events and their probabilistic dependencies in a unified way.",
         "inf3": "Method:",
         "ref": "Choose a module to access its references and related materials.",
         "inf4": "Probabilistic dependencies between nodes are implemented with controlled quantum gates. Failure probability is estimated using Quantum Amplitude Estimation (QAE) and can be compared with classical methods, such as Monte Carlo simulation.",
         "help_area1": "Module dedicated to solving redundancy allocation problems through quantum optimization algorithms, using QUBO-based formulations. This approach enables the representation of objective functions and constraints as quantum operators, leveraging characteristics of quantum computing to maximize system reliability.",
         "help_area2": "Module dedicated to quantum machine learning applications, combining classical data processing with configurable quantum encoding techniques and circuit parameterization, enabling efficient feature representation and supporting classification and predictive tasks.",
-        "help_area3": "Module focused on reliability estimation using Quantum Bayesian Networks (QBNs), integrating discrete and continuous variables within a unified probabilistic framework. Dependencies are implemented through controlled quantum gates, and failure probabilities are estimated from quantum circuit measurements, with the possibility of comparison to classical methods such as Monte Carlo simulation."
+        "help_area3": "Module focused on reliability estimation using Quantum Bayesian Networks (QBNs), integrating discrete (multi-state) variables within a unified probabilistic framework. Dependencies are implemented through controlled quantum gates, and failure probabilities are estimated from quantum circuit measurements, with the possibility of comparison to classical methods such as Monte Carlo simulation."
     }
 }
 
@@ -1312,18 +1312,6 @@ TEXTOS_INF = {
         "q_col_node": "Nó", 
         "q_col_slot": "Índice (slot)",
 
-        "node_continuous": "Variável contínua (distribuição)?",
-        "node_continuous_help": "Marque se este nó representa uma variável contínua (ex.: Weibull, Normal, Exponencial). O nó será discretizado em pontos (estados) para uso no circuito.",
-        "dist_family": "Distribuição",
-        "dist_family_help": "Escolha a família da distribuição contínua.",
-        "dist_params": "Parâmetros da distribuição",
-        "dist_points": "Quantidade de pontos (estados) na discretização",
-        "dist_points_help": "Esta quantidade vira o número de estados do nó. Ex.: 8 pontos → 8 estados.",
-        "dist_quantile_range": "Faixa de quantis (para cortar caudas)",
-        "dist_preview": "Prévia da discretização",
-        "dist_root_autofill": "Preencher automaticamente a marginal (apenas nó raiz)",
-        "dist_root_autofill_help": "Se o nó não tiver pais, você pode preencher a marginal automaticamente a partir da discretização.",
-
         "info1_titulo": "Guia do Usuário — Inferência Quântica via QBN",
 
         "info1": (
@@ -1590,18 +1578,6 @@ TEXTOS_INF = {
         "q_col_role": "Type",
         "q_col_node": "Node",
         "q_col_slot": "Index (slot)",
-
-        "node_continuous": "Continuous variable (distribution)?",
-        "node_continuous_help": "Enable if this node represents a continuous variable (e.g., Weibull, Normal, Exponential). The node will be discretized into points (states) for circuit use.",
-        "dist_family": "Distribution",
-        "dist_family_help": "Choose the continuous distribution family.",
-        "dist_params": "Distribution parameters",
-        "dist_points": "Number of discretization points (states)",
-        "dist_points_help": "This becomes the number of node states. E.g., 8 points → 8 states.",
-        "dist_quantile_range": "Quantile range (to trim tails)",
-        "dist_preview": "Discretization preview",
-        "dist_root_autofill": "Auto-fill marginal (root node only)",
-        "dist_root_autofill_help": "If the node has no parents, you can auto-fill its marginal from the discretization.",
 
         "info1_titulo": "User Guide — Quantum Inference via QBN",
     
@@ -3619,84 +3595,10 @@ def main():
         # QBN — Classical + Quantum (shots + AA) inference helpers
         # ============================================================
         
-        def _qbn_init_state():
-            if "qbn" not in st.session_state:
-                st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
         
         def _qbn_states_from_card(card: int) -> List[str]:
             card = int(card)
             return [f"s{i}" for i in range(max(1, card))]
-
-        def _qbn_states_from_points(n: int) -> List[str]:
-            n = int(n)
-            return [f"x{i}" for i in range(max(1, n))]
-        
-        def _qbn_make_scipy_dist(dist_name: str, params: Dict[str, float]):
-            from scipy import stats
-            dist_name = (dist_name or "").lower().strip()
-        
-            if dist_name == "normal":
-                mu = float(params.get("mu", 0.0))
-                sigma = float(params.get("sigma", 1.0))
-                sigma = max(sigma, 1e-12)
-                return stats.norm(loc=mu, scale=sigma)
-        
-            if dist_name == "exponential":
-                lam = float(params.get("lam", 1.0))  # rate λ
-                lam = max(lam, 1e-12)
-                return stats.expon(scale=1.0 / lam)
-        
-            if dist_name == "weibull":
-                k = float(params.get("k", 1.5))       # shape
-                scale = float(params.get("scale", 1.0))
-                k = max(k, 1e-12)
-                scale = max(scale, 1e-12)
-                return stats.weibull_min(c=k, scale=scale)
-        
-            raise ValueError(f"Unsupported distribution: {dist_name}")
-        
-        def _qbn_discretize_continuous(dist, n_points: int, q_low: float, q_high: float) -> Tuple[List[float], List[float], List[float]]:
-            """
-            Returns: (edges, midpoints, probs)
-            - edges: n_points+1 cut points
-            - midpoints: representative value per bin (n_points)
-            - probs: probability per bin (n_points), normalized
-            """
-            import numpy as np
-        
-            n_points = int(n_points)
-            q_low = float(q_low)
-            q_high = float(q_high)
-        
-            q_low = max(0.0, min(q_low, 1.0))
-            q_high = max(0.0, min(q_high, 1.0))
-            if q_high <= q_low:
-                q_low, q_high = 0.001, 0.999
-        
-            # Finite support cut (avoid +/-inf)
-            x_low = float(dist.ppf(q_low))
-            x_high = float(dist.ppf(q_high))
-        
-            if not np.isfinite(x_low):
-                x_low = float(dist.ppf(0.001))
-            if not np.isfinite(x_high):
-                x_high = float(dist.ppf(0.999))
-        
-            edges = np.linspace(x_low, x_high, n_points + 1)
-        
-            # probs from CDF differences
-            cdf_edges = dist.cdf(edges)
-            probs = np.diff(cdf_edges)
-            probs = [float(x) for x in probs.tolist()]
-            probs = _qbn_normalize_row(probs)
-        
-            mids = ((edges[:-1] + edges[1:]) / 2.0).tolist()
-            edges = [float(x) for x in np.array(edges, dtype=float).tolist()]
-            mids = [float(x) for x in mids]
-        
-            return edges, mids, probs
-
-
 
         
         def _qbn_normalize_row(vals: List[float]) -> List[float]:
@@ -3709,129 +3611,6 @@ def main():
                 return [1.0 / len(arr)] * len(arr)
             return (arr / s).tolist()
 
-        def _qbn_norm_cdf(x: float, mu: float, sigma: float) -> float:
-            import math
-            z = (x - mu) / (sigma * math.sqrt(2.0))
-            return 0.5 * (1.0 + math.erf(z))
-        
-        def _qbn_norm_ppf(p: float, mu: float, sigma: float) -> float:
-            # Approx. inverse CDF (Acklam), pure python
-            import math
-            if p <= 0.0:
-                return -math.inf
-            if p >= 1.0:
-                return math.inf
-        
-            # Coefficients
-            a = [-3.969683028665376e+01,  2.209460984245205e+02,
-                 -2.759285104469687e+02,  1.383577518672690e+02,
-                 -3.066479806614716e+01,  2.506628277459239e+00]
-            b = [-5.447609879822406e+01,  1.615858368580409e+02,
-                 -1.556989798598866e+02,  6.680131188771972e+01,
-                 -1.328068155288572e+01]
-            c = [-7.784894002430293e-03, -3.223964580411365e-01,
-                 -2.400758277161838e+00, -2.549732539343734e+00,
-                  4.374664141464968e+00,  2.938163982698783e+00]
-            d = [ 7.784695709041462e-03,  3.224671290700398e-01,
-                  2.445134137142996e+00,  3.754408661907416e+00]
-        
-            plow = 0.02425
-            phigh = 1.0 - plow
-        
-            if p < plow:
-                q = math.sqrt(-2.0 * math.log(p))
-                x = (((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / \
-                    ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0)
-            elif p > phigh:
-                q = math.sqrt(-2.0 * math.log(1.0 - p))
-                x = -(((((c[0]*q + c[1])*q + c[2])*q + c[3])*q + c[4])*q + c[5]) / \
-                     ((((d[0]*q + d[1])*q + d[2])*q + d[3])*q + 1.0)
-            else:
-                q = p - 0.5
-                r = q*q
-                x = (((((a[0]*r + a[1])*r + a[2])*r + a[3])*r + a[4])*r + a[5]) * q / \
-                    (((((b[0]*r + b[1])*r + b[2])*r + b[3])*r + b[4])*r + 1.0)
-        
-            # One step of Halley refinement
-            e = _qbn_norm_cdf(x, 0.0, 1.0) - p
-            u = e * math.sqrt(2.0*math.pi) * math.exp(0.5*x*x)
-            x = x - u / (1.0 + 0.5*x*u)
-        
-            return mu + sigma * x
-        
-        def _qbn_exp_cdf(x: float, lam: float) -> float:
-            import math
-            if x <= 0.0:
-                return 0.0
-            return 1.0 - math.exp(-lam * x)
-        
-        def _qbn_exp_ppf(p: float, lam: float) -> float:
-            import math
-            p = min(max(p, 1e-15), 1.0 - 1e-15)
-            return -math.log(1.0 - p) / lam
-        
-        def _qbn_weibull_cdf(x: float, k: float, scale: float) -> float:
-            import math
-            if x <= 0.0:
-                return 0.0
-            return 1.0 - math.exp(-((x / scale) ** k))
-        
-        def _qbn_weibull_ppf(p: float, k: float, scale: float) -> float:
-            import math
-            p = min(max(p, 1e-15), 1.0 - 1e-15)
-            return scale * ((-math.log(1.0 - p)) ** (1.0 / k))
-        
-        def _qbn_discretize_continuous(dist: str, params: dict, n: int, q_low=1e-3, q_high=1-1e-3):
-            """
-            Returns (probs, edges, mids)
-            probs: length n, sums to 1
-            edges: length n+1
-            mids: length n
-            """
-            import numpy as np
-        
-            n = int(n)
-            dist = (dist or "").lower().strip()
-        
-            if dist == "normal":
-                mu = float(params.get("mu", 0.0))
-                sigma = float(params.get("sigma", 1.0))
-                sigma = max(sigma, 1e-12)
-                lo = _qbn_norm_ppf(q_low, mu, sigma)
-                hi = _qbn_norm_ppf(q_high, mu, sigma)
-                cdf = lambda x: _qbn_norm_cdf(x, mu, sigma)
-        
-            elif dist == "exponential":
-                lam = float(params.get("lam", 1.0))
-                lam = max(lam, 1e-12)
-                lo = 0.0
-                hi = _qbn_exp_ppf(q_high, lam)
-                cdf = lambda x: _qbn_exp_cdf(x, lam)
-        
-            elif dist == "weibull":
-                k = float(params.get("k", 1.5))
-                scale = float(params.get("scale", 1.0))
-                k = max(k, 1e-12)
-                scale = max(scale, 1e-12)
-                lo = 0.0
-                hi = _qbn_weibull_ppf(q_high, k, scale)
-                cdf = lambda x: _qbn_weibull_cdf(x, k, scale)
-        
-            else:
-                raise ValueError(f"Unknown distribution: {dist}")
-        
-            edges = np.linspace(lo, hi, n + 1)
-            probs = []
-            mids = []
-            for i in range(n):
-                a = float(edges[i])
-                b = float(edges[i + 1])
-                p = float(cdf(b) - cdf(a))
-                probs.append(max(0.0, p))
-                mids.append(0.5 * (a + b))
-        
-            probs = _qbn_normalize_row(probs)
-            return probs, edges.tolist(), mids
         
         def _qbn_resize_cpt_for_new_card(info: dict, new_card: int):
             """Keeps CPT keys, but resets each row to uniform of length new_card."""
@@ -4521,112 +4300,16 @@ def main():
                 with st.container(border=True):
                     nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
                 
-                    is_cont = st.checkbox(
-                        textos_inf["node_continuous"],
-                        value=bool(st.session_state.get("qbn_new_node_cont", False)),
-                        help=textos_inf.get("node_continuous_help", ""),
-                        key="qbn_new_node_cont",
+                
+                    card = st.number_input(
+                        textos_inf["card_no"],
+                        min_value=2,
+                        max_value=8,
+                        value=2,
+                        step=1,
+                        key="qbn_new_node_card",
                     )
-                
-                    # defaults
-                    card = 2
-                    cont_payload = None
-                
-                    if not is_cont:
-                        card = st.number_input(
-                            textos_inf["card_no"],
-                            min_value=2,
-                            max_value=8,
-                            value=2,
-                            step=1,
-                            key="qbn_new_node_card",
-                        )
-                    else:
-                        st.caption(textos_inf.get("dist_params", "Parâmetros da distribuição"))
-                
-                        dist_family = st.selectbox(
-                            textos_inf["dist_family"],
-                            options=["Weibull", "Normal", "Exponential"],
-                            index=0,
-                            help=textos_inf.get("dist_family_help", ""),
-                            key="qbn_new_node_dist_family",
-                        )
-                
-                        # params UI
-                        params = {}
-                        if dist_family == "Normal":
-                            c1, c2 = st.columns(2)
-                            with c1:
-                                params["mu"] = st.number_input("μ (mean)", value=0.0, step=0.1, key="qbn_new_node_mu")
-                            with c2:
-                                params["sigma"] = st.number_input("σ (std)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_sigma")
-                            dist_key = "normal"
-                
-                        elif dist_family == "Exponential":
-                            params["lam"] = st.number_input("λ (rate)", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_lam")
-                            dist_key = "exponential"
-                
-                        else:  # Weibull
-                            c1, c2 = st.columns(2)
-                            with c1:
-                                params["k"] = st.number_input("k (shape)", min_value=1e-6, value=1.5, step=0.1, key="qbn_new_node_k")
-                            with c2:
-                                params["scale"] = st.number_input("scale", min_value=1e-6, value=1.0, step=0.1, key="qbn_new_node_scale")
-                            dist_key = "weibull"
-                
-                        n_points = st.number_input(
-                            textos_inf["dist_points"],
-                            min_value=2,
-                            max_value=32,
-                            value=8,
-                            step=1,
-                            help=textos_inf.get("dist_points_help", ""),
-                            key="qbn_new_node_npoints",
-                        )
-                
-                
-                        q_low, q_high = st.slider(
-                            textos_inf["dist_quantile_range"],
-                            min_value=0.0,
-                            max_value=1.0,
-                            value=(0.001, 0.999),
-                            step=0.001,
-                            key="qbn_new_node_qrange",
-                        )
-                
-                        auto_root = st.checkbox(
-                            textos_inf["dist_root_autofill"],
-                            value=True,
-                            help=textos_inf.get("dist_root_autofill_help", ""),
-                            key="qbn_new_node_autoroot",
-                        )
-                
-                        # preview (agora atualiza ao vivo)
-                        try:
-                            dist = _qbn_make_scipy_dist(dist_key, params)
-                            edges, mids, probs = _qbn_discretize_continuous(dist, int(n_points), float(q_low), float(q_high))
-                            with st.expander(textos_inf["dist_preview"], expanded=False):
-                                import pandas as pd
-                                dfp = pd.DataFrame({
-                                    "state": _qbn_states_from_points(int(n_points)),
-                                    "x_mid": [round(x, 6) for x in mids],
-                                    "prob": [round(p, 6) for p in probs],
-                                })
-                                st.dataframe(dfp, use_container_width=True, hide_index=True)
-                        except Exception as e:
-                            st.warning(f"{textos_inf.get('dist_preview','Prévia')}: {e}")
-                
-                        # for creation
-                        card = int(n_points)
-                        cont_payload = {
-                            "enabled": True,
-                            "dist": dist_key,
-                            "params": params,
-                            "n_points": int(n_points),
-                            "q_low": float(q_low),
-                            "q_high": float(q_high),
-                            "auto_root": bool(auto_root),
-                        }
+
                 
                     # botão normal (fora do form)
                     submitted = st.button(textos_inf["add_no"], key="qbn_add_node_btn")
@@ -4634,39 +4317,14 @@ def main():
                     if submitted:
                         nome = (nome or "").strip()
                         if nome and (nome not in st.session_state.qbn["nodes"]):
-                
-                            if cont_payload and cont_payload.get("enabled", False):
-                                dist = _qbn_make_scipy_dist(cont_payload["dist"], cont_payload["params"])
-                                edges, mids, probs = _qbn_discretize_continuous(
-                                    dist,
-                                    cont_payload["n_points"],
-                                    cont_payload["q_low"],
-                                    cont_payload["q_high"],
-                                )
-                
-                                states = _qbn_states_from_points(int(cont_payload["n_points"]))
-                                init_probs = probs if cont_payload.get("auto_root", True) else ([1.0 / len(states)] * len(states))
-                
-                                st.session_state.qbn["nodes"][nome] = {
-                                    "card": int(card),
-                                    "states": states,
-                                    "parents": [],
-                                    "cpt": {(): init_probs},
-                                    "continuous": True,
-                                    "continuous_dist": cont_payload["dist"],
-                                    "continuous_params": cont_payload["params"],
-                                    "continuous_qrange": (cont_payload["q_low"], cont_payload["q_high"]),
-                                    "continuous_midpoints": mids,
-                                    "continuous_edges": edges,
-                                }
-                            else:
-                                st.session_state.qbn["nodes"][nome] = {
-                                    "card": int(card),
-                                    "states": _qbn_states_from_card(int(card)),
-                                    "parents": [],
-                                    "cpt": {(): [1.0 / int(card)] * int(card)},
-                                }
-                
+                    
+                            st.session_state.qbn["nodes"][nome] = {
+                                "card": int(card),
+                                "states": _qbn_states_from_card(int(card)),
+                                "parents": [],
+                                "cpt": {(): [1.0 / int(card)] * int(card)},
+                            }
+                    
                             st.session_state.qbn["selected"] = nome
                             st.rerun()
 
@@ -5700,6 +5358,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
