@@ -390,13 +390,21 @@ def get_worksheet():
 
 def init_sheet_headers():
     ws = get_worksheet()
-    first_row = ws.row_values(1)
-    if not first_row:
-        ws.append_row(["created_at", "name", "email", "company", "role"], value_input_option="RAW")
+    header = ws.row_values(1)
 
-def save_registration_to_sheets(name, email, company, role, created_at):
+    expected = ["created_at", "name", "email", "country", "company", "role"]
+
+    if not header:
+        ws.append_row(expected, value_input_option="RAW")
+        return
+
+    if header == ["created_at", "name", "email", "company", "role"]:
+        ws.update("A1:F1", [expected])  # escreve 6 colunas no header
+
+def save_registration_to_sheets(name, email, country, company, role, created_at):
     ws = get_worksheet()
-    ws.append_row([created_at, name, email, company, role], value_input_option="RAW")
+    ws.append_row([created_at, name, email, country, company, role], value_input_option="RAW")
+
 
 parametros_treino=[
     [5.64955258, 5.13768523],
@@ -2676,11 +2684,11 @@ def main():
                     save_registration_to_sheets(
                         user.get("name", ""),
                         user.get("email", ""),
+                        user.get("country", ""),
                         user.get("company", ""),
                         user.get("role", ""),
                         created_at
                     )
-
 
 
                     st.session_state.user = {**user, "created_at": created_at}
@@ -5618,6 +5626,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
