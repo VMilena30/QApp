@@ -1052,25 +1052,99 @@ TEXTOS_ML = {
         "help_5": "Selecione quantas rotações de euler ocorrerão no seu circuito quântico.",
         "help_6": "Selecione as rotações correspondentes a quantidade que você escolheu.",
         "help_7": "Nessa etapa você vai selecionar o tipo de emaranhamento quântico que gostaria de adicionar no circuito.",
-        "info1_titulo": "Guia de Uso",
-        "info1": "Esse guia de uso visa facilitar o uso de técnicas de Aprendizagem de Máquina Quântica em problemas de classificação e predição de falhas em equipamentos rotativos, como rolamentos. Mesmo sem conhecimento prévio em computação quântica, você poderá explorar os dados e configurar modelos com apenas alguns cliques. Abaixo, explicamos cada parte da interface.",
-        "info2_titulo": "1. Escolha ou envio de base de dados",
-        "info2": "Logo na tela inicial, você verá duas opções:",
-        "info2.1": "**Selecionar uma base existente:** Você pode escolher entre bases de dados já conhecidas contendo medições de vibração de rolamentos, como a base da Universidade de CWRU ou da JNU.",
-        "info2.2": "**Importar dados próprios:** Caso possua seus próprios dados (em formato CSV, Excel ou Parquet), é possível fazer o upload diretamente no sistema.",
+        "info1_titulo": "Guia de Uso — Aprendizagem de Máquina Quântica",
+        "info1": """
+        Este módulo permite a execução de experimentos de classificação utilizando modelos híbridos 
+        de Aprendizagem de Máquina Quântica (Quantum Machine Learning – QML).
+        
+        A plataforma combina:
+        • Extração automática de características de sinais,
+        • Codificação de dados clássicos em estados quânticos,
+        • Circuitos quânticos parametrizados (PQC),
+        • E um classificador clássico final (SVM).
+        
+        O fluxo foi desenvolvido para permitir que usuários com ou sem experiência prévia 
+        em computação quântica possam explorar técnicas quânticas aplicadas à predição de falhas.
+        """,
+        "info2_titulo": "1. Escolha ou envio da base de dados",
+        "info2": """
+        O usuário pode:
+        
+        • Utilizar uma base interna (CWRU ou JNU), já estruturada para diagnóstico de falhas em rolamentos;
+        ou
+        • Enviar sua própria base de dados.
+        
+        📌 FORMATO EXIGIDO PARA BASE PRÓPRIA:
+        
+        O dataset deve conter obrigatoriamente:
+        
+        1️⃣ Uma coluna chamada "label"  
+           → representa o rótulo numérico ou categórico da amostra.
+        
+        2️⃣ Uma coluna chamada "fault"  
+           → representa o tipo de falha ou condição operacional associada à amostra.
+        
+        As demais colunas devem conter apenas valores numéricos (features ou sinais).
+        
+        Caso a coluna "label" não seja encontrada, o sistema assumirá automaticamente que a última coluna do dataset corresponde ao alvo (target).
+        
+        Formatos aceitos:
+        • .csv
+        • .xlsx
+        • .parquet
+        
+        Recomenda-se que o dataset esteja limpo, sem valores nulos ou strings nas colunas numéricas.
+        """,
         "info3_titulo": "2. Extração de características",
-        "info3": "Depois de carregar sua base de dados com sinais de vibração, o aplicativo oferece a possibilidade de extrair automaticamente características (features) desses sinais. Essa etapa simplifica os dados e reduz a quantidade de informação a ser processada, tornando o modelo mais eficiente e interpretável.",
-        "info4_titulo": "3. Codificação quântica",
-        "info4": "Computadores quânticos não processam dados do mesmo modo que os computadores clássicos. Para que os dados possam ser utilizados em um modelo quântico, eles precisam ser convertidos em uma linguagem compreensível para os qubits. Essa conversão é chamada de codificação quântica. Cada método tem suas particularidades e pode influenciar na performance do modelo.",
+        "info3": """
+        Após o carregamento dos dados, o sistema permite a extração automática de características estatísticas dos sinais.
+        
+        Entre as features disponíveis estão:
+        • Média
+        • Variância
+        • Desvio-padrão
+        • RMS
+        • Kurtosis
+        • Skewness
+        • Energia
+        • Entropia
+        • Peak-to-peak
+        • Crest Factor
+        entre outras.
+        
+        Caso nenhuma feature seja selecionada, todas serão automaticamente extraídas.
+        
+        Essa etapa reduz dimensionalidade e melhora a interpretabilidade do modelo.
+        """,
+        "info4_titulo": "3. Codificação Quântica",
+        "info4": """
+        Para que dados clássicos possam ser processados por um circuito quântico,
+        eles precisam ser convertidos para estados quânticos. Esse processo é chamado de codificação quântica (quantum encoding).
+        
+        Métodos disponíveis:
+        
+        • Angle Encoding — utiliza rotações RX, RY ou RZ.
+        • Amplitude Encoding — codifica dados como amplitudes do estado quântico.
+        • Feature Maps (X, Y, Z e ZZ).
+        
+        ⚠ Observação importante:
+        Amplitude Encoding exige que o número de features seja uma potência de 2 (2^n).
+        Caso necessário, o sistema realiza padding automático com zeros.
+        """,
         "info5_titulo": "4. Circuitos Quânticos Parametrizados (PQC)",
-        "info5": "Os circuitos quânticos parametrizados, também chamados de Parametrized Quantum Circuits (PQC), são o núcleo dos modelos de Aprendizagem de Máquina Quântica. Eles funcionam como o “cérebro” do algoritmo, sendo responsáveis por aprender padrões a partir dos dados inseridos. A ideia central é que o circuito possui portas quânticas ajustáveis por parâmetros numéricos, que são modificados durante o treinamento para encontrar as melhores configurações.",
-        "info5.1": "Esses parâmetros são análogos aos “pesos” de uma rede neural clássica. Durante o aprendizado, o modelo ajusta os valores dessas portas para minimizar os erros de classificação ou predição.",
-        "info6_titulo": "4.1. Rotações de Euler",
-        "info6": "Uma parte essencial dos PQCs são as chamadas rotações de Euler, que são operações aplicadas a cada qubit individualmente. Elas alteram o estado do qubit com base em ângulos parametrizáveis (por exemplo: Rx(θ), Ry(θ), Rz(θ)), permitindo que o circuito represente uma ampla gama de transformações.",
-        "info6.1": "Você pode configurar a quantidade de rotações de Euler aplicadas em cada camada do circuito. Aumentar esse número torna o circuito mais expressivo (capaz de representar padrões mais complexos), mas também pode aumentar o tempo de execução e o risco de sobreajuste (overfitting).",
-        "info7_titulo": "4.2. Emaranhamento entre Qubits",
-        "info7": "Além das operações em qubits isolados, é fundamental que o circuito quântico conecte os qubits entre si. Isso é feito por meio de portas de emaranhamento, que criam correlações entre os estados dos qubits. O emaranhamento é uma das propriedades mais poderosas da computação quântica, pois permite representar relações complexas entre os dados.",
-        "info7.1": "Você pode selecionar qual porta deseja usar no seu circuito. O tipo de emaranhamento afeta diretamente a arquitetura do modelo e pode influenciar sua capacidade de generalização."
+        "info5": """
+        Os PQCs são responsáveis por aprender padrões nos dados codificados.
+        
+        Arquiteturas disponíveis:
+        
+        • Camada Parametrizada — rotações RX, RY, RZ com portas de emaranhamento (CZ ou iSWAP);
+        • Real Amplitudes;
+        • QCNN (estrutura experimental inspirada em redes convolucionais quânticas).
+        
+        Rotações de Euler:
+        O usuário pode escolher 1, 2 ou 3 eixos de rotação.
+        Não é obrigatório utilizar três eixos; rotações simples com um único eixo são permitidas.
+        """
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1116,25 +1190,100 @@ TEXTOS_ML = {
         "help_5": "Select how many Euler rotations will occur in your quantum circuit.",
         "help_6": "Select the rotations corresponding to the quantity you chose.",
         "help_7": "At this stage, you will select the type of quantum entanglement you would like to add to the circuit.",
-        "info1_titulo": "Usage Guide",
-        "info1": "This user guide aims to facilitate the use of Quantum Machine Learning techniques in classification and failure prediction problems in rotating equipment, such as bearings. Even without prior knowledge of quantum computing, you will be able to explore the data and configure models with just a few clicks. Below, we explain each part of the interface.",
-        "info2_titulo": "1. Choose or upload a database",
-        "info2": "Right on the initial screen, you will see two options:",
-        "info2.1": "Select an existing database: You can choose from well-known databases containing vibration measurements from bearings, such as the CWRU or JNU database.",
-        "info2.2": "Upload your own data: If you have your own data (in CSV, Excel, or Parquet format), you can upload it directly into the system.",
-        "info3_titulo": "2. Feature extraction",
-        "info3": "After loading your vibration signal dataset, the application offers the option to automatically extract features from these signals. This step simplifies the data and reduces the amount of information to be processed, making the model more efficient and interpretable.",
-        "info4_titulo": "3. Quantum encoding",
-        "info4": "Quantum computers do not process data in the same way as classical computers. For data to be used in a quantum model, it must be converted into a language understandable by qubits. This conversion is called quantum encoding. Each method has its particularities and may influence the model’s performance.",
+        "info1_titulo": "User Guide — Quantum Machine Learning",
+        "info1": """
+        This module enables classification experiments using hybrid Quantum Machine Learning (QML) models.
+        
+        The platform integrates:
+        • Automatic feature extraction from signals,
+        • Classical-to-quantum data encoding,
+        • Parameterized Quantum Circuits (PQC),
+        • A final classical classifier (SVM).
+        
+        The workflow was designed so that users with or without prior knowledge of quantum computing 
+        can explore quantum techniques for fault diagnosis and predictive modeling.
+        """,
+        "info2_titulo": "1. Dataset Selection or Upload",
+        "info2": """
+        Users may:
+        
+        • Select an internal dataset (CWRU or JNU), already structured for bearing fault diagnosis;
+        or
+        • Upload their own dataset.
+        
+        📌 REQUIRED FORMAT FOR CUSTOM DATASETS:
+        
+        The dataset must contain:
+        
+        1️⃣ A column named "label"
+           → represents the numerical or categorical target class.
+        
+        2️⃣ A column named "fault"
+           → represents the fault type or operational condition associated with each sample.
+        
+        All remaining columns must contain numerical values (signal data or features).
+        
+        If a column named "label" is not found, the system will automatically assume that 
+        the last column corresponds to the target variable.
+        
+        Accepted file formats:
+        • .csv
+        • .xlsx
+        • .parquet
+        
+        It is recommended that the dataset does not contain missing values or non-numeric entries in feature columns.
+        """,
+        "info3_titulo": "2. Feature Extraction",
+        "info3": """
+        After loading the dataset, the system allows automatic extraction of statistical features from the signals.
+        
+        Available features include:
+        • Mean
+        • Variance
+        • Standard Deviation
+        • RMS
+        • Kurtosis
+        • Skewness
+        • Energy
+        • Entropy
+        • Peak-to-Peak
+        • Crest Factor
+        among others.
+        
+        If no feature is selected, all available features will be automatically extracted.
+        
+        This step reduces dimensionality and improves model interpretability.
+        """,
+        "info4_titulo": "3. Quantum Encoding",
+        "info4": """
+        In order for classical data to be processed by a quantum circuit,
+        it must be mapped into quantum states. This process is called quantum encoding.
+        
+        Available methods:
+        
+        • Angle Encoding — uses RX, RY, or RZ rotations.
+        • Amplitude Encoding — encodes data as amplitudes of a quantum state.
+        • Feature Maps (X, Y, Z, and ZZ).
+        
+        ⚠ Important:
+        Amplitude Encoding requires the number of features to be a power of two (2^n).
+        If necessary, the system automatically applies zero-padding to meet this requirement.
+        """,
         "info5_titulo": "4. Parameterized Quantum Circuits (PQC)",
-        "info5": "Parameterized Quantum Circuits, also known as PQCs, are the core of Quantum Machine Learning models. They act as the “brain” of the algorithm, being responsible for learning patterns from the input data. The central idea is that the circuit contains quantum gates adjustable by numerical parameters, which are modified during training to find the best configurations.",
-        "info5.1": "These parameters are anaus to the “weights” of a classical neural network. During learning, the model adjusts the values of these gates to minimize classification or prediction errors.",
-        "info6_titulo": "4.1. Euler Rotations",
-        "info6": "An essential part of PQCs are the so-called Euler rotations, which are operations applied to each qubit individually. They change the state of the qubit based on parameterizable angles (for example: Rx(θ), Ry(θ), Rz(θ)), allowing the circuit to represent a wide range of transformations.",
-        "info6.1": "You can configure the number of Euler rotations applied in each layer of the circuit. Increasing this number makes the circuit more expressive (capable of representing more complex patterns), but it can also increase execution time and the risk of overfitting.",
-        "info7_titulo": "4.2. Qubit Entanglement",
-        "info7": "In addition to operations on individual qubits, it is essential for the quantum circuit to connect the qubits with each other. This is done through entanglement gates, which create correlations between the states of the qubits. Entanglement is one of the most powerful properties of quantum computing, as it allows the representation of complex relationships within the data.",
-        "info7.1": "You can choose which entangling gate to use in your circuit. The type of entanglement directly affects the model’s architecture and can influence its generalization ability."
+        "info5": """
+        Parameterized Quantum Circuits (PQC) are responsible for learning patterns 
+        from the encoded data.
+        
+        Available architectures:
+        
+        • Parameterized Layer — RX, RY, RZ rotations with entanglement gates (CZ or iSWAP);
+        • Real Amplitudes template;
+        • QCNN (experimental architecture inspired by quantum convolutional networks).
+        
+        Euler Rotations:
+        Users may select 1, 2, or 3 rotation axes.
+        It is not mandatory to use three axes; single-axis rotations are allowed.
+        """
     }
 }
 
@@ -5432,6 +5581,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
