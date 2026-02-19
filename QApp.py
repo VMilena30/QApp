@@ -376,7 +376,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 
 SHEET_ID = "1RWjNe16uHsfuPGaOIOsSU2gzK1VwKALpKkkJkJiUsJU"
-TAB_NAME = "QAPP_REGISTRATIONS"
+TAB_NAME = "Página1"
 
 def get_worksheet():
     creds_info = st.secrets["gcp_service_account"]
@@ -5611,6 +5611,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
