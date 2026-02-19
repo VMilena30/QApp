@@ -503,9 +503,9 @@ TEXTOS = {
         ),
         "ini": "Página inicial", 
         "pagina_referencias": "Referências",
-        "pagina_info": "Ajuda",
+        "pagina_info": "Guia do Usuário",
         "pagina_agrad": "Agradecimentos",
-        "inf_ref": "Ajuda, Referências e Agradecimentos",
+        "inf_ref": "Guia do Usuário, Referências e Agradecimentos",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
         "pagina_info2": "Ajuda",
         "ajud2": "Selecione um módulo para acessar o Guia do Usuário.",
@@ -533,7 +533,7 @@ TEXTOS = {
         "instancia_recebida": "Received instance:",
         "idioma": "Choose the language:", 
         "referencias_titulo": "References",
-        "inf_ref": "Help, References and Acknowledgments",
+        "inf_ref": "User Guide, References and Acknowledgments",
         "ref": "Choose a module to access its references and related materials.",
         "referencias_intro": "To learn more about our work in this areas, check the references below:", 
         "info_ml": "Section describing the Quantum Machine Learning techniques used.",
@@ -546,7 +546,7 @@ TEXTOS = {
         "ini": "Homepage",
         "pagina_referencias": "References",
         "ref": "Escolha um módulo para acessar as referências e materiais relacionados.",
-        "pagina_info": "Help",
+        "pagina_info": "User Guide",
         "pagina_info2": "Help",
         "ajud2": "Select a module to access the User Guide.",
         "inf1": "Reliability Assessment with QBN:",
@@ -5626,6 +5626,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
