@@ -81,7 +81,7 @@ st.markdown(
 
 ADMIN_EMAILS = [
     "vmilena3010@gmail.com",
-    "lav@ufpe.br",
+    "lavinia.mendes@ufpe.br",
 ]
 
 TEXTOS_LOGIN = {
@@ -5626,6 +5626,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
