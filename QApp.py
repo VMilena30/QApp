@@ -1210,12 +1210,11 @@ TEXTOS_INF = {
         "evidencia_desc": "Evidência = nós observados. Para cada nó escolhido, selecione o estado observado.",
         "query_desc": "Consulta = nós para os quais você quer obter as probabilidades posteriores.",
 
-        "example_expander": "Exemplo",
-        "example_desc": "Carregue uma rede pequena pronta para testar evidência, consulta e execução antes de montar a sua.",
-        "load_example_btn": "Carregar exemplo",
-        "clear_example_btn": "Limpar rede",
-        "example_loaded_msg": "Exemplo carregado. Agora você pode definir evidência e consulta e executar a inferência.",
-        
+        "example_title": "Exemplo",
+        "example_desc": "Carrega uma rede simples A→C←B (Borujeni et al., 2021) para você testar a inferência antes de montar sua própria rede.",
+        "example_load_btn": "Carregar exemplo",
+        "example_clear_btn": "Limpar rede",
+
                 
         # Seções principais
         "def_nos": "Definição dos nós",
@@ -1481,11 +1480,11 @@ TEXTOS_INF = {
         "evidencia_desc": "Evidence = observed nodes. For each selected node, choose the observed state.",
         "query_desc": "Queries = nodes you want posterior probabilities for.",
 
-        "example_expander": "Quick example (try it first)",
-        "example_desc": "Load a small ready-to-run network to test evidence, queries, and execution before building your own.",
-        "load_example_btn": "Load example",
-        "clear_example_btn": "Clear network",
-        "example_loaded_msg": "Example loaded. You can now set evidence and queries and run inference.",
+        "example_title": "Example",
+        "example_desc": "Loads a simple A→C←B network (Borujeni et al., 2021) so you can test inference before building your own network.",
+        "example_load_btn": "Load example",
+        "example_clear_btn": "Clear network",
+
 
         
         # Main sections
@@ -4300,43 +4299,44 @@ def main():
             import numpy as np
             _qbn_init_state()
 
-            def _qbn_load_example_network():
-                # Exemplo discreto com multiestado:
-                # Cause (2) -> Failure (2) -> Sensor (2)
-                # Severity (3) nó multiestado independente
-                nodes = {
-                    "Cause": {
+            def _qbn_load_example_borujeni_fig4():
+                """
+                Example BN (Borujeni et al., 2021 - Fig. 4):
+                  A -> C <- B
+                with binary states (s0, s1).
+                """
+                A, B, C = "A", "B", "C"
+                states = ["s0", "s1"]
+            
+                bn_nodes = {
+                    A: {
                         "card": 2,
-                        "states": _qbn_states_from_card(2),
+                        "states": states,
                         "parents": [],
-                        "cpt": {(): [0.8, 0.2]},
+                        "cpt": {(): [0.2, 0.8]},   # P(A=s0)=0.2, P(A=s1)=0.8
                     },
-                    "Failure": {
+                    B: {
                         "card": 2,
-                        "states": _qbn_states_from_card(2),
-                        "parents": ["Cause"],
-                        "cpt": {
-                            ("s0",): [0.95, 0.05],
-                            ("s1",): [0.60, 0.40],
-                        },
-                    },
-                    "Sensor": {
-                        "card": 2,
-                        "states": _qbn_states_from_card(2),
-                        "parents": ["Failure"],
-                        "cpt": {
-                            ("s0",): [0.90, 0.10],
-                            ("s1",): [0.15, 0.85],
-                        },
-                    },
-                    "Severity": {
-                        "card": 3,
-                        "states": _qbn_states_from_card(3),
+                        "states": states,
                         "parents": [],
-                        "cpt": {(): [0.70, 0.20, 0.10]},
+                        "cpt": {(): [0.3, 0.7]},   # P(B=s0)=0.3, P(B=s1)=0.7
+                    },
+                    C: {
+                        "card": 2,
+                        "states": states,
+                        "parents": [A, B],         # IMPORTANT: parent order is [A, B]
+                        "cpt": {
+                            # keys follow the order (A_state, B_state)
+                            ("s0", "s0"): [0.15, 0.85],
+                            ("s0", "s1"): [0.30, 0.70],
+                            ("s1", "s0"): [0.40, 0.60],
+                            ("s1", "s1"): [0.60, 0.40],
+                        },
                     },
                 }
-                return {"nodes": nodes, "selected": "Failure", "last": None}
+            
+                return {"nodes": bn_nodes, "selected": A, "last": None}
+
 
 
         
@@ -4355,20 +4355,20 @@ def main():
                 st.subheader(textos_inf["def_nos"])
                 st.caption(textos_inf["def_nos_desc"])
 
-                with st.expander(textos_inf["example_expander"], expanded=False):
+                with st.expander(textos_inf["example_title"], expanded=False):
                     st.caption(textos_inf["example_desc"])
                 
                     c1, c2 = st.columns(2)
                     with c1:
-                        if st.button(textos_inf["load_example_btn"], key="qbn_load_example_btn"):
-                            st.session_state.qbn = _qbn_load_example_network()
-                            st.success(textos_inf["example_loaded_msg"])
+                        if st.button(textos_inf["example_load_btn"], key="qbn_load_example_fig4"):
+                            st.session_state.qbn = _qbn_load_example_borujeni_fig4()
                             st.rerun()
                 
                     with c2:
-                        if st.button(textos_inf["clear_example_btn"], key="qbn_clear_example_btn"):
+                        if st.button(textos_inf["example_clear_btn"], key="qbn_clear_example_fig4"):
                             st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
                             st.rerun()
+
 
                 
                 with st.container(border=True):
@@ -5432,6 +5432,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
