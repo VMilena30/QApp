@@ -5335,7 +5335,7 @@ def main():
         
     
     elif st.session_state['pagina'] == 'info':
-        st.subheader(textos["pagina_info2"])
+        st.subheader(textos["pagina_info"])
         st.write(textos["ajud2"])
         
         mostrar_cartoes_de_info(textos)
@@ -5626,6 +5626,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
