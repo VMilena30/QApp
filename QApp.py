@@ -1587,6 +1587,7 @@ TEXTOS_INF = {
             "define evidence (what you observed), and choose queries (what you want to estimate). "
             "Then, the software runs inference and compares methods "
             "(e.g., Exact / Monte Carlo / Quantum / Quantum+AA, depending on what is enabled)."
+            "Scope: this module supports discrete variables only, including multi-state nodes (2, 3, … states). Continuous distributions are not used in this version."
         ),
     
         "info2_titulo": "2) Step-by-step (recommended workflow)",
@@ -1598,12 +1599,13 @@ TEXTOS_INF = {
             "3. Set the Number of states (e.g., 2 → {s0, s1}).\n\n"
             "Practical tip: start with the main concepts and then refine "
             "(e.g., Failure → Cause → Sensor).\n\n"
+            "4. Click Add node"
             "### Step B — Node editing (parents + probabilities)\n\n"
             "1. Under Node editing, select a node.\n"
             "2. Define the node’s Parents (what influences this node / incoming edges).\n"
             "3. Fill in:\n"
             "   o Marginal probabilities (root node) if the node has no parents\n"
-            "   o the CPT if the node has parents.\n\n"
+            "   o If the node has parents: enter a Conditional Probability Table (CPT)..\n\n"
             "- Each row (the marginal, or each parent-state combination in the conditional table) "
             "must sum to 1.\n\n"
             "### Step C — Review the network before running\n\n"
@@ -5360,6 +5362,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
