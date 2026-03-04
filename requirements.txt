@@ -22,5 +22,7 @@ pillow>=9.0.0
 gspread
 google-auth
 hashable-list
+ordered-set
+docplex
 
 
