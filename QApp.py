@@ -34,7 +34,7 @@ import pandas as pd
 
 st.set_page_config(
     page_title="qPrism",
-    page_icon="logt.png",
+    page_icon="tt3.png",
     layout="wide"
 )
 
@@ -153,7 +153,7 @@ def load_logo_base64(path: Path) -> str:
         return base64.b64encode(f.read()).decode()
 
 BASE_DIR = Path(__file__).resolve().parent
-logo_base64 = load_logo_base64(BASE_DIR / "qpb.png")
+logo_base64 = load_logo_base64(BASE_DIR / "tt1.png")
 
 BAR_COLOR = "#0d4376"
 BAR_HEIGHT = 64
@@ -195,8 +195,6 @@ st.markdown(
         padding-top: {BAR_HEIGHT + 12}px;
       }}
 
-      /* ======= POPOVER DO IDIOMA “Puxado” pro topo ======= */
-
       /* marker “invisível” */
       div#lang_marker {{
         height: 0px;
@@ -224,7 +222,7 @@ st.markdown(
     <div class="qx-topbar">
       <div class="qx-left">
         <img src="data:image/png;base64,{logo_base64}">
-        <div class="qx-title">qPrism</div>
+        <div class="qx-title"></div>
       </div>
       <div></div>
     </div>
@@ -2420,17 +2418,11 @@ def main():
         with left:
             from pathlib import Path
             BASE_DIR = Path(__file__).resolve().parent
-            LOGO = BASE_DIR / "qplog.png"   
+            LOGO = BASE_DIR / "tt2.png"   
             
             c1, c2, c3 = st.columns([1, 1, 1])
             with c2:
                 st.image(str(LOGO), width=340)
-        
-            st.markdown("""
-            <div style="text-align:center; font-size:42px; font-weight:700; margin-top:1px;">
-                <span style="color:#0e3360;">q</span><span style="color:#0e3360;">Prism</span>
-            </div>
-            """, unsafe_allow_html=True)
             
             st.markdown("""
             <div style="text-align:center; 
@@ -5626,6 +5618,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
