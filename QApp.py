@@ -2420,7 +2420,7 @@ def main():
             BASE_DIR = Path(__file__).resolve().parent
             LOGO = BASE_DIR / "tt2.png"   
             
-            c1, c2, c3 = st.columns([1, 1, 1])
+            c1, c2, c3 = st.columns([1, 3, 1])
             with c2:
                 st.image(str(LOGO), width=720)
             
@@ -5618,6 +5618,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
