@@ -2422,7 +2422,7 @@ def main():
             
             c1, c2, c3 = st.columns([1, 3, 1])
             with c2:
-                st.image(str(LOGO), width=720)
+                st.image(str(LOGO), width=650)
             
             st.markdown("""
             <div style="text-align:center; 
@@ -5618,6 +5618,7 @@ def main():
 
 if __name__ == "__main__":
     main()
+
 
 
 
