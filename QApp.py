@@ -84,6 +84,14 @@ ADMIN_EMAILS = [
     "lavinia.mendes@ufpe.br",
 ]
 
+st.markdown("""
+    <style>
+    [data-testid="stChatMessageAvatar"] {
+        display: none;
+    }
+    </style>
+""", unsafe_allow_html=True)
+
 TEXTOS_LOGIN = {
   "en": {
     "welcome_msg": "Welcome!",
