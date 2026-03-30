@@ -41,20 +41,6 @@ st.set_page_config(
 import time
 import streamlit as st
 
-st.markdown("""
-<style>
-/* tenta esconder canto inferior esquerdo */
-footer, header {
-    visibility: hidden;
-}
-
-/* esconde toolbar inferior */
-[data-testid="stToolbar"] {
-    display: none;
-}
-</style>
-""", unsafe_allow_html=True)
-
 st.markdown(
     """
     <style>
