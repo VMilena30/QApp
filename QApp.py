@@ -587,7 +587,7 @@ TEXTOS_OPT = {
         "qaoa_desc": "Quantum Approximate Optimization Algorithm é um algoritmo quântico projetado para resolver problemas de otimização combinatória, como o RAP, aproximando-se das soluções ótimas utilizando uma sequência parametrizada de operações quânticas.",
         "vqe_nome": "VQE",
         "vqe_desc": "Variational Quantum Eigensolver é um algoritmo híbrido quântico-clássico que usa um circuito quântico variacional para encontrar o estado de menor energia de um Hamiltoniano, mas requer mais parâmetros e pode demandar mais tempo computacional em comparação com o QAOA.", 
-        "_leitura_label": "Selecione o modo de entrada dos dados:",
+        "modo_leitura_label": "Selecione o modo de entrada dos dados:",
         "modo_leitura_manual": "Inserção manual (preencher os dados manualmente)",
         "modo_leitura_upload": "Upload de arquivo (arquivo .txt)",
         "ajuda_upload_botao": "Mostrar ajuda para upload",
@@ -2980,7 +2980,7 @@ def main():
         if st.button(textos_otim['executar']):
 
             # Verifica o modo leitura escolhido (upload/manual)
-            if modo_leitura == textos_otim['modo_leitura_manual']:
+            if modo_leitura == textos_otim["modo_leitura_manual"]:
                 instancia = dados[0] 
             else:
                 instancia = dados    
