@@ -2266,35 +2266,46 @@ def ler_manualmente(textos_otim):
 def mostrar_instancia(instancia, textos_otim):
     st.subheader(textos_otim["instancia"])
     
-    nj_max, nj_min, ctj_of = instancia[0][0], instancia[0][1], instancia[0][2]
-    Rjk_of = instancia[0][3]
-    cjk_of = instancia[0][4]
-    C_of = instancia[0][5]
+    n_max, n_min, ct = instancia[0][0], instancia[0][1], instancia[0][2]
+    Rk = instancia[0][3]
+    ck = instancia[0][4]
+    C = instancia[0][5]
     
-    # Dados gerais em uma linha de colunas
+    # Dados gerais
+    col1, col2, col3, col4 = st.columns(4)
+    
+    with col1:
+        st.markdown(r"$n_{\min}$")
+        st.write(n_min)
         
-    col1, col2, col3, col4, col5 = st.columns(5)
-    col1.metric("nj_max", nj_max)
-    col2.metric("nj_min", nj_min)
-    col3.metric("ctj_of", ctj_of)
-    col4.metric("C_of", C_of)
+    with col2:
+        st.markdown(r"$n_{\max}$")
+        st.write(n_max)
+        
+    with col3:
+        st.markdown(r"$ct$")
+        st.write(ct)
+        
+    with col4:
+        st.markdown(r"$C$")
+        st.write(C)
     
-    # Mostrar Rjk_of e cjk_of lado a lado em uma tabela organizada
-    st.write("#### Valores de Rjk_of e cjk_of")
+    # Valores de R_k e c_k
+    st.markdown("#### $R_k$ e $c_k$")
+    
     col1, col2 = st.columns(2)
     
     with col1:
-        st.write("**Rjk_of**")
-        for i, val in enumerate(Rjk_of, 1):
-            st.write(f"{i}: {val:.8f}")
+        st.markdown(r"$R_k$")
+        for i, val in enumerate(Rk, 1):
+            st.latex(rf"R_{{{i}}} = {val:.8f}")
             
     with col2:
-        st.write("**cjk_of**")
-        for i, val in enumerate(cjk_of, 1):
-            st.write(f"{i}: {val}")
+        st.markdown(r"$c_k$")
+        for i, val in enumerate(ck, 1):
+            st.latex(rf"c_{{{i}}} = {val}")
     
     st.markdown("---")
-
 
 def ler_do_drive(textos_otim):
     arquivo = st.file_uploader(textos_otim["carregar_arquivo"], type=['txt'])
