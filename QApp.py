@@ -2985,13 +2985,12 @@ def main():
             else:
                 instancia = dados    
         
-            s = instancia[0]
-            nj_max = instancia[1]
-            nj_min = instancia[2]
-            ctj_of = instancia[3]
-            Rjk_of = instancia[4]
-            cjk_of = instancia[5]
-            C_of = instancia[6]
+            nj_max = instancia[0]
+            nj_min = instancia[1]
+            ctj_of = instancia[2]
+            Rjk_of = instancia[3]
+            cjk_of = instancia[4]
+            C_of = instancia[5]
 
             x = nj_max
             nmax = x
