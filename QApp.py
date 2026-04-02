@@ -2264,7 +2264,10 @@ def ler_manualmente(textos_otim):
     return dados
     
 def mostrar_instancia(instancia, textos_otim):
-    st.subheader(textos_otim["instancia"])
+    st.markdown(
+        f"<h3 style='text-align: center; margin-bottom: 20px;'>{textos_otim['instancia']}</h3>",
+        unsafe_allow_html=True
+    )
     
     n_max, n_min, ct = instancia[0][0], instancia[0][1], instancia[0][2]
     Rk = instancia[0][3]
