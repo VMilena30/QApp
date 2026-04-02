@@ -2265,39 +2265,40 @@ def ler_manualmente(textos_otim):
     
 def mostrar_instancia(instancia, textos_otim):
     st.subheader(textos_otim["instancia"])
-
+    
     n_max, n_min, ct = instancia[0][0], instancia[0][1], instancia[0][2]
     Rk = instancia[0][3]
     ck = instancia[0][4]
     C = instancia[0][5]
-
-    col1, col2, col3, col4 = st.columns(4)
-
-    with col1:
-        st.markdown(r"**$n_{\min}$**")
-        st.markdown(f"<div style='font-size:20px;'>{n_min}</div>", unsafe_allow_html=True)
-
-    with col2:
-        st.markdown(r"**$n_{\max}$**")
-        st.markdown(f"<div style='font-size:20px;'>{n_max}</div>", unsafe_allow_html=True)
-
-    with col3:
-        st.markdown(r"**$ct$**")
-        st.markdown(f"<div style='font-size:20px;'>{ct}</div>", unsafe_allow_html=True)
-
-    with col4:
-        st.markdown(r"**$C$**")
-        st.markdown(f"<div style='font-size:20px;'>{C}</div>", unsafe_allow_html=True)
-
-    st.markdown("#### Parâmetros dos componentes")
-
-    df = pd.DataFrame({
-        r"$k$": list(range(1, ct + 1)),
-        r"$R_k$": [f"{val:.8f}" for val in Rk],
-        r"$c_k$": ck
-    })
-
-    st.table(df)
+    
+    # Centralização
+    col_left, col_center, col_right = st.columns([1, 2, 1])
+    
+    with col_center:
+        with st.container(border=True):
+            
+            col1, col2, col3, col4 = st.columns(4)
+            
+            with col1:
+                st.latex(rf"n_{{\min}} = {n_min}")
+            with col2:
+                st.latex(rf"n_{{\max}} = {n_max}")
+            with col3:
+                st.latex(rf"ct = {ct}")
+            with col4:
+                st.latex(rf"C = {C}")
+            
+            col1, col2 = st.columns(2)
+            
+            with col1:
+                for i, val in enumerate(Rk, 1):
+                    st.latex(rf"R_{{{i}}} = {val:.8f}")
+                    
+            with col2:
+                for i, val in enumerate(ck, 1):
+                    st.latex(rf"c_{{{i}}} = {val}")
+    
+    st.markdown("---")
 
 def ler_do_drive(textos_otim):
     arquivo = st.file_uploader(textos_otim["carregar_arquivo"], type=['txt'])
