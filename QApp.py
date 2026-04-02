@@ -2910,7 +2910,7 @@ def main():
         if (modo_leitura == textos_otim["modo_leitura_manual"] and len(dados[0]) == 7) or \
            (modo_leitura == textos_otim["modo_leitura_upload"] and dados):
         
-            if st.button(textos_otim["botao_mostrar_instancia"]):
+            if st.button(textos_otim["botao_tancia"]):
                 mostrar_instancia(dados, textos_otim)
         
             if len(dados[0]) != 1:
