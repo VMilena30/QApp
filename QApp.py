@@ -2223,13 +2223,13 @@ def mostrar_logos_parceiros():
 def ler_manualmente(textos_otim):
     st.write(textos_otim["insira_dados"])
 
-    col1, col2 = st.columns(2)
+    col1, col2, col3 = st.columns(3)
     with col1:
-        s = st.number_input(f"{textos_otim['s']}:", step=1, min_value=1, max_value=50)
         nj_min = st.number_input(f"{textos_otim['nj_min']}:", step=1, min_value=0)
     with col2:
         nj_max = st.number_input(f"{textos_otim['nj_max']}:", step=1, min_value=1)
-        ctj_of = st.number_input(f"{textos_otim['ctj_of']}:", step=1, min_value=1, max_value=100)
+    with col3:
+        ctj_of = st.number_input(f"{textos_otim['ctj_of']}:", step=1, min_value=1, max_value=500)
 
     if nj_min > nj_max:
         st.error("O valor mínimo de componentes não pode ser maior que o valor máximo.")
