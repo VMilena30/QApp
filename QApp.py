@@ -600,7 +600,7 @@ TEXTOS_OPT = {
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado.</p>
         </div>
         """,
-        "botao_mostrar_instancia": "Mostrar instância",
+        "botao_tancia": "Mostrar instância",
         "selecionar_algoritmo": "Selecione o algoritmo quântico:",
         "tipo_inicializacao": "Selecione o método de inicialização dos parâmetros:",
         "inserir_ponto_fixo": "Insira o ponto fixo:",
@@ -827,7 +827,7 @@ TEXTOS_OPT = {
             <p style="margin: 4px 0;">Click the button below to download a pre-formatted test file.</p>
         </div>
         """,
-        "botao_mostrar_instancia": "Show instance",
+        "botao_tancia": "Show instance",
         "selecionar_algoritmo": "Select the quantum algorithm:",
         "tipo_inicializacao": "Select the parameter initialization method:",
         "inserir_ponto_fixo": "Enter the fixed point:",
@@ -2265,47 +2265,39 @@ def ler_manualmente(textos_otim):
     
 def mostrar_instancia(instancia, textos_otim):
     st.subheader(textos_otim["instancia"])
-    
+
     n_max, n_min, ct = instancia[0][0], instancia[0][1], instancia[0][2]
     Rk = instancia[0][3]
     ck = instancia[0][4]
     C = instancia[0][5]
-    
-    # Dados gerais
+
     col1, col2, col3, col4 = st.columns(4)
-    
+
     with col1:
-        st.markdown(r"$n_{\min}$")
-        st.write(n_min)
-        
+        st.markdown(r"**$n_{\min}$**")
+        st.markdown(f"<div style='font-size:20px;'>{n_min}</div>", unsafe_allow_html=True)
+
     with col2:
-        st.markdown(r"$n_{\max}$")
-        st.write(n_max)
-        
+        st.markdown(r"**$n_{\max}$**")
+        st.markdown(f"<div style='font-size:20px;'>{n_max}</div>", unsafe_allow_html=True)
+
     with col3:
-        st.markdown(r"$ct$")
-        st.write(ct)
-        
+        st.markdown(r"**$ct$**")
+        st.markdown(f"<div style='font-size:20px;'>{ct}</div>", unsafe_allow_html=True)
+
     with col4:
-        st.markdown(r"$C$")
-        st.write(C)
-    
-    # Valores de R_k e c_k
-    st.markdown("#### $R_k$ e $c_k$")
-    
-    col1, col2 = st.columns(2)
-    
-    with col1:
-        st.markdown(r"$R_k$")
-        for i, val in enumerate(Rk, 1):
-            st.latex(rf"R_{{{i}}} = {val:.8f}")
-            
-    with col2:
-        st.markdown(r"$c_k$")
-        for i, val in enumerate(ck, 1):
-            st.latex(rf"c_{{{i}}} = {val}")
-    
-    st.markdown("---")
+        st.markdown(r"**$C$**")
+        st.markdown(f"<div style='font-size:20px;'>{C}</div>", unsafe_allow_html=True)
+
+    st.markdown("#### Parâmetros dos componentes")
+
+    df = pd.DataFrame({
+        r"$k$": list(range(1, ct + 1)),
+        r"$R_k$": [f"{val:.8f}" for val in Rk],
+        r"$c_k$": ck
+    })
+
+    st.table(df)
 
 def ler_do_drive(textos_otim):
     arquivo = st.file_uploader(textos_otim["carregar_arquivo"], type=['txt'])
