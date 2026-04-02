@@ -605,7 +605,7 @@ TEXTOS_OPT = {
         "tipo_inicializacao": "Selecione o método de inicialização dos parâmetros:",
         "inserir_ponto_fixo": "Insira o ponto fixo:",
         "inserir_camadas": "Insira o número de camadas:",
-        "inserir_rodadas": "Insira o número de rodadas:", 
+        "inserir_rodadas": "Insira o número de execuções:", 
         "executar": "Executar",
         "parametros_iniciais": "Parâmetros iniciais",
         "rodada": "Rodada",
@@ -701,7 +701,7 @@ TEXTOS_OPT = {
             "Dica prática: comece com instâncias pequenas antes de aumentar a complexidade.\n\n"
             "### Passo B — Revisar o problema antes de rodar\n\n"
             "Antes de executar a otimização:\n"
-            "- Verifique se o sistema possue limites coerentes.\n"
+            "- Verifique se o sistema possui limites coerentes.\n"
             "- Confirme se todos os custos e confiabilidades foram preenchidos.\n"
             "- Garanta que o orçamento disponível permita ao menos uma solução viável.\n\n"
             "Isso evita executar o algoritmo com dados inconsistentes ou inviáveis.\n\n"
@@ -741,7 +741,7 @@ TEXTOS_OPT = {
             "- Ponto fixo (definido manualmente).\n\n"
             "Inicializações diferentes podem levar a soluções distintas.\n\n"
             "### Shots\n\n"
-            "- Número de execuções do circuito quântico.\n"
+            "- Número de execuções do circuito quântico (amostragens).\n"
             "- Mais shots aumentam estabilidade estatística, mas também aumentam o tempo de execução.\n\n"
             "### Número de Camadas (Profundidade)\n\n"
             "- Controla a capacidade do circuito de explorar diferentes soluções.\n"
@@ -771,7 +771,7 @@ TEXTOS_OPT = {
     
         "info5": (
             "### Elementos principais\n\n"
-            "- Configuração ótima encontrada (tipos e quantidades de componentes por subsistema).\n"
+            "- Configuração ótima encontrada (tipos e quantidades de componentes no sistema).\n"
             "- Custo total obtido.\n"
             "- Confiabilidade do sistema.\n\n"
             "### Avaliação e ajustes dos resultados\n\n"
@@ -2968,7 +2968,7 @@ def main():
                         textos_otim["opcoes_otimizadores"], help=textos_otim["help10"]
                     )
                     camadas = st.number_input(
-                        textos_otim["inserir_camadas"], min_value=1, max_value=3, value=1, help=textos_otim["help11"]
+                        textos_otim["inserir_camadas"], min_value=1, max_value=10, value=1, help=textos_otim["help11"]
                     )
                     rodadas = st.number_input(
                         textos_otim["inserir_rodadas"], min_value=1, value=1, help=textos_otim["help12"]
