@@ -2980,8 +2980,8 @@ def main():
         if st.button(textos_otim['executar']):
 
             # Verifica o modo leitura escolhido (upload/manual)
-            if modo_leitura == textos_otim['modo_leitura_upload']:
-                instancia = dados[0]  # Dados do upload
+            if modo_leitura == textos_otim['modo_manualmente']:
+                instancia = dados[0] 
             else:
                 instancia = dados    
         
