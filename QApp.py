@@ -2220,7 +2220,7 @@ def mostrar_logos_parceiros():
 #Otimização
 
 def ler_manualmente(textos_otim):
-    st.write(textos_otim["insira_dados"])
+    st.write(f"**{textos_otim["insira_dados"]}**")
 
     col1, col2, col3 = st.columns(3)
     with col1:
