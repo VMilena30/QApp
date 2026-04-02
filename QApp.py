@@ -2992,6 +2992,13 @@ def main():
             cjk_of = instancia[4]
             C_of = instancia[5]
 
+            st.write("nj_max:", nj_max, type(nj_max))
+            st.write("nj_min:", nj_min, type(nj_min))
+            st.write("ctj_of:", ctj_of, type(ctj_of))
+            st.write("Rjk_of:", Rjk_of, type(Rjk_of))
+            st.write("cjk_of:", cjk_of, type(cjk_of))
+            st.write("C_of:", C_of, type(C_of))
+
             x = nj_max
             nmax = x
 
