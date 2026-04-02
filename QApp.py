@@ -791,7 +791,7 @@ TEXTOS_OPT = {
         "help9": "Informe o valor fixo usado como ponto inicial dos parâmetros.",
         "help10": "Escolha o otimizador clássico que ajustará os parâmetros do circuito.",
         "help11": "Número de camadas (profundidade) do circuito variacional.",
-        "help12": "Número de iterações do otimizador para atualizar os parâmetros.",
+        "help12": "Número de execuções completas do algoritmo (QAOA/VQE), onde cada execução realiza uma otimização independente.",
         "help13": "Número de execuções do circuito para estimar os resultados (shots).",
 
         
@@ -1032,7 +1032,7 @@ TEXTOS_OPT = {
         "help9": "Enter the fixed value used as the initial point for the parameters.",
         "help10": "Choose the classical optimizer that updates the circuit parameters.",
         "help11": "Number of layers (circuit depth) of the variational circuit.",
-        "help12": "Number of optimizer iterations to update the parameters.",
+        "help12": "Number of full executions of the algorithm (QAOA/VQE), where each run performs an independent optimization.",
         "help13": "Number of circuit executions used to estimate the results (shots).",
 
     }
