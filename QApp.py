@@ -2260,7 +2260,7 @@ def ler_manualmente(textos_otim):
     if C_of < min(cjk_of):
         st.warning("O limite de custo total é menor que o menor custo de componente. Ajuste os valores.")
 
-    dados = [[nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]]
+    dados = [nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]
     return dados
     
 def mostrar_instancia(instancia, textos_otim):
@@ -2910,7 +2910,7 @@ def main():
             dados = ler_do_drive(textos_otim)
         
         # Verifica se os dados estão válidos
-        if (modo_leitura == textos_otim["modo_leitura_manual"] and len(dados[0]) == 7) or \
+        if (modo_leitura == textos_otim["modo_leitura_manual"] and len(dados[0]) == 6) or \
            (modo_leitura == textos_otim["modo_leitura_upload"] and dados):
         
             if st.button(textos_otim["botao_tancia"]):
@@ -2980,10 +2980,10 @@ def main():
         if st.button(textos_otim['executar']):
 
             # Verifica o modo leitura escolhido (upload/manual)
-            if modo_leitura == textos_otim["modo_leitura_manual"]:
+            if modo_leitura == textos_otim["modo_leitura_upload"]:
                 instancia = dados[0][0] 
             else:
-                instancia = dados[0][0]    
+                instancia = dados
         
             nj_max = instancia[0]
             nj_min = instancia[1]
