@@ -2981,9 +2981,9 @@ def main():
 
             # Verifica o modo leitura escolhido (upload/manual)
             if modo_leitura == textos_otim["modo_leitura_upload"]:
-                instancia = dados[0][0] 
+                instancia = dados[0]
             else:
-                instancia = dados
+                instancia = dados[0]
         
             nj_max = instancia[0]
             nj_min = instancia[1]
