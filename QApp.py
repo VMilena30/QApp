@@ -654,25 +654,28 @@ TEXTOS_OPT = {
         "rap_descricao": (
             "#### Problema de Alocação de Redundâncias (RAP)\n\n"
             "O Problema de Alocação de Redundâncias é um problema clássico da engenharia de confiabilidade que consiste em determinar "
-            "quantos componentes redundantes alocar em cada subsistema para maximizar a confiabilidade do sistema total, respeitando restrições de custo.\n\n"
-
+            "quantos componentes redundantes devem ser alocados para maximizar a confiabilidade do sistema, respeitando restrições de custo.\n\n"
+        
+            "##### Hipótese adotada\n\n"
+            "Nesta formulação, considera-se um único subsistema com componentes em paralelo ativo.\n\n"
+        
             "##### Formulação Matemática\n\n"
-            "Seja um sistema com $(s)$ subsistemas, o objetivo é maximizar a confiabilidade total $(R(x))$:\n\n"
-            "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
-
+            "A confiabilidade do sistema é dada por:\n\n"
+            "$$ R(x) = 1 - \\prod_{k=1}^{ct} (1 - R_k)^{x_k} $$\n\n"
+        
             "##### Restrições:\n\n"
-            "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
-            "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
-            "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
+            "$$ \\sum_{k=1}^{ct} c_k x_k \\leq C $$\n\n"
+            "$$ n_{\\text{min}} \\leq \\sum_{k=1}^{ct} x_k \\leq n_{\\text{max}} $$\n\n"
+            "$$ x_k \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
             
             "##### Termos Utilizados\n\n"
-            "- $x_i$: número de componentes redundantes no subsistema $i$  \n"
-            "- $R_i$: confiabilidade de um componente do subsistema $i$  \n"
-            "- $R(x)$: confiabilidade global do sistema  \n"
-            "- $c_i$: custo de adicionar um componente no subsistema $i$  \n"
+            "- $x_k$: número de componentes do tipo $k$  \n"
+            "- $R_k$: confiabilidade do componente do tipo $k$  \n"
+            "- $R(x)$: confiabilidade do sistema  \n"
+            "- $c_k$: custo do componente do tipo $k$  \n"
             "- $C$: orçamento máximo  \n"
-            "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites inferior e superior para redundâncias  \n"
-
+            "- $ct$: número de tipos de componentes disponíveis  \n"
+            "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites para o número total de componentes  \n"
         ),
         "aplicacao": "Aplicação",
             "info1_titulo": "Guia do Usuário — Otimização Quântica para Alocação de Redundâncias",
