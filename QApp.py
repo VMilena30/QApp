@@ -654,10 +654,7 @@ TEXTOS_OPT = {
         "rap_descricao": (
             "#### Problema de Alocação de Redundâncias (RAP)\n\n"
             "O Problema de Alocação de Redundâncias é um problema clássico da engenharia de confiabilidade que consiste em determinar "
-            "quantos componentes redundantes devem ser alocados para maximizar a confiabilidade do sistema, respeitando restrições de custo.\n\n"
-        
-            "##### Hipótese adotada\n\n"
-            "Nesta formulação, considera-se um único subsistema com componentes em paralelo ativo.\n\n"
+            "quantos componentes redundantes devem ser alocados para maximizar a confiabilidade do sistema, respeitando restrições de custo. Nesta formulação, considera-se um único subsistema com componentes em paralelo ativo.\n\n"
         
             "##### Formulação Matemática\n\n"
             "A confiabilidade do sistema é dada por:\n\n"
@@ -669,11 +666,11 @@ TEXTOS_OPT = {
             "$$ x_k \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
             
             "##### Termos Utilizados\n\n"
-            "- $x_k$: número de componentes do tipo $k$  \n"
+            "- $x_k$: número de redundâncias do tipo $k$ alocadas ao sistema  \n"
             "- $R_k$: confiabilidade do componente do tipo $k$  \n"
             "- $R(x)$: confiabilidade do sistema  \n"
             "- $c_k$: custo do componente do tipo $k$  \n"
-            "- $C$: orçamento máximo  \n"
+            "- $C$: orçamento máximo disponível \n"
             "- $ct$: número de tipos de componentes disponíveis  \n"
             "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limites para o número total de componentes  \n"
         ),
