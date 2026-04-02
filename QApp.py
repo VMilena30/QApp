@@ -2261,7 +2261,7 @@ def ler_manualmente(textos_otim):
     if C_of < min(cjk_of):
         st.warning("O limite de custo total é menor que o menor custo de componente. Ajuste os valores.")
 
-    dados = [[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]]
+    dados = [[nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]]
     return dados
     
 def mostrar_instancia(instancia, textos_otim):
