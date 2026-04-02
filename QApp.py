@@ -2392,6 +2392,7 @@ def mostrar_inf(textos):
 def main():
     import streamlit as st
     import os
+    import numpy as np
 
     aplicar_css_botoes()
 
