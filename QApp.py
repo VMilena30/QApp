@@ -570,7 +570,7 @@ TEXTOS_OPT = {
     "pt": {
         "idioma": "Idioma",
         "insira_dados": "Insira os dados do problema a ser analisado:",
-        "instancia": "Instância fornecida:",
+        "instancia": "Instância fornecida",
         "carregar_arquivo": "Carregar arquivo:",
         "minutos": "minutos",
         "minutos_e_segundos": "minutos e {segundos} segundos",
