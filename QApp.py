@@ -595,7 +595,7 @@ TEXTOS_OPT = {
         <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
             <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Instruções para Upload</h4>
             <p style="margin: 4px 0;">O arquivo de entrada deve ser um arquivo de texto (.txt), onde cada linha representa uma instância, com o seguinte formato:</p>
-            <p style="background-color: #eee; padding: 6px; border-radius: 2px; font-size: 10px; margin: 2px 0;"><code>[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
+            <p style="background-color: #eee; padding: 6px; border-radius: 2px; font-size: 10px; margin: 2px 0;"><code>[nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
             <p style="margin: 4px 0;">Certifique-se de que o arquivo siga exatamente este formato para que os dados sejam lidos corretamente.</p>
             <p style="margin: 4px 0;">Clique no botão abaixo para baixar um arquivo de teste já formatado.</p>
         </div>
@@ -629,13 +629,13 @@ TEXTOS_OPT = {
         "de": "de",
         "pagina_otimizacao": "Otimização Quântica",
         "s": "Número de subsistemas",
-        "nj_max": "Valor máximo dos componentes por subsistema",
-        "nj_min": "Valor mínimo dos componentes por subsistema",
+        "nj_max": "Valor máximo dos componentes no sistema",
+        "nj_min": "Valor mínimo dos componentes no sistema",
         "ctj_of": "Quantidade de tipos de componentes disponíveis",
         "lista_componentes": "Informe a confiabilidade e o custo de cada componente:",
         "confiabilidade": "Confiabilidade do componente",
         "custo": "Custo do componente",
-        "custo_total_limite": "Limite máximo de custo",
+        "custo_total_limite": "Orçamento máximo disponível",
         "selecionar_tipo_circuito": "Selecione o tipo de circuito VQE:",
         "real_amplitudes": "Real Amplitudes",
         "two_local": "Two Local",
@@ -680,7 +680,7 @@ TEXTOS_OPT = {
         "info1": (
             "### 1) O que essa página faz\n\n"
             "Nesta página, você define um problema de Alocação de Redundâncias (RAP) informando:\n"
-            "- Estrutura do sistema (subsistemas e limites).\n"
+            "- Estrutura do sistema (limites).\n"
             "- Tipos de componentes disponíveis (custos e confiabilidades).\n"
             "- Orçamento total disponível.\n\n"
             "A plataforma converte automaticamente o problema para uma formulação "
@@ -694,15 +694,14 @@ TEXTOS_OPT = {
             "### Passo A — Modo de entrada dos dados\n\n"
             "1. Escolha como informar os dados: inserção manual ou upload de arquivo (.txt).\n"
             "2. Se optar por inserção manual, preencha:\n"
-            "   - Número de subsistemas.\n"
-            "   - Número mínimo e máximo de componentes por subsistema.\n"
+            "   - Número mínimo e máximo de componentes no sistema.\n"
             "   - Quantidade de tipos de componentes.\n"
             "   - Confiabilidade e custo de cada tipo.\n"
             "   - Orçamento disponível.\n\n"
             "Dica prática: comece com instâncias pequenas antes de aumentar a complexidade.\n\n"
             "### Passo B — Revisar o problema antes de rodar\n\n"
             "Antes de executar a otimização:\n"
-            "- Verifique se todos os subsistemas possuem limites coerentes.\n"
+            "- Verifique se o sistema possue limites coerentes.\n"
             "- Confirme se todos os custos e confiabilidades foram preenchidos.\n"
             "- Garanta que o orçamento disponível permita ao menos uma solução viável.\n\n"
             "Isso evita executar o algoritmo com dados inconsistentes ou inviáveis.\n\n"
@@ -823,7 +822,7 @@ TEXTOS_OPT = {
         <div style="background-color: #f9f9f9; margin: 0; padding: 12px; border-radius: 5px; border: 1px solid #ddd; max-width: 850px; font-size: 14px; line-height: 1.4;">
             <h4 style="color: #333; font-size: 16px; margin: 8px 0;">Upload Instructions</h4>
             <p style="margin: 4px 0;">The input file must be a plain text file (.txt), where each line represents one instance in the following format:</p>
-            <p style="background-color: #eee; padding: 6px; border-radius: 2px; font-size: 10px; margin: 2px 0;"><code>[s, nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
+            <p style="background-color: #eee; padding: 6px; border-radius: 2px; font-size: 10px; margin: 2px 0;"><code>[nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]</code></p>
             <p style="margin: 4px 0;">Ensure that the file strictly follows this format so that the data can be read correctly.</p>
             <p style="margin: 4px 0;">Click the button below to download a pre-formatted test file.</p>
         </div>
@@ -2267,19 +2266,18 @@ def ler_manualmente(textos_otim):
 def mostrar_instancia(instancia, textos_otim):
     st.subheader(textos_otim["instancia"])
     
-    s, nj_max, nj_min, ctj_of = instancia[0][0], instancia[0][1], instancia[0][2], instancia[0][3]
-    Rjk_of = instancia[0][4]
-    cjk_of = instancia[0][5]
-    C_of = instancia[0][6]
+    nj_max, nj_min, ctj_of = instancia[0][0], instancia[0][1], instancia[0][2]
+    Rjk_of = instancia[0][3]
+    cjk_of = instancia[0][4]
+    C_of = instancia[0][5]
     
     # Dados gerais em uma linha de colunas
         
     col1, col2, col3, col4, col5 = st.columns(5)
-    col1.metric("s", s)
-    col2.metric("nj_max", nj_max)
-    col3.metric("nj_min", nj_min)
-    col4.metric("ctj_of", ctj_of)
-    col5.metric("C_of", C_of)
+    col1.metric("nj_max", nj_max)
+    col2.metric("nj_min", nj_min)
+    col3.metric("ctj_of", ctj_of)
+    col4.metric("C_of", C_of)
     
     # Mostrar Rjk_of e cjk_of lado a lado em uma tabela organizada
     st.write("#### Valores de Rjk_of e cjk_of")
@@ -2888,7 +2886,7 @@ def main():
         )
         
         dados = []
-        with open("testeapp.txt", "r", encoding="utf-8") as f:
+        with open("teste_qprism.txt", "r", encoding="utf-8") as f:
             conteudo_arquivo = f.read()
         if modo_leitura == textos_otim["modo_leitura_manual"]:
             dados = ler_manualmente(textos_otim)
@@ -2899,7 +2897,7 @@ def main():
                 st.download_button(
                     label=textos_otim["Baixar"],
                     data=conteudo_arquivo,
-                    file_name="testeapp.txt",
+                    file_name="teste_qprism.txt",
                     mime="text/plain"
                 )
             dados = ler_do_drive(textos_otim)
