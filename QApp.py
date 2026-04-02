@@ -608,7 +608,7 @@ TEXTOS_OPT = {
         "inserir_rodadas": "Insira o número de execuções:", 
         "executar": "Executar",
         "parametros_iniciais": "Parâmetros iniciais",
-        "rodada": "Rodada",
+        "rodada": "Execução",
         "camada": "Camada",
         "executando_qaoa": "Executando QAOA, por favor, aguarde...",
         "resultados": "Resultados",
