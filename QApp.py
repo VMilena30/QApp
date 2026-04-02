@@ -808,8 +808,8 @@ TEXTOS_OPT = {
         "insira_dados": "Enter the problem data to be analyzed:",
 
         # Help section
-        "descricao_rap": "Módulo dedicado à resolução de problemas combinatórios por meio de algoritmos quânticos de otimização, utilizando formulações baseadas em QUBO (Quadratic Unconstrained Binary Optimization). Essa abordagem permite representar funções-objetivo e restrições na forma de operadores quânticos, explorando a superposição, interferência e o paralelismo quântico para buscar soluções ótimas.",
-        "algoritmos": "Problema abordado:",
+        "descricao_rap": "Module dedicated to solving combinatorial problems using quantum optimization algorithms, based on QUBO (Quadratic Unconstrained Binary Optimization) formulations. This approach allows representing objective functions and constraints as quantum operators, exploring superposition, interference, and quantum parallelism to search for optimal solutions.",
+        "algoritmos": "Problem addressed:",
         "inicializacoes_titulo": "- RAP (Reliability Allocation Problem)",
 
         "qaoa_nome": "QAOA",
@@ -832,11 +832,11 @@ TEXTOS_OPT = {
         "tipo_inicializacao": "Select the parameter initialization method:",
         "inserir_ponto_fixo": "Enter the fixed point:",
         "inserir_camadas": "Enter the number of layers:",
-        "inserir_rodadas": "Enter the number of iterations:",
+        "inserir_rodadas": "Enter the number of executions:",
         "executar": "Execute",
         "modo_leitura_upload": "Upload",
         "parametros_iniciais": "Initial parameters",
-        "rodada": "Round",
+        "rodada": "Execution",
         "camada": "Layer",
         "executando_qaoa": "Running QAOA, please wait...",
         "resultados": "Results",
@@ -858,11 +858,11 @@ TEXTOS_OPT = {
         "de": "of",
         "pagina_otimizacao": "Quantum Optimization",
         "s": "Number of subsystems",
-        "nj_max": "Maximum number of components per subsystem",
-        "nj_min": "Minimum number of components per subsystem",
+        "nj_max": "Maximum number of components per system",
+        "nj_min": "Minimum number of components per system",
         "ctj_of": "Number of available component types",
         "lista_componentes": "Enter the reliability and cost for each component type:",
-        "confiabilidade": "Reliability of component ",
+        "confiabilidade": "Component reliability",
         "custo": "Cost of component",
         "custo_total_limite": "Maximum total cost limit",
         "inicializacoes_titulo": "Initialization Methods",
@@ -892,138 +892,133 @@ TEXTOS_OPT = {
         "Baixar": "Download file",
         "download_text": "If you wish, download the sample test file to use or visualize.",
         "rap_descricao": (
-        "#### Redundancy Allocation Problem (RAP)\n\n"
-        "The Redundancy Allocation Problem is a classic issue in reliability engineering. "
-        "It involves determining how many redundant components to allocate to each subsystem in order to maximize the overall system reliability, "
-        "while respecting cost constraints.\n\n"
-
-        "##### Mathematical Formulation\n\n"
-        "Consider a system with \\( s \\) subsystems. The objective is to maximize the total system reliability \\( R(x) \\):\n\n"
-        "$$ R(x) = \\prod_{i=1}^{s} \\left(1 - R_i\\right)^{x_i} $$\n\n"
-
-        "##### Constraints:\n\n"
-        "$$ \\sum_{i=1}^{s} c_i x_i \\leq C $$\n\n"
-        "$$ n_{\\text{min}} \\leq x_i \\leq n_{\\text{max}}, \\quad \\forall i = 1, 2, \\ldots, s $$\n\n"
-        "$$ x_i \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
-
-        "##### Terms Used\n\n"
-        "- $x_i$: number of redundant components in subsystem $i$  \n"
-        "- $R_i$: reliability of a component in subsystem $i$  \n"
-        "- $R(x)$: overall system reliability  \n"
-        "- $c_i$: cost of adding a component to subsystem $i$  \n"
-        "- $C$: total budget available  \n"
-        "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: lower and upper bounds for redundancy allocation  \n"
-    ),
+            "#### Redundancy Allocation Problem (RAP)\n\n"
+            "The Redundancy Allocation Problem is a classical problem in reliability engineering that consists of determining "
+            "how many redundant components should be allocated to maximize system reliability, subject to cost constraints. In this formulation, a single subsystem with active parallel components is considered.\n\n"
+        
+            "##### Mathematical Formulation\n\n"
+            "The system reliability is given by:\n\n"
+            "$$ R(x) = 1 - \\prod_{k=1}^{ct} (1 - R_k)^{x_k} $$\n\n"
+        
+            "##### Constraints:\n\n"
+            "$$ \\sum_{k=1}^{ct} c_k x_k \\leq C $$\n\n"
+            "$$ n_{\\text{min}} \\leq \\sum_{k=1}^{ct} x_k \\leq n_{\\text{max}} $$\n\n"
+            "$$ x_k \\in \\{0, 1, 2, \\ldots, n_{\\text{max}}\\} $$\n\n"
+        
+            "##### Terms Used\n\n"
+            "- $x_k$: number of redundant components of type $k$  \n"
+            "- $R_k$: reliability of component type $k$  \n"
+            "- $R(x)$: system reliability  \n"
+            "- $c_k$: cost of component type $k$  \n"
+            "- $C$: maximum available budget \n"
+            "- $ct$: number of available component types  \n"
+            "- $n_{\\mathrm{min}}, n_{\\mathrm{max}}$: limits on the total number of components  \n"
+        ),
         "aplicacao": "Application",
         "info1_titulo": "User Guide — Quantum Optimization for Redundancy Allocation",
     
         "info1": (
-            "### 1) What does this page do?\n\n"
-            "On this page, you define and solve a Redundancy Allocation Problem (RAP) by specifying:\n"
-            "- System structure (subsystems and limits).\n"
+            "### 1) What does this page do\n\n"
+            "On this page, you define a Redundancy Allocation Problem (RAP) by specifying:\n"
+            "- System structure (limits).\n"
             "- Available component types (costs and reliabilities).\n"
-            "- Total cost constraint.\n\n"
+            "- Total available budget.\n\n"
             "The platform automatically converts the problem into a "
             "QUBO (Quadratic Unconstrained Binary Optimization) formulation and solves it "
-            "using variational quantum algorithms (QAOA or VQE), depending on your selection."
+            "using variational quantum algorithms (QAOA or VQE), as selected."
         ),
-    
+        
         "info2_titulo": "2) Step-by-step (recommended workflow)",
-    
+        
         "info2": (
             "### Step A — Data input mode\n\n"
             "1. Choose how to provide the data: manual input or file upload (.txt).\n"
-            "2. If using manual input, define:\n"
-            "   - Number of subsystems.\n"
-            "   - Minimum and maximum number of components per subsystem.\n"
+            "2. If you choose manual input, fill in:\n"
+            "   - Minimum and maximum number of components in the system.\n"
             "   - Number of component types.\n"
             "   - Reliability and cost of each type.\n"
-            "   - Maximum total cost constraint.\n\n"
+            "   - Available budget.\n\n"
             "Practical tip: start with small instances before increasing complexity.\n\n"
             "### Step B — Review the problem before running\n\n"
             "Before executing the optimization:\n"
-            "- Check that subsystem limits are consistent.\n"
-            "- Confirm that all costs and reliabilities are properly filled.\n"
-            "- Ensure that the maximum cost allows at least one feasible solution.\n\n"
-            "This prevents running the algorithm with inconsistent or infeasible data.\n\n"
+            "- Check if the system has consistent limits.\n"
+            "- Confirm that all costs and reliabilities have been filled in.\n"
+            "- Ensure that the available budget allows at least one feasible solution.\n\n"
+            "This avoids running the algorithm with inconsistent or infeasible data.\n\n"
             "### Step C — Algorithm selection (why are there two options?)\n\n"
             "**QAOA**\n"
-            "- Designed for combinatorial QUBO problems.\n"
+            "- Suitable for combinatorial problems in QUBO.\n"
             "- Controlled by the number of layers (depth).\n"
             "- More direct structure for discrete optimization.\n\n"
             "**VQE**\n"
-            "- More flexible and dependent on ansatz selection.\n"
+            "- More flexible and dependent on the choice of ansatz.\n"
             "- Requires configuration of rotation and entanglement gates.\n\n"
             "In practical terms:\n"
-            "- QAOA is typically the most direct choice for QUBO problems.\n"
+            "- QAOA is generally the most direct choice for QUBO.\n"
             "- VQE allows greater circuit customization."
         ),
-    
+        
         "info21": (
-            "### Note on File Upload (.txt)\n\n"
-            "When using file upload, ensure the format matches the platform requirements. "
+            "### Note on Upload (.txt)\n\n"
+            "When using a file, keep the format required by the platform. "
             "This option is recommended for larger instances or comparative studies.\n\n"
-            "If a parsing error occurs, verify:\n"
-            "- The order of the data.\n"
+            "If a reading error occurs, check:\n"
+            "- The order of the information.\n"
             "- The separators used.\n"
             "- The number of values per line."
         ),
-    
+        
         "info3_titulo": "3) Execution (how to interpret buttons and sliders)",
-    
+        
         "info3": (
             "### Classical Optimizer\n\n"
-            "- **COBYLA**: derivative-free method, suitable for lower-dimensional problems.\n"
-            "- **SPSA**: stochastic and noise-robust method, recommended for hardware execution.\n\n"
+            "- **COBYLA**: derivative-free optimization method, suitable for lower-dimensional problems.\n"
+            "- **SPSA**: stochastic method that estimates gradients with few evaluations, being more robust to noise.\n\n"
             "### Initialization Method\n\n"
             "- Random.\n"
             "- LHS (Latin Hypercube Sampling).\n"
-            "- Clustering-based initialization.\n"
+            "- Clustering.\n"
             "- Fixed point (manually defined).\n\n"
-            "Different initializations may lead to different local minima.\n\n"
+            "Different initializations may lead to different solutions.\n\n"
             "### Shots\n\n"
-            "- Number of circuit executions (measurements).\n"
-            "- More shots increase statistical stability.\n"
-            "- Also increase execution time.\n\n"
+            "- Number of executions of the quantum circuit (samplings).\n"
+            "- More shots increase statistical stability but also increase execution time.\n\n"
             "### Number of Layers (Depth)\n\n"
-            "- Controls circuit expressiveness.\n"
-            "- More layers may improve solution quality.\n"
-            "- Also increase computational cost and noise sensitivity.\n\n"
+            "- Controls the circuit's ability to explore different solutions.\n"
+            "- More layers may improve solution quality, but also increase computational cost and sensitivity to noise.\n\n"
             "### Number of Iterations\n\n"
-            "- Defines how many updates the optimizer performs.\n"
-            "- Too few iterations may stop before convergence.\n"
-            "- More iterations increase total runtime."
+            "- Defines how many parameter updates the optimizer will perform.\n"
+            "- Few iterations may not give enough time for the model to converge to the best solution, while many increase execution time."
         ),
-    
-        "info4_titulo": "4) Advanced tuning: when should parameters be adjusted?",
-    
+        
+        "info4_titulo": "4) Advanced adjustments: when does it make sense to change parameters?",
+        
         "info4": (
-            "### Varying Initialization\n\n"
-            "Useful when:\n"
-            "- There is high variability between runs.\n"
-            "- The optimizer appears trapped in local minima.\n\n"
-            "### Increasing Circuit Depth\n\n"
-            "Useful when:\n"
-            "- The solution is stable but suboptimal.\n"
-            "- The problem is structurally more complex.\n\n"
+            "### Initialization Variation\n\n"
+            "It may be useful when:\n"
+            "- There is high variation between executions.\n"
+            "- The algorithm seems to get stuck in local minima.\n\n"
+            "### Increasing Depth\n\n"
+            "It may be useful when:\n"
+            "- The solution found is stable but of low quality.\n"
+            "- The problem has many variables and possible combinations, making it harder to solve.\n\n"
             "Important:\n"
-            "- On real hardware, deeper circuits may degrade performance due to noise.\n"
-            "- It is recommended to increase depth gradually."
+            "- On real hardware, deeper circuits may worsen results due to noise.\n"
+            "- It is recommended to test increasing depths gradually."
         ),
-    
-        "info5_titulo": "5) What should I analyze in the results?",
-    
+        
+        "info5_titulo": "5) What should be analyzed in the results?",
+        
         "info5": (
             "### Main elements\n\n"
-            "- Best configuration found (components per subsystem).\n"
-            "- Total system cost.\n"
-            "- Final system reliability.\n"
-            "- Objective function value (QUBO energy), when available.\n\n"
-            "### Practical interpretation\n\n"
-            "- First, verify that the solution satisfies the cost constraint.\n"
-            "- Compare results under different initializations.\n"
-            "- If unstable, increase shots or reduce depth.\n"
-            "- If stagnating, increase iterations or try a different optimizer."
+            "- Optimal configuration found (types and quantities of components in the system).\n"
+            "- Total cost obtained.\n"
+            "- System reliability.\n\n"
+            "### Evaluation and adjustment of results\n\n"
+            "- First, check if the solution respects the maximum cost.\n"
+            "- Compare executions with different initializations.\n"
+            "- If there is high variation between executions (instability in results), increase the shots, reduce the depth, or both.\n"
+            "- If the solution does not improve over iterations within an execution (optimization stagnation), increase the number of iterations, try another optimizer, or both."
         ),
 
         "help1": "How would you like to provide your system data to the tool?",
