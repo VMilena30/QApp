@@ -2983,7 +2983,7 @@ def main():
             if modo_leitura == textos_otim["modo_leitura_manual"]:
                 instancia = dados[0] 
             else:
-                instancia = dados    
+                instancia = dados[0]    
         
             nj_max = instancia[0]
             nj_min = instancia[1]
