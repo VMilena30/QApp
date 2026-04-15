@@ -1562,13 +1562,13 @@ TEXTOS_INF = {
             "- Mostra o valor percentual em cima de cada barra do gráfico."
         ),
     
-        "info4_titulo": "4) Amplitude Amplification (AA): quando faz sentido?",
+        "info4_titulo": "4) Amplificação de Amplitude (AA): quando faz sentido?",
     
         "info4": (
-            "A seção Amplitude Amplification é opcional e serve para tentar aumentar a chance "
+            "A seção de Amplificação de Amplitude é opcional e serve para tentar aumentar a chance "
             "de medir eventos raros (probabilidades pequenas).\n\n"
             "- Habilitar AA: roda a variante quântica com AA além do “Quantum Shots”.\n\n"
-            "- k (manual): número de iterações da Amplitude Amplification aplicadas ao circuito. Se marcado, você escolhe k manualmente; se não, o app tenta definir esse valor automaticamente.\n\n"
+            "- k (manual): número de iterações da AA aplicadas ao circuito. Se marcado, você escolhe k manualmente; se não, o app tenta definir esse valor automaticamente.\n\n"
             "Importante:\n\n"
             "- AA costuma fazer mais sentido quando existe evidência "
             "(porque você está tentando amplificar o subconjunto “compatível” com a evidência)."
@@ -1843,7 +1843,7 @@ TEXTOS_INF = {
             "The Amplitude Amplification section is optional and aims to increase the chance "
             "of measuring rare events (small probabilities).\n\n"
             "- Enable AA: runs the quantum variant with AA in addition to “Quantum Shots”.\n\n"
-            "- k (manual): number of Amplitude Amplification iterations applied to the circuit. If checked, you choose k manually; otherwise, the app tries to define this value automatically.\n\n"
+            "- k (manual): number of AA iterations applied to the circuit. If checked, you choose k manually; otherwise, the app tries to define this value automatically.\n\n"
             "Important:\n\n"
             "- AA usually makes more sense when there is evidence "
             "(because you are amplifying the subset of states “compatible” with that evidence)."
