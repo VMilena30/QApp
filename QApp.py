@@ -1498,7 +1498,7 @@ TEXTOS_INF = {
         "q_col_node": "Nó", 
         "q_col_slot": "Índice (slot)",
 
-        "info1_titulo": "Guia do Usuário — Inferência Quântica via QBN",
+        "info1_titulo": "Guia do Usuário — Inferência Quântica via Redes Bayesianas Quânticas (QBN)",
 
         "info1": (
             "### 1) O que essa página faz\n\n"
@@ -1771,7 +1771,7 @@ TEXTOS_INF = {
         "q_col_node": "Node",
         "q_col_slot": "Index (slot)",
 
-        "info1_titulo": "User Guide — Quantum Inference via QBN",
+        "info1_titulo": "User Guide — Quantum Inference via Quantum Bayesian Networks (QBN)",
     
         "info1": (
             "### 1) What this page does\n\n"
