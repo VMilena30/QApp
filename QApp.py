@@ -1424,7 +1424,7 @@ TEXTOS_INF = {
 
         # Probabilidades
         "probs_raiz": "Probabilidades marginais (nó raiz)",
-        "cpt": "Tabela de Probabilidades Condicionais (CPT)",
+        "cpt": "Tabela de Probabilidades Condicionais (Conditional Probabilities Table - CPT)",
         "caption_probs": "Preencha as probabilidades. Para nós com pais, cada linha da CPT (combinação de estados dos pais) deve somar 1.",
         "caption_cpt": "Para cada combinação de estados dos pais, informe as probabilidades do nó (a linha deve somar 1).",
 
@@ -1498,7 +1498,7 @@ TEXTOS_INF = {
         "q_col_node": "Nó", 
         "q_col_slot": "Índice (slot)",
 
-        "info1_titulo": "Guia do Usuário — Inferência Quântica via Redes Bayesianas Quânticas (QBN)",
+        "info1_titulo": "Guia do Usuário — Inferência Quântica via Redes Bayesianas Quânticas (Quantum Bayesian Networks - QBN)",
 
         "info1": (
             "### 1) O que essa página faz\n\n"
@@ -1522,7 +1522,7 @@ TEXTOS_INF = {
             "2. Defina os Pais do nó (quem influencia esse nó / arestas de entrada).\n"
             "3. Preencha:\n"
             "   - Probabilidades marginais (nó raiz) se o nó não tem pais\n"
-            "   - ou a Tabela de Probabilidades Condicionais (CPT) se o nó tem pais\n\n"
+            "   - ou a Tabela de Probabilidades Condicionais (Conditional Probabilities Table - CPT) se o nó tem pais\n\n"
             "- Cada linha (marginal ou cada combinação de estados dos pais na probabilidade condicional) "
             "tem que somar 1.\n\n"
             "### Passo C — Revisar a rede antes de rodar\n\n"
