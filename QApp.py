@@ -1541,7 +1541,7 @@ TEXTOS_INF = {
             "- Ex.: “qual a probabilidade de Failure em cada estado dado o sensor?”\n\n"
             "Em termos de inferência Bayesiana:\n\n"
             "- evidência = condicionamento\n\n"
-            "- consulta = variável(veis) alvo(s) do posterior"
+            "- consulta = variável(is) cuja distribuição posterior você deseja obter"
         ),
     
         "info21": "",
@@ -1816,7 +1816,7 @@ TEXTOS_INF = {
             "- Example: “What is the probability of Failure in each state given the sensor?”\n\n"
             "In Bayesian inference terms:\n\n"
             "- evidence = conditioning information\n\n"
-            "- query = target variable(s) of the posterior"
+            "- query = variable(s) whose posterior distribution you want to obtain."
         ),
     
         "info21": "",
