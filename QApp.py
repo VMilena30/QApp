@@ -1355,7 +1355,7 @@ TEXTOS_INF = {
         \theta = 2\arctan\left(\sqrt{\frac{P(V_i=1)}{P(V_i=0)}}\right)
         $$
         
-        No caso condicional, a mesma expressão é aplicada para cada combinação possível dos estados dos nós pais de V_i, denotados por $\Pi_i$.
+        No caso condicional, a mesma expressão é aplicada para cada combinação possível dos estados dos nós pais de $V_i, denotados por $\Pi_i$.
         
         ### Recursos (qubits): regra rápida
         - Se um nó tem $n_i$ estados, você precisa de  
@@ -1626,7 +1626,7 @@ TEXTOS_INF = {
         \theta = 2\arctan\left(\sqrt{\frac{P(V_i=1)}{P(V_i=0)}}\right)
         $$
         
-        In the conditional case, the same expression is applied to each possible combination of the states of the parent nodes of V_i, denoted by $\Pi_i$.
+        In the conditional case, the same expression is applied to each possible combination of the states of the parent nodes of $V_i, denoted by $\Pi_i$.
         
         ### Resources (qubits): quick rule
         - If a node has $n_i$ states, you need  
