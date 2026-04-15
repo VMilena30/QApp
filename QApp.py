@@ -504,7 +504,7 @@ TEXTOS = {
         "info_inf": "Seção para descrever as técnicas de Inferância Quântica usadas.",
         "titulo": "Visão Geral do <span style='color:#0d4376;'>qPrism</span>",
         "corpo": (
-            "O qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) é uma interface web interativa que integra três módulos: (i) Aprendizado de Máquina Quântico para problemas de classificação em confiabilidade, (ii) otimização de confiabilidade via alocação de redundâncias com algoritmos quânticos baseados em circuitos, e (iii) inferência por Redes Bayesianas Quânticas. A plataforma foi criada para testes e demonstrações, permitindo explorar os métodos com dados reais ou simulados e apoiar a disseminação e aplicação prática das soluções desenvolvidas nas pesquisas do CEERMA.\n\n"
+            "O qPrism (Quantum Platform for Reliability: Inference, Systems Modeling, and Machine Learning) é uma interface web interativa que integra três módulos: (i) otimização de confiabilidade via alocação de redundâncias com algoritmos quânticos baseados em circuitos, (ii) aprendizado de máquina quântico para problemas de classificação em confiabilidade, e (iii) inferência por Redes Bayesianas Quânticas. A plataforma foi criada para testes e demonstrações, permitindo explorar os métodos com dados reais ou simulados e apoiar a disseminação e aplicação prática das soluções desenvolvidas nas pesquisas do CEERMA.\n\n"
             "Navegue pelos módulos abaixo para realizar experimentos com dados reais ou simulados.\n\n"
         ),
         "ini": "Página inicial", 
