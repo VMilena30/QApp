@@ -1328,11 +1328,11 @@ TEXTOS_INF = {
         "intro_qbn": r"""
         ### Redes Bayesianas
         
-        Redes Bayesianas (BNs) são grafos direcionados acíclicos (DAGs) que representam dependências probabilísticas entre variáveis.  
+        Redes Bayesianas (BNs) são Grafos Direcionados Acíclicos (Directed Acyclic Graphs - DAGs) que representam dependências probabilísticas entre variáveis.  
         Na prática, elas permitem **atualizar probabilidades** quando você observa evidências (por exemplo: um sensor “falhou”, um teste “passou”, um componente “degradou”).
         
         ### O que você faz neste módulo
-        - **Constrói a BN** (nós, estados, pais e CPTs).
+        - **Constrói a BN** (nós, estados, pais e Tabelas Condicionais de Probabilidades (Conditional Probabilities Table - CPT)).
         - **Define evidências** (o que foi observado).
         - **Consulta probabilidades** (posteriores) e compara métodos.
         
@@ -1340,7 +1340,7 @@ TEXTOS_INF = {
         - **Exata** (quando viável)
         - **Monte Carlo**
         - **Quântico (shots)**
-        - **Quântico + Amplitude Amplification (AA)**
+        - **Quântico + Amplificação de Amplitude (Amplitude Amplification - AA)**
         
         ### Intuição do método quântico (alto nível)
         A ideia é representar a BN como um **circuito quântico**:
