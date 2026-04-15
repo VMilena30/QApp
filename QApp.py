@@ -1505,7 +1505,7 @@ TEXTOS_INF = {
             "Nesta página, você monta uma Rede Bayesiana (nós + relações + probabilidades), "
             "define evidências (o que você observou) e escolhe consultas (o que você quer estimar). "
             "Em seguida, o software roda a inferência e compara métodos "
-            "(ex.: Exato/Monte Carlo/Quântico/Quântico+AA, conforme habilitado)."
+            "(ex.: Exato/Monte Carlo/Quântico/Quântico+Amplificação de Amplitude (AA), conforme habilitado)."
         ),
     
         "info2_titulo": "2) Passo a passo (fluxo recomendado)",
@@ -1778,7 +1778,7 @@ TEXTOS_INF = {
             "On this page, you build a Bayesian Network (nodes + relationships + probabilities), "
             "define evidence (what you observed), and choose queries (what you want to estimate). "
             "Then, the software runs inference and compares methods "
-            "(e.g., Exact / Monte Carlo / Quantum / Quantum+AA, depending on what is enabled)."
+            "(e.g., Exact / Monte Carlo / Quantum / Quantum+Amplitude Amplification (AA), depending on what is enabled)."
             "Scope: this module supports discrete variables only, including multi-state nodes (2, 3, … states). Continuous distributions are not used in this version."
         ),
     
