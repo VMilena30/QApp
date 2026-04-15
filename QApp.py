@@ -1344,7 +1344,7 @@ TEXTOS_INF = {
         
         ### Intuição do método quântico (alto nível)
         A ideia é representar a BN como um **circuito quântico**:
-        - nós raiz são preparados com rotações **RY**;
+        - nós raízes são preparados com rotações **RY**;
         - nós condicionais usam rotações **controladas** (ex.: **CRY**, **CnRY**);
         - quando há muitos controles, pode haver **decomposição** e uso de **ancillas**.
         
