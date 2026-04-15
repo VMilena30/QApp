@@ -1342,7 +1342,7 @@ TEXTOS_INF = {
         - **Quântico (shots)**
         - **Quântico + Amplificação de Amplitude (Amplitude Amplification - AA)**
         
-        ### Intuição do método quântico (alto nível)
+        ### Método Quântico
         A ideia é representar a BN como um **circuito quântico**:
         - nós raízes são preparados com rotações **RY**;
         - nós condicionais usam rotações **controladas** (ex.: **CRY**, **CnRY**);
@@ -1613,7 +1613,7 @@ TEXTOS_INF = {
         - **Quantum (shots)**
         - **Quantum + Amplitude Amplification (AA)** 
         
-        ### Quantum approach (high-level intuition)
+        ### Quantum approach
         The idea is to represent the BN as a **quantum circuit**:
         - root nodes are prepared with **RY** rotations;
         - conditional nodes use **controlled rotations** (e.g., **CRY**, **CnRY**);
