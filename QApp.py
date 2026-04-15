@@ -678,8 +678,8 @@ TEXTOS_OPT = {
             "info1_titulo": "Guia do Usuário — Otimização Quântica para Alocação de Redundâncias",
 
         "info1": (
-            "### 1) O que essa página faz\n\n"
-            "Nesta página, você define um problema de Alocação de Redundâncias (RAP) informando:\n"
+            "### 1) O que esse módulo faz\n\n"
+            "Neste módulo, você define um problema de Alocação de Redundâncias (RAP) informando:\n"
             "- Estrutura do sistema (limites).\n"
             "- Tipos de componentes disponíveis (custos e confiabilidades).\n"
             "- Orçamento total disponível.\n\n"
@@ -918,8 +918,8 @@ TEXTOS_OPT = {
         "info1_titulo": "User Guide — Quantum Optimization for Redundancy Allocation",
     
         "info1": (
-            "### 1) What does this page do\n\n"
-            "On this page, you define a Redundancy Allocation Problem (RAP) by specifying:\n"
+            "### 1) What does this module do\n\n"
+            "On this module, you define a Redundancy Allocation Problem (RAP) by specifying:\n"
             "- System structure (limits).\n"
             "- Available component types (costs and reliabilities).\n"
             "- Total available budget.\n\n"
