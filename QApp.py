@@ -1367,7 +1367,7 @@ TEXTOS_INF = {
         m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
         $$
         
-        onde $s$ é o número de nós e o termo extra reflete ancillas usadas em rotações multi-controladas.
+        onde $s$ é o número de nós e o termo $\max_i |\Pi_{V_i}| - 1$ representa uma aproximação do número de qubits ancilla que podem ser necessários para implementar rotações multi-controladas, com base no maior número de nós pais observado na rede.
         
         **Referência:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
@@ -1638,7 +1638,7 @@ TEXTOS_INF = {
         m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
         $$
         
-        where $s$ is the number of nodes and the extra term reflects ancillas used by multi-controlled rotations.
+        where $s$ is the number of nodes and the term $\max_i |\Pi_{V_i}| - 1$ represents an approximation of the number of ancilla qubits that may be required to implement multi-controlled rotations, based on the largest number of parent nodes found in the network..
         
         **Reference:** Borujeni et al., *Quantum circuit representation of Bayesian networks*, Expert Systems With Applications (2021).
         """,
