@@ -1328,7 +1328,7 @@ TEXTOS_INF = {
         "intro_qbn": r"""
         ### Redes Bayesianas
         
-        Redes Bayesianas (BNs) são Grafos Direcionados Acíclicos (Directed Acyclic Graphs - DAGs) que representam dependências probabilísticas entre variáveis.  
+        Redes Bayesianas (Bayesian Networks - BNs) são Grafos Direcionados Acíclicos (Directed Acyclic Graphs - DAGs) que representam dependências probabilísticas entre variáveis.  
         Na prática, elas permitem **atualizar probabilidades** quando você observa evidências (por exemplo: um sensor “falhou”, um teste “passou”, um componente “degradou”).
         
         ### O que você faz neste módulo
