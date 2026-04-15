@@ -1361,7 +1361,7 @@ TEXTOS_INF = {
         - Se um nó tem $n_i$ estados, você precisa de  
           $$m_i=\lceil \log_2(n_i)\rceil$$
           qubits para representá-lo.
-        - Em BNs **binárias**, uma estimativa simples para o total é:
+        - Em BNs **binárias**, uma estimativa para o total de qubits é:
         
         $$
         m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
@@ -1632,7 +1632,7 @@ TEXTOS_INF = {
         - If a node has $n_i$ states, you need  
           $$m_i=\lceil \log_2(n_i)\rceil$$
           qubits to represent it.
-        - For **binary BNs**, a simple estimate of the total is:
+        - For **binary BNs**, a estimate of the total of qubits is:
         
         $$
         m_{BN,2} = s + \max_i |\Pi_{V_i}| - 1
