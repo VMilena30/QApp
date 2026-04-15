@@ -1541,7 +1541,7 @@ TEXTOS_INF = {
             "- Ex.: “qual a probabilidade de Failure em cada estado dado o sensor?”\n\n"
             "Em termos de inferência Bayesiana:\n\n"
             "- evidência = condicionamento\n\n"
-            "- consulta = variável(veis) alvo do posterior"
+            "- consulta = variável(veis) alvo(s) do posterior"
         ),
     
         "info21": "",
