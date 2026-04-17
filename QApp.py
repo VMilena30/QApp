@@ -1394,8 +1394,9 @@ TEXTOS_INF = {
         "example_desc": "Carrega uma rede simples A→C←B (Borujeni et al., 2021) para você testar a inferência antes de montar sua própria rede.",
         "example_load_btn": "Carregar exemplo",
         "example_clear_btn": "Limpar rede",
-
-                
+        "example_locked_msg": "Exemplo carregado em modo fixo. Limpe a rede para montar a sua própria BN.",
+        "example_locked_edit_msg": "O exemplo está em modo fixo. Use a rede como teste e limpe-a para habilitar a edição.",
+                        
         # Seções principais
         "def_nos": "Definição dos nós",
         "evidencia": "Evidência e consulta",
@@ -1664,9 +1665,10 @@ TEXTOS_INF = {
         "example_desc": "Loads a simple A→C←B network (Borujeni et al., 2021) so you can test inference before building your own network.",
         "example_load_btn": "Load example",
         "example_clear_btn": "Clear network",
-
-
+        "example_locked_msg": "Example loaded in fixed mode. Clear the network to build your own BN.",
+        "example_locked_edit_msg": "The example is in fixed mode. Use it to test inference and clear the network to enable editing.",
         
+                
         # Main sections
         "def_nos": "Node definition",
         "evidencia": "Evidence and query",
@@ -3801,6 +3803,8 @@ def main():
         def _qbn_init_state():
             if "qbn" not in st.session_state:
                 st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+            if "qbn_example_locked" not in st.session_state:
+                st.session_state.qbn_example_locked = False
         
         def _qbn_states_from_card(card: int) -> List[str]:
             card = int(card)
@@ -4544,7 +4548,72 @@ def main():
             with col_list:
                 st.subheader(textos_inf["def_nos"])
                 st.caption(textos_inf["def_nos_desc"])
+                
+                example_locked = bool(st.session_state.get("qbn_example_locked", False))
+                if example_locked:
+                    st.info(textos_inf["example_locked_msg"])
+                else:
+                    with st.container(border=True):
+                        nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
+                
+                        card = st.number_input(
+                            textos_inf["card_no"],
+                            min_value=2,
+                            max_value=8,
+                            value=2,
+                            step=1,
+                            key="qbn_new_node_card",
+                        )
+                
+                        submitted = st.button(textos_inf["add_no"], key="qbn_add_node_btn")
+                
+                        if submitted:
+                            nome = (nome or "").strip()
+                            if nome and (nome not in st.session_state.qbn["nodes"]):
+                
+                                st.session_state.qbn["nodes"][nome] = {
+                                    "card": int(card),
+                                    "states": _qbn_states_from_card(int(card)),
+                                    "parents": [],
+                                    "cpt": {(): [1.0 / int(card)] * int(card)},
+                                }
+                
+                                st.session_state.qbn["selected"] = nome
+                                st.rerun()
+                
+                    nodes = list(st.session_state.qbn["nodes"].keys())
+                    if nodes:
+                        sel = st.selectbox(
+                            textos_inf["selecionar_no"],
+                            options=nodes,
+                            index=nodes.index(st.session_state.qbn["selected"])
+                            if st.session_state.qbn["selected"] in nodes else 0
+                        )
+                        st.session_state.qbn["selected"] = sel
+                
+                        c1, c2 = st.columns(2)
+                        with c1:
+                            if st.button(textos_inf["remover_no"]):
+                                del st.session_state.qbn["nodes"][sel]
+                                for n2 in list(st.session_state.qbn["nodes"].keys()):
+                                    ps = st.session_state.qbn["nodes"][n2]["parents"]
+                                    st.session_state.qbn["nodes"][n2]["parents"] = [p for p in ps if p != sel]
+                                st.session_state.qbn["selected"] = (
+                                    list(st.session_state.qbn["nodes"].keys())[0]
+                                    if st.session_state.qbn["nodes"] else None
+                                )
+                                st.rerun()
+                        with c2:
+                            if st.button(textos_inf["limpar_rede"]):
+                                st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                                st.session_state.qbn_example_locked = False
+                                st.rerun()
+                    else:
+                        st.info(textos_inf["sem_nos"])
 
+
+                
+                '''
                 with st.expander(textos_inf["example_title"], expanded=False):
                     st.caption(textos_inf["example_desc"])
                 
@@ -4552,11 +4621,13 @@ def main():
                     with c1:
                         if st.button(textos_inf["example_load_btn"], key="qbn_load_example_fig4"):
                             st.session_state.qbn = _qbn_load_example_borujeni_fig4()
+                            st.session_state.qbn_example_locked = True
                             st.rerun()
                 
                     with c2:
                         if st.button(textos_inf["example_clear_btn"], key="qbn_clear_example_fig4"):
                             st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                            st.session_state.qbn_example_locked = False
                             st.rerun()
 
 
@@ -4614,11 +4685,15 @@ def main():
                             st.rerun()
                 else:
                     st.info(textos_inf["sem_nos"])
+                '''
             
                 with col_edit:
                     nodes = list(st.session_state.qbn["nodes"].keys())
-                
-                    if nodes and st.session_state.qbn["selected"]:
+
+                    if example_locked:
+                        st.info(textos_inf["example_locked_edit_msg"])
+                        
+                    elif nodes and st.session_state.qbn["selected"]:
                         nsel = st.session_state.qbn["selected"]
                         info = st.session_state.qbn["nodes"][nsel]
                 
