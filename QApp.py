@@ -4548,8 +4548,25 @@ def main():
             with col_list:
                 st.subheader(textos_inf["def_nos"])
                 st.caption(textos_inf["def_nos_desc"])
-                
+
+                with st.expander(textos_inf["example_title"], expanded=False):
+                    st.caption(textos_inf["example_desc"])
+                    
+                c1, c2 = st.columns(2)
+                with c1:
+                    if st.button(textos_inf["example_load_btn"], key="qbn_load_example_fig4"):
+                        st.session_state.qbn = _qbn_load_example_borujeni_fig4()
+                        st.session_state.qbn_example_locked = True
+                        st.rerun()
+
+                with c2:
+                    if st.button(textos_inf["example_clear_btn"], key="qbn_clear_example_fig4"):
+                        st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
+                        st.session_state.qbn_example_locked = False
+                        st.rerun()
+
                 example_locked = bool(st.session_state.get("qbn_example_locked", False))
+                
                 if example_locked:
                     st.info(textos_inf["example_locked_msg"])
                 else:
@@ -4610,9 +4627,7 @@ def main():
                                 st.rerun()
                     else:
                         st.info(textos_inf["sem_nos"])
-
-
-                
+         
             
                 with col_edit:
                     nodes = list(st.session_state.qbn["nodes"].keys())
