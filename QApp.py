@@ -1177,10 +1177,9 @@ TEXTOS_ML = {
         Não é obrigatório utilizar três eixos; rotações simples com um único eixo são permitidas.
         """,
         "intro_titulo": "Aprendizado de Máquina Quântico",
-        "intro_titulo": "Aprendizado de Máquina Quântico",
 
         "intro_1": """
-        O Aprendizado de Máquina Quântico (Quantum Machine Learning - QML) é uma área interdisciplinar que combina computação quântica e aprendizado de máquina, explorando propriedades como superposição e emaranhamento para representar e processar dados de forma potencialmente mais eficiente.
+        O Aprendizado de Máquina Quântico é uma área interdisciplinar que combina computação quântica e aprendizado de máquina, explorando propriedades como superposição e emaranhamento para representar e processar dados de forma potencialmente mais eficiente.
         
         Neste módulo, utilizamos uma abordagem híbrida, onde circuitos quânticos são integrados a modelos clássicos para tarefas de classificação e diagnóstico de falhas.
         """,
