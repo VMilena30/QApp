@@ -1105,14 +1105,14 @@ TEXTOS_ML = {
         ou
         • Enviar sua própria base de dados.
         
-        📌 FORMATO EXIGIDO PARA BASE PRÓPRIA:
+        FORMATO EXIGIDO PARA BASE PRÓPRIA:
         
         O dataset deve conter obrigatoriamente:
         
-        1️⃣ Uma coluna chamada "label"  
+        Uma coluna chamada "label"  
            → representa o rótulo numérico ou categórico da amostra.
         
-        2️⃣ Uma coluna chamada "fault"  
+        Uma coluna chamada "fault"  
            → representa o tipo de falha ou condição operacional associada à amostra.
         
         As demais colunas devem conter apenas valores numéricos (features ou sinais).
@@ -1175,6 +1175,69 @@ TEXTOS_ML = {
         Rotações de Euler:
         O usuário pode escolher 1, 2 ou 3 eixos de rotação.
         Não é obrigatório utilizar três eixos; rotações simples com um único eixo são permitidas.
+        """,
+        "intro_titulo": "Aprendizado de Máquina Quântico",
+        "intro_1": """
+        O Aprendizado de Máquina Quântico é uma área interdisciplinar que combina computação quântica e aprendizado de máquina, explorando propriedades como superposição e emaranhamento para representar e processar dados de forma potencialmente mais eficiente.
+        
+        Neste módulo, utilizamos uma abordagem híbrida, onde circuitos quânticos são integrados a modelos clássicos para tarefas de classificação e diagnóstico de falhas.
+        """,
+        "intro_2": """
+        O que você pode fazer neste módulo:
+        
+        • Utilizar bases reais ou enviar seus próprios dados  
+        • Extrair automaticamente características de sinais  
+        • Aplicar diferentes técnicas de codificação quântica  
+        • Construir modelos híbridos para classificação  
+        
+        O objetivo é permitir a análise de desempenho de diferentes configurações de modelos quânticos.
+        """,
+        "intro_3": """
+        Modelos utilizados:
+        
+        • Codificação quântica:
+          - Angle Encoding  
+          - Amplitude Encoding  
+          - Feature Maps (X, Y, Z, ZZ)
+        
+        • Circuitos quânticos parametrizados (PQC):
+          - Camada parametrizada (RX, RY, RZ + CZ/iSWAP)  
+          - Real Amplitudes  
+          - QCNN (experimental)
+        
+        • Classificador clássico:
+          - Support Vector Machine (SVM)
+        
+        O circuito quântico atua como extrator de características, enquanto o modelo clássico realiza a classificação final.
+        """,
+        "intro_4": """
+        Base de dados:
+        
+        Este módulo utiliza a base **CWRU (Case Western Reserve University Bearing Dataset)**, amplamente utilizada na literatura para diagnóstico de falhas em rolamentos.
+        
+        Referência:
+        https://engineering.case.edu/bearingdatacenter
+        """,
+        "intro_5": """
+        Estrutura esperada dos dados (para bases próprias)
+        
+        Caso o usuário deseje enviar sua própria base, ela deve seguir os seguintes requisitos:
+        
+        • Conter uma coluna chamada "label"
+        → representa a classe alvo (saída do modelo)
+        
+        • Conter uma coluna chamada "fault"
+        → representa o tipo de falha ou condição do sistema
+        
+        • As demais colunas devem conter valores numéricos
+        → sinais brutos ou features já extraídas
+        
+        Caso a coluna "label" não seja encontrada, o sistema assumirá automaticamente que a última coluna corresponde ao alvo.
+        
+        Formatos aceitos:
+        • CSV (.csv)
+        • Excel (.xlsx)
+        • Parquet (.parquet)
         """
     },
     "en": {
@@ -1242,14 +1305,14 @@ TEXTOS_ML = {
         or
         • Upload their own dataset.
         
-        📌 REQUIRED FORMAT FOR CUSTOM DATASETS:
+        REQUIRED FORMAT FOR CUSTOM DATASETS:
         
         The dataset must contain:
         
-        1️⃣ A column named "label"
+        A column named "label"
            → represents the numerical or categorical target class.
         
-        2️⃣ A column named "fault"
+        A column named "fault"
            → represents the fault type or operational condition associated with each sample.
         
         All remaining columns must contain numerical values (signal data or features).
@@ -1314,6 +1377,69 @@ TEXTOS_ML = {
         Euler Rotations:
         Users may select 1, 2, or 3 rotation axes.
         It is not mandatory to use three axes; single-axis rotations are allowed.
+        """,
+        "intro_titulo": "Quantum Machine Learning (QML)",
+        "intro_1": """
+        Quantum Machine Learning (QML) is an interdisciplinary field that combines quantum computing and machine learning, leveraging properties such as superposition and entanglement to represent and process data more efficiently.
+        
+        This module adopts a hybrid approach, where quantum circuits are integrated with classical models for classification and fault diagnosis tasks.
+        """,
+        "intro_2": """
+        What you can do in this module:
+        
+        • Use real datasets or upload your own data  
+        • Automatically extract signal features  
+        • Apply different quantum encoding techniques  
+        • Build hybrid classification models  
+        
+        The goal is to analyze the performance of different quantum model configurations.
+        """,
+        "intro_3": """
+        Models used:
+        
+        • Quantum encoding:
+          - Angle Encoding  
+          - Amplitude Encoding  
+          - Feature Maps (X, Y, Z, ZZ)
+        
+        • Parameterized Quantum Circuits (PQC):
+          - Parameterized layer (RX, RY, RZ + CZ/iSWAP)  
+          - Real Amplitudes  
+          - QCNN (experimental)
+        
+        • Classical classifier:
+          - Support Vector Machine (SVM)
+        
+        The quantum circuit acts as a feature extractor, while the classical model performs final classification.
+        """,
+        "intro_4": """
+        Dataset:
+        
+        This module uses the **CWRU (Case Western Reserve University Bearing Dataset)**, widely used in the literature for bearing fault diagnosis.
+        
+        Reference:
+        https://engineering.case.edu/bearingdatacenter
+        """,
+        "intro_5": """
+        Expected dataset structure (for custom data)
+        
+        If you choose to upload your own dataset, it must follow these requirements:
+        
+        • A column named "label"
+        → represents the target class (model output)
+        
+        • A column named "fault"
+        → represents the fault type or system condition
+        
+        • All other columns must contain numerical values
+        → raw signals or extracted features
+        
+        If a "label" column is not found, the system will assume that the last column is the target.
+        
+        Accepted formats:
+        • CSV (.csv)
+        • Excel (.xlsx)
+        • Parquet (.parquet)
         """
     }
 }
@@ -3406,7 +3532,18 @@ def main():
         }
         </style>
         """, unsafe_allow_html=True)
-    
+
+        st.markdown("---")
+
+        st.header(textos_ml["intro_titulo"])
+        st.write(textos_ml["intro_1"])
+        st.write(textos_ml["intro_2"])
+        st.write(textos_ml["intro_3"])
+        st.write(textos_ml["intro_4"])
+        st.write(textos_ml["intro_5"])
+        
+        st.markdown("---")
+        
         if ajuda_ml:
             st.session_state["pagina"] = "explicacao_ml"
             st.rerun()
