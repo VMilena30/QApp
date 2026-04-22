@@ -1663,27 +1663,21 @@ TEXTOS_INF = {
         # Resultados
 
         "resultados_intro": "Os resultados abaixo mostram como a rede responde às evidências inseridas e permitem comparar diferentes métodos de inferência.",
-
         "tabela_resultados_desc": "A tabela resume as probabilidades estimadas para cada nó de consulta e cada estado possível.",
-        
         "tabela_a_desc": "Esta comparação mostra, lado a lado, os resultados obtidos pelos métodos Exato, Monte Carlo e Quântico. Ela ajuda a verificar se as estimativas estão consistentes entre abordagens diferentes.",
-        
         "tabela_b_desc": "Esta comparação mostra os resultados obtidos com Quantum Shots e com Quantum + Amplificação de Amplitude (AA). Ela ajuda a observar se a AA alterou a distribuição estimada e a facilidade de encontrar estados compatíveis com a evidência.",
-        
         "cpt_result_desc": "As probabilidades inseridas na rede aparecem organizadas como distribuições marginais ou tabelas condicionais. Esse bloco ajuda a revisar como cada nó depende de seus pais antes de interpretar os resultados finais.",
-        
-        "graficos_desc": "Os gráficos mostram a frequência relativa dos resultados observados nas amostragens quânticas. Eles ajudam a visualizar quais combinações de estados apareceram com maior ou menor frequência.",
-        
-        "outcomes_qshots_desc": "Este gráfico apresenta os resultados obtidos com Quantum Shots, isto é, a amostragem direta do circuito quântico sem amplificação adicional.",
-        
-        "outcomes_qaa_desc": "Este gráfico apresenta os resultados obtidos com Quantum + AA. Aqui, a amplificação de amplitude tenta aumentar a chance de observar estados compatíveis com a evidência escolhida.",
-        
-        "acc_rate_desc": "A acc_rate representa a fração de amostras aceitas após aplicar o filtro de evidência. Quando esse valor é alto, mais amostras são compatíveis com a evidência; quando é baixo, o evento condicionado é mais raro ou mais difícil de observar por amostragem.",
-        
-        "circuito_intro_desc": "Este bloco mostra como a rede bayesiana foi representada internamente no modelo quântico. Para uso prático, ele serve principalmente como apoio visual e técnico; não é necessário entender cada porta para interpretar as probabilidades finais.",
-        
+        "graficos_desc": "Os gráficos mostram a frequência relativa dos resultados observados nas amostragens quânticas. Eles ajudam a visualizar quais combinações de estados apareceram com maior ou menor frequência.",        
+        "outcomes_qshots_desc": "Este gráfico apresenta os resultados obtidos com Quantum Shots, isto é, a amostragem direta do circuito quântico sem amplificação adicional.",        
+        "outcomes_qaa_desc": "Este gráfico apresenta os resultados obtidos com Quantum + AA. Aqui, a amplificação de amplitude tenta aumentar a chance de observar estados compatíveis com a evidência escolhida.",        
+        "acc_rate_desc": "A acc_rate representa a fração de amostras aceitas após aplicar o filtro de evidência. Quando esse valor é alto, mais amostras são compatíveis com a evidência; quando é baixo, o evento condicionado é mais raro ou mais difícil de observar por amostragem.",        
+        "circuito_intro_desc": "Este bloco mostra como a rede bayesiana foi representada internamente no modelo quântico. Para uso prático, ele serve principalmente como apoio visual e técnico; não é necessário entender cada porta para interpretar as probabilidades finais.",        
         "q_header_desc": "Este resumo mostra quantos qubits são necessários para representar os nós da rede e, quando aplicável, quantos qubits auxiliares são usados na construção do circuito.",
 
+        "warn_prob_sum": "A soma atual das probabilidades é",
+        "warn_prob_sum_fix": "Para um nó raiz, a soma deve ser 1.",
+
+        
         "info1_titulo": "Guia do Usuário — Inferência Quântica via Redes Bayesianas Quânticas (Quantum Bayesian Networks - QBN)",
 
         "info1": (
@@ -1773,6 +1767,8 @@ TEXTOS_INF = {
             "- Quantum Shots e Quantum+AA são úteis para comparar comportamento e limitações "
             "(ex.: aceitação/acc_rate, k usado etc.)."
         ),
+
+        
 
 
     },
@@ -1981,27 +1977,19 @@ TEXTOS_INF = {
 
         # Resultados
         "resultados_intro": "The results below show how the network responds to the inserted evidence and allow a comparison between different inference methods.",
-
-        "tabela_resultados_desc": "The table summarizes the estimated probabilities for each query node and each possible state.",
+        "tabela_resultados_desc": "The table summarizes the estimated probabilities for each query node and each possible state.",        
+        "tabela_a_desc": "This comparison shows, side by side, the results obtained with Exact, Monte Carlo, and Quantum methods. It helps verify whether the estimates are consistent across different approaches.",        
+        "tabela_b_desc": "This comparison shows the results obtained with Quantum Shots and Quantum + Amplitude Amplification (AA). It helps reveal whether AA changed the estimated distribution and the ease of finding states compatible with the evidence.",     
+        "cpt_result_desc": "The probabilities entered in the network are organized as marginal distributions or conditional tables. This block helps review how each node depends on its parents before interpreting the final results.",        
+        "graficos_desc": "The charts show the relative frequency of the outcomes observed in the quantum sampling runs. They help visualize which state combinations appeared more or less often.",       
+        "outcomes_qshots_desc": "This chart shows the results obtained with Quantum Shots, that is, direct sampling from the quantum circuit without additional amplification.",        
+        "outcomes_qaa_desc": "This chart shows the results obtained with Quantum + AA. Here, amplitude amplification attempts to increase the chance of observing states compatible with the selected evidence.",        
+        "acc_rate_desc": "acc_rate represents the fraction of accepted samples after applying the evidence filter. When this value is high, more samples are compatible with the evidence; when it is low, the conditioned event is rarer or harder to observe through sampling.",        
+        "circuito_intro_desc": "This block shows how the Bayesian network was internally represented in the quantum model. For practical use, it mainly serves as visual and technical support; understanding every gate is not required to interpret the final probabilities.",        
+        "q_header_desc": "This summary shows how many qubits are needed to represent the network nodes and, when applicable, how many auxiliary qubits are used in the circuit construction.",   
         
-        "tabela_a_desc": "This comparison shows, side by side, the results obtained with Exact, Monte Carlo, and Quantum methods. It helps verify whether the estimates are consistent across different approaches.",
-        
-        "tabela_b_desc": "This comparison shows the results obtained with Quantum Shots and Quantum + Amplitude Amplification (AA). It helps reveal whether AA changed the estimated distribution and the ease of finding states compatible with the evidence.",
-        
-        "cpt_result_desc": "The probabilities entered in the network are organized as marginal distributions or conditional tables. This block helps review how each node depends on its parents before interpreting the final results.",
-        
-        "graficos_desc": "The charts show the relative frequency of the outcomes observed in the quantum sampling runs. They help visualize which state combinations appeared more or less often.",
-        
-        "outcomes_qshots_desc": "This chart shows the results obtained with Quantum Shots, that is, direct sampling from the quantum circuit without additional amplification.",
-        
-        "outcomes_qaa_desc": "This chart shows the results obtained with Quantum + AA. Here, amplitude amplification attempts to increase the chance of observing states compatible with the selected evidence.",
-        
-        "acc_rate_desc": "acc_rate represents the fraction of accepted samples after applying the evidence filter. When this value is high, more samples are compatible with the evidence; when it is low, the conditioned event is rarer or harder to observe through sampling.",
-        
-        "circuito_intro_desc": "This block shows how the Bayesian network was internally represented in the quantum model. For practical use, it mainly serves as visual and technical support; understanding every gate is not required to interpret the final probabilities.",
-        
-        "q_header_desc": "This summary shows how many qubits are needed to represent the network nodes and, when applicable, how many auxiliary qubits are used in the circuit construction.",
-                
+        "warn_prob_sum": "The current sum of probabilities is",
+        "warn_prob_sum_fix": "For a root node, the sum must be 1.",
 
         "info1_titulo": "User Guide — Quantum Inference via Quantum Bayesian Networks (QBN)",
     
@@ -4917,9 +4905,27 @@ def main():
                                 "prob": info.get("cpt", {}).get((), [1.0 / len(info["states"])] * len(info["states"]))
                             })
                 
-                            edited = st.data_editor(df, num_rows="fixed", hide_index=True, key=f"qbn_root_{nsel}")
-                            probs = _qbn_normalize_row(edited["prob"].tolist())
+                            edited = st.data_editor(
+                                df_root,
+                                use_container_width=True,
+                                hide_index=True,
+                                num_rows="fixed",
+                                key=f"qbn_root_probs_{nsel}",
+                                column_config={
+                                    "state": st.column_config.TextColumn(disabled=True),
+                                    "prob": st.column_config.NumberColumn(format="%.6f"),
+                                },
+                            )
+                            
+                            probs = [float(x) if x is not None else 0.0 for x in edited["prob"].tolist()]
                             info["cpt"] = {(): probs}
+                            
+                            row_sum = sum(probs)
+                            if abs(row_sum - 1.0) > 1e-9:
+                                st.warning(
+                                    f"{textos_inf['warn_prob_sum']} {row_sum:.6f}. {textos_inf['warn_prob_sum_fix']}"
+                                )
+
                             st.caption(textos_inf["caption_probs"])
                 
                         else:
