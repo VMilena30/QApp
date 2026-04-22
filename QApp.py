@@ -1534,7 +1534,7 @@ TEXTOS_INF = {
 
         "example_title": "Exemplo",
         "example_intro": "Explore um exemplo simples de rede bayesiana aplicado à confiabilidade antes de montar sua própria rede.",
-
+        "example_details": "Ver descrição do exemplo",
         "example_desc": (
             "Este exemplo apresenta uma pequena rede bayesiana voltada à avaliação da condição de um sistema a partir de informações operacionais e de manutenção.\n\n"
             "Os nós da rede representam:\n"
@@ -1825,7 +1825,8 @@ TEXTOS_INF = {
         "example_title": "Example",
 
         "example_intro": "Explore a simple Bayesian network example for reliability analysis before building your own network.",
-
+        "example_details": "View example description",
+        
         "example_desc": (
             "This example presents a small Bayesian network focused on assessing system condition from operational and maintenance-related information.\n\n"
             "The nodes represent:\n"
@@ -4740,35 +4741,40 @@ def main():
             # UI — build BN
             # ============================
             col_list, col_edit = st.columns([1, 2], gap="large")
-        
-            with col_list:
-                st.subheader(textos_inf["def_nos"])
-                st.caption(textos_inf["def_nos_desc"])
 
-                with st.expander(textos_inf["example_title"], expanded=False):
+            with col_list:
+                st.subheader(textos_inf["example_title"])
+                st.caption(textos_inf["example_intro"])
+            
+                with st.expander(textos_inf["example_details"], expanded=False):
                     st.caption(textos_inf["example_desc"])
-                    
+            
                 c1, c2 = st.columns(2)
                 with c1:
                     if st.button(textos_inf["example_load_btn"], key="qbn_load_example_fig4"):
                         st.session_state.qbn = _qbn_load_example_borujeni_fig4()
                         st.session_state.qbn_example_locked = True
                         st.rerun()
-
+            
                 with c2:
                     if st.button(textos_inf["example_clear_btn"], key="qbn_clear_example_fig4"):
                         st.session_state.qbn = {"nodes": {}, "selected": None, "last": None}
                         st.session_state.qbn_example_locked = False
                         st.rerun()
-
+            
+                st.divider()
+            
+                st.subheader(textos_inf["def_nos"])
+                st.caption(textos_inf["def_nos_desc"])
+            
                 example_locked = bool(st.session_state.get("qbn_example_locked", False))
-                
+            
                 if example_locked:
                     st.info(textos_inf["example_locked_msg"])
                 else:
                     with st.container(border=True):
                         nome = st.text_input(textos_inf["nome_no"], value="", key="qbn_new_node_name")
-                
+            
                         card = st.number_input(
                             textos_inf["card_no"],
                             min_value=2,
@@ -4777,23 +4783,23 @@ def main():
                             step=1,
                             key="qbn_new_node_card",
                         )
-                
+            
                         submitted = st.button(textos_inf["add_no"], key="qbn_add_node_btn")
-                
+            
                         if submitted:
                             nome = (nome or "").strip()
                             if nome and (nome not in st.session_state.qbn["nodes"]):
-                
+            
                                 st.session_state.qbn["nodes"][nome] = {
                                     "card": int(card),
                                     "states": _qbn_states_from_card(int(card)),
                                     "parents": [],
                                     "cpt": {(): [1.0 / int(card)] * int(card)},
                                 }
-                
+            
                                 st.session_state.qbn["selected"] = nome
                                 st.rerun()
-                
+            
                     nodes = list(st.session_state.qbn["nodes"].keys())
                     if nodes:
                         sel = st.selectbox(
@@ -4803,7 +4809,7 @@ def main():
                             if st.session_state.qbn["selected"] in nodes else 0
                         )
                         st.session_state.qbn["selected"] = sel
-                
+            
                         c1, c2 = st.columns(2)
                         with c1:
                             if st.button(textos_inf["remover_no"]):
