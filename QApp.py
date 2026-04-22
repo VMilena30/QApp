@@ -1245,7 +1245,8 @@ TEXTOS_ML = {
         • CSV (.csv)  
         • Excel (.xlsx)  
         • Parquet (.parquet)  
-        """
+        """,
+        "botao_ajuda": "Guia do Usuário"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1454,7 +1455,8 @@ TEXTOS_ML = {
         • CSV (.csv)  
         • Excel (.xlsx)  
         • Parquet (.parquet)  
-        """
+        """,
+        "botao_ajuda": "User Guide"
     }
 }
 
@@ -3554,27 +3556,26 @@ def main():
             st.subheader(textos["pagina_ml2"])
     
         with col2:
-            ajuda_ml = st.button("?", key="botao_ajuda_ml")
+            ajuda_ml = st.button(textos_ml["botao_ajuda"], key="botao_ajuda_ml")
     
         
         st.markdown("""
         <style>
         button[data-testid="baseButton-secondary"][id*="botao_ajuda_ml"] {
-            background-color: white !important;
-            border: 1.5px solid #03518C !important;
-            border-radius: 50% !important;
-            width: 28px !important;
-            height: 28px !important;
-            font-size: 14px !important;
-            font-weight: bold !important;
-            color: #03518C !important;
-            padding: 0 !important;
+            background-color: #03518C !important;
+            color: white !important;
+            border-radius: 8px !important;
+            padding: 4px 12px !important;
+            font-size: 13px !important;
+            font-weight: 500 !important;
+            height: 32px !important;
+            border: none !important;
+            white-space: nowrap !important;
         }
         
+        /* hover */
         button[data-testid="baseButton-secondary"][id*="botao_ajuda_ml"]:hover {
-            background-color: #f5f9ff !important;
-            color: #02416B !important;
-            border-color: #02416B !important;
+            background-color: #02416B !important;
         }
         </style>
         """, unsafe_allow_html=True)
