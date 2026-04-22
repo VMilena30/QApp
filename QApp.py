@@ -4906,7 +4906,7 @@ def main():
                             })
                 
                             edited = st.data_editor(
-                                df_root,
+                                df,
                                 use_container_width=True,
                                 hide_index=True,
                                 num_rows="fixed",
