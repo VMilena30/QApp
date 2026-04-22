@@ -3598,63 +3598,39 @@ def main():
     
         # --------- OPÇÃO 1: usar base do app (CWRU / JNU) ----------
         if modo_dataset == "Usar base de vibração do app":
-            col1, col2 = st.columns(2)
-            with col1:
-                st.markdown(textos_ml["dataset_opcao"])
-                dataset_opcao = st.selectbox(
-                    textos_ml["selecione_base"],
-                    [" - ", "CWRU", "JNU"]
-                )
-            with col2:
-                st.info("Selecione uma das bases internas. Para usar seus próprios dados, escolha a outra opção acima.")
     
             def carregar_dados_brutos(nome):
-                if nome == "CWRU":
-                    # mesmo esquema que você tinha
-                    df_raw = pd.DataFrame(columns=['DE_data', 'fault'])
-    
-                    for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
-                        for file_name in files:
-                            path = os.path.join(root, file_name)
-                            mat = scipy.io.loadmat(path)
-                            key_name = list(mat.keys())[3]
-                            DE_data = mat.get(key_name)
-                            fault = np.full((len(DE_data), 1), file_name[:-4])
-                            df_temp = pd.DataFrame({'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
-                            df_raw = pd.concat([df_raw, df_temp], axis=0)
-    
-                    # janela
-                    win_len = 1000
-                    stride = 900
-                    x = []
-                    y = []
-                    for k in df_raw['fault'].unique():
-                        df_temp_2 = df_raw[df_raw['fault'] == k]
-                        for i in np.arange(0, len(df_temp_2) - (win_len), stride):
-                            temp = df_temp_2.iloc[i:i+win_len, :-1].values
-                            temp = temp.reshape((1, -1))
-                            x.append(temp)
-                            y.append(df_temp_2.iloc[i+win_len, -1])
-    
-                    x = np.array(x).reshape((-1, win_len))
-                    y = np.array(y)
-                    return x, y
-    
-                elif nome == "JNU":
-                    dataset = np.load(r"C:\\Arthur\\JNU_quantum_8.npz")
-                    X = dataset['data']
-                    y = dataset['label']
-                    return X, y
-                else:
-                    return None, None
-    
-            if dataset_opcao != " - ":
-                X_raw, y = carregar_dados_brutos(dataset_opcao)
-                nome_base = dataset_opcao
-                st.success(textos_ml["upload_sucesso"])
-                st.write("Formato dos dados carregados:", X_raw.shape)
-            else:
-                X_raw, y = None, None
+                # mesmo esquema que você tinha
+                df_raw = pd.DataFrame(columns=['DE_data', 'fault'])
+
+                for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
+                    for file_name in files:
+                        path = os.path.join(root, file_name)
+                        mat = scipy.io.loadmat(path)
+                        key_name = list(mat.keys())[3]
+                        DE_data = mat.get(key_name)
+                        fault = np.full((len(DE_data), 1), file_name[:-4])
+                        df_temp = pd.DataFrame({'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
+                        df_raw = pd.concat([df_raw, df_temp], axis=0)
+
+                # janela
+                win_len = 1000
+                stride = 900
+                x = []
+                y = []
+                for k in df_raw['fault'].unique():
+                    df_temp_2 = df_raw[df_raw['fault'] == k]
+                    for i in np.arange(0, len(df_temp_2) - (win_len), stride):
+                        temp = df_temp_2.iloc[i:i+win_len, :-1].values
+                        temp = temp.reshape((1, -1))
+                        x.append(temp)
+                        y.append(df_temp_2.iloc[i+win_len, -1])
+
+                x = np.array(x).reshape((-1, win_len))
+                y = np.array(y)
+                return x, y
+
+        
     
         # --------- OPÇÃO 2: upload de base própria ----------
         else:
