@@ -1194,20 +1194,31 @@ TEXTOS_ML = {
         """,
         "intro_modelos_titulo": "Modelos utilizados",
         "intro_modelos": """
-        • Codificação quântica:
-            - Angle Encoding  
-            - Amplitude Encoding  
-            - Feature Maps (X, Y, Z, ZZ)  
-    
-        • Circuitos quânticos parametrizados (PQC):
-            - Camada parametrizada (RX, RY, RZ + CZ/iSWAP)  
-            - Real Amplitudes  
-            - QCNN (experimental)  
-    
-        • Classificador clássico:
-            - Support Vector Machine (SVM)  
-    
-        O circuito quântico atua como extrator de características, enquanto o modelo clássico realiza a classificação final.
+        <ul>
+            <li><b>Codificação quântica:</b>
+                <ul>
+                    <li>Angle Encoding</li>
+                    <li>Amplitude Encoding</li>
+                    <li>Feature Maps (X, Y, Z, ZZ)</li>
+                </ul>
+            </li>
+        
+            <li><b>Circuitos quânticos parametrizados (PQC):</b>
+                <ul>
+                    <li>Camada parametrizada (RX, RY, RZ + CZ/iSWAP)</li>
+                    <li>Real Amplitudes</li>
+                    <li>QCNN (experimental)</li>
+                </ul>
+            </li>
+        
+            <li><b>Classificador clássico:</b>
+                <ul>
+                    <li>Support Vector Machine (SVM)</li>
+                </ul>
+            </li>
+        </ul>
+        
+        <p>O circuito quântico atua como extrator de características, enquanto o modelo clássico realiza a classificação final.</p>
         """,
         "intro_base_titulo": "Base de dados",
         "intro_base": """
@@ -1392,20 +1403,31 @@ TEXTOS_ML = {
         """,    
         "intro_modelos_titulo": "Models used",    
         "intro_modelos": """
-        • Quantum encoding:
-            - Angle Encoding  
-            - Amplitude Encoding  
-            - Feature Maps (X, Y, Z, ZZ)  
+        <ul>
+            <li><b>Quantum encoding:</b>
+                <ul>
+                    <li>Angle Encoding</li>
+                    <li>Amplitude Encoding</li>
+                    <li>Feature Maps (X, Y, Z, ZZ)</li>
+                </ul>
+            </li>
         
-        • Parameterized Quantum Circuits (PQC):
-            - Parametric layers (RX, RY, RZ + CZ/iSWAP)  
-            - Real Amplitudes  
-            - QCNN (experimental)  
+            <li><b>Parameterized Quantum Circuits (PQC):</b>
+                <ul>
+                    <li>Parametric layer (RX, RY, RZ + CZ/iSWAP)</li>
+                    <li>Real Amplitudes</li>
+                    <li>QCNN (experimental)</li>
+                </ul>
+            </li>
         
-        • Classical classifier:
-            - Support Vector Machine (SVM)  
+            <li><b>Classical classifier:</b>
+                <ul>
+                    <li>Support Vector Machine (SVM)</li>
+                </ul>
+            </li>
+        </ul>
         
-        The quantum circuit acts as a feature extractor, while the classical model performs the final classification.
+        <p>The quantum circuit acts as a feature extractor, while the classical model performs the final classification.</p>
         """,    
         "intro_base_titulo": "Dataset",    
         "intro_base": """
@@ -3502,7 +3524,7 @@ def main():
         st.markdown(textos_ml["intro_2"])
         
         st.subheader(textos_ml["intro_modelos_titulo"])
-        st.markdown(textos_ml["intro_modelos"])
+        st.markdown(textos_ml["intro_modelos"], unsafe_allow_html=True)
         
         st.subheader(textos_ml["intro_base_titulo"])
         st.markdown(textos_ml["intro_base"])
