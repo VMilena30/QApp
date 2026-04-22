@@ -1177,67 +1177,64 @@ TEXTOS_ML = {
         Não é obrigatório utilizar três eixos; rotações simples com um único eixo são permitidas.
         """,
         "intro_titulo": "Aprendizado de Máquina Quântico",
+        "intro_titulo": "Aprendizado de Máquina Quântico",
+
         "intro_1": """
-        O Aprendizado de Máquina Quântico é uma área interdisciplinar que combina computação quântica e aprendizado de máquina, explorando propriedades como superposição e emaranhamento para representar e processar dados de forma potencialmente mais eficiente.
+        O Aprendizado de Máquina Quântico (Quantum Machine Learning - QML) é uma área interdisciplinar que combina computação quântica e aprendizado de máquina, explorando propriedades como superposição e emaranhamento para representar e processar dados de forma potencialmente mais eficiente.
         
         Neste módulo, utilizamos uma abordagem híbrida, onde circuitos quânticos são integrados a modelos clássicos para tarefas de classificação e diagnóstico de falhas.
         """,
+        "intro_funcionalidades_titulo": "O que você pode fazer neste módulo",
         "intro_2": """
-        O que você pode fazer neste módulo:
-        
         • Utilizar bases reais ou enviar seus próprios dados  
-        • Extrair automaticamente características de sinais  
+        • Extrair automaticamente características (features) de sinais  
         • Aplicar diferentes técnicas de codificação quântica  
         • Construir modelos híbridos para classificação  
-        
-        O objetivo é permitir a análise de desempenho de diferentes configurações de modelos quânticos.
+        • Avaliar o desempenho de diferentes configurações quânticas  
         """,
-        "intro_3": """
-        Modelos utilizados:
-        
+        "intro_modelos_titulo": "Modelos utilizados",
+        "intro_modelos": """
         • Codificação quântica:
-          - Angle Encoding  
-          - Amplitude Encoding  
-          - Feature Maps (X, Y, Z, ZZ)
-        
+            - Angle Encoding  
+            - Amplitude Encoding  
+            - Feature Maps (X, Y, Z, ZZ)  
+    
         • Circuitos quânticos parametrizados (PQC):
-          - Camada parametrizada (RX, RY, RZ + CZ/iSWAP)  
-          - Real Amplitudes  
-          - QCNN (experimental)
-        
+            - Camada parametrizada (RX, RY, RZ + CZ/iSWAP)  
+            - Real Amplitudes  
+            - QCNN (experimental)  
+    
         • Classificador clássico:
-          - Support Vector Machine (SVM)
-        
+            - Support Vector Machine (SVM)  
+    
         O circuito quântico atua como extrator de características, enquanto o modelo clássico realiza a classificação final.
         """,
-        "intro_4": """
-        Base de dados:
+        "intro_base_titulo": "Base de dados",
+        "intro_base": """
+        Este módulo utiliza a base CWRU (Case Western Reserve University Bearing Dataset), amplamente utilizada na literatura para diagnóstico de falhas em rolamentos.
         
-        Este módulo utiliza a base **CWRU (Case Western Reserve University Bearing Dataset)**, amplamente utilizada na literatura para diagnóstico de falhas em rolamentos.
-        
-        Referência:
-        https://engineering.case.edu/bearingdatacenter
+        Referência: https://engineering.case.edu/bearingdatacenter
         """,
-        "intro_5": """
-        Estrutura esperada dos dados (para bases próprias)
-        
+        "intro_dados_titulo": "Estrutura esperada dos dados (para bases próprias)",
+        "intro_dados_box": """
         Caso o usuário deseje enviar sua própria base, ela deve seguir os seguintes requisitos:
         
-        • Conter uma coluna chamada "label"
+        • Conter uma coluna chamada "label"  
         → representa a classe alvo (saída do modelo)
         
-        • Conter uma coluna chamada "fault"
+        • Conter uma coluna chamada "fault"  
         → representa o tipo de falha ou condição do sistema
         
-        • As demais colunas devem conter valores numéricos
+        • As demais colunas devem conter valores numéricos  
         → sinais brutos ou features já extraídas
         
         Caso a coluna "label" não seja encontrada, o sistema assumirá automaticamente que a última coluna corresponde ao alvo.
         
         Formatos aceitos:
-        • CSV (.csv)
-        • Excel (.xlsx)
-        • Parquet (.parquet)
+        
+        • CSV (.csv)  
+        • Excel (.xlsx)  
+        • Parquet (.parquet)  
         """
     },
     "en": {
@@ -1378,68 +1375,64 @@ TEXTOS_ML = {
         Users may select 1, 2, or 3 rotation axes.
         It is not mandatory to use three axes; single-axis rotations are allowed.
         """,
-        "intro_titulo": "Quantum Machine Learning (QML)",
+        "intro_titulo": "Quantum Machine Learning",
+
         "intro_1": """
         Quantum Machine Learning (QML) is an interdisciplinary field that combines quantum computing and machine learning, leveraging properties such as superposition and entanglement to represent and process data more efficiently.
         
-        This module adopts a hybrid approach, where quantum circuits are integrated with classical models for classification and fault diagnosis tasks.
-        """,
+        In this module, we adopt a hybrid approach, where quantum circuits are integrated with classical models for classification and fault diagnosis tasks.
+        """,    
+        "intro_funcionalidades_titulo": "What you can do in this module",    
         "intro_2": """
-        What you can do in this module:
-        
-        • Use real datasets or upload your own data  
-        • Automatically extract signal features  
+        • Use built-in datasets or upload your own data  
+        • Automatically extract features from signals  
         • Apply different quantum encoding techniques  
-        • Build hybrid classification models  
-        
-        The goal is to analyze the performance of different quantum model configurations.
-        """,
-        "intro_3": """
-        Models used:
-        
+        • Build hybrid models for classification  
+        • Evaluate performance across different quantum configurations  
+        """,    
+        "intro_modelos_titulo": "Models used",    
+        "intro_modelos": """
         • Quantum encoding:
-          - Angle Encoding  
-          - Amplitude Encoding  
-          - Feature Maps (X, Y, Z, ZZ)
+            - Angle Encoding  
+            - Amplitude Encoding  
+            - Feature Maps (X, Y, Z, ZZ)  
         
         • Parameterized Quantum Circuits (PQC):
-          - Parameterized layer (RX, RY, RZ + CZ/iSWAP)  
-          - Real Amplitudes  
-          - QCNN (experimental)
+            - Parametric layers (RX, RY, RZ + CZ/iSWAP)  
+            - Real Amplitudes  
+            - QCNN (experimental)  
         
         • Classical classifier:
-          - Support Vector Machine (SVM)
+            - Support Vector Machine (SVM)  
         
-        The quantum circuit acts as a feature extractor, while the classical model performs final classification.
-        """,
-        "intro_4": """
-        Dataset:
+        The quantum circuit acts as a feature extractor, while the classical model performs the final classification.
+        """,    
+        "intro_base_titulo": "Dataset",    
+        "intro_base": """
+        This module uses the CWRU dataset (Case Western Reserve University Bearing Dataset), widely used in the literature for bearing fault diagnosis.
         
-        This module uses the **CWRU (Case Western Reserve University Bearing Dataset)**, widely used in the literature for bearing fault diagnosis.
+        Reference: https://engineering.case.edu/bearingdatacenter
+        """,   
+        "intro_dados_titulo": "Expected data structure (for custom datasets)",
+        "intro_dados_box": """
+        If you want to upload your own dataset, it must follow these requirements:
         
-        Reference:
-        https://engineering.case.edu/bearingdatacenter
-        """,
-        "intro_5": """
-        Expected dataset structure (for custom data)
-        
-        If you choose to upload your own dataset, it must follow these requirements:
-        
-        • A column named "label"
+        • Include a column named "label"  
         → represents the target class (model output)
         
-        • A column named "fault"
+        • Include a column named "fault"  
         → represents the fault type or system condition
         
-        • All other columns must contain numerical values
+        • All other columns must contain numerical values  
         → raw signals or extracted features
         
-        If a "label" column is not found, the system will assume that the last column is the target.
+        If the "label" column is not found, the system will assume the last column is the target.
         
         Accepted formats:
-        • CSV (.csv)
-        • Excel (.xlsx)
-        • Parquet (.parquet)
+        
+        • CSV (.csv)  
+        • Excel (.xlsx)  
+        • Parquet (.parquet)  
         """
     }
 }
@@ -3500,7 +3493,40 @@ def main():
     
         textos_ml = TEXTOS_ML[st.session_state.lang]
         textos = TEXTOS[st.session_state.lang]
-    
+
+        st.title(textos_ml["intro_titulo"])
+
+        st.markdown(textos_ml["intro_1"])
+        
+        st.subheader(textos_ml["intro_funcionalidades_titulo"])
+        st.markdown(textos_ml["intro_2"])
+        
+        st.subheader(textos_ml["intro_modelos_titulo"])
+        st.markdown(textos_ml["intro_modelos"])
+        
+        st.subheader(textos_ml["intro_base_titulo"])
+        st.markdown(textos_ml["intro_base"])
+        
+        st.subheader(textos_ml["intro_dados_titulo"])
+        
+        st.markdown(
+            f"""
+            <div style="
+                background-color:#EAF4FF;
+                padding:18px;
+                border-radius:10px;
+                border-left:5px solid #03518C;
+                font-size:15px;
+                line-height:1.6;
+            ">
+                {textos_ml["intro_dados_box"]}
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
+        
+        st.divider()
+        
         # ========= TÍTULO + BOTÃO DE AJUDA =========
         col1, col2 = st.columns([9, 2])
     
@@ -3533,16 +3559,6 @@ def main():
         </style>
         """, unsafe_allow_html=True)
 
-        st.markdown("---")
-
-        st.header(textos_ml["intro_titulo"])
-        st.write(textos_ml["intro_1"])
-        st.write(textos_ml["intro_2"])
-        st.write(textos_ml["intro_3"])
-        st.write(textos_ml["intro_4"])
-        st.write(textos_ml["intro_5"])
-        
-        st.markdown("---")
         
         if ajuda_ml:
             st.session_state["pagina"] = "explicacao_ml"
