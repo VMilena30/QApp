@@ -3541,7 +3541,6 @@ def main():
                 line-height:1.6;
             ">
                 {textos_ml["intro_dados_box"]}
-            </div>
             """,
             unsafe_allow_html=True
         )
