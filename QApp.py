@@ -1533,7 +1533,27 @@ TEXTOS_INF = {
         "query_desc": "Consulta = nós para os quais você quer obter as probabilidades posteriores.",
 
         "example_title": "Exemplo",
-        "example_desc": "Carrega uma rede simples A→C←B (Borujeni et al., 2021) para você testar a inferência antes de montar sua própria rede.",
+        "example_desc": (
+            "Carrega uma rede bayesiana didática baseada no Case 1 de Borujeni et al. (2021), "
+            "utilizada para representar a variação do preço das ações de uma empresa do setor de petróleo.\n\n"
+            "Estrutura da rede:\n"
+            "- IR = taxa de juros\n"
+            "- OI = condição da indústria do petróleo\n"
+            "- SM = condição do mercado de ações\n"
+            "- SP = preço da ação da empresa\n\n"
+            "Dependências:\n"
+            "- IR influencia SM\n"
+            "- OI e SM influenciam SP\n\n"
+            "Estados considerados:\n"
+            "- IR: low, high\n"
+            "- OI: bad, good\n"
+            "- SM: bad, good\n"
+            "- SP: low, high\n\n"
+            "Esse exemplo permite observar, em uma rede pequena, três situações importantes: "
+            "nós raiz (IR e OI), um nó com um pai (SM) e um nó com dois pais (SP). "
+            "Assim, pode-se visualizar como a evidência inserida em variáveis de entrada "
+            "altera a distribuição posterior de variáveis descendentes."
+        ),
         "example_load_btn": "Carregar exemplo",
         "example_clear_btn": "Limpar rede",
         "example_locked_msg": "Exemplo carregado em modo fixo. Limpe a rede para montar a sua própria BN.",
@@ -1804,7 +1824,27 @@ TEXTOS_INF = {
         "query_desc": "Queries = nodes you want posterior probabilities for.",
 
         "example_title": "Example",
-        "example_desc": "Loads a simple A→C←B network (Borujeni et al., 2021) so you can test inference before building your own network.",
+        "example_desc": (
+            "Loads a Bayesian network based on Borujeni et al. (2021), "
+            "used to represent the variation in the stock price of an oil company.\n\n"
+            "Network structure:\n"
+            "- IR = interest rate\n"
+            "- OI = oil industry condition\n"
+            "- SM = stock market condition\n"
+            "- SP = company stock price\n\n"
+            "Dependencies:\n"
+            "- IR influences SM\n"
+            "- OI and SM influence SP\n\n"
+            "States considered:\n"
+            "- IR: low, high\n"
+            "- OI: bad, good\n"
+            "- SM: bad, good\n"
+            "- SP: low, high\n\n"
+            "This example makes it possible to observe, in a small network, three important situations: "
+            "root nodes (IR and OI), a node with one parent (SM), and a node with two parents (SP). "
+            "This helps illustrate how evidence entered in input variables changes the posterior "
+            "distribution of downstream variables."
+        ),
         "example_load_btn": "Load example",
         "example_clear_btn": "Clear network",
         "example_locked_msg": "Example loaded in fixed mode. Clear the network to build your own BN.",
@@ -4645,41 +4685,50 @@ def main():
 
             def _qbn_load_example_borujeni_fig4():
                 """
-                Example BN (Borujeni et al., 2021 - Fig. 4):
-                  A -> C <- B
-                with binary states (s0, s1).
+                Example BN based on Borujeni et al. (2021) - Case 1:
+                  IR -> SM
+                  OI -> SP <- SM
+                with binary states.
                 """
-                A, B, C = "A", "B", "C"
+                IR, OI, SM, SP = "IR", "OI", "SM", "SP"
                 states = ["s0", "s1"]
             
                 bn_nodes = {
-                    A: {
+                    IR: {
                         "card": 2,
-                        "states": states,
+                        "states": ["low", "high"],
                         "parents": [],
-                        "cpt": {(): [0.2, 0.8]},   # P(A=s0)=0.2, P(A=s1)=0.8
+                        "cpt": {(): [0.75, 0.25]},
                     },
-                    B: {
+                    OI: {
                         "card": 2,
-                        "states": states,
+                        "states": ["bad", "good"],
                         "parents": [],
-                        "cpt": {(): [0.3, 0.7]},   # P(B=s0)=0.3, P(B=s1)=0.7
+                        "cpt": {(): [0.60, 0.40]},
                     },
-                    C: {
+                    SM: {
                         "card": 2,
-                        "states": states,
-                        "parents": [A, B],         # IMPORTANT: parent order is [A, B]
+                        "states": ["bad", "good"],
+                        "parents": [IR],   # IMPORTANT: parent order is [IR]
                         "cpt": {
-                            # keys follow the order (A_state, B_state)
-                            ("s0", "s0"): [0.15, 0.85],
-                            ("s0", "s1"): [0.30, 0.70],
-                            ("s1", "s0"): [0.40, 0.60],
-                            ("s1", "s1"): [0.60, 0.40],
+                            ("low",):  [0.30, 0.70],
+                            ("high",): [0.80, 0.20],
+                        },
+                    },
+                    SP: {
+                        "card": 2,
+                        "states": ["low", "high"],
+                        "parents": [OI, SM],   # IMPORTANT: parent order is [OI, SM]
+                        "cpt": {
+                            ("bad",  "bad"):  [0.90, 0.10],
+                            ("bad",  "good"): [0.40, 0.60],
+                            ("good", "bad"):  [0.50, 0.50],
+                            ("good", "good"): [0.20, 0.80],
                         },
                     },
                 }
             
-                return {"nodes": bn_nodes, "selected": A, "last": None}
+                return {"nodes": bn_nodes, "selected": IR, "last": None}
 
 
 
