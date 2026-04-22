@@ -1198,13 +1198,13 @@ TEXTOS_ML = {
         <ul>
         <li>Angle Encoding</li>
         <li>Amplitude Encoding</li>
-        <li>Feature Maps (X, Y, Z, ZZ)</li>
+        <li>Pauli Feature Maps (X, Y, Z, ZZ)</li>
         </ul>
         </li>
         
         <li><b>Circuitos quânticos parametrizados (PQC):</b>
         <ul>
-        <li>Camada parametrizada (RX, RY, RZ + CZ/iSWAP)</li>
+        <li>Rotações de Euler (RX, RY, RZ + CZ/iSWAP)</li>
         <li>Real Amplitudes</li>
         <li>QCNN (experimental)</li>
         </ul>
@@ -1408,13 +1408,13 @@ TEXTOS_ML = {
         <ul>
         <li>Angle Encoding</li>
         <li>Amplitude Encoding</li>
-        <li>Feature Maps (X, Y, Z, ZZ)</li>
+        <li>Pauli Feature Maps (X, Y, Z, ZZ)</li>
         </ul>
         </li>
         
         <li><b>Parameterized Quantum Circuits (PQC):</b>
         <ul>
-        <li>Parametric layer (RX, RY, RZ + CZ/iSWAP)</li>
+        <li>Euler Rotation (RX, RY, RZ + CZ/iSWAP)</li>
         <li>Real Amplitudes</li>
         <li>QCNN (experimental)</li>
         </ul>
