@@ -1533,27 +1533,26 @@ TEXTOS_INF = {
         "query_desc": "Consulta = nós para os quais você quer obter as probabilidades posteriores.",
 
         "example_title": "Exemplo",
+        "example_intro": "Explore um exemplo simples de rede bayesiana aplicado à confiabilidade antes de montar sua própria rede.",
+
         "example_desc": (
-            "Carrega uma rede bayesiana didática baseada no Case 1 de Borujeni et al. (2021), "
-            "utilizada para representar a variação do preço das ações de uma empresa do setor de petróleo.\n\n"
-            "Estrutura da rede:\n"
-            "- IR = taxa de juros\n"
-            "- OI = condição da indústria do petróleo\n"
-            "- SM = condição do mercado de ações\n"
-            "- SP = preço da ação da empresa\n\n"
-            "Dependências:\n"
-            "- IR influencia SM\n"
-            "- OI e SM influenciam SP\n\n"
+            "Este exemplo apresenta uma pequena rede bayesiana voltada à avaliação da condição de um sistema a partir de informações operacionais e de manutenção.\n\n"
+            "Os nós da rede representam:\n"
+            "- ST = nível de solicitação operacional\n"
+            "- MQ = qualidade da manutenção\n"
+            "- IN = resultado da inspeção\n"
+            "- SC = condição do sistema\n\n"
+            "Na estrutura adotada, o nível de solicitação influencia o resultado da inspeção, enquanto a qualidade da manutenção e a inspeção influenciam diretamente a condição final do sistema.\n\n"
             "Estados considerados:\n"
-            "- IR: low, high\n"
-            "- OI: bad, good\n"
-            "- SM: bad, good\n"
-            "- SP: low, high\n\n"
-            "Esse exemplo permite observar, em uma rede pequena, três situações importantes: "
-            "nós raiz (IR e OI), um nó com um pai (SM) e um nó com dois pais (SP). "
-            "Assim, pode-se visualizar como a evidência inserida em variáveis de entrada "
-            "altera a distribuição posterior de variáveis descendentes."
+            "- ST: low, high\n"
+            "- MQ: poor, good\n"
+            "- IN: unfavorable, favorable\n"
+            "- SC: degraded, healthy\n\n"
+            "Esse arranjo permite visualizar, de forma didática, como diferentes evidências alteram a distribuição posterior da condição do sistema. "
+            "Também ajuda a entender três situações comuns em redes bayesianas: nós raiz, um nó com um único pai e um nó com dois pais."
         ),
+
+        
         "example_load_btn": "Carregar exemplo",
         "example_clear_btn": "Limpar rede",
         "example_locked_msg": "Exemplo carregado em modo fixo. Limpe a rede para montar a sua própria BN.",
@@ -1824,27 +1823,27 @@ TEXTOS_INF = {
         "query_desc": "Queries = nodes you want posterior probabilities for.",
 
         "example_title": "Example",
+
+        "example_intro": "Explore a simple Bayesian network example for reliability analysis before building your own network.",
+
         "example_desc": (
-            "Loads a Bayesian network based on Borujeni et al. (2021), "
-            "used to represent the variation in the stock price of an oil company.\n\n"
-            "Network structure:\n"
-            "- IR = interest rate\n"
-            "- OI = oil industry condition\n"
-            "- SM = stock market condition\n"
-            "- SP = company stock price\n\n"
-            "Dependencies:\n"
-            "- IR influences SM\n"
-            "- OI and SM influence SP\n\n"
+            "This example presents a small Bayesian network focused on assessing system condition from operational and maintenance-related information.\n\n"
+            "The nodes represent:\n"
+            "- ST = operational stress level\n"
+            "- MQ = maintenance quality\n"
+            "- IN = inspection result\n"
+            "- SC = system condition\n\n"
+            "In this structure, the stress level influences the inspection result, while maintenance quality and inspection directly influence the final system condition.\n\n"
             "States considered:\n"
-            "- IR: low, high\n"
-            "- OI: bad, good\n"
-            "- SM: bad, good\n"
-            "- SP: low, high\n\n"
-            "This example makes it possible to observe, in a small network, three important situations: "
-            "root nodes (IR and OI), a node with one parent (SM), and a node with two parents (SP). "
-            "This helps illustrate how evidence entered in input variables changes the posterior "
-            "distribution of downstream variables."
+            "- ST: low, high\n"
+            "- MQ: poor, good\n"
+            "- IN: unfavorable, favorable\n"
+            "- SC: degraded, healthy\n\n"
+            "This setup helps illustrate, in a didactic way, how different pieces of evidence change the posterior distribution of system condition. "
+            "It also highlights three common situations in Bayesian networks: root nodes, a node with one parent, and a node with two parents."
         ),
+
+        
         "example_load_btn": "Load example",
         "example_clear_btn": "Clear network",
         "example_locked_msg": "Example loaded in fixed mode. Clear the network to build your own BN.",
@@ -4685,50 +4684,48 @@ def main():
 
             def _qbn_load_example_borujeni_fig4():
                 """
-                Example BN based on Borujeni et al. (2021) - Case 1:
-                  IR -> SM
-                  OI -> SP <- SM
-                with binary states.
+                Didactic reliability example:
+                  ST -> IN
+                  MQ -> SC <- IN
                 """
-                IR, OI, SM, SP = "IR", "OI", "SM", "SP"
-                states = ["s0", "s1"]
+                ST, MQ, IN, SC = "ST", "MQ", "IN", "SC"
             
                 bn_nodes = {
-                    IR: {
+                    ST: {
                         "card": 2,
                         "states": ["low", "high"],
                         "parents": [],
                         "cpt": {(): [0.75, 0.25]},
                     },
-                    OI: {
+                    MQ: {
                         "card": 2,
-                        "states": ["bad", "good"],
+                        "states": ["poor", "good"],
                         "parents": [],
                         "cpt": {(): [0.60, 0.40]},
                     },
-                    SM: {
+                    IN: {
                         "card": 2,
-                        "states": ["bad", "good"],
-                        "parents": [IR],   # IMPORTANT: parent order is [IR]
+                        "states": ["unfavorable", "favorable"],
+                        "parents": [ST],
                         "cpt": {
                             ("low",):  [0.30, 0.70],
                             ("high",): [0.80, 0.20],
                         },
                     },
-                    SP: {
+                    SC: {
                         "card": 2,
-                        "states": ["low", "high"],
-                        "parents": [OI, SM],   # IMPORTANT: parent order is [OI, SM]
+                        "states": ["degraded", "healthy"],
+                        "parents": [MQ, IN],
                         "cpt": {
-                            ("bad",  "bad"):  [0.90, 0.10],
-                            ("bad",  "good"): [0.40, 0.60],
-                            ("good", "bad"):  [0.50, 0.50],
-                            ("good", "good"): [0.20, 0.80],
+                            ("poor", "unfavorable"): [0.90, 0.10],
+                            ("poor", "favorable"):   [0.40, 0.60],
+                            ("good", "unfavorable"): [0.50, 0.50],
+                            ("good", "favorable"):   [0.20, 0.80],
                         },
                     },
                 }
             
-                return {"nodes": bn_nodes, "selected": IR, "last": None}
+                return {"nodes": bn_nodes, "selected": ST, "last": None}
 
 
 
