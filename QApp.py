@@ -1246,7 +1246,28 @@ TEXTOS_ML = {
         • Excel (.xlsx)  
         • Parquet (.parquet)  
         """,
-        "botao_ajuda": "Guia do Usuário"
+        "botao_ajuda": "Guia do Usuário",
+        "step1": "Passo 1: Seleção da base de dados",
+        "step2": "Passo 2: Pré-processamento dos dados",
+        "step3": "Passo 3: Modelo Quântico",
+        "step4": "Passo 4: Modelo Clássico",
+        "step5": "Passo 5: Execução",
+        
+        "pqc_title": "Circuito quântico (PQC)",
+        "pqc_label": "Selecione o tipo de circuito",
+        
+        "reps": "Número de camadas",
+        "qcnn_info": "Arquitetura experimental baseada em convolução quântica",
+        "circuit_preview": "Visualização do circuito",
+        
+        "classic_model": "Modelo clássico",
+        "mlp_config": "Configuração da MLP",
+        "mlp_layers": "Número de camadas ocultas",
+        "neurons": "Neurônios na camada",
+        "learning_rate": "Learning rate",
+        
+        "seed": "Seed",
+        "split": "Proporção treino/teste"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1456,7 +1477,28 @@ TEXTOS_ML = {
         • Excel (.xlsx)  
         • Parquet (.parquet)  
         """,
-        "botao_ajuda": "User Guide"
+        "botao_ajuda": "User Guide",
+        "step1": "Step 1: Dataset selection",
+        "step2": "Step 2: Data preprocessing",
+        "step3": "Step 3: Quantum Model",
+        "step4": "Step 4: Classical Model",
+        "step5": "Step 5: Execution",
+        
+        "pqc_title": "Quantum circuit (PQC)",
+        "pqc_label": "Select circuit type",
+        
+        "reps": "Number of layers",
+        "qcnn_info": "Experimental quantum convolutional architecture",
+        "circuit_preview": "Circuit preview",
+        
+        "classic_model": "Classical model",
+        "mlp_config": "MLP configuration",
+        "mlp_layers": "Hidden layers",
+        "neurons": "Neurons in layer",
+        "learning_rate": "Learning rate",
+        
+        "seed": "Seed",
+        "split": "Train/test split"
     }
 }
 
@@ -3662,6 +3704,7 @@ def main():
             st.rerun()
     
         # ========= 1) PERGUNTA INICIAL: usar base do app ou subir arquivo =========
+        st.subheader(textos_ml["step1"])
         modo_dataset = st.radio(
             "Como deseja fornecer os dados?",
             ("Usar base de vibração do app", "Enviar minha própria base"),
@@ -3742,230 +3785,181 @@ def main():
     
         st.divider()
     
-        # ========= 2) FEATURES (agora OPCIONAL) =========
-    
-        st.markdown(textos_ml["selecione_features"])
+        # ================= PASSO 2 =================
+        st.markdown(f"### {textos_ml['step2']}")
+        
         features_disponiveis = [
             "Média", "Variância", "Desvio-padrão", "RMS", "Kurtosis",
             "Peak to peak", "Max Amplitude", "Min Amplitude", "Skewness",
             "CrestFactor", "Mediana", "Energia", "Entropia"
         ]
+        
         selected_features = st.multiselect(
             textos_ml["label_features"],
-            options=features_disponiveis,
-            help="Se não selecionar nada, vou extrair TODAS automaticamente."
+            options=features_disponiveis
         )
-    
-        def extrair_features_amostra(amostra):
-            feats = {}
-            feats["Média"] = np.mean(amostra)
-            feats["Variância"] = np.var(amostra)
-            feats["Desvio-padrão"] = np.std(amostra)
-            feats["RMS"] = np.sqrt(np.mean(np.square(amostra)))
-            feats["Kurtosis"] = kurtosis(amostra)
-            feats["Peak to peak"] = np.ptp(amostra)
-            feats["Max Amplitude"] = np.max(amostra)
-            feats["Min Amplitude"] = np.min(amostra)
-            feats["Skewness"] = skew(amostra)
-            feats["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
-            feats["Mediana"] = np.median(amostra)
-            feats["Energia"] = np.sum(amostra ** 2)
-            prob, _ = np.histogram(amostra, bins=30, density=True)
-            prob = prob[prob > 0]
-            feats["Entropia"] = -np.sum(prob * np.log(prob))
-            return feats
-    
-        def extrair_features_dataset(dataset_bruto, selected_features):
-            lista = []
-            for amostra in dataset_bruto:
-                f = extrair_features_amostra(amostra)
-                if selected_features:
-                    f = {k: f[k] for k in selected_features}
-                lista.append(f)
-            return pd.DataFrame(lista)
-    
+        
         st.divider()
-    
-        # ========= 3) ENCODING + PQC =========
-    
+        
+        # ================= PASSO 3 =================
+        st.markdown(f"### {textos_ml['step3']}")
+        
         col1, col2 = st.columns(2)
+        
         with col1:
-            st.markdown(textos_ml["encoding_title"])
             encoding_method = st.selectbox(
-                textos_ml["encoding_label"],
+                textos_ml["encoding"],
                 [" - ", "Angle encoding", "Amplitude encoding",
                  "ZFeaturemap", "XFeaturemap", "YFeaturemap", "ZZFeaturemap"]
             )
-    
-            # rotações de Euler (podem ser 1, 2 ou 3)
-            st.markdown(textos_ml["euler_title"])
-            rot = st.selectbox(
-                textos_ml["euler_label"],
-                [" - ", "1", "2", "3"],
-                help="Pode usar 1 eixo só (rotação simples) ou 2/3 eixos (Euler)."
-            )
-    
-            eixos = []
-            if rot != " - ":
-                rot_n = int(rot)
-                for i in range(rot_n):
-                    eixo_i = st.selectbox(
-                        textos_ml["euler_eixo_n"].format(n=i+1),
-                        ["X", "Y", "Z"],
-                        key=f"eixo_{i}"
-                    )
-                    eixos.append(eixo_i)
-    
+        
         with col2:
             tipo_circuito = st.selectbox(
-                "Selecione o tipo de circuito / arquitetura quântica:",
+                textos_ml["pqc"],
                 [" - ", "Camada parametrizada", "Real Amplitudes", "QCNN (experimental)"]
             )
-    
-            porta_emaranhamento = None
-            if tipo_circuito == "Camada parametrizada":
-                porta_emaranhamento = st.selectbox(
-                    textos_ml["entanglement_title"],
-                    [" - ", "CZ", "iSWAP"]
-                )
-    
-            paciencia = st.number_input(textos_ml["paciencia"], min_value=0, max_value=400, value=0, step=1)
-            epocas = st.number_input(textos_ml["epocas"], min_value=1, max_value=500, value=1, step=1)
-    
+        
+        rotacoes = []
+        porta_emaranhamento = None
+        
+        if tipo_circuito == "Camada parametrizada":
+        
+            n_rot = st.selectbox(textos_ml["num_rot"], [" - ", "1", "2", "3"])
+        
+            if n_rot != " - ":
+                for i in range(int(n_rot)):
+                    eixo = st.selectbox(
+                        textos_ml["eixo_rot"].format(n=i+1),
+                        ["X", "Y", "Z"],
+                        key=f"rot_{i}"
+                    )
+                    rotacoes.append(eixo)
+        
+            porta_emaranhamento = st.selectbox(
+                textos_ml["entanglement"],
+                [" - ", "CZ", "iSWAP"]
+            )
+        
         st.divider()
-    
-        # ========= 4) EXECUTAR =========
-    
-        def criar_circuito(encoding_method, eixos, tipo_circuito, porta_emaranhamento, n_qubits):
-            dev = qml.device("default.qubit", wires=n_qubits)
-    
-            @qml.qnode(dev)
-            def circuit(x, weights):
-                # 1) encoding
-                if encoding_method == "Angle encoding":
-                    for i in range(n_qubits):
-                        for eixo in eixos:
-                            if eixo == "X":
-                                qml.RX(x[i], wires=i)
-                            elif eixo == "Y":
-                                qml.RY(x[i], wires=i)
-                            elif eixo == "Z":
-                                qml.RZ(x[i], wires=i)
-                elif encoding_method == "Amplitude encoding":
-                    qml.AmplitudeEmbedding(features=x, wires=range(n_qubits), normalize=True)
-                elif encoding_method == "ZFeaturemap":
-                    for i in range(n_qubits):
-                        qml.RZ(x[i], wires=i)
-                elif encoding_method == "XFeaturemap":
-                    for i in range(n_qubits):
-                        qml.RX(x[i], wires=i)
-                elif encoding_method == "YFeaturemap":
-                    for i in range(n_qubits):
-                        qml.RY(x[i], wires=i)
-                elif encoding_method == "ZZFeaturemap":
-                    for i in range(n_qubits):
-                        qml.RZ(x[i], wires=i)
-                    for i in range(n_qubits - 1):
-                        qml.CNOT(wires=[i, i+1])
-    
-                # 2) parte variacional
-                if tipo_circuito == "Real Amplitudes":
-                    qml.templates.layers.RealAmplitudes(weights, wires=range(n_qubits))
-                elif tipo_circuito == "QCNN (experimental)":
-                    # placeholder
-                    qml.templates.StronglyEntanglingLayers(weights, wires=range(n_qubits))
-                else:  # Camada parametrizada
-                    for i in range(n_qubits):
-                        qml.RX(weights[i, 0], wires=i)
-                        qml.RY(weights[i, 1], wires=i)
-                        qml.RZ(weights[i, 2], wires=i)
-    
-                    # emaranhamento só se foi selecionado
-                    if porta_emaranhamento == "CZ":
-                        for i in range(n_qubits - 1):
-                            qml.CZ(wires=[i, i+1])
-                    elif porta_emaranhamento == "iSWAP":
-                        for i in range(n_qubits - 1):
-                            qml.ISWAP(wires=[i, i+1])
-    
-                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
-    
-            return circuit
-    
-        def proxima_potencia_de_2(n):
-            """retorna o menor 2^k >= n"""
-            k = 1
-            while 2**k < n:
-                k += 1
-            return 2**k
-    
-        if st.button(textos_ml["exec_2"]):
-            # ===== VALIDAÇÕES =====
-            if (modo_dataset == "Usar base de vibração do app" and (X_raw is None or y is None)) or \
-               (modo_dataset == "Enviar minha própria base" and (X_raw is None or y is None)):
-                st.error("Dados não carregados. Selecione uma base ou envie seu arquivo.")
-            elif encoding_method == " - ":
-                st.error("Por favor, selecione um método de codificação quântica.")
-            elif tipo_circuito == "Camada parametrizada" and (porta_emaranhamento is None or porta_emaranhamento == " - "):
-                st.error("Selecione uma porta de emaranhamento.")
+        
+        # ================= PASSO 4 =================
+        st.markdown(f"### {textos_ml['step4']}")
+        
+        hidden = st.number_input(textos_ml["hidden"], 1, 200, 50)
+        learning_rate = st.number_input(textos_ml["lr"], 0.0001, 1.0, 0.001)
+        
+        st.divider()
+        
+        # ================= PASSO 5 =================
+        st.markdown(f"### {textos_ml['step5']}")
+        
+        epocas = st.number_input(textos_ml["epocas"], 1, 500, 10)
+        split = st.slider(textos_ml["split"], 0.5, 0.9, 0.8)
+        
+        # ================= EXEC =================
+        if st.button(textos_ml["executar"]):
+        
+            if X_raw is None:
+                st.error(textos_ml["erro_dados"])
+                st.stop()
+        
+            if encoding_method == " - ":
+                st.error(textos_ml["erro_encoding"])
+                st.stop()
+        
+            if tipo_circuito == "Camada parametrizada":
+                if not rotacoes:
+                    st.error(textos_ml["erro_rot"])
+                    st.stop()
+                if porta_emaranhamento == " - ":
+                    st.error(textos_ml["erro_ent"])
+                    st.stop()
+        
+            # ===== FEATURES =====
+            X_feat = extrair_features_dataset(X_raw, selected_features if selected_features else features_disponiveis)
+        
+            X_np = X_feat.values
+            y_np = np.array(y)
+        
+            # ===== AMPLITUDE =====
+            if encoding_method == "Amplitude encoding":
+                dim = X_np.shape[1]
+                dim2 = 2 ** int(np.ceil(np.log2(dim)))
+                X_np = np.pad(X_np, ((0,0),(0,dim2-dim)))
+                n_qubits = int(np.log2(dim2))
             else:
-                # ===== PREPARAR FEATURES =====
-                if len(selected_features) > 0:
-                    X_feat = extrair_features_dataset(X_raw, selected_features)
-                else:
-                    # usa TODAS as features calculáveis
-                    X_feat = extrair_features_dataset(X_raw, features_disponiveis)
-    
-                X_np = X_feat.values
-                y_np = np.array(y)
-    
-                # ===== AMPLITUDE CASE: fazer padding =====
-                if encoding_method == "Amplitude encoding":
-                    dim = X_np.shape[1]
-                    dim2 = proxima_potencia_de_2(dim)
-                    if dim2 != dim:
-                        # padding com zeros
-                        pad_width = dim2 - dim
-                        X_np = np.pad(X_np, ((0, 0), (0, pad_width)), mode="constant", constant_values=0.0)
-                    n_qubits = int(np.log2(X_np.shape[1]))
-                    st.info(f"Amplitude encoding requer 2^n features. Ajustei para {X_np.shape[1]} e usei {n_qubits} qubits.")
-                else:
-                    n_qubits = X_np.shape[1]
-    
-                # normalizar
-                scaler = StandardScaler()
-                X_np = scaler.fit_transform(X_np)
-    
-                # criar pesos
-                if tipo_circuito == "Real Amplitudes":
-                    weights = pnp.random.uniform(0, 2*np.pi, size=(1, n_qubits))
-                else:
-                    weights = pnp.random.uniform(0, 2*np.pi, size=(n_qubits, 3))
-    
-                circuit = criar_circuito(
-                    encoding_method,
-                    eixos,
-                    tipo_circuito,
-                    porta_emaranhamento,
-                    n_qubits
-                )
-    
-                # gera saídas quânticas
-                saidas = []
-                for x in X_np:
-                    saidas.append(circuit(x, weights))
-                saidas = np.array(saidas)
-    
-                # classificador clássico em cima
-                X_train, X_test, y_train, y_test = train_test_split(
-                    saidas, y_np, test_size=0.2, random_state=42
-                )
-                clf = SVC()
-                clf.fit(X_train, y_train)
-                y_pred = clf.predict(X_test)
-                acc = accuracy_score(y_test, y_pred)
-    
-                st.success(f"{textos_ml['acc']} {acc:.3f}")
+                n_qubits = X_np.shape[1]
+        
+            scaler = StandardScaler()
+            X_np = scaler.fit_transform(X_np)
+        
+            dev = qml.device("default.qubit", wires=n_qubits)
+        
+            @qml.qnode(dev)
+            def circuit(x):
+        
+                # encoding
+                for i in range(n_qubits):
+                    if encoding_method == "Angle encoding":
+                        for eixo in rotacoes if rotacoes else ["X"]:
+                            if eixo == "X": qml.RX(x[i], wires=i)
+                            if eixo == "Y": qml.RY(x[i], wires=i)
+                            if eixo == "Z": qml.RZ(x[i], wires=i)
+        
+                    elif encoding_method == "ZFeaturemap":
+                        qml.RZ(x[i], wires=i)
+        
+                # variacional
+                if tipo_circuito == "Camada parametrizada":
+                    for i in range(n_qubits):
+                        for eixo in rotacoes:
+                            if eixo == "X": qml.RX(np.random.rand(), wires=i)
+                            if eixo == "Y": qml.RY(np.random.rand(), wires=i)
+                            if eixo == "Z": qml.RZ(np.random.rand(), wires=i)
+        
+                    if porta_emaranhamento == "CZ":
+                        for i in range(n_qubits-1):
+                            qml.CZ(wires=[i,i+1])
+        
+                    elif porta_emaranhamento == "iSWAP":
+                        for i in range(n_qubits-1):
+                            qml.ISWAP(wires=[i,i+1])
+        
+                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
+        
+            X_quantum = np.array([circuit(x) for x in X_np])
+        
+            # ===== MLP =====
+            X_train, X_test, y_train, y_test = train_test_split(
+                X_quantum, y_np, test_size=1-split, random_state=42
+            )
+        
+            from sklearn.neural_network import MLPClassifier
+        
+            clf = MLPClassifier(
+                hidden_layer_sizes=(hidden,),
+                learning_rate_init=learning_rate,
+                max_iter=epocas
+            )
+        
+            clf.fit(X_train, y_train)
+        
+            y_pred = clf.predict(X_test)
+        
+            acc = accuracy_score(y_test, y_pred)
+        
+            st.success(f"{textos_ml['acc']} {acc:.3f}")
+        
+            # ===== MATRIZ =====
+            from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+            import matplotlib.pyplot as plt
+        
+            cm = confusion_matrix(y_test, y_pred)
+        
+            fig, ax = plt.subplots()
+            ConfusionMatrixDisplay(cm).plot(ax=ax)
+        
+            st.pyplot(fig)
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
