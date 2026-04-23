@@ -1219,7 +1219,7 @@ TEXTOS_ML = {
         
         <p>O circuito quântico atua como extrator de características, enquanto o modelo clássico realiza a classificação final.</p>
         """,
-        "intro_base_titulo": "Base de dados",
+        "intro_base_titulo": "Base de dados (pré-carregada)",
         "intro_base": """
         Este módulo utiliza a base CWRU (Case Western Reserve University Bearing Dataset), amplamente utilizada na literatura para diagnóstico de falhas em rolamentos.
         
@@ -1429,7 +1429,7 @@ TEXTOS_ML = {
         
         <p>The quantum circuit acts as a feature extractor, while the classical model performs the final classification.</p>
         """,    
-        "intro_base_titulo": "Dataset",    
+        "intro_base_titulo": "Database (pre-loaded)",    
         "intro_base": """
         This module uses the CWRU dataset (Case Western Reserve University Bearing Dataset), widely used in the literature for bearing fault diagnosis.
         
