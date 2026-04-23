@@ -1250,7 +1250,7 @@ TEXTOS_ML = {
         "step1": "Passo 1: Seleção da base de dados",
         "step2": "Passo 2: Pré-processamento dos dados",
         "step3": "Passo 3: Modelo Quântico",
-        "step4": "Passo 4: Modelo Clássico",
+        "step4": "Passo 4: Modelo Clássico (MLP)",
         "step5": "Passo 5: Execução",
         
         "pqc_title": "Circuito quântico (PQC)",
@@ -1506,7 +1506,7 @@ TEXTOS_ML = {
         "step1": "Step 1: Dataset selection",
         "step2": "Step 2: Data preprocessing",
         "step3": "Step 3: Quantum Model",
-        "step4": "Step 4: Classical Model",
+        "step4": "Step 4: Classical Model (MLP)",
         "step5": "Step 5: Execution",
         
         "pqc_title": "Quantum circuit (PQC)",
