@@ -3886,8 +3886,42 @@ def main():
         # ================= PASSO 5 =================
         st.markdown(f"### {textos_ml['step5']}")
         
-        epocas = st.number_input(textos_ml["epocas"], 1, 500, 10)
-        split = st.slider(textos_ml["split"], 0.5, 0.9, 0.8)
+        col1, col2 = st.columns(2)
+        
+        with col1:
+            epocas = st.number_input(
+                textos_ml["epocas"],
+                min_value=1,
+                value=10,
+                step=1,
+                key="epocas_ml"
+            )
+        
+            paciencia = st.number_input(
+                textos_ml["paciencia"],
+                min_value=1,
+                value=10,
+                step=1,
+                key="paciencia_ml"
+            )
+        
+        with col2:
+            seed = st.number_input(
+                textos_ml["seed"],
+                min_value=0,
+                value=42,
+                step=1,
+                key="seed_ml"
+            )
+        
+            split = st.number_input(
+                textos_ml["split"],
+                min_value=0.5,
+                max_value=0.95,
+                value=0.8,
+                step=0.05,
+                key="split_ml"
+            )
         
         # ================= EXEC =================
         if st.button(textos_ml["executar"]):
