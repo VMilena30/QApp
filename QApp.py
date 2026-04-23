@@ -1267,7 +1267,32 @@ TEXTOS_ML = {
         "learning_rate": "Learning rate",
         
         "seed": "Seed",
-        "split": "Proporção treino/teste"
+        "split": "Proporção treino/teste",
+        "paciencia": "Paciência (early stopping)",
+        "modo_dados": "Como deseja fornecer os dados?",
+        "usar_base": "Usar base do app",
+        "enviar_base": "Enviar minha base",
+        
+        "encoding": "Método de codificação quântica",
+        "pqc": "Arquitetura do circuito (PQC)",
+        
+        "num_rot": "Número de rotações",
+        "eixo_rot": "Eixo da rotação {n}",
+        "entanglement": "Porta de emaranhamento",
+        
+        "ml_model": "Configuração da MLP",
+        "hidden": "Neurônios na camada oculta",
+        "lr": "Taxa de aprendizado",
+        
+        "epocas": "Épocas",
+        
+        "executar": "Executar",
+        "erro_dados": "Carregue os dados primeiro",
+        "erro_encoding": "Selecione um método de codificação",
+        "erro_rot": "Selecione as rotações",
+        "erro_ent": "Selecione o emaranhamento",
+        
+        "acc": "Acurácia:"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1498,7 +1523,32 @@ TEXTOS_ML = {
         "learning_rate": "Learning rate",
         
         "seed": "Seed",
-        "split": "Train/test split"
+        "split": "Train/test split",
+        "paciencia": "Patience (early stopping)",
+        "modo_dados": "How would you like to provide the data?",
+        "usar_base": "Use built-in dataset",
+        "enviar_base": "Upload my own dataset",
+        
+        "encoding": "Quantum encoding method",
+        "pqc": "Quantum circuit architecture (PQC)",
+        
+        "num_rot": "Number of rotations",
+        "eixo_rot": "Rotation axis {n}",
+        "entanglement": "Entanglement gate",
+        
+        "ml_model": "MLP configuration",
+        "hidden": "Hidden layer neurons",
+        "lr": "Learning rate",
+        
+        "epocas": "Epochs",
+        
+        "executar": "Run",
+        "erro_dados": "Please load the data first",
+        "erro_encoding": "Select a quantum encoding method",
+        "erro_rot": "Select the rotations",
+        "erro_ent": "Select the entanglement gate",
+        
+        "acc": "Accuracy:"
     }
 }
 
