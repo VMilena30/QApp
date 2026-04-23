@@ -3755,23 +3755,19 @@ def main():
     
         # ========= 1) PERGUNTA INICIAL: usar base do app ou subir arquivo =========
         st.subheader(textos_ml["step1"])
+
         modo_dataset = st.radio(
             "Como deseja fornecer os dados?",
-            ("Usar base de vibração do app", "Enviar minha própria base"),
-            help=textos_ml["help_1"]
+            ("Usar base de vibração do app", "Enviar minha própria base")
         )
     
-        df = None
-        y = None
-        nome_base = None
+        X_raw, y = None, None
     
-        # --------- OPÇÃO 1: usar base do app (CWRU / JNU) ----------
         if modo_dataset == "Usar base de vibração do app":
     
-            def carregar_dados_brutos(nome):
-                # mesmo esquema que você tinha
+            def carregar_dados_brutos():
                 df_raw = pd.DataFrame(columns=['DE_data', 'fault'])
-
+    
                 for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
                     for file_name in files:
                         path = os.path.join(root, file_name)
@@ -3781,34 +3777,31 @@ def main():
                         fault = np.full((len(DE_data), 1), file_name[:-4])
                         df_temp = pd.DataFrame({'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
                         df_raw = pd.concat([df_raw, df_temp], axis=0)
-
-                # janela
+    
                 win_len = 1000
                 stride = 900
-                x = []
-                y = []
-                for k in df_raw['fault'].unique():
-                    df_temp_2 = df_raw[df_raw['fault'] == k]
-                    for i in np.arange(0, len(df_temp_2) - (win_len), stride):
-                        temp = df_temp_2.iloc[i:i+win_len, :-1].values
-                        temp = temp.reshape((1, -1))
-                        x.append(temp)
-                        y.append(df_temp_2.iloc[i+win_len, -1])
-
-                x = np.array(x).reshape((-1, win_len))
-                y = np.array(y)
-                return x, y
-
-        
     
-        # --------- OPÇÃO 2: upload de base própria ----------
+                x, y_local = [], []
+    
+                for k in df_raw['fault'].unique():
+                    df_temp = df_raw[df_raw['fault'] == k]
+    
+                    for i in np.arange(0, len(df_temp) - win_len, stride):
+                        temp = df_temp.iloc[i:i+win_len, :-1].values
+                        x.append(temp.reshape(-1))
+                        y_local.append(df_temp.iloc[i+win_len, -1])
+    
+                return np.array(x), np.array(y_local)
+    
+            if st.button("Carregar base"):
+                X_raw, y = carregar_dados_brutos()
+                st.success("Base carregada!")
+                st.write(X_raw.shape)
+    
         else:
-            uploaded_file = st.file_uploader(
-                textos_ml["upload_label"],
-                type=["csv", "xlsx", "parquet"],
-                help=textos_ml["help_2"]
-            )
-            if uploaded_file is not None:
+            uploaded_file = st.file_uploader("Upload", type=["csv","xlsx","parquet"])
+    
+            if uploaded_file:
                 if uploaded_file.name.endswith(".csv"):
                     df = pd.read_csv(uploaded_file)
                 elif uploaded_file.name.endswith(".xlsx"):
@@ -3816,22 +3809,12 @@ def main():
                 else:
                     df = pd.read_parquet(uploaded_file)
     
-                st.success(textos_ml["upload_sucesso"])
                 st.dataframe(df.head())
-                nome_base = uploaded_file.name
     
-                # aqui supomos que tem uma coluna 'label' ou 'target'
-                possible_labels = [c for c in df.columns if c.lower() in ["label", "target", "class"]]
-                if len(possible_labels) == 0:
-                    st.warning("Não encontrei coluna de rótulo. Vou assumir que a última coluna é o alvo.")
-                    y = df.iloc[:, -1].values
-                    X_raw = df.iloc[:, :-1].values
-                else:
-                    label_col = possible_labels[0]
-                    y = df[label_col].values
-                    X_raw = df.drop(columns=[label_col]).values
-            else:
-                X_raw, y = None, None
+                label_col = "label" if "label" in df.columns else df.columns[-1]
+    
+                y = df[label_col].values
+                X_raw = df.drop(columns=[label_col]).values
     
         st.divider()
     
