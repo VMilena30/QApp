@@ -5589,6 +5589,8 @@ def main():
         
                 # ---- Charts: quantum outcomes (top-k)
                 def _plot_outcomes(counts: Dict[str, int], title: str):
+                    import matplotlib.pyplot as plt
+                    
                     if not counts:
                         st.info(title + " — (no accepted shots)")
                         return
