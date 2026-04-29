@@ -3923,70 +3923,109 @@ def main():
                     st.stop()
         
             # ===== FEATURES =====
-            X_feat = extrair_features_dataset(X_raw, selected_features if selected_features else features_disponiveis)
+            X_feat = extrair_features_dataset(
+                X_raw,
+                selected_features if selected_features else features_disponiveis
+            )
         
             X_np = X_feat.values
             y_np = np.array(y)
         
-            # ===== AMPLITUDE =====
+            # ===== NORMALIZAÇÃO =====
+            scaler = StandardScaler()
+            X_np = scaler.fit_transform(X_np)
+        
+            # ===== DEFINIR QUBITS =====
             if encoding_method == "Amplitude encoding":
                 dim = X_np.shape[1]
                 dim2 = 2 ** int(np.ceil(np.log2(dim)))
                 X_np = np.pad(X_np, ((0,0),(0,dim2-dim)))
                 n_qubits = int(np.log2(dim2))
             else:
-                n_qubits = X_np.shape[1]
-        
-            scaler = StandardScaler()
-            X_np = scaler.fit_transform(X_np)
+                # limitar número de qubits (evitar explosão)
+                n_qubits = min(X_np.shape[1], 8)
+                X_np = X_np[:, :n_qubits]
         
             dev = qml.device("default.qubit", wires=n_qubits)
         
             @qml.qnode(dev)
             def circuit(x):
         
-                # encoding
-                for i in range(n_qubits):
-                    if encoding_method == "Angle encoding":
-                        for eixo in rotacoes if rotacoes else ["X"]:
+                # ===== ENCODING =====
+                if encoding_method == "Angle encoding":
+                    for i in range(n_qubits):
+                        for eixo in (rotacoes if rotacoes else ["X"]):
                             if eixo == "X": qml.RX(x[i], wires=i)
-                            if eixo == "Y": qml.RY(x[i], wires=i)
-                            if eixo == "Z": qml.RZ(x[i], wires=i)
+                            elif eixo == "Y": qml.RY(x[i], wires=i)
+                            elif eixo == "Z": qml.RZ(x[i], wires=i)
         
-                    elif encoding_method == "ZFeaturemap":
+                elif encoding_method == "Amplitude encoding":
+                    qml.AmplitudeEmbedding(x, wires=range(n_qubits), normalize=True)
+        
+                elif encoding_method == "ZFeaturemap":
+                    for i in range(n_qubits):
                         qml.RZ(x[i], wires=i)
         
-                # variacional
+                elif encoding_method == "XFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RX(x[i], wires=i)
+        
+                elif encoding_method == "YFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RY(x[i], wires=i)
+        
+                elif encoding_method == "ZZFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RZ(x[i], wires=i)
+                    for i in range(n_qubits - 1):
+                        qml.CNOT(wires=[i, i+1])
+        
+                # ===== PQC =====
                 if tipo_circuito == "Camada parametrizada":
                     for i in range(n_qubits):
                         for eixo in rotacoes:
-                            if eixo == "X": qml.RX(np.random.rand(), wires=i)
-                            if eixo == "Y": qml.RY(np.random.rand(), wires=i)
-                            if eixo == "Z": qml.RZ(np.random.rand(), wires=i)
+                            if eixo == "X": qml.RX(0.5, wires=i)
+                            elif eixo == "Y": qml.RY(0.5, wires=i)
+                            elif eixo == "Z": qml.RZ(0.5, wires=i)
         
                     if porta_emaranhamento == "CZ":
-                        for i in range(n_qubits-1):
-                            qml.CZ(wires=[i,i+1])
+                        for i in range(n_qubits - 1):
+                            qml.CZ(wires=[i, i+1])
         
                     elif porta_emaranhamento == "iSWAP":
-                        for i in range(n_qubits-1):
-                            qml.ISWAP(wires=[i,i+1])
+                        for i in range(n_qubits - 1):
+                            qml.ISWAP(wires=[i, i+1])
+        
+                elif tipo_circuito == "Real Amplitudes":
+                    qml.templates.RealAmplitudes(
+                        weights=np.ones((1, n_qubits)),
+                        wires=range(n_qubits)
+                    )
+        
+                elif tipo_circuito == "QCNN (experimental)":
+                    qml.templates.StronglyEntanglingLayers(
+                        weights=np.ones((1, n_qubits, 3)),
+                        wires=range(n_qubits)
+                    )
         
                 return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
         
+            # ===== EXECUÇÃO QUÂNTICA =====
             X_quantum = np.array([circuit(x) for x in X_np])
         
-            # ===== MLP =====
+            # ===== SPLIT =====
             X_train, X_test, y_train, y_test = train_test_split(
-                X_quantum, y_np, test_size=1-split, random_state=42
+                X_quantum, y_np, test_size=1 - split, random_state=seed
             )
         
+            # ===== MLP FIXO =====
             from sklearn.neural_network import MLPClassifier
         
             clf = MLPClassifier(
-                hidden_layer_sizes=(hidden,),
-                learning_rate_init=learning_rate,
-                max_iter=epocas
+                hidden_layer_sizes=(64,),
+                learning_rate_init=0.001,
+                max_iter=epocas,
+                random_state=seed
             )
         
             clf.fit(X_train, y_train)
@@ -3997,7 +4036,7 @@ def main():
         
             st.success(f"{textos_ml['acc']} {acc:.3f}")
         
-            # ===== MATRIZ =====
+            # ===== MATRIZ DE CONFUSÃO =====
             from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
             import matplotlib.pyplot as plt
         
