@@ -3765,38 +3765,18 @@ def main():
     
         if modo_dataset == "Usar base de vibração do app":
     
-            def carregar_dados_brutos():
-                df_raw = pd.DataFrame(columns=['DE_data', 'fault'])
-    
-                for root, dirs, files in os.walk(r"C:\\Arthur\\load_12K", topdown=False):
-                    for file_name in files:
-                        path = os.path.join(root, file_name)
-                        mat = scipy.io.loadmat(path)
-                        key_name = list(mat.keys())[3]
-                        DE_data = mat.get(key_name)
-                        fault = np.full((len(DE_data), 1), file_name[:-4])
-                        df_temp = pd.DataFrame({'DE_data': np.ravel(DE_data), 'fault': np.ravel(fault)})
-                        df_raw = pd.concat([df_raw, df_temp], axis=0)
-    
-                win_len = 1000
-                stride = 900
-    
-                x, y_local = [], []
-    
-                for k in df_raw['fault'].unique():
-                    df_temp = df_raw[df_raw['fault'] == k]
-    
-                    for i in np.arange(0, len(df_temp) - win_len, stride):
-                        temp = df_temp.iloc[i:i+win_len, :-1].values
-                        x.append(temp.reshape(-1))
-                        y_local.append(df_temp.iloc[i+win_len, -1])
-    
-                return np.array(x), np.array(y_local)
+            @st.cache_data
+            def carregar_cwru():
+                import numpy as np
+                data = np.load("data/cwru_dataset.npz")
+                return data["X"], data["y"]
     
             if st.button("Carregar base"):
-                X_raw, y = carregar_dados_brutos()
-                st.success("Base carregada!")
-                st.write(X_raw.shape)
+                with st.spinner("Carregando base CWRU..."):
+                    X_raw, y = carregar_cwru()
+            
+                st.success("Base CWRU carregada com sucesso!")
+                st.write("Formato dos dados:", X_raw.shape)
     
         else:
             uploaded_file = st.file_uploader("Upload", type=["csv","xlsx","parquet"])
