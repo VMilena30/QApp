@@ -3772,8 +3772,9 @@ def main():
                 return data["X"], data["y"]
     
             if st.button("Carregar base"):
-                with st.spinner("Carregando base CWRU..."):
-                    X_raw, y = carregar_cwru()
+                X_raw, y = carregar_cwru()
+                st.session_state.X_raw = X_raw
+                st.session_state.y = y
             
                 st.success("Base CWRU carregada com sucesso!")
                 st.write("Formato dos dados:", X_raw.shape)
@@ -3902,7 +3903,9 @@ def main():
                 step=0.05,
                 key="split_ml"
             )
-        
+
+        X_raw = st.session_state.X_raw
+        y = st.session_state.y
         # ================= EXEC =================
         if st.button(textos_ml["executar"]):
         
