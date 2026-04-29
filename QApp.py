@@ -3768,6 +3768,7 @@ def main():
             @st.cache_data
             def carregar_cwru():
                 import numpy as np
+                st.write(np.load("data/cwru_dataset.npz")["X"].shape)
                 data = np.load("data/cwru_dataset.npz")
                 return data["X"], data["y"]
     
