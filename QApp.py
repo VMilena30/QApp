@@ -3804,6 +3804,44 @@ def main():
                 X_raw = df.drop(columns=[label_col]).values
     
         st.divider()
+
+        from scipy.stats import kurtosis, skew
+
+        def extrair_features_amostra(amostra):
+            feats = {}
+        
+            feats["Média"] = np.mean(amostra)
+            feats["Variância"] = np.var(amostra)
+            feats["Desvio-padrão"] = np.std(amostra)
+            feats["RMS"] = np.sqrt(np.mean(np.square(amostra)))
+            feats["Kurtosis"] = kurtosis(amostra)
+            feats["Peak to peak"] = np.ptp(amostra)
+            feats["Max Amplitude"] = np.max(amostra)
+            feats["Min Amplitude"] = np.min(amostra)
+            feats["Skewness"] = skew(amostra)
+            feats["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
+            feats["Mediana"] = np.median(amostra)
+            feats["Energia"] = np.sum(amostra ** 2)
+        
+            prob, _ = np.histogram(amostra, bins=30, density=True)
+            prob = prob[prob > 0]
+            feats["Entropia"] = -np.sum(prob * np.log(prob))
+        
+            return feats
+        
+        
+        def extrair_features_dataset(dataset_bruto, selected_features):
+            lista = []
+        
+            for amostra in dataset_bruto:
+                f = extrair_features_amostra(amostra)
+        
+                if selected_features:
+                    f = {k: f[k] for k in selected_features}
+        
+                lista.append(f)
+        
+            return pd.DataFrame(lista)
     
         # ================= PASSO 2 =================
         st.markdown(f"### {textos_ml['step2']}")
