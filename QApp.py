@@ -3768,6 +3768,10 @@ def main():
             @st.cache_data
             def carregar_cwru():
                 import numpy as np
+                import os
+
+                st.write("Arquivos na raiz:", os.listdir())
+                st.write("Arquivos na pasta data:", os.listdir("data"))
                 data = np.load("data/cwru_dataset.npz")
                 return data["X"], data["y"]
     
