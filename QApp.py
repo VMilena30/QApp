@@ -3684,6 +3684,11 @@ def main():
     
         textos_ml = TEXTOS_ML[st.session_state.lang]
         textos = TEXTOS[st.session_state.lang]
+        if "X_raw" not in st.session_state:
+            st.session_state["X_raw"] = None
+        
+        if "y" not in st.session_state:
+            st.session_state["y"] = None
 
         st.title(textos_ml["intro_titulo"])
 
@@ -3773,8 +3778,9 @@ def main():
     
             if st.button("Carregar base"):
                 X_raw, y = carregar_cwru()
-                st.session_state.X_raw = X_raw
-                st.session_state.y = y
+            
+                st.session_state["X_raw"] = X_raw
+                st.session_state["y"] = y
             
                 st.success("Base CWRU carregada com sucesso!")
                 st.write("Formato dos dados:", X_raw.shape)
@@ -3904,8 +3910,8 @@ def main():
                 key="split_ml"
             )
 
-        X_raw = st.session_state.X_raw
-        y = st.session_state.y
+        X_raw = st.session_state.get("X_raw", None)
+        y = st.session_state.get("y", None)
         # ================= EXEC =================
         if st.button(textos_ml["executar"]):
         
