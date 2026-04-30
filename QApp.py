@@ -3934,13 +3934,34 @@ def main():
                 [" - ", "CZ", "iSWAP"]
             )
 
+        # =========================
+        # BOTÃO VISUALIZAR CIRCUITO
+        # =========================
+        
+        if "mostrar_circuito" not in st.session_state:
+            st.session_state.mostrar_circuito = False
+        
         if st.button("Visualizar circuito"):
-
+            st.session_state.mostrar_circuito = True
+        
+        # =========================
+        # GERAR E EXIBIR CIRCUITO
+        # =========================
+        
+        if st.session_state.mostrar_circuito:
+        
+            import matplotlib.pyplot as plt
+        
+            # validações mínimas
             if encoding_method == " - ":
-                st.warning("Selecione um método de codificação primeiro")
+                st.warning("Selecione um método de codificação")
                 st.stop()
         
-            # número pequeno só pra visualização
+            if tipo_circuito == "Camada parametrizada" and (not rotacoes or porta_emaranhamento == " - "):
+                st.warning("Defina rotações e emaranhamento")
+                st.stop()
+        
+            # número fixo só para visualização
             n_qubits = 3
         
             dev = qml.device("default.qubit", wires=n_qubits)
@@ -3948,13 +3969,18 @@ def main():
             @qml.qnode(dev)
             def circuito_visual(x):
         
-                # ===== ENCODING =====
+                # =====================
+                # ENCODING
+                # =====================
                 if encoding_method == "Angle encoding":
                     for i in range(n_qubits):
                         for eixo in (rotacoes if rotacoes else ["X"]):
-                            if eixo == "X": qml.RX(x[i], wires=i)
-                            elif eixo == "Y": qml.RY(x[i], wires=i)
-                            elif eixo == "Z": qml.RZ(x[i], wires=i)
+                            if eixo == "X":
+                                qml.RX(x[i], wires=i)
+                            elif eixo == "Y":
+                                qml.RY(x[i], wires=i)
+                            elif eixo == "Z":
+                                qml.RZ(x[i], wires=i)
         
                 elif encoding_method == "Amplitude encoding":
                     qml.AmplitudeEmbedding(x, wires=range(n_qubits), normalize=True)
@@ -3977,13 +4003,19 @@ def main():
                     for i in range(n_qubits - 1):
                         qml.CNOT(wires=[i, i+1])
         
-                # ===== PQC =====
-                if tipo_circuito == "VQE":
+                # =====================
+                # PQC
+                # =====================
+                if tipo_circuito == "Camada parametrizada":
+        
                     for i in range(n_qubits):
                         for eixo in rotacoes:
-                            if eixo == "X": qml.RX(0.5, wires=i)
-                            elif eixo == "Y": qml.RY(0.5, wires=i)
-                            elif eixo == "Z": qml.RZ(0.5, wires=i)
+                            if eixo == "X":
+                                qml.RX(0.5, wires=i)
+                            elif eixo == "Y":
+                                qml.RY(0.5, wires=i)
+                            elif eixo == "Z":
+                                qml.RZ(0.5, wires=i)
         
                     if porta_emaranhamento == "CZ":
                         for i in range(n_qubits - 1):
@@ -3999,7 +4031,7 @@ def main():
                     for i in range(n_qubits - 1):
                         qml.CNOT(wires=[i, i+1])
         
-                elif tipo_circuito == "QCNN":
+                elif tipo_circuito == "QCNN (experimental)":
                     qml.templates.StronglyEntanglingLayers(
                         weights=np.ones((1, n_qubits, 3)),
                         wires=range(n_qubits)
@@ -4010,11 +4042,88 @@ def main():
             # entrada dummy
             x_dummy = np.ones(n_qubits)
         
-            # ===== DESENHO =====
-            drawer = qml.draw(circuito_visual)
-            circuito_str = drawer(x_dummy)
+            # =====================
+            # CAIXA VISUAL
+            # =====================
         
-            st.text(circuito_str)
+            st.markdown("""
+            <div style="
+                background-color:#EEF4FB;
+                padding:20px;
+                border-radius:12px;
+                border:1px solid #D6E4F0;
+            ">
+            """, unsafe_allow_html=True)
+        
+            # =====================
+            # TÍTULO + DESCRIÇÃO
+            # =====================
+        
+            st.markdown("""
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                <div style="
+                    width:26px;
+                    height:26px;
+                    border-radius:50%;
+                    border:2px solid #3A7BD5;
+                    color:#3A7BD5;
+                    display:flex;
+                    align-items:center;
+                    justify-content:center;
+                    font-weight:bold;
+                ">i</div>
+                <div>
+                    <div style="font-weight:600; font-size:16px;">
+                        Exemplo do circuito
+                    </div>
+                    <div style="font-size:13px; color:#555;">
+                        Representação do circuito quântico com as opções selecionadas.
+                    </div>
+                </div>
+            </div>
+            """, unsafe_allow_html=True)
+        
+            # =====================
+            # CIRCUITO CENTRALIZADO
+            # =====================
+        
+            col1, col2, col3 = st.columns([1, 4, 1])
+        
+            with col2:
+                fig = qml.draw_mpl(circuito_visual)(x_dummy)
+                st.pyplot(fig)
+        
+            # =====================
+            # LEGENDA
+            # =====================
+        
+            st.markdown("""
+            <div style="
+                margin-top:15px;
+                padding:12px;
+                background-color:#F7FAFF;
+                border-radius:10px;
+                border:1px solid #E0ECF7;
+                display:flex;
+                flex-wrap:wrap;
+                gap:15px;
+                font-size:13px;
+            ">
+        
+            <span><b style="color:#4A90E2;">RX</b> Rotação X</span>
+            <span><b style="color:#50C878;">RY</b> Rotação Y</span>
+            <span>● Qubit de controle</span>
+            <span><b>Z</b> Porta Z controlada (CZ)</span>
+            <span>Medição (⟨Z⟩)</span>
+        
+            </div>
+            """, unsafe_allow_html=True)
+        
+            # =====================
+            # FECHAR CAIXA
+            # =====================
+        
+            st.markdown("</div>", unsafe_allow_html=True)
         
         st.divider()
         
