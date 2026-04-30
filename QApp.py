@@ -3900,13 +3900,6 @@ def main():
         
         st.divider()
         
-        # ================= PASSO 4 =================
-        st.markdown(f"### {textos_ml['step4']}")
-        
-        hidden = st.number_input(textos_ml["hidden"], 1, 200, 50)
-        learning_rate = st.number_input(textos_ml["lr"], 0.0001, 1.0, 0.001)
-        
-        st.divider()
         
         # ================= PASSO 5 =================
         st.markdown(f"### {textos_ml['step5']}")
