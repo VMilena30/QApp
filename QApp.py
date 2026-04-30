@@ -4090,7 +4090,7 @@ def main():
             col1, col2, col3 = st.columns([1, 4, 1])
         
             with col2:
-                fig = qml.draw_mpl(circuito_visual)(x_dummy)
+                fig, ax = qml.draw_mpl(circuito_visual)(x_dummy)
                 st.pyplot(fig)
         
             # =====================
