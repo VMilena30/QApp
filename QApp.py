@@ -1285,14 +1285,25 @@ TEXTOS_ML = {
         "lr": "Taxa de aprendizado",
         
         "epocas": "Épocas",
-        
         "executar": "Executar",
         "erro_dados": "Carregue os dados primeiro",
         "erro_encoding": "Selecione um método de codificação",
         "erro_rot": "Selecione as rotações",
         "erro_ent": "Selecione o emaranhamento",
-        
-        "acc": "Acurácia:"
+        "acc": "Acurácia:",
+        "feat1": "Média", 
+        "feat2": "Variância", 
+        "feat3": "Desvio-padrão", 
+        "feat4": "RMS", 
+        "feat5": "Kurtosis",
+        "feat6": "Peak to peak", 
+        "feat7": "Max Amplitude", 
+        "feat8": "Min Amplitude", 
+        "feat9": "Skewness",
+        "feat10": "CrestFactor", 
+        "feat11": "Mediana", 
+        "feat12": "Energia", 
+        "feat13": "Entropia"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1547,8 +1558,20 @@ TEXTOS_ML = {
         "erro_encoding": "Select a quantum encoding method",
         "erro_rot": "Select the rotations",
         "erro_ent": "Select the entanglement gate",
-        
-        "acc": "Accuracy:"
+        "acc": "Accuracy:",
+        "feat1": "Mean", 
+        "feat2": "Variance", 
+        "feat3": "Standard Deviation", 
+        "feat4": "RMS (Root Mean Square)", 
+        "feat5": "Kurtosis",
+        "feat6": "Peak-to-Peak", 
+        "feat7": "Max Amplitude", 
+        "feat8": "Min Amplitude", 
+        "feat9": "Skewness",
+        "feat10": "Crest Factor", 
+        "feat11": "Median", 
+        "feat12": "Energy", 
+        "feat13": "Entropy"
     }
 }
 
@@ -3810,22 +3833,22 @@ def main():
         def extrair_features_amostra(amostra):
             feats = {}
         
-            feats["Média"] = np.mean(amostra)
-            feats["Variância"] = np.var(amostra)
-            feats["Desvio-padrão"] = np.std(amostra)
-            feats["RMS"] = np.sqrt(np.mean(np.square(amostra)))
-            feats["Kurtosis"] = kurtosis(amostra)
-            feats["Peak to peak"] = np.ptp(amostra)
-            feats["Max Amplitude"] = np.max(amostra)
-            feats["Min Amplitude"] = np.min(amostra)
-            feats["Skewness"] = skew(amostra)
-            feats["CrestFactor"] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
-            feats["Mediana"] = np.median(amostra)
-            feats["Energia"] = np.sum(amostra ** 2)
+            feats[textos_ml['feat1']] = np.mean(amostra)
+            feats[textos_ml['feat2']] = np.var(amostra)
+            feats[textos_ml['feat3']] = np.std(amostra)
+            feats[textos_ml['feat4']] = np.sqrt(np.mean(np.square(amostra)))
+            feats[textos_ml['feat5']] = kurtosis(amostra)
+            feats[textos_ml['feat6']] = np.ptp(amostra)
+            feats[textos_ml['feat7']] = np.max(amostra)
+            feats[textos_ml['feat8']] = np.min(amostra)
+            feats[textos_ml['feat9']] = skew(amostra)
+            feats[textos_ml['feat10']] = np.max(np.abs(amostra)) / (np.sqrt(np.mean(np.square(amostra))) + 1e-10)
+            feats[textos_ml['feat11']] = np.median(amostra)
+            feats[textos_ml['feat12']] = np.sum(amostra ** 2)
         
             prob, _ = np.histogram(amostra, bins=30, density=True)
             prob = prob[prob > 0]
-            feats["Entropia"] = -np.sum(prob * np.log(prob))
+            feats[textos_ml['feat13']] = -np.sum(prob * np.log(prob))
         
             return feats
         
@@ -3847,9 +3870,8 @@ def main():
         st.markdown(f"### {textos_ml['step2']}")
         
         features_disponiveis = [
-            "Média", "Variância", "Desvio-padrão", "RMS", "Kurtosis",
-            "Peak to peak", "Max Amplitude", "Min Amplitude", "Skewness",
-            "CrestFactor", "Mediana", "Energia", "Entropia"
+            textos_ml['feat1'], textos_ml['feat2'], textos_ml['feat3'], textos_ml['feat4'], textos_ml['feat5'], textos_ml['feat6'], textos_ml['feat7'],
+            textos_ml['feat8'], textos_ml['feat9'], textos_ml['feat10'], textos_ml['feat11'], textos_ml['feat12'], textos_ml['feat13']
         ]
         
         selected_features = st.multiselect(
@@ -3874,13 +3896,13 @@ def main():
         with col2:
             tipo_circuito = st.selectbox(
                 textos_ml["pqc"],
-                [" - ", "VQE", "Real Amplitudes", "QCNN (experimental)"]
+                [" - ", "VQE", "Real Amplitudes", "QCNN"]
             )
         
         rotacoes = []
         porta_emaranhamento = None
         
-        if tipo_circuito == "Camada parametrizada":
+        if tipo_circuito == "VQE":
         
             n_rot = st.selectbox(textos_ml["num_rot"], [" - ", "1", "2", "3"])
         
