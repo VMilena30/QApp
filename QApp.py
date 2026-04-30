@@ -4101,7 +4101,7 @@ def main():
                     fig = result
             
                 # DIMINUIR TAMANHO
-                fig.set_size_inches(6, 3)
+                fig.set_size_inches(5, 2.5)
             
                 col1, col2, col3 = st.columns([1, 3, 1])
             
