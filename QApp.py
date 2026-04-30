@@ -3938,17 +3938,9 @@ def main():
         # BOTÃO VISUALIZAR CIRCUITO
         # =========================
         
-        if "mostrar_circuito" not in st.session_state:
-            st.session_state.mostrar_circuito = False
-        
-        if st.button("Visualizar circuito"):
-            st.session_state.mostrar_circuito = True
-        
-        # =========================
-        # GERAR E EXIBIR CIRCUITO
-        # =========================
-        
-        if st.session_state.mostrar_circuito:
+        visualizar = st.button("Visualizar circuito")
+
+        if visualizar:
         
             import matplotlib.pyplot as plt
         
