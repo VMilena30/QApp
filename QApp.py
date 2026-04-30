@@ -4073,12 +4073,13 @@ def main():
                             qml.ISWAP(wires=[i, i+1])
         
                 elif tipo_circuito == "Real Amplitudes":
-                    qml.templates.RealAmplitudes(
-                        weights=np.ones((1, n_qubits)),
-                        wires=range(n_qubits)
-                    )
+                    for i in range(n_qubits):
+                        qml.RY(0.5, wires=i)
+                
+                    for i in range(n_qubits - 1):
+                        qml.CNOT(wires=[i, i+1])
         
-                elif tipo_circuito == "QCNN (experimental)":
+                elif tipo_circuito == "QCNN":
                     qml.templates.StronglyEntanglingLayers(
                         weights=np.ones((1, n_qubits, 3)),
                         wires=range(n_qubits)
@@ -4098,10 +4099,15 @@ def main():
             from sklearn.neural_network import MLPClassifier
         
             clf = MLPClassifier(
-                hidden_layer_sizes=(64,),
+                hidden_layer_sizes=(64, 32),
+                activation="relu",
+                solver="adam",
                 learning_rate_init=0.001,
                 max_iter=epocas,
-                random_state=seed
+                random_state=seed,
+                early_stopping=True,
+                n_iter_no_change=paciencia,
+                validation_fraction=0.1
             )
         
             clf.fit(X_train, y_train)
