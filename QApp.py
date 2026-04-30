@@ -1303,7 +1303,14 @@ TEXTOS_ML = {
         "feat10": "CrestFactor", 
         "feat11": "Mediana", 
         "feat12": "Energia", 
-        "feat13": "Entropia"
+        "feat13": "Entropia",
+
+        "carreg1": "Como deseja fornecer os dados?",
+        "carreg2": "Usar base de vibração do app",
+        "carreg3": "Enviar minha própria base",
+        "carreg4": "Carregar base",
+        "carreg5": "Base CWRU carregada com sucesso!", 
+        "carreg6": "Formato dos dados:"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1571,7 +1578,14 @@ TEXTOS_ML = {
         "feat10": "Crest Factor", 
         "feat11": "Median", 
         "feat12": "Energy", 
-        "feat13": "Entropy"
+        "feat13": "Entropy",
+
+        "carreg1": "How would you like to provide the data?",
+        "carreg2": "Use the app's vibration dataset",
+        "carreg3": "Upload my own dataset",
+        "carreg4": "Load dataset",
+        "carreg5": "CWRU dataset loaded successfully!",
+        "carreg6": "Data format:"
     }
 }
 
@@ -3785,13 +3799,13 @@ def main():
         st.subheader(textos_ml["step1"])
 
         modo_dataset = st.radio(
-            "Como deseja fornecer os dados?",
-            ("Usar base de vibração do app", "Enviar minha própria base")
+            textos_ml["carreg1"],
+            (textos_ml["carreg2"], textos_ml["carreg3"])
         )
     
         X_raw, y = None, None
     
-        if modo_dataset == "Usar base de vibração do app":
+        if modo_dataset == textos_ml["carreg2"]:
         
             @st.cache_data
             def carregar_cwru():
@@ -3799,14 +3813,14 @@ def main():
                 data = np.load("cwru_dataset.npz")
                 return data["X"], data["y"]
     
-            if st.button("Carregar base"):
+            if st.button(textos_ml["carreg4"]):
                 X_raw, y = carregar_cwru()
             
                 st.session_state["X_raw"] = X_raw
                 st.session_state["y"] = y
             
-                st.success("Base CWRU carregada com sucesso!")
-                st.write("Formato dos dados:", X_raw.shape)
+                st.success(textos_ml["carreg5"])
+                st.write(textos_ml["carreg6"], X_raw.shape)
     
         else:
             uploaded_file = st.file_uploader("Upload", type=["csv","xlsx","parquet"])
