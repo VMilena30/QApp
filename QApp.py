@@ -3933,6 +3933,88 @@ def main():
                 textos_ml["entanglement"],
                 [" - ", "CZ", "iSWAP"]
             )
+
+        if st.button("Visualizar circuito"):
+
+            if encoding_method == " - ":
+                st.warning("Selecione um método de codificação primeiro")
+                st.stop()
+        
+            # número pequeno só pra visualização
+            n_qubits = 3
+        
+            dev = qml.device("default.qubit", wires=n_qubits)
+        
+            @qml.qnode(dev)
+            def circuito_visual(x):
+        
+                # ===== ENCODING =====
+                if encoding_method == "Angle encoding":
+                    for i in range(n_qubits):
+                        for eixo in (rotacoes if rotacoes else ["X"]):
+                            if eixo == "X": qml.RX(x[i], wires=i)
+                            elif eixo == "Y": qml.RY(x[i], wires=i)
+                            elif eixo == "Z": qml.RZ(x[i], wires=i)
+        
+                elif encoding_method == "Amplitude encoding":
+                    qml.AmplitudeEmbedding(x, wires=range(n_qubits), normalize=True)
+        
+                elif encoding_method == "ZFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RZ(x[i], wires=i)
+        
+                elif encoding_method == "XFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RX(x[i], wires=i)
+        
+                elif encoding_method == "YFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RY(x[i], wires=i)
+        
+                elif encoding_method == "ZZFeaturemap":
+                    for i in range(n_qubits):
+                        qml.RZ(x[i], wires=i)
+                    for i in range(n_qubits - 1):
+                        qml.CNOT(wires=[i, i+1])
+        
+                # ===== PQC =====
+                if tipo_circuito == "VQE":
+                    for i in range(n_qubits):
+                        for eixo in rotacoes:
+                            if eixo == "X": qml.RX(0.5, wires=i)
+                            elif eixo == "Y": qml.RY(0.5, wires=i)
+                            elif eixo == "Z": qml.RZ(0.5, wires=i)
+        
+                    if porta_emaranhamento == "CZ":
+                        for i in range(n_qubits - 1):
+                            qml.CZ(wires=[i, i+1])
+        
+                    elif porta_emaranhamento == "iSWAP":
+                        for i in range(n_qubits - 1):
+                            qml.ISWAP(wires=[i, i+1])
+        
+                elif tipo_circuito == "Real Amplitudes":
+                    for i in range(n_qubits):
+                        qml.RY(0.5, wires=i)
+                    for i in range(n_qubits - 1):
+                        qml.CNOT(wires=[i, i+1])
+        
+                elif tipo_circuito == "QCNN":
+                    qml.templates.StronglyEntanglingLayers(
+                        weights=np.ones((1, n_qubits, 3)),
+                        wires=range(n_qubits)
+                    )
+        
+                return qml.expval(qml.PauliZ(0))
+        
+            # entrada dummy
+            x_dummy = np.ones(n_qubits)
+        
+            # ===== DESENHO =====
+            drawer = qml.draw(circuito_visual)
+            circuito_str = drawer(x_dummy)
+        
+            st.text(circuito_str)
         
         st.divider()
         
