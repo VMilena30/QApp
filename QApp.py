@@ -4043,87 +4043,75 @@ def main():
             x_dummy = np.ones(n_qubits)
         
             # =====================
-            # CAIXA VISUAL
+            # CONTAINER VISUAL
             # =====================
-        
-            st.markdown("""
-            <div style="
-                background-color:#EEF4FB;
-                padding:20px;
-                border-radius:12px;
-                border:1px solid #D6E4F0;
-            ">
-            """, unsafe_allow_html=True)
-        
-            # =====================
-            # TÍTULO + DESCRIÇÃO
-            # =====================
-        
-            st.markdown("""
-            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                <div style="
-                    width:26px;
-                    height:26px;
-                    border-radius:50%;
-                    border:2px solid #3A7BD5;
-                    color:#3A7BD5;
-                    display:flex;
-                    align-items:center;
-                    justify-content:center;
-                    font-weight:bold;
-                ">i</div>
-                <div>
-                    <div style="font-weight:600; font-size:16px;">
-                        Exemplo do circuito
-                    </div>
-                    <div style="font-size:13px; color:#555;">
-                        Representação do circuito quântico com as opções selecionadas.
+            
+            container = st.container()
+            
+            with container:
+            
+                st.markdown("""
+                <style>
+                .box-circuito {
+                    background-color: #EEF4FB;
+                    padding: 20px;
+                    border-radius: 12px;
+                    border: 1px solid #D6E4F0;
+                }
+                </style>
+                """, unsafe_allow_html=True)
+            
+                st.markdown('<div class="box-circuito">', unsafe_allow_html=True)
+            
+                # =====================
+                # TÍTULO
+                # =====================
+                st.markdown("""
+                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+                    <div style="
+                        width:26px;
+                        height:26px;
+                        border-radius:50%;
+                        border:2px solid #3A7BD5;
+                        color:#3A7BD5;
+                        display:flex;
+                        align-items:center;
+                        justify-content:center;
+                        font-weight:bold;
+                    ">i</div>
+                    <div>
+                        <div style="font-weight:600; font-size:16px;">
+                            Exemplo do circuito
+                        </div>
+                        <div style="font-size:13px; color:#555;">
+                            Representação do circuito quântico com as opções selecionadas.
+                        </div>
                     </div>
                 </div>
-            </div>
-            """, unsafe_allow_html=True)
-        
-            # =====================
-            # CIRCUITO CENTRALIZADO
-            # =====================
-        
-            col1, col2, col3 = st.columns([1, 4, 1])
-        
-            with col2:
-                fig, ax = qml.draw_mpl(circuito_visual)(x_dummy)
-                st.pyplot(fig)
-        
-            # =====================
-            # LEGENDA
-            # =====================
-        
-            st.markdown("""
-            <div style="
-                margin-top:15px;
-                padding:12px;
-                background-color:#F7FAFF;
-                border-radius:10px;
-                border:1px solid #E0ECF7;
-                display:flex;
-                flex-wrap:wrap;
-                gap:15px;
-                font-size:13px;
-            ">
-        
-            <span><b style="color:#4A90E2;">RX</b> Rotação X</span>
-            <span><b style="color:#50C878;">RY</b> Rotação Y</span>
-            <span>● Qubit de controle</span>
-            <span><b>Z</b> Porta Z controlada (CZ)</span>
-            <span>Medição (⟨Z⟩)</span>
-        
-            </div>
-            """, unsafe_allow_html=True)
-        
-            # =====================
-            # FECHAR CAIXA
-            # =====================
-        
-            st.markdown("</div>", unsafe_allow_html=True)
+                """, unsafe_allow_html=True)
+            
+                # =====================
+                # CIRCUITO (MENOR)
+                # =====================
+                result = qml.draw_mpl(circuito_visual)(x_dummy)
+            
+                if isinstance(result, tuple):
+                    fig = result[0]
+                else:
+                    fig = result
+            
+                # DIMINUIR TAMANHO
+                fig.set_size_inches(6, 3)
+            
+                col1, col2, col3 = st.columns([1, 3, 1])
+            
+                with col2:
+                    st.pyplot(fig)
+            
+                # =====================
+                # FECHAR DIV
+                # =====================
+                st.markdown('</div>', unsafe_allow_html=True)
         
         st.divider()
         
