@@ -1204,7 +1204,7 @@ TEXTOS_ML = {
         
         <li><b>Circuitos quânticos parametrizados (PQC):</b>
         <ul>
-        <li>Rotações de Euler (RX, RY, RZ + CZ/iSWAP)</li>
+        <li>Eigensolver Quântico Variacional (VQE)</li>
         <li>Real Amplitudes</li>
         <li>QCNN (experimental)</li>
         </ul>
@@ -1212,7 +1212,7 @@ TEXTOS_ML = {
         
         <li><b>Classificador clássico:</b>
         <ul>
-        <li>Support Vector Machine (SVM)</li>
+        <li>Multilayer Perceptron (MLP)</li>
         </ul>
         </li>
         </ul>
@@ -1460,7 +1460,7 @@ TEXTOS_ML = {
         
         <li><b>Parameterized Quantum Circuits (PQC):</b>
         <ul>
-        <li>Euler Rotation (RX, RY, RZ + CZ/iSWAP)</li>
+        <li>Variational Quantum Eigensolver (VQE)</li>
         <li>Real Amplitudes</li>
         <li>QCNN (experimental)</li>
         </ul>
@@ -1468,7 +1468,7 @@ TEXTOS_ML = {
         
         <li><b>Classical classifier:</b>
         <ul>
-        <li>Support Vector Machine (SVM)</li>
+        <li>Multilayer Perceptron (MLP)</li>
         </ul>
         </li>
         </ul>
@@ -3874,7 +3874,7 @@ def main():
         with col2:
             tipo_circuito = st.selectbox(
                 textos_ml["pqc"],
-                [" - ", "Camada parametrizada", "Real Amplitudes", "QCNN (experimental)"]
+                [" - ", "VQE", "Real Amplitudes", "QCNN (experimental)"]
             )
         
         rotacoes = []
