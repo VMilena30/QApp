@@ -3998,7 +3998,7 @@ def main():
                 # =====================
                 # PQC
                 # =====================
-                if tipo_circuito == "Camada parametrizada":
+                if tipo_circuito == "VQE":
         
                     for i in range(n_qubits):
                         for eixo in rotacoes:
@@ -4023,7 +4023,7 @@ def main():
                     for i in range(n_qubits - 1):
                         qml.CNOT(wires=[i, i+1])
         
-                elif tipo_circuito == "QCNN (experimental)":
+                elif tipo_circuito == "QCNN":
                     qml.templates.StronglyEntanglingLayers(
                         weights=np.ones((1, n_qubits, 3)),
                         wires=range(n_qubits)
@@ -4034,17 +4034,11 @@ def main():
             # entrada dummy
             x_dummy = np.ones(n_qubits)
         
-            # =====================
-            # CONTAINER VISUAL
-            # =====================
-            
-            container = st.container()
-            
-            with container:
-            
+            with st.container():
+
                 st.markdown("""
                 <style>
-                .box-circuito {
+                div[data-testid="stVerticalBlock"] > div:has(.circuito-box) {
                     background-color: #EEF4FB;
                     padding: 20px;
                     border-radius: 12px;
@@ -4053,11 +4047,10 @@ def main():
                 </style>
                 """, unsafe_allow_html=True)
             
-                st.markdown('<div class="box-circuito">', unsafe_allow_html=True)
+                # marcador invisível (gancho CSS)
+                st.markdown('<div class="circuito-box"></div>', unsafe_allow_html=True)
             
-                # =====================
-                # TÍTULO
-                # =====================
+                # ===== TÍTULO =====
                 st.markdown("""
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
                     <div style="
@@ -4082,28 +4075,17 @@ def main():
                 </div>
                 """, unsafe_allow_html=True)
             
-                # =====================
-                # CIRCUITO (MENOR)
-                # =====================
+                # ===== CIRCUITO =====
                 result = qml.draw_mpl(circuito_visual)(x_dummy)
             
-                if isinstance(result, tuple):
-                    fig = result[0]
-                else:
-                    fig = result
+                fig = result[0] if isinstance(result, tuple) else result
             
-                # DIMINUIR TAMANHO
                 fig.set_size_inches(5, 2.5)
+                fig.tight_layout()
             
                 col1, col2, col3 = st.columns([1, 3, 1])
-            
                 with col2:
                     st.pyplot(fig)
-            
-                # =====================
-                # FECHAR DIV
-                # =====================
-                st.markdown('</div>', unsafe_allow_html=True)
         
         st.divider()
         
