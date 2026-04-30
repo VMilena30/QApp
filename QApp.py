@@ -4104,10 +4104,7 @@ def main():
                 solver="adam",
                 learning_rate_init=0.001,
                 max_iter=epocas,
-                random_state=seed,
-                early_stopping=True,
-                n_iter_no_change=paciencia,
-                validation_fraction=0.1
+                random_state=seed
             )
         
             clf.fit(X_train, y_train)
