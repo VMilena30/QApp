@@ -4292,6 +4292,8 @@ def main():
                 y_pred,
                 average="weighted"
             )
+
+            st.success("Treinamento e avaliação concluídos com sucesso!")
             
             col1, col2, col3, col4 = st.columns(4)
             
@@ -4306,7 +4308,7 @@ def main():
         
             cm = confusion_matrix(y_test, y_pred)
 
-            fig_cm, ax = plt.subplots(figsize=(4,4))
+            fig_cm, ax = plt.subplots(figsize=(3.2,3.2))
             
             disp = ConfusionMatrixDisplay(
                 confusion_matrix=cm,
