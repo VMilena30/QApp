@@ -4265,19 +4265,55 @@ def main():
             y_pred = clf.predict(X_test)
         
             acc = accuracy_score(y_test, y_pred)
-        
-            st.success(f"{textos_ml['acc']} {acc:.3f}")
+
+            precision = precision_score(
+                y_test,
+                y_pred,
+                average="weighted"
+            )
+            
+            recall = recall_score(
+                y_test,
+                y_pred,
+                average="weighted"
+            )
+            
+            f1 = f1_score(
+                y_test,
+                y_pred,
+                average="weighted"
+            )
+            
+            col1, col2, col3, col4 = st.columns(4)
+            
+            col1.metric("Accuracy", f"{acc:.4f}")
+            col2.metric("Precision", f"{precision:.4f}")
+            col3.metric("Recall", f"{recall:.4f}")
+            col4.metric("F1-Score", f"{f1:.4f}")
         
             # ===== MATRIZ DE CONFUSÃO =====
             from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
             import matplotlib.pyplot as plt
         
             cm = confusion_matrix(y_test, y_pred)
-        
-            fig, ax = plt.subplots()
-            ConfusionMatrixDisplay(cm).plot(ax=ax)
-        
-            st.pyplot(fig)
+
+            fig_cm, ax = plt.subplots(figsize=(4,4))
+            
+            disp = ConfusionMatrixDisplay(
+                confusion_matrix=cm,
+                display_labels=np.unique(y_test)
+            )
+            
+            disp.plot(
+                ax=ax,
+                cmap="Blues",
+                colorbar=False
+            )
+            
+            plt.title("Matriz de Confusão")
+            plt.grid(False)
+            
+            st.pyplot(fig_cm)
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
