@@ -3823,22 +3823,49 @@ def main():
                 st.write(textos_ml["carreg6"], X_raw.shape)
     
         else:
-            uploaded_file = st.file_uploader("Upload", type=["csv","xlsx","parquet"])
-    
-            if uploaded_file:
-                if uploaded_file.name.endswith(".csv"):
-                    df = pd.read_csv(uploaded_file)
-                elif uploaded_file.name.endswith(".xlsx"):
-                    df = pd.read_excel(uploaded_file)
+            uploaded_file = st.file_uploader(
+            textos_ml["upload_label"],
+            type=["csv", "xlsx", "parquet", "npz"]
+        )
+        
+        if uploaded_file is not None:
+        
+            if uploaded_file.name.endswith(".csv"):
+        
+                df = pd.read_csv(uploaded_file)
+        
+                possible_labels = [
+                    c for c in df.columns
+                    if c.lower() in ["label", "target", "class"]
+                ]
+        
+                if len(possible_labels) == 0:
+                    y = df.iloc[:, -1].values
+                    X_raw = df.iloc[:, :-1].values
                 else:
-                    df = pd.read_parquet(uploaded_file)
-    
-                st.dataframe(df.head())
-    
-                label_col = "label" if "label" in df.columns else df.columns[-1]
-    
-                y = df[label_col].values
-                X_raw = df.drop(columns=[label_col]).values
+                    label_col = possible_labels[0]
+                    y = df[label_col].values
+                    X_raw = df.drop(columns=[label_col]).values
+        
+            elif uploaded_file.name.endswith(".xlsx"):
+        
+                df = pd.read_excel(uploaded_file)
+        
+            elif uploaded_file.name.endswith(".parquet"):
+        
+                df = pd.read_parquet(uploaded_file)
+        
+            elif uploaded_file.name.endswith(".npz"):
+        
+                data = np.load(uploaded_file)
+        
+                X_raw = data["X"]
+                y = data["y"]
+        
+                st.success("Base NPZ carregada com sucesso!")
+        
+                st.write("Formato X:", X_raw.shape)
+                st.write("Formato y:", y.shape)
     
         st.divider()
 
