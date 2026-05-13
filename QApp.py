@@ -3824,48 +3824,48 @@ def main():
     
         else:
             uploaded_file = st.file_uploader(
-            textos_ml["upload_label"],
-            type=["csv", "xlsx", "parquet", "npz"]
-        )
-        
-        if uploaded_file is not None:
-        
-            if uploaded_file.name.endswith(".csv"):
-        
-                df = pd.read_csv(uploaded_file)
-        
-                possible_labels = [
-                    c for c in df.columns
-                    if c.lower() in ["label", "target", "class"]
-                ]
-        
-                if len(possible_labels) == 0:
-                    y = df.iloc[:, -1].values
-                    X_raw = df.iloc[:, :-1].values
-                else:
-                    label_col = possible_labels[0]
-                    y = df[label_col].values
-                    X_raw = df.drop(columns=[label_col]).values
-        
-            elif uploaded_file.name.endswith(".xlsx"):
-        
-                df = pd.read_excel(uploaded_file)
-        
-            elif uploaded_file.name.endswith(".parquet"):
-        
-                df = pd.read_parquet(uploaded_file)
-        
-            elif uploaded_file.name.endswith(".npz"):
-        
-                data = np.load(uploaded_file)
-        
-                X_raw = data["X"]
-                y = data["y"]
-        
-                st.success("Base NPZ carregada com sucesso!")
-        
-                st.write("Formato X:", X_raw.shape)
-                st.write("Formato y:", y.shape)
+                textos_ml["upload_label"],
+                type=["csv", "xlsx", "parquet", "npz"]
+            )
+            
+            if uploaded_file is not None:
+            
+                if uploaded_file.name.endswith(".csv"):
+            
+                    df = pd.read_csv(uploaded_file)
+            
+                    possible_labels = [
+                        c for c in df.columns
+                        if c.lower() in ["label", "target", "class"]
+                    ]
+            
+                    if len(possible_labels) == 0:
+                        y = df.iloc[:, -1].values
+                        X_raw = df.iloc[:, :-1].values
+                    else:
+                        label_col = possible_labels[0]
+                        y = df[label_col].values
+                        X_raw = df.drop(columns=[label_col]).values
+            
+                elif uploaded_file.name.endswith(".xlsx"):
+            
+                    df = pd.read_excel(uploaded_file)
+            
+                elif uploaded_file.name.endswith(".parquet"):
+            
+                    df = pd.read_parquet(uploaded_file)
+            
+                elif uploaded_file.name.endswith(".npz"):
+            
+                    data = np.load(uploaded_file)
+            
+                    X_raw = data["X"]
+                    y = data["y"]
+            
+                    st.success("Base NPZ carregada com sucesso!")
+            
+                    st.write("Formato X:", X_raw.shape)
+                    st.write("Formato y:", y.shape)
     
         st.divider()
 
