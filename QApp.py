@@ -4142,41 +4142,44 @@ def main():
                 """, unsafe_allow_html=True)
             
                 # marcador invisível
-                st.markdown('<div class="circuito-box"></div>', unsafe_allow_html=True)
+                st.markdown(
+                    '<div class="circuito-box"></div>',
+                    unsafe_allow_html=True
+                )
             
                 # ===== TÍTULO =====
                 st.markdown(f"""
-                <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
-                
-                    <div style="
-                        width:26px;
-                        height:26px;
-                        border-radius:50%;
-                        border:2px solid #3A7BD5;
-                        color:#3A7BD5;
-                        display:flex;
-                        align-items:center;
-                        justify-content:center;
-                        font-weight:bold;
-                        flex-shrink:0;
-                    ">
-                        i
-                    </div>
-                
-                    <div>
-                
-                        <div style="font-weight:600; font-size:16px;">
-                            {textos_ml["circuit_title"]}
-                        </div>
-                
-                        <div style="font-size:13px; color:#555;">
-                            {textos_ml["circuit_desc"]}
-                        </div>
-                
-                    </div>
-                
-                </div>
-                """, unsafe_allow_html=True)
+            <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
+            
+            <div style="
+            width:26px;
+            height:26px;
+            border-radius:50%;
+            border:2px solid #3A7BD5;
+            color:#3A7BD5;
+            display:flex;
+            align-items:center;
+            justify-content:center;
+            font-weight:bold;
+            flex-shrink:0;
+            ">
+            i
+            </div>
+            
+            <div>
+            
+            <div style="font-weight:600; font-size:16px;">
+            {textos_ml["circuit_title"]}
+            </div>
+            
+            <div style="font-size:13px; color:#555;">
+            {textos_ml["circuit_desc"]}
+            </div>
+            
+            </div>
+            
+            </div>
+            """, unsafe_allow_html=True)
             
                 # ===== CIRCUITO =====
                 result = qml.draw_mpl(circuito_visual)(x_dummy)
@@ -4184,9 +4187,11 @@ def main():
                 fig = result[0] if isinstance(result, tuple) else result
             
                 fig.set_size_inches(5, 2.5)
-                fig.tight_layout()
+            
+                fig.patch.set_facecolor("#EEF4FB")
             
                 col1, col2, col3 = st.columns([1, 3, 1])
+            
                 with col2:
                     st.pyplot(fig)
         
