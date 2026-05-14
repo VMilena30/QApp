@@ -1311,7 +1311,9 @@ TEXTOS_ML = {
         "carreg4": "Carregar base",
         "carreg5": "Base CWRU carregada com sucesso!", 
         "carreg6": "Formato dos dados:",
-        "visu": "Visualizar circuito"
+        "visu": "Visualizar circuito",
+        "circ_info": "Selecione um método de codificação",
+        "circ_info2": "Defina rotações e emaranhamento"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1587,7 +1589,9 @@ TEXTOS_ML = {
         "carreg4": "Load dataset",
         "carreg5": "CWRU dataset loaded successfully!",
         "carreg6": "Data format:",
-        "visu": "View circuit"
+        "visu": "View circuit",
+        "circ_info": "Select an encoding method",
+        "circ_info2": "Define rotations and entanglement"
     }
 }
 
@@ -4014,11 +4018,11 @@ def main():
         
             # validações mínimas
             if encoding_method == " - ":
-                st.warning("Selecione um método de codificação")
+                st.warning(textos_ml["circ_info"])
                 st.stop()
         
-            if tipo_circuito == "Camada parametrizada" and (not rotacoes or porta_emaranhamento == " - "):
-                st.warning("Defina rotações e emaranhamento")
+            if tipo_circuito == "VQE" and (not rotacoes or porta_emaranhamento == " - "):
+                st.warning(textos_ml["circ_info2"])
                 st.stop()
         
             # número fixo só para visualização
