@@ -1313,7 +1313,9 @@ TEXTOS_ML = {
         "carreg6": "Formato dos dados:",
         "visu": "Visualizar circuito",
         "circ_info": "Selecione um método de codificação",
-        "circ_info2": "Defina rotações e emaranhamento"
+        "circ_info2": "Defina rotações e emaranhamento",
+        "circuit_title": "Exemplo do circuito",
+        "circuit_desc": "Representação do circuito quântico com as opções selecionadas."
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1591,7 +1593,9 @@ TEXTOS_ML = {
         "carreg6": "Data format:",
         "visu": "View circuit",
         "circ_info": "Select an encoding method",
-        "circ_info2": "Define rotations and entanglement"
+        "circ_info2": "Define rotations and entanglement",
+        "circuit_title": "Circuit example",
+        "circuit_desc": "Quantum circuit representation with the selected options."
     }
 }
 
@@ -4156,10 +4160,10 @@ def main():
                     ">i</div>
                     <div>
                         <div style="font-weight:600; font-size:16px;">
-                            Exemplo do circuito
+                            {textos_ml["circuit_title"]}
                         </div>
                         <div style="font-size:13px; color:#555;">
-                            Representação do circuito quântico com as opções selecionadas.
+                            {textos_ml["circuit_desc"]}
                         </div>
                     </div>
                 </div>
