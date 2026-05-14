@@ -4318,15 +4318,16 @@ def main():
             from sklearn.neural_network import MLPClassifier
         
             clf = MLPClassifier(
-                hidden_layer_sizes=(64, 32),
-                activation="relu",
-                solver="adam",
+                hidden_layer_sizes=(64,32),
                 learning_rate_init=0.001,
                 max_iter=epocas,
-                random_state=seed
+                random_state=seed,
+                early_stopping=False
             )
-        
+            
             clf.fit(X_train, y_train)
+            
+            st.write("Iterações realizadas:", clf.n_iter_)
         
             y_pred = clf.predict(X_test)
 
