@@ -1310,7 +1310,8 @@ TEXTOS_ML = {
         "carreg3": "Enviar minha própria base",
         "carreg4": "Carregar base",
         "carreg5": "Base CWRU carregada com sucesso!", 
-        "carreg6": "Formato dos dados:"
+        "carreg6": "Formato dos dados:",
+        "visu": "Visualizar circuito"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1585,7 +1586,8 @@ TEXTOS_ML = {
         "carreg3": "Upload my own dataset",
         "carreg4": "Load dataset",
         "carreg5": "CWRU dataset loaded successfully!",
-        "carreg6": "Data format:"
+        "carreg6": "Data format:",
+        "visu": "View circuit"
     }
 }
 
@@ -4004,10 +4006,10 @@ def main():
         # BOTÃO VISUALIZAR CIRCUITO
         # =========================
         
-        visualizar = st.button("Visualizar circuito")
+        visualizar = st.button(textos_ml["visu"])
 
         if visualizar:
-        
+            
             import matplotlib.pyplot as plt
         
             # validações mínimas
@@ -4200,6 +4202,9 @@ def main():
         y = st.session_state.get("y", None)
         # ================= EXEC =================
         if st.button(textos_ml["executar"]):
+
+            progress = st.progress(0)
+            status = st.empty()
         
             if X_raw is None:
                 st.error(textos_ml["erro_dados"])
@@ -4216,7 +4221,8 @@ def main():
                 if porta_emaranhamento == " - ":
                     st.error(textos_ml["erro_ent"])
                     st.stop()
-        
+
+            progress.progress(20)
             # ===== FEATURES =====
             X_feat = extrair_features_dataset(
                 X_raw,
@@ -4225,7 +4231,8 @@ def main():
         
             X_np = X_feat.values
             y_np = np.array(y)
-        
+
+            progress.progress(40)
             # ===== NORMALIZAÇÃO =====
             scaler = StandardScaler()
             X_np = scaler.fit_transform(X_np)
@@ -4242,7 +4249,8 @@ def main():
                 X_np = X_np[:, :n_qubits]
         
             dev = qml.device("default.qubit", wires=n_qubits)
-        
+
+            progress.progress(60)
             @qml.qnode(dev)
             def circuit(x):
         
@@ -4305,7 +4313,8 @@ def main():
                     )
         
                 return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
-        
+
+            progress.progress(80)
             # ===== EXECUÇÃO QUÂNTICA =====
             X_quantum = np.array([circuit(x) for x in X_np])
         
@@ -4359,7 +4368,8 @@ def main():
                 y_pred,
                 average="weighted"
             )
-
+            progress.progress(100)
+            
             st.success("Treinamento e avaliação concluídos com sucesso!")
             
             col1, col2, col3, col4 = st.columns(4)
