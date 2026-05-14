@@ -4141,11 +4141,11 @@ def main():
                 </style>
                 """, unsafe_allow_html=True)
             
-                # marcador invisível (gancho CSS)
+                # marcador invisível
                 st.markdown('<div class="circuito-box"></div>', unsafe_allow_html=True)
             
                 # ===== TÍTULO =====
-                st.markdown("""
+                st.markdown(f"""
                 <div style="display:flex; align-items:center; gap:10px; margin-bottom:10px;">
                     <div style="
                         width:26px;
@@ -4158,10 +4158,12 @@ def main():
                         justify-content:center;
                         font-weight:bold;
                     ">i</div>
+            
                     <div>
                         <div style="font-weight:600; font-size:16px;">
                             {textos_ml["circuit_title"]}
                         </div>
+            
                         <div style="font-size:13px; color:#555;">
                             {textos_ml["circuit_desc"]}
                         </div>
