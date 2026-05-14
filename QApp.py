@@ -3711,6 +3711,24 @@ def main():
 
     elif st.session_state['pagina'] == 'ml':
 
+        label_btn = "PT" if st.session_state.lang == "pt" else "EN"
+        
+        with st.popover(label_btn, use_container_width=False):
+            # use opções claras pra não depender de startswith
+            opt = st.selectbox(
+                "Language",
+                [("en", "🇺🇸"), ("pt", "🇧🇷")],
+                format_func=lambda x: x[1],
+                index=0 if st.session_state.lang == "en" else 1,
+                label_visibility="collapsed",
+                key="lang_nav_select_inside",
+            )
+        
+            new_lang = opt[0]
+            if new_lang != st.session_state.lang:
+                st.session_state.lang = new_lang
+                st.rerun()
+
         import pandas as pd
         import numpy as np
         import streamlit as st
