@@ -4135,7 +4135,7 @@ def main():
 
                 st.markdown("""
                 <style>
-                div[data-testid="stVerticalBlock"] > div:has(.circuito-box) {
+                div[data-testid="stVerticalBlock"]:has(.circuito-box) {
                     background-color: #EEF4FB;
                     padding: 20px;
                     border-radius: 12px;
