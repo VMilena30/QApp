@@ -4130,17 +4130,23 @@ def main():
                 x_dummy = np.ones(2 ** n_qubits)
             else:
                 x_dummy = np.ones(n_qubits)
-        
+
+            
+            st.markdown('<div class="circuito-wrapper">', unsafe_allow_html=True)
+
             with st.container():
 
                 st.markdown("""
                 <style>
-                div[data-testid="stVerticalBlock"]:has(.circuito-box) {
+                
+                .circuito-wrapper {
                     background-color: #EEF4FB;
                     padding: 20px;
                     border-radius: 12px;
                     border: 1px solid #D6E4F0;
+                    margin-top: 10px;
                 }
+                
                 </style>
                 """, unsafe_allow_html=True)
             
