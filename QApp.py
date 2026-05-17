@@ -4185,6 +4185,13 @@ def main():
                 result = qml.draw_mpl(circuito_visual)(x_dummy)
             
                 fig = result[0] if isinstance(result, tuple) else result
+
+                ax = fig.axes[0]
+
+                # REGIÕES
+                ax.axvspan(-0.5, 1.5, alpha=0.12)
+                ax.axvspan(1.5, 4.5, alpha=0.10)
+                ax.axvspan(4.5, 5.5, alpha=0.08)
             
                 fig.set_size_inches(5, 2.5)
             
