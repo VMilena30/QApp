@@ -4189,6 +4189,13 @@ def main():
                 ax = fig.axes[0]
 
                 patches = ax.patches
+                n_qubits = 3
+
+                # encoding
+                n_encoding = n_qubits
+                
+                # pqc
+                n_pqc = n_qubits * num_rotacoes
 
                 # ===== ENCODING =====
                 for p in patches[:n_encoding]:
