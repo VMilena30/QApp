@@ -4190,6 +4190,7 @@ def main():
                 fig = result[0] if isinstance(result, tuple) else result
 
                 ax = fig.axes[0]
+                ax.set_facecolor("#EEF4FB")
 
                 for txt in ax.texts:
 
