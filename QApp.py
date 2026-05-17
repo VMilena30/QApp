@@ -4191,84 +4191,11 @@ def main():
 
                 ax = fig.axes[0]
 
-                patches = ax.patches
-                n_qubits = 3
+                for txt in ax.texts:
 
-                # ===== ENCODING =====
-                n_encoding = n_qubits
-                
-                # ===== PQC =====
-                if tipo_circuito == "VQE":
-                    n_pqc = n_qubits * int(n_rot)
-                
-                elif tipo_circuito == "Real Amplitudes":
-                    n_pqc = n_qubits
-                
-                elif tipo_circuito == "QCNN":
-                    n_pqc = n_qubits * 3
-                
-                else:
-                    n_pqc = n_qubits
-
-                # ===== ENCODING =====
-                for p in patches[:n_encoding]:
-                    p.set_facecolor("#DCEEFF")
-                
-                # ===== PQC =====
-                for p in patches[n_encoding:n_encoding+n_pqc]:
-                    p.set_facecolor("#DDF5E3")
-                
-                # ===== MEDIÇÃO =====
-                for p in patches[-1:]:
-                    p.set_facecolor("#EFEFEF")
-            
-                fig.set_size_inches(5, 2.5)
-            
-                fig.patch.set_facecolor("#EEF4FB")
-
-                st.markdown("""
-                <div style="
-                display:flex;
-                justify-content:center;
-                gap:20px;
-                margin-bottom:15px;
-                ">
-                
-                <div style="
-                background:#DCEEFF;
-                padding:8px 18px;
-                border-radius:8px;
-                font-weight:600;
-                font-size:14px;
-                border:1px solid #A8D0FF;
-                ">
-                Encoding
-                </div>
-                
-                <div style="
-                background:#DDF5E3;
-                padding:8px 18px;
-                border-radius:8px;
-                font-weight:600;
-                font-size:14px;
-                border:1px solid #9AD9A8;
-                ">
-                PQC
-                </div>
-                
-                <div style="
-                background:#EFEFEF;
-                padding:8px 18px;
-                border-radius:8px;
-                font-weight:600;
-                font-size:14px;
-                border:1px solid #D0D0D0;
-                ">
-                Medição
-                </div>
-                
-                </div>
-                """, unsafe_allow_html=True)
+                if txt.get_text() == "ISWAP":
+                    txt.set_text("I\nS\nW\nA\nP")
+                    txt.set_fontsize(10)
             
                 col1, col2, col3 = st.columns([1, 3, 1])
             
