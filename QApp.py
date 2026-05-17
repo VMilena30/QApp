@@ -4132,7 +4132,6 @@ def main():
                 x_dummy = np.ones(n_qubits)
 
             
-            st.markdown('<div class="circuito-wrapper">', unsafe_allow_html=True)
 
             with st.container():
 
