@@ -4188,26 +4188,19 @@ def main():
 
                 ax = fig.axes[0]
 
-                # Encoding → azul
-                ax.axvspan(
-                    -0.5, 1.2,
-                    color="#4A90E2",
-                    alpha=0.08
-                )
+                patches = ax.patches
+
+                # ===== ENCODING =====
+                for p in patches[:n_encoding]:
+                    p.set_facecolor("#DCEEFF")
                 
-                # PQC → verde
-                ax.axvspan(
-                    1.2, 4.2,
-                    color="#58B368",
-                    alpha=0.08
-                )
+                # ===== PQC =====
+                for p in patches[n_encoding:n_encoding+n_pqc]:
+                    p.set_facecolor("#DDF5E3")
                 
-                # Medição → cinza
-                ax.axvspan(
-                    4.2, 5.8,
-                    color="#A0A0A0",
-                    alpha=0.08
-                )
+                # ===== MEDIÇÃO =====
+                for p in patches[-1:]:
+                    p.set_facecolor("#EFEFEF")
             
                 fig.set_size_inches(5, 2.5)
             
