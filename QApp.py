@@ -4126,7 +4126,10 @@ def main():
                 return qml.expval(qml.PauliZ(0))
         
             # entrada dummy
-            x_dummy = np.ones(n_qubits)
+            if encoding_method == "Amplitude encoding":
+                x_dummy = np.ones(2 ** n_qubits)
+            else:
+                x_dummy = np.ones(n_qubits)
         
             with st.container():
 
