@@ -4191,11 +4191,21 @@ def main():
                 patches = ax.patches
                 n_qubits = 3
 
-                # encoding
+                # ===== ENCODING =====
                 n_encoding = n_qubits
                 
-                # pqc
-                n_pqc = n_qubits * num_rotacoes
+                # ===== PQC =====
+                if tipo_circuito == "VQE":
+                    n_pqc = n_qubits * int(n_rot)
+                
+                elif tipo_circuito == "Real Amplitudes":
+                    n_pqc = n_qubits
+                
+                elif tipo_circuito == "QCNN":
+                    n_pqc = n_qubits * 3
+                
+                else:
+                    n_pqc = n_qubits
 
                 # ===== ENCODING =====
                 for p in patches[:n_encoding]:
