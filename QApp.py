@@ -4189,6 +4189,50 @@ def main():
                 fig.set_size_inches(5, 2.5)
             
                 fig.patch.set_facecolor("#EEF4FB")
+
+                st.markdown("""
+                <div style="
+                display:flex;
+                justify-content:center;
+                gap:20px;
+                margin-bottom:15px;
+                ">
+                
+                <div style="
+                background:#DCEEFF;
+                padding:8px 18px;
+                border-radius:8px;
+                font-weight:600;
+                font-size:14px;
+                border:1px solid #A8D0FF;
+                ">
+                Encoding
+                </div>
+                
+                <div style="
+                background:#DDF5E3;
+                padding:8px 18px;
+                border-radius:8px;
+                font-weight:600;
+                font-size:14px;
+                border:1px solid #9AD9A8;
+                ">
+                PQC
+                </div>
+                
+                <div style="
+                background:#EFEFEF;
+                padding:8px 18px;
+                border-radius:8px;
+                font-weight:600;
+                font-size:14px;
+                border:1px solid #D0D0D0;
+                ">
+                Medição
+                </div>
+                
+                </div>
+                """, unsafe_allow_html=True)
             
                 col1, col2, col3 = st.columns([1, 3, 1])
             
