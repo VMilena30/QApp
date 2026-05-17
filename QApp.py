@@ -4193,9 +4193,9 @@ def main():
 
                 for txt in ax.texts:
 
-                if txt.get_text() == "ISWAP":
-                    txt.set_text("I\nS\nW\nA\nP")
-                    txt.set_fontsize(10)
+                    if txt.get_text() == "ISWAP":
+                        txt.set_text("I\nS\nW\nA\nP")
+                        txt.set_fontsize(10)
             
                 col1, col2, col3 = st.columns([1, 3, 1])
             
