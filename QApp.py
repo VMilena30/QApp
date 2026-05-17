@@ -4188,10 +4188,26 @@ def main():
 
                 ax = fig.axes[0]
 
-                # REGIÕES
-                ax.axvspan(-0.5, 1.5, alpha=0.12)
-                ax.axvspan(1.5, 4.5, alpha=0.10)
-                ax.axvspan(4.5, 5.5, alpha=0.08)
+                # Encoding → azul
+                ax.axvspan(
+                    -0.5, 1.2,
+                    color="#4A90E2",
+                    alpha=0.08
+                )
+                
+                # PQC → verde
+                ax.axvspan(
+                    1.2, 4.2,
+                    color="#58B368",
+                    alpha=0.08
+                )
+                
+                # Medição → cinza
+                ax.axvspan(
+                    4.2, 5.8,
+                    color="#A0A0A0",
+                    alpha=0.08
+                )
             
                 fig.set_size_inches(5, 2.5)
             
