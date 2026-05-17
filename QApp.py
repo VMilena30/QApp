@@ -4190,6 +4190,10 @@ def main():
                 fig = result[0] if isinstance(result, tuple) else result
 
                 ax = fig.axes[0]
+                # fundo da figura
+                fig.patch.set_facecolor("#EEF4FB")
+                
+                # fundo interno do gráfico
                 ax.set_facecolor("#EEF4FB")
 
                 for txt in ax.texts:
