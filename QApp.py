@@ -6156,15 +6156,6 @@ def main():
 
         st.subheader(textos_ml["info5_titulo"])
         st.write(textos_ml["info5"])
-        st.write(textos_ml["info5.1"])
-
-        st.subheader(textos_ml["info6_titulo"])
-        st.write(textos_ml["info6"])
-        st.write(textos_ml["info6.1"])
-
-        st.subheader(textos_ml["info7_titulo"])
-        st.write(textos_ml["info7"])
-        st.write(textos_ml["info7.1"])
 
         label_btn = "PT" if st.session_state.lang == "pt" else "EN"
 
