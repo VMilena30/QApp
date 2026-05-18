@@ -6147,8 +6147,6 @@ def main():
 
         st.subheader(textos_ml["info2_titulo"])
         st.write(textos_ml["info2"])
-        st.write(textos_ml["info2.1"])
-        st.write(textos_ml["info2.2"])
 
         st.subheader(textos_ml["info3_titulo"])
         st.write(textos_ml["info3"])
