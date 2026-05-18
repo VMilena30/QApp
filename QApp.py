@@ -568,6 +568,7 @@ TEXTOS = {
 
 TEXTOS_OPT = {
     "pt": {
+        "aviso_custo_menor_componente": "O limite de custo total é menor que o menor custo de componente. Ajuste os valores.",
         "idioma": "Idioma",
         "insira_dados": "Insira os dados do problema a ser analisado:",
         "instancia": "Instância fornecida",
@@ -797,6 +798,7 @@ TEXTOS_OPT = {
         
     },
     "en": {
+        "aviso_custo_menor_componente": "The total cost limit is lower than the minimum component cost. Please adjust the values.",
         "idioma": "Language",
         "carregar_arquivo": "Upload file:",
         "instancia": "Provided instance:",
@@ -2612,7 +2614,7 @@ def ler_manualmente(textos_otim):
 
     C_of = st.number_input(f"{textos_otim['custo_total_limite']}:", step=1, min_value=1)
     if C_of < min(cjk_of):
-        st.warning("O limite de custo total é menor que o menor custo de componente. Ajuste os valores.")
+        st.warning(textos_otim["aviso_custo_menor_componente"])
 
     dados = [[nj_max, nj_min, ctj_of, Rjk_of, cjk_of, C_of]]
     return dados
