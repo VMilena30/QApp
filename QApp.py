@@ -568,6 +568,7 @@ TEXTOS = {
 
 TEXTOS_OPT = {
     "pt": {
+        "erro_min_maior_max_componentes": "O valor mínimo de componentes não pode ser maior que o valor máximo.",
         "aviso_custo_menor_componente": "O limite de custo total é menor que o menor custo de componente. Ajuste os valores.",
         "idioma": "Idioma",
         "insira_dados": "Insira os dados do problema a ser analisado:",
@@ -798,6 +799,7 @@ TEXTOS_OPT = {
         
     },
     "en": {
+        "erro_min_maior_max_componentes": "The minimum number of components cannot be greater than the maximum number.",
         "aviso_custo_menor_componente": "The total cost limit is lower than the minimum component cost. Please adjust the values.",
         "idioma": "Language",
         "carregar_arquivo": "Upload file:",
@@ -2587,7 +2589,7 @@ def ler_manualmente(textos_otim):
         ctj_of = st.number_input(f"{textos_otim['ctj_of']}:", step=1, min_value=1, max_value=500)
 
     if nj_min > nj_max:
-        st.error("O valor mínimo de componentes não pode ser maior que o valor máximo.")
+        st.error(textos_otim["erro_min_maior_max_componentes"])
         st.stop()
 
     st.markdown(f"**{textos_otim['lista_componentes']}**")
