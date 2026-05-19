@@ -1325,17 +1325,17 @@ TEXTOS_ML = {
         "cm_ylabel": "Valor real",
         "cm_legend_title": "Legenda das classes",
         
-        "fault_inner_7": "Falha no anel interno (7 mils)",
-        "fault_outer_7": "Falha no anel externo (7 mils)",
-        "fault_ball_7": "Falha no elemento rolante (7 mils)",
+        "fault_inner_7": "Falha no anel interno (0,007 polegadas)",
+        "fault_outer_7": "Falha no anel externo (0,007 polegadas)",
+        "fault_ball_7": "Falha no elemento rolante (0,007 polegadas)",
         
-        "fault_inner_14": "Falha no anel interno (14 mils)",
-        "fault_outer_14": "Falha no anel externo (14 mils)",
-        "fault_ball_14": "Falha no elemento rolante (14 mils)",
+        "fault_inner_14": "Falha no anel interno (0,014 polegadas)",
+        "fault_outer_14": "Falha no anel externo (0,014 polegadas)",
+        "fault_ball_14": "Falha no elemento rolante (0,014 polegadas)",
         
-        "fault_inner_21": "Falha no anel interno (21 mils)",
-        "fault_outer_21": "Falha no anel externo (21 mils)",
-        "fault_ball_21": "Falha no elemento rolante (21 mils)",
+        "fault_inner_21": "Falha no anel interno (0,021 polegadas)",
+        "fault_outer_21": "Falha no anel externo (0,021 polegadas)",
+        "fault_ball_21": "Falha no elemento rolante (0,021 polegadas)",
         
         "fault_normal": "Condição normal"
     },
@@ -1623,17 +1623,17 @@ TEXTOS_ML = {
         "cm_ylabel": "True label",
         "cm_legend_title": "Class legend",
         
-        "fault_inner_7": "Inner race fault (7 mils)",
-        "fault_outer_7": "Outer race fault (7 mils)",
-        "fault_ball_7": "Ball fault (7 mils)",
+        "fault_inner_7": "Inner race fault (0.007 inches)",
+        "fault_outer_7": "Outer race fault (0.007 inches)",
+        "fault_ball_7": "Ball fault (0.007 inches)",
         
-        "fault_inner_14": "Inner race fault (14 mils)",
-        "fault_outer_14": "Outer race fault (14 mils)",
-        "fault_ball_14": "Ball fault (14 mils)",
+        "fault_inner_14": "Inner race fault (0.014 inches)",
+        "fault_outer_14": "Outer race fault (0.014 inches)",
+        "fault_ball_14": "Ball fault (0.014 inches)",
         
-        "fault_inner_21": "Inner race fault (21 mils)",
-        "fault_outer_21": "Outer race fault (21 mils)",
-        "fault_ball_21": "Ball fault (21 mils)",
+        "fault_inner_21": "Inner race fault (0.021 inches)",
+        "fault_outer_21": "Outer race fault (0.021 inches)",
+        "fault_ball_21": "Ball fault (0.021 inches)",
         
         "fault_normal": "Normal condition"
     }
