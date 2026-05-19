@@ -1319,7 +1319,25 @@ TEXTOS_ML = {
         "circ_info": "Selecione um método de codificação",
         "circ_info2": "Defina rotações e emaranhamento",
         "circuit_title": "Exemplo do circuito",
-        "circuit_desc": "Representação do circuito quântico com as opções selecionadas."
+        "circuit_desc": "Representação do circuito quântico com as opções selecionadas.",
+        "cm_title": "Matriz de Confusão",
+        "cm_xlabel": "Predição",
+        "cm_ylabel": "Valor real",
+        "cm_legend_title": "Legenda das classes",
+        
+        "fault_inner_7": "Falha no anel interno (7 mils)",
+        "fault_outer_7": "Falha no anel externo (7 mils)",
+        "fault_ball_7": "Falha no elemento rolante (7 mils)",
+        
+        "fault_inner_14": "Falha no anel interno (14 mils)",
+        "fault_outer_14": "Falha no anel externo (14 mils)",
+        "fault_ball_14": "Falha no elemento rolante (14 mils)",
+        
+        "fault_inner_21": "Falha no anel interno (21 mils)",
+        "fault_outer_21": "Falha no anel externo (21 mils)",
+        "fault_ball_21": "Falha no elemento rolante (21 mils)",
+        
+        "fault_normal": "Condição normal"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1599,7 +1617,25 @@ TEXTOS_ML = {
         "circ_info": "Select an encoding method",
         "circ_info2": "Define rotations and entanglement",
         "circuit_title": "Circuit example",
-        "circuit_desc": "Quantum circuit representation with the selected options."
+        "circuit_desc": "Quantum circuit representation with the selected options.",
+        "cm_title": "Confusion Matrix",
+        "cm_xlabel": "Prediction",
+        "cm_ylabel": "True label",
+        "cm_legend_title": "Class legend",
+        
+        "fault_inner_7": "Inner race fault (7 mils)",
+        "fault_outer_7": "Outer race fault (7 mils)",
+        "fault_ball_7": "Ball fault (7 mils)",
+        
+        "fault_inner_14": "Inner race fault (14 mils)",
+        "fault_outer_14": "Outer race fault (14 mils)",
+        "fault_ball_14": "Ball fault (14 mils)",
+        
+        "fault_inner_21": "Inner race fault (21 mils)",
+        "fault_outer_21": "Outer race fault (21 mils)",
+        "fault_ball_21": "Ball fault (21 mils)",
+        
+        "fault_normal": "Normal condition"
     }
 }
 
@@ -4446,23 +4482,88 @@ def main():
         
             cm = confusion_matrix(y_test, y_pred)
 
-            fig_cm, ax = plt.subplots(figsize=(3.2,3.2))
+            classes = clf.classes_
             
-            disp = ConfusionMatrixDisplay(
-                confusion_matrix=cm,
-                display_labels=np.unique(y_test)
-            )
+            fig, ax = plt.subplots(figsize=(5, 4))
             
-            disp.plot(
-                ax=ax,
-                cmap="Blues",
-                colorbar=False
-            )
+            # ==================================================
+            # CWRU
+            # ==================================================
+            if modo_dataset == "Usar base de vibração do app":
             
-            plt.title("Matriz de Confusão")
-            plt.grid(False)
+                mapa_classes = {
+                    "105_0": textos_ml["fault_inner_7"],
+                    "118_0": textos_ml["fault_outer_7"],
+                    "130@6_0": textos_ml["fault_ball_7"],
             
-            st.pyplot(fig_cm)
+                    "169_0": textos_ml["fault_inner_14"],
+                    "185_0": textos_ml["fault_outer_14"],
+                    "197@6_0": textos_ml["fault_ball_14"],
+            
+                    "209_0": textos_ml["fault_inner_21"],
+                    "222_0": textos_ml["fault_outer_21"],
+                    "234_0": textos_ml["fault_ball_21"],
+            
+                    "97_Normal_0": textos_ml["fault_normal"]
+                }
+            
+                labels_numericos = list(range(len(classes)))
+            
+                sns.heatmap(
+                    cm,
+                    annot=True,
+                    fmt="d",
+                    cmap="Blues",
+                    cbar=True,
+                    xticklabels=labels_numericos,
+                    yticklabels=labels_numericos,
+                    ax=ax
+                )
+            
+            # ==================================================
+            # OUTROS DATASETS
+            # ==================================================
+            else:
+            
+                sns.heatmap(
+                    cm,
+                    annot=True,
+                    fmt="d",
+                    cmap="Blues",
+                    cbar=True,
+                    xticklabels=classes,
+                    yticklabels=classes,
+                    ax=ax
+                )
+            
+            # ==================================================
+            # TÍTULOS
+            # ==================================================
+            ax.set_title(textos_ml["cm_title"], fontsize=16)
+            
+            ax.set_xlabel(textos_ml["cm_xlabel"], fontsize=12)
+            
+            ax.set_ylabel(textos_ml["cm_ylabel"], fontsize=12)
+            
+            plt.xticks(rotation=0)
+            plt.yticks(rotation=0)
+            
+            fig.tight_layout()
+            
+            st.pyplot(fig)
+            
+            # ==================================================
+            # LEGENDA CWRU
+            # ==================================================
+            if modo_dataset == "Usar base de vibração do app":
+            
+                st.markdown(f"### {textos_ml['cm_legend_title']}")
+            
+                for i, classe in enumerate(classes):
+            
+                    nome_real = mapa_classes.get(classe, classe)
+            
+                    st.markdown(f"**{i}** → {nome_real}")
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
