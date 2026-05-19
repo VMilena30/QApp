@@ -4485,7 +4485,7 @@ def main():
 
             classes = clf.classes_
             
-            fig, ax = plt.subplots(figsize=(3, 2.5))
+            fig, ax = plt.subplots(figsize=(5, 4))
             
             # ==================================================
             # CWRU
