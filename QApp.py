@@ -4490,7 +4490,7 @@ def main():
             # ==================================================
             # CWRU
             # ==================================================
-            if modo_dataset == "Usar base de vibração do app":
+            if modo_dataset == textos_ml["carreg2"]:
             
                 mapa_classes = {
                     "105_0": textos_ml["fault_inner_7"],
@@ -4556,7 +4556,7 @@ def main():
             # ==================================================
             # LEGENDA CWRU
             # ==================================================
-            if modo_dataset == "Usar base de vibração do app":
+            if modo_dataset == textos_ml["carreg2"]:
             
                 st.markdown(f"### {textos_ml['cm_legend_title']}")
             
