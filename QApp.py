@@ -4439,6 +4439,7 @@ def main():
 
             from sklearn.metrics import (
                 accuracy_score,
+                balanced_accuracy_score,
                 precision_score,
                 recall_score,
                 f1_score,
@@ -4447,6 +4448,7 @@ def main():
             )
         
             acc = accuracy_score(y_test, y_pred)
+            balanced_acc = balanced_accuracy_score(y_test, y_pred)
 
             precision = precision_score(
                 y_test,
@@ -4469,12 +4471,13 @@ def main():
             
             st.success("Treinamento e avaliação concluídos com sucesso!")
             
-            col1, col2, col3, col4 = st.columns(4)
+            col1, col2, col3, col4, col5 = st.columns(5)
             
             col1.metric("Accuracy", f"{acc:.4f}")
-            col2.metric("Precision", f"{precision:.4f}")
-            col3.metric("Recall", f"{recall:.4f}")
-            col4.metric("F1-Score", f"{f1:.4f}")
+            col2.metric("Balanced Acc.", f"{balanced_acc:.4f}")
+            col3.metric("Precision", f"{precision:.4f}")
+            col4.metric("Recall", f"{recall:.4f}")
+            col5.metric("F1-Score", f"{f1:.4f}")
         
             # ===== MATRIZ DE CONFUSÃO =====
             from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
