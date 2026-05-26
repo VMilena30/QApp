@@ -3951,14 +3951,33 @@ def main():
                         c for c in df.columns
                         if c.lower() in ["label", "target", "class"]
                     ]
-                
+                    
                     if len(possible_labels) == 0:
+                    
                         y = df.iloc[:, -1].values
                         X_raw = df.iloc[:, :-1].values
+                    
                     else:
+                    
                         label_col = possible_labels[0]
+                    
                         y = df[label_col].values
-                        X_raw = df.drop(columns=[label_col]).values
+                    
+                        # ====================================
+                        # Detecta datasets com PCA (pc1, pc2...)
+                        # ====================================
+                        pc_cols = [
+                            c for c in df.columns
+                            if c.lower().startswith("pc")
+                        ]
+                    
+                        if len(pc_cols) > 0:
+                    
+                            X_raw = df[pc_cols].values
+                    
+                        else:
+                    
+                            X_raw = df.drop(columns=[label_col]).values
                 
                     st.session_state.X_raw = X_raw
                     st.session_state.y = y
