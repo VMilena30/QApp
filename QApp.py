@@ -1339,7 +1339,8 @@ TEXTOS_ML = {
         
         "fault_normal": "Condição normal",
         "sem_features": "Não desejo extrair características",
-        "usar_features": "Desejo extrair características estatísticas"
+        "usar_features": "Desejo extrair características estatísticas",
+        "iteracoes": "Iterações realizadas:"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1639,7 +1640,8 @@ TEXTOS_ML = {
         
         "fault_normal": "Normal condition",
         "sem_features": "Do not extract features",
-        "usar_features": "Extract statistical features"
+        "usar_features": "Extract statistical features",
+        "iteracoes": "Iterations performed:"
     }
 }
 
@@ -4404,7 +4406,6 @@ def main():
                 wires=n_qubits
             )
 
-            progress.progress(60)
             @qml.qnode(dev, interface="torch")
             def circuit(weights, x):
             
@@ -4542,34 +4543,210 @@ def main():
                 return [qml.expval(qml.PauliZ(i))
                         for i in range(n_qubits)]
 
-            progress.progress(80)
-            # ===== EXECUÇÃO QUÂNTICA =====
-            X_quantum = np.array([circuit(x) for x in X_np])
         
-            # ===== SPLIT =====
+            # =========================================================
+            # SPLIT
+            # =========================================================
+            
             X_train, X_test, y_train, y_test = train_test_split(
-                X_quantum, y_np, test_size=1 - split, random_state=seed
-            )
-        
-            # ===== MLP FIXO =====
-            from sklearn.neural_network import MLPClassifier
-        
-            clf = MLPClassifier(
-                hidden_layer_sizes=(64, 32),
-                learning_rate_init=0.001,
-                max_iter=epocas,
+                X_np,
+                y_np,
+                test_size=1 - split,
                 random_state=seed,
-            
-                early_stopping=(paciencia > 0),
-                n_iter_no_change=max(1, paciencia)
+                stratify=y_np
             )
             
-            clf.fit(X_train, y_train)
+            # =========================================================
+            # TORCH
+            # =========================================================
             
-            st.write("Iterações realizadas:", clf.n_iter_)
-        
-            y_pred = clf.predict(X_test)
+            X_train = torch.tensor(
+                X_train,
+                dtype=torch.float32
+            )
+            
+            X_test = torch.tensor(
+                X_test,
+                dtype=torch.float32
+            )
+            
+            y_train = torch.tensor(
+                y_train,
+                dtype=torch.float32
+            ).unsqueeze(1)
+            
+            y_test_tensor = torch.tensor(
+                y_test,
+                dtype=torch.float32
+            ).unsqueeze(1)
+            
+            # =========================================================
+            # PESOS QUÂNTICOS
+            # =========================================================
+            
+            if tipo_circuito == "VQE":
+            
+                num_weights = n_qubits * len(rotacoes)
+            
+                weights = nn.Parameter(
+                    0.01 * torch.randn(num_weights)
+                )
+            
+            elif tipo_circuito == "Real Amplitudes":
+            
+                weights = nn.Parameter(
+                    0.01 * torch.randn(n_qubits)
+                )
+            
+            elif tipo_circuito == "QCNN":
+            
+                weights = nn.Parameter(
+                    0.01 * torch.randn(
+                        (1, n_qubits, 3)
+                    )
+                )
+            
+            # =========================================================
+            # MODELO CLÁSSICO (MLP)
+            # =========================================================
+            
+            class HybridModel(nn.Module):
+            
+                def __init__(self):
+            
+                    super().__init__()
+            
+                    self.fc1 = nn.Linear(
+                        n_qubits,
+                        16
+                    )
+            
+                    self.fc2 = nn.Linear(
+                        16,
+                        1
+                    )
+            
+                def forward(self, x):
+            
+                    x = torch.relu(
+                        self.fc1(x)
+                    )
+            
+                    x = torch.sigmoid(
+                        self.fc2(x)
+                    )
+            
+                    return x
+            
+            model = HybridModel()
+            
+            # =========================================================
+            # OTIMIZADOR
+            # =========================================================
+            
+            optimizer = optim.Adam(
+                list(model.parameters()) + [weights],
+                lr=learning_rate
+            )
+            
+            criterion = nn.BCELoss()
+            
+            # =========================================================
+            # TREINAMENTO
+            # =========================================================
+            
+            progress = st.progress(60)
+            
+            loss_history = []
+            
+            for epoch in range(epocas):
+            
+                optimizer.zero_grad()
+            
+                quantum_outputs = []
+            
+                for x in X_train:
+            
+                    q_out = circuit(weights, x)
+            
+                    q_out = torch.stack(q_out)
+            
+                    quantum_outputs.append(q_out)
+            
+                quantum_outputs = torch.stack(
+                    quantum_outputs
+                )
+            
+                preds = model(
+                    quantum_outputs
+                )
+            
+                loss = criterion(
+                    preds,
+                    y_train
+                )
+            
+                loss.backward()
+            
+                optimizer.step()
+            
+                loss_history.append(
+                    loss.item()
+                )
+            
+                progresso = int(
+                    ((epoch + 1) / epocas) * 100
+                )
+            
+                progress.progress(progresso)
+            
+                print(
+                    f"Epoch {epoch+1}/{epocas} "
+                    f"- Loss: {loss.item():.4f}"
+                )
 
+            progress = st.progress(80)
+            # =========================================================
+            # TESTE
+            # =========================================================
+            
+            with torch.no_grad():
+            
+                quantum_test = []
+            
+                for x in X_test:
+            
+                    q_out = circuit(weights, x)
+            
+                    q_out = torch.stack(q_out)
+            
+                    quantum_test.append(q_out)
+            
+                quantum_test = torch.stack(
+                    quantum_test
+                )
+            
+                preds = model(
+                    quantum_test
+                )
+            
+                y_pred = (
+                    preds >= 0.5
+                ).int().numpy().flatten()
+            
+            # =========================================================
+            # ITERAÇÕES
+            # =========================================================
+            
+            st.write(
+                textos_ml["iteracoes"],
+                epocas
+            )
+            
+            # =========================================================
+            # MÉTRICAS
+            # =========================================================
+            
             from sklearn.metrics import (
                 accuracy_score,
                 balanced_accuracy_score,
@@ -4579,10 +4756,17 @@ def main():
                 confusion_matrix,
                 ConfusionMatrixDisplay
             )
-        
-            acc = accuracy_score(y_test, y_pred)
-            balanced_acc = balanced_accuracy_score(y_test, y_pred)
-
+            
+            acc = accuracy_score(
+                y_test,
+                y_pred
+            )
+            
+            balanced_acc = balanced_accuracy_score(
+                y_test,
+                y_pred
+            )
+            
             precision = precision_score(
                 y_test,
                 y_pred,
@@ -4600,35 +4784,71 @@ def main():
                 y_pred,
                 average="weighted"
             )
+            
             progress.progress(100)
             
-            st.success("Treinamento e avaliação concluídos com sucesso!")
+            st.success(
+                "Treinamento e avaliação concluídos com sucesso!"
+            )
             
             col1, col2, col3, col4, col5 = st.columns(5)
             
-            col1.metric("Accuracy", f"{acc:.4f}")
-            col2.metric("Balanced Acc.", f"{balanced_acc:.4f}")
-            col3.metric("Precision", f"{precision:.4f}")
-            col4.metric("Recall", f"{recall:.4f}")
-            col5.metric("F1-Score", f"{f1:.4f}")
-        
-            # ===== MATRIZ DE CONFUSÃO =====
-            from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay
+            col1.metric(
+                "Accuracy",
+                f"{acc:.4f}"
+            )
+            
+            col2.metric(
+                "Balanced Acc.",
+                f"{balanced_acc:.4f}"
+            )
+            
+            col3.metric(
+                "Precision",
+                f"{precision:.4f}"
+            )
+            
+            col4.metric(
+                "Recall",
+                f"{recall:.4f}"
+            )
+            
+            col5.metric(
+                "F1-Score",
+                f"{f1:.4f}"
+            )
+            
+            # ==================================================
+            # MATRIZ DE CONFUSÃO
+            # ==================================================
+            
+            from sklearn.metrics import (
+                confusion_matrix,
+                ConfusionMatrixDisplay
+            )
+            
             import matplotlib.pyplot as plt
             import seaborn as sns
-        
-            cm = confusion_matrix(y_test, y_pred)
-
-            classes = clf.classes_
             
-            fig, ax = plt.subplots(figsize=(5, 4))
+            cm = confusion_matrix(
+                y_test,
+                y_pred
+            )
+            
+            classes = np.unique(y_test)
+            
+            fig, ax = plt.subplots(
+                figsize=(5, 4)
+            )
             
             # ==================================================
             # CWRU
             # ==================================================
+            
             if modo_dataset == textos_ml["carreg2"]:
             
                 mapa_classes = {
+            
                     "105_0": textos_ml["fault_inner_7"],
                     "118_0": textos_ml["fault_outer_7"],
                     "130@6_0": textos_ml["fault_ball_7"],
@@ -4644,7 +4864,9 @@ def main():
                     "97_Normal_0": textos_ml["fault_normal"]
                 }
             
-                labels_numericos = list(range(len(classes)))
+                labels_numericos = list(
+                    range(len(classes))
+                )
             
                 sns.heatmap(
                     cm,
@@ -4660,6 +4882,7 @@ def main():
             # ==================================================
             # OUTROS DATASETS
             # ==================================================
+            
             else:
             
                 sns.heatmap(
@@ -4676,11 +4899,21 @@ def main():
             # ==================================================
             # TÍTULOS
             # ==================================================
-            ax.set_title(textos_ml["cm_title"], fontsize=16)
             
-            ax.set_xlabel(textos_ml["cm_xlabel"], fontsize=12)
+            ax.set_title(
+                textos_ml["cm_title"],
+                fontsize=16
+            )
             
-            ax.set_ylabel(textos_ml["cm_ylabel"], fontsize=12)
+            ax.set_xlabel(
+                textos_ml["cm_xlabel"],
+                fontsize=12
+            )
+            
+            ax.set_ylabel(
+                textos_ml["cm_ylabel"],
+                fontsize=12
+            )
             
             plt.xticks(rotation=0)
             plt.yticks(rotation=0)
@@ -4692,15 +4925,23 @@ def main():
             # ==================================================
             # LEGENDA CWRU
             # ==================================================
+            
             if modo_dataset == textos_ml["carreg2"]:
             
-                st.markdown(f"### {textos_ml['cm_legend_title']}")
+                st.markdown(
+                    f"### {textos_ml['cm_legend_title']}"
+                )
             
                 for i, classe in enumerate(classes):
             
-                    nome_real = mapa_classes.get(classe, classe)
+                    nome_real = mapa_classes.get(
+                        classe,
+                        classe
+                    )
             
-                    st.markdown(f"**{i}** → {nome_real}")
+                    st.markdown(
+                        f"**{i}** → {nome_real}"
+                    )
 
         if st.button(textos["ini"]):
             st.session_state['pagina'] = 'inicio'
