@@ -4375,6 +4375,10 @@ def main():
             
             y_np = np.array(y)
 
+            from sklearn.preprocessing import LabelEncoder
+            label_encoder = LabelEncoder()         
+            y_np = label_encoder.fit_transform(y_np)
+
             progress.progress(40)
             # ===== NORMALIZAÇÃO =====
             scaler = StandardScaler()
