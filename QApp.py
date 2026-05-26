@@ -4659,7 +4659,7 @@ def main():
             # TREINAMENTO
             # =========================================================
             
-            progress = st.progress(60)
+            progress.progress(60)
             
             loss_history = []
             
@@ -4673,7 +4673,10 @@ def main():
             
                     q_out = circuit(weights, x)
             
-                    q_out = torch.stack(q_out)
+                    q_out = torch.tensor(
+                        q_out,
+                        dtype=torch.float32
+                    )
             
                     quantum_outputs.append(q_out)
             
@@ -4709,7 +4712,7 @@ def main():
                     f"- Loss: {loss.item():.4f}"
                 )
 
-            progress = st.progress(80)
+            progress.progress(80)
             # =========================================================
             # TESTE
             # =========================================================
@@ -4722,7 +4725,10 @@ def main():
             
                     q_out = circuit(weights, x)
             
-                    q_out = torch.stack(q_out)
+                    q_out = torch.tensor(
+                        q_out,
+                        dtype=torch.float32
+                    )
             
                     quantum_test.append(q_out)
             
