@@ -4375,14 +4375,24 @@ def main():
         
             # ===== DEFINIR QUBITS =====
             if encoding_method == "Amplitude encoding":
+            
                 dim = X_np.shape[1]
+            
+                # próxima potência de 2
                 dim2 = 2 ** int(np.ceil(np.log2(dim)))
-                X_np = np.pad(X_np, ((0,0),(0,dim2-dim)))
+            
+                # padding automático
+                X_np = np.pad(
+                    X_np,
+                    ((0, 0), (0, dim2 - dim))
+                )
+            
                 n_qubits = int(np.log2(dim2))
+            
             else:
-                # limitar número de qubits (evitar explosão)
-                n_qubits = min(X_np.shape[1], 8)
-                X_np = X_np[:, :n_qubits]
+            
+                # 1 feature = 1 qubit
+                n_qubits = X_np.shape[1]
         
             dev = qml.device("default.qubit", wires=n_qubits)
 
