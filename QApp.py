@@ -4284,7 +4284,7 @@ def main():
         
             paciencia = st.number_input(
                 textos_ml["paciencia"],
-                min_value=1,
+                min_value=0,
                 value=10,
                 step=1,
                 key="paciencia_ml"
