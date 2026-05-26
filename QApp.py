@@ -4596,7 +4596,7 @@ def main():
             # PESOS QUÂNTICOS
             # =========================================================
             
-            if tipo_circuito == "Camada parametrizada":
+            if tipo_circuito == "VQE":
             
                 num_weights = n_qubits * len(rotacoes)
             
