@@ -4444,11 +4444,13 @@ def main():
             from sklearn.neural_network import MLPClassifier
         
             clf = MLPClassifier(
-                hidden_layer_sizes=(64,32),
+                hidden_layer_sizes=(64, 32),
                 learning_rate_init=0.001,
                 max_iter=epocas,
                 random_state=seed,
-                early_stopping=False
+            
+                early_stopping=(paciencia > 0),
+                n_iter_no_change=max(1, paciencia)
             )
             
             clf.fit(X_train, y_train)
