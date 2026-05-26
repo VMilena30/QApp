@@ -3787,7 +3787,9 @@ def main():
         from sklearn.preprocessing import StandardScaler
         from sklearn.svm import SVC
         from sklearn.metrics import accuracy_score
-    
+        import torch
+        import torch.nn as nn
+        import torch.optim as optim
         import pennylane as qml
         from pennylane import numpy as pnp
     
@@ -4122,7 +4124,10 @@ def main():
             # número fixo só para visualização
             n_qubits = 3
         
-            dev = qml.device("default.qubit", wires=n_qubits)
+            dev = qml.device(
+                "default.qubit",
+                wires=n_qubits
+            )
         
             @qml.qnode(dev)
             def circuito_visual(x):
@@ -4394,71 +4399,148 @@ def main():
                 # 1 feature = 1 qubit
                 n_qubits = X_np.shape[1]
         
-            dev = qml.device("default.qubit", wires=n_qubits)
+            dev = qml.device(
+                "default.qubit",
+                wires=n_qubits
+            )
 
             progress.progress(60)
-            @qml.qnode(dev)
-            def circuit(x):
-        
-                # ===== ENCODING =====
+            @qml.qnode(dev, interface="torch")
+            def circuit(weights, x):
+            
+                # =========================================
+                # ENCODING
+                # =========================================
+            
                 if encoding_method == "Angle encoding":
+            
                     for i in range(n_qubits):
+            
                         for eixo in (rotacoes if rotacoes else ["X"]):
-                            if eixo == "X": qml.RX(x[i], wires=i)
-                            elif eixo == "Y": qml.RY(x[i], wires=i)
-                            elif eixo == "Z": qml.RZ(x[i], wires=i)
-        
+            
+                            if eixo == "X":
+                                qml.RX(x[i], wires=i)
+            
+                            elif eixo == "Y":
+                                qml.RY(x[i], wires=i)
+            
+                            elif eixo == "Z":
+                                qml.RZ(x[i], wires=i)
+            
                 elif encoding_method == "Amplitude encoding":
-                    qml.AmplitudeEmbedding(x, wires=range(n_qubits), normalize=True)
-        
+            
+                    qml.AmplitudeEmbedding(
+                        x,
+                        wires=range(n_qubits),
+                        normalize=True
+                    )
+            
                 elif encoding_method == "ZFeaturemap":
+            
                     for i in range(n_qubits):
                         qml.RZ(x[i], wires=i)
-        
+            
                 elif encoding_method == "XFeaturemap":
+            
                     for i in range(n_qubits):
                         qml.RX(x[i], wires=i)
-        
+            
                 elif encoding_method == "YFeaturemap":
+            
                     for i in range(n_qubits):
                         qml.RY(x[i], wires=i)
-        
+            
                 elif encoding_method == "ZZFeaturemap":
+            
                     for i in range(n_qubits):
                         qml.RZ(x[i], wires=i)
+            
                     for i in range(n_qubits - 1):
                         qml.CNOT(wires=[i, i+1])
-        
-                # ===== PQC =====
-                if tipo_circuito == "Camada parametrizada":
+            
+                # =========================================
+                # PQC TREINÁVEL
+                # =========================================
+            
+                weight_idx = 0
+            
+                if tipo_circuito == "VQE":
+            
                     for i in range(n_qubits):
+            
                         for eixo in rotacoes:
-                            if eixo == "X": qml.RX(0.5, wires=i)
-                            elif eixo == "Y": qml.RY(0.5, wires=i)
-                            elif eixo == "Z": qml.RZ(0.5, wires=i)
-        
+            
+                            if eixo == "X":
+            
+                                qml.RX(
+                                    weights[weight_idx],
+                                    wires=i
+                                )
+            
+                            elif eixo == "Y":
+            
+                                qml.RY(
+                                    weights[weight_idx],
+                                    wires=i
+                                )
+            
+                            elif eixo == "Z":
+            
+                                qml.RZ(
+                                    weights[weight_idx],
+                                    wires=i
+                                )
+            
+                            weight_idx += 1
+            
+                    # =====================
+                    # EMARANHAMENTO
+                    # =====================
+            
                     if porta_emaranhamento == "CZ":
+            
                         for i in range(n_qubits - 1):
                             qml.CZ(wires=[i, i+1])
-        
+            
                     elif porta_emaranhamento == "iSWAP":
+            
                         for i in range(n_qubits - 1):
                             qml.ISWAP(wires=[i, i+1])
-        
+            
+                # =========================================
+                # REAL AMPLITUDES
+                # =========================================
+            
                 elif tipo_circuito == "Real Amplitudes":
+            
                     for i in range(n_qubits):
-                        qml.RY(0.5, wires=i)
-                
+            
+                        qml.RY(
+                            weights[i],
+                            wires=i
+                        )
+            
                     for i in range(n_qubits - 1):
+            
                         qml.CNOT(wires=[i, i+1])
-        
+            
+                # =========================================
+                # QCNN
+                # =========================================
+            
                 elif tipo_circuito == "QCNN":
+            
                     qml.templates.StronglyEntanglingLayers(
-                        weights=np.ones((1, n_qubits, 3)),
+                        weights=weights,
                         wires=range(n_qubits)
                     )
-        
-                return [qml.expval(qml.PauliZ(i)) for i in range(n_qubits)]
+            
+                # =========================================
+                # MEDIÇÃO
+                # =========================================
+            
+                return [qml.expval(qml.PauliZ(i))
+                        for i in range(n_qubits)]
 
             progress.progress(80)
             # ===== EXECUÇÃO QUÂNTICA =====
