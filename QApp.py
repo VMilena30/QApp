@@ -4650,7 +4650,7 @@ def main():
             
             optimizer = optim.Adam(
                 list(model.parameters()) + [weights],
-                lr=learning_rate
+                lr=0.01
             )
             
             criterion = nn.BCELoss()
