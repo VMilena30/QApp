@@ -1337,7 +1337,9 @@ TEXTOS_ML = {
         "fault_outer_21": "Falha no anel externo (0,021 polegadas)",
         "fault_ball_21": "Falha no elemento rolante (0,021 polegadas)",
         
-        "fault_normal": "Condição normal"
+        "fault_normal": "Condição normal",
+        "sem_features": "Não desejo extrair características",
+        "usar_features": "Desejo extrair características estatísticas"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1635,7 +1637,9 @@ TEXTOS_ML = {
         "fault_outer_21": "Outer race fault (0.021 inches)",
         "fault_ball_21": "Ball fault (0.021 inches)",
         
-        "fault_normal": "Normal condition"
+        "fault_normal": "Normal condition",
+        "sem_features": "Do not extract features",
+        "usar_features": "Extract statistical features"
     }
 }
 
@@ -4016,16 +4020,25 @@ def main():
     
         # ================= PASSO 2 =================
         st.markdown(f"### {textos_ml['step2']}")
+
+        usar_features = st.checkbox(
+            textos_ml["usar_features"],
+            value=True
+        )
         
         features_disponiveis = [
             textos_ml['feat1'], textos_ml['feat2'], textos_ml['feat3'], textos_ml['feat4'], textos_ml['feat5'], textos_ml['feat6'], textos_ml['feat7'],
             textos_ml['feat8'], textos_ml['feat9'], textos_ml['feat10'], textos_ml['feat11'], textos_ml['feat12'], textos_ml['feat13']
         ]
         
-        selected_features = st.multiselect(
-            textos_ml["label_features"],
-            options=features_disponiveis
-        )
+        selected_features = []
+
+        if usar_features:
+        
+            selected_features = st.multiselect(
+                textos_ml["label_features"],
+                options=features_disponiveis
+            )
         
         st.divider()
         
@@ -4321,12 +4334,19 @@ def main():
 
             progress.progress(20)
             # ===== FEATURES =====
-            X_feat = extrair_features_dataset(
-                X_raw,
-                selected_features if selected_features else features_disponiveis
-            )
-        
-            X_np = X_feat.values
+            if usar_features:
+            
+                X_feat = extrair_features_dataset(
+                    X_raw,
+                    selected_features if selected_features else features_disponiveis
+                )
+            
+                X_np = X_feat.values
+            
+            else:
+            
+                X_np = np.array(X_raw)
+            
             y_np = np.array(y)
 
             progress.progress(40)
