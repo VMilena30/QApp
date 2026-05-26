@@ -1340,7 +1340,8 @@ TEXTOS_ML = {
         "fault_normal": "Condição normal",
         "sem_features": "Não desejo extrair características",
         "usar_features": "Desejo extrair características estatísticas",
-        "iteracoes": "Iterações realizadas:"
+        "iteracoes": "Iterações realizadas:",
+        "fim": "Treinamento e avaliação concluídos com sucesso!"
     },
     "en": {
         "pagina_ml": "Quantum Machine Learning",
@@ -1641,7 +1642,8 @@ TEXTOS_ML = {
         "fault_normal": "Normal condition",
         "sem_features": "Do not extract features",
         "usar_features": "Extract statistical features",
-        "iteracoes": "Iterations performed:"
+        "iteracoes": "Iterations performed:",
+        "fim": "Training and evaluation successfully completed!"
     }
 }
 
@@ -4576,42 +4578,48 @@ def main():
             
             y_train = torch.tensor(
                 y_train,
-                dtype=torch.float32
-            ).unsqueeze(1)
+                dtype=torch.long
+            )
             
             y_test_tensor = torch.tensor(
                 y_test,
-                dtype=torch.float32
-            ).unsqueeze(1)
+                dtype=torch.long
+            )
+            
+            # =========================================================
+            # NÚMERO DE CLASSES
+            # =========================================================
+            
+            num_classes = len(np.unique(y_np))
             
             # =========================================================
             # PESOS QUÂNTICOS
             # =========================================================
             
-            if tipo_circuito == "VQE":
+            if tipo_circuito == "Camada parametrizada":
             
                 num_weights = n_qubits * len(rotacoes)
             
                 weights = nn.Parameter(
-                    0.01 * torch.randn(num_weights)
+                    0.001 * torch.randn(num_weights)
                 )
             
             elif tipo_circuito == "Real Amplitudes":
             
                 weights = nn.Parameter(
-                    0.01 * torch.randn(n_qubits)
+                    0.001 * torch.randn(n_qubits)
                 )
             
             elif tipo_circuito == "QCNN":
             
                 weights = nn.Parameter(
-                    0.01 * torch.randn(
+                    0.001 * torch.randn(
                         (1, n_qubits, 3)
                     )
                 )
             
             # =========================================================
-            # MODELO CLÁSSICO (MLP)
+            # MODELO HÍBRIDO
             # =========================================================
             
             class HybridModel(nn.Module):
@@ -4627,7 +4635,7 @@ def main():
             
                     self.fc2 = nn.Linear(
                         16,
-                        1
+                        num_classes
                     )
             
                 def forward(self, x):
@@ -4636,9 +4644,7 @@ def main():
                         self.fc1(x)
                     )
             
-                    x = torch.sigmoid(
-                        self.fc2(x)
-                    )
+                    x = self.fc2(x)
             
                     return x
             
@@ -4653,7 +4659,11 @@ def main():
                 lr=0.01
             )
             
-            criterion = nn.BCELoss()
+            # =========================================================
+            # LOSS
+            # =========================================================
+            
+            criterion = nn.CrossEntropyLoss()
             
             # =========================================================
             # TREINAMENTO
@@ -4711,12 +4721,12 @@ def main():
                     f"Epoch {epoch+1}/{epocas} "
                     f"- Loss: {loss.item():.4f}"
                 )
-
-            progress.progress(80)
+            
             # =========================================================
             # TESTE
             # =========================================================
-            
+
+            progress.progress(80)
             with torch.no_grad():
             
                 quantum_test = []
@@ -4740,9 +4750,11 @@ def main():
                     quantum_test
                 )
             
-                y_pred = (
-                    preds >= 0.5
-                ).int().numpy().flatten()
+                y_pred = torch.argmax(
+                    preds,
+                    dim=1
+                ).numpy()
+            
             
             # =========================================================
             # ITERAÇÕES
@@ -4798,7 +4810,7 @@ def main():
             progress.progress(100)
             
             st.success(
-                "Treinamento e avaliação concluídos com sucesso!"
+                textos_ml["fim"]
             )
             
             col1, col2, col3, col4, col5 = st.columns(5)
