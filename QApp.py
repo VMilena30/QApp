@@ -31,12 +31,12 @@ import itertools
 import json
 from typing import Dict, List, Tuple, Any, Optional
 import pandas as pd
-import authentication_streamlit
+#import authentication_streamlit
 
 
-authentication_streamlit.check_authentication(
-    "Denied access. Please log in to https://ceerma.org"
-)
+#authentication_streamlit.check_authentication(
+#    "Denied access. Please log in to https://ceerma.org"
+#)
 
 st.set_page_config(
     page_title="qPrism",
